@@ -1,19 +1,16 @@
-$LOAD_PATH.push File.expand_path('../lib', __FILE__)
+$LOAD_PATH.push File.expand_path("../lib", __FILE__)
 
 # Maintain your wagon's version:
-require 'hitobito_pfadi_de/version'
+require "hitobito_pfadi_de/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  # rubocop:disable SingleSpaceBeforeFirstArg
-  s.name        = 'hitobito_pfadi_de'
-  s.version     = HitobitoPfadiDe::VERSION
-  s.authors     = ['Carlo Beltrame']
-  s.email       = ['beltrame@puzzle.ch']
-  s.summary     = 'Hitobito-Wagon für Features der BDP und DPSG'
-  s.description = 'Hitobito-Wagon für Features der BDP und DPSG'
+  s.name = "hitobito_pfadi_de"
+  s.version = HitobitoPfadiDe::VERSION
+  s.authors = ["Carlo Beltrame"]
+  s.email = ["beltrame@puzzle.ch"]
+  s.summary = "Hitobito-Wagon für Features der BDP und DPSG"
+  s.description = "Hitobito-Wagon für Features der BDP und DPSG"
 
-  s.files = Dir['{app,config,db,lib}/**/*'] + ['Rakefile']
-  s.test_files = Dir['test/**/*']
-  # rubocop:enable SingleSpaceBeforeFirstArg
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["Rakefile"]
 end
