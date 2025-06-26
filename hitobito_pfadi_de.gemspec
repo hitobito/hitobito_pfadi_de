@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.version     = HitobitoPfadiDe::VERSION
   s.authors     = ['Carlo Beltrame']
   s.email       = ['beltrame@puzzle.ch']
-  s.summary     = 'Hitobito-Wagon für Features der Pfadfinder-Organisationen Deutschland'
-  s.description = 'Hitobito-Wagon für Features der Pfadfinder-Organisationen Deutschland'
+  s.summary     = 'Hitobito-Wagon für Features der BDP und DPSG'
+  s.description = 'Hitobito-Wagon für Features der BDP und DPSG'
 
   s.files = Dir['{app,config,db,lib}/**/*'] + ['Rakefile']
   s.test_files = Dir['test/**/*']
