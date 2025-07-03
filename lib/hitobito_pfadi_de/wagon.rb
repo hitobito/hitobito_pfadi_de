@@ -20,8 +20,11 @@ module HitobitoPfadiDe
     ]
 
     config.to_prepare do
+      # :group_and_below_efz may manage the SGB VIII EFZ qualifications of people
+      Role::Permissions << :group_and_below_efz
+
       # extend application classes here
-      Group.include PfadiDe::Group
+      Role.include PfadiDe::Role
     end
 
     initializer "pfadi_de.add_settings" do |_app|
