@@ -12,6 +12,8 @@ module PfadiDe::Person
     Person::GENDERS.push("d")
 
     self.used_attributes -= [:company, :company_name]
+
+    validates :iban, iban: true, on: :update, allow_blank: true
   end
 
   def entry_date

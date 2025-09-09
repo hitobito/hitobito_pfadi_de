@@ -14,5 +14,7 @@ module PfadiDe::Group
     # self.superior_attributes = [:bank_account]
 
     root_types Group::Bundesebene
+
+    validates :iban, iban: true, on: :update, allow_blank: true
   end
 end
