@@ -3,23 +3,5 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
-
 de:
   activerecord:
-    models:
-
-      ### GROUPS
-
-      group/root:
-        one: Hauptgruppe
-        other: Hauptgruppen
-
-
-      ### ROLES
-
-      group/root/leader:
-        one: Leitung
-        description: Leitungspersonen verwalten die Applikation.
-      group/root/member:
-        one: Mitglied
-        description: Mitglieder sind alle anderen.

@@ -25,6 +25,7 @@ module HitobitoPfadiDe
 
       # extend application classes here
       Role.include PfadiDe::Role
+      Group.include PfadiDe::Group
     end
 
     initializer "pfadi_de.add_settings" do |_app|
