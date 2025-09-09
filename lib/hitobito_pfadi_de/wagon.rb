@@ -26,6 +26,13 @@ module HitobitoPfadiDe
       # extend application classes here
       Role.include PfadiDe::Role
       Group.include PfadiDe::Group
+      Person.prepend PfadiDe::Person
+      Contactable.include PfadiDe::Contactable
+
+      GroupsController.prepend PfadiDe::GroupsController
+      PeopleController.prepend PfadiDe::PeopleController
+
+      Wizards::Steps::NewUserForm.support_company = false
     end
 
     initializer "pfadi_de.add_settings" do |_app|

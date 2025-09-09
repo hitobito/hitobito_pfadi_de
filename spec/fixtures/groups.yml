@@ -7,7 +7,7 @@
 root:
   parent:
   lft: 1
-  rgt: 2
+  rgt: 8
   name: Hauptgruppe
   type: Group::Bundesebene
   email: root@example.net
@@ -15,5 +15,26 @@ root:
   town: Neu Carlscheid
   layer_group_id: <%= ActiveRecord::FixtureSet.identify(:root) %>
 
-# TODO add more groups
-# you could generate a good setup manually and dump it with rake fixtures:groups
+baden_wuerttemberg:
+  parent: root
+  lft: 2
+  rgt: 7
+  name: Baden-Württemberg
+  type: Group::Landesverband
+  layer_group_id: <%= ActiveRecord::FixtureSet.identify(:baden_wuerttemberg) %>
+
+adler:
+  parent: root
+  lft: 3
+  rgt: 6
+  name: Adler
+  type: Group::Stamm
+  layer_group_id: <%= ActiveRecord::FixtureSet.identify(:adler) %>
+
+pfadfinder:
+  parent: root
+  lft: 4
+  rgt: 5
+  name: "Pfadfinder*innen"
+  type: Group::Sippe
+  layer_group_id: <%= ActiveRecord::FixtureSet.identify(:pfadfinder) %>

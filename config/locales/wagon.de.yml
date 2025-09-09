@@ -5,3 +5,27 @@
 
 de:
   activerecord:
+    attributes:
+      group:
+        bank_account_owner: Kontoinhaber
+        bank_name: Kreditinstitut
+        bic: BIC
+        consent_data_retention: Einwilligung Weiternutzung Kontaktdaten nach Austritt
+        entry_date: Eintrittsdatum
+        exit_date: Austrittsdatum
+        iban: IBAN
+        pronoun: Pronomen
+
+      person:
+        bank_account_owner: Kontoinhaber
+        bank_name: Kreditinstitut
+        bic: BIC
+        consent_data_retention: Einwilligung Weiternutzung Kontaktdaten nach Austritt
+        entry_date: Eintrittsdatum
+        exit_date: Austrittsdatum
+        genders:
+          d: divers
+        iban: IBAN
+        id: Mitgliedsnummer
+        nickname: Spitzname
+        pronoun: Pronomen
