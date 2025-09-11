@@ -25,11 +25,7 @@ if Rake::Task.task_defined?("spec:features")
 else
   # we do NOT have feature specs in this wagon.
   namespace :spec do
-    RSpec::Core::RakeTask.new(:without_features) do |t|
-      t.pattern = "./spec/**/*_spec.rb"
-      t.rspec_opts = "--tag ~type:feature"
-    end
-
-    task all: "spec:without_features"
+    task all: "spec"
+    task without_features: "spec"
   end
 end
