@@ -12,15 +12,22 @@ admin:
   contact_data_visible: true
   primary_group: root
 
-leader:
+stammesverwaltung:
+  first_name: Some
+  last_name: Stammesverwalterin
+  email: some.stammesfuehrerin@hitobito.example.com
+  contact_data_visible: true
+  primary_group: adler
+
+bottom_leader:
   first_name: A
   last_name: Leader
   email: a.leader@hitobito.example.com
   contact_data_visible: true
-  primary_group: root
+  primary_group: pfadfinder
 
 member:
   first_name: My
   last_name: Member
   email: member0@hitobito.example.com
-  primary_group: root
+  primary_group: pfadfinder

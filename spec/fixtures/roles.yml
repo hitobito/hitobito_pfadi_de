@@ -9,12 +9,17 @@ admin:
   group: root
   type: Group::Bundesebene::MVAdmin
 
-leader:
+stammesverwaltung:
+  person: stammesverwaltung
+  group: adler
+  type: Group::Stamm::Stammesmitgliederverwaltung
+
+bottom_leader:
   person: leader
-  group: root
+  group: pfadfinder
   type: Group::Sippe::Sippenfuehrung
 
 member:
   person: member
-  group: root
+  group: pfadfinder
   type: Group::Sippe::Pfadfinder

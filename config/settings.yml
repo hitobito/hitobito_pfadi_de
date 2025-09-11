@@ -14,6 +14,18 @@ application:
   # additional_languages:
   #   en: Englisch
 
+additional_address:
+  enabled: true
+
+phone_number:
+  predefined_labels:
+    - Privat
+    - Mobil
+    - Arbeit
+    - Erziehungsberechtigte
+    - Fax
+    - Andere
+
 # The person with this email has root access to everything
 # This person should only be used by the operators of the application,
 # not the customers.
