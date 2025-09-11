@@ -29,3 +29,17 @@ de:
         id: Mitgliedsnummer
         nickname: Spitzname
         pronoun: Pronomen
+  fixed_fees:
+    demo_lv_members:
+      aktiv: Aktivmitglieder
+      foerdermitgliedschaft: Fördermitgliedschaften
+      zweitmitgliedschaft: Zweitmitgliedschaften
+    demo_stamm_members:
+      aktiv: Aktivmitglieder
+      foerdermitgliedschaft: Fördermitgliedschaften
+      zweitmitgliedschaft: Zweitmitgliedschaften
+  groups:
+    actions_show_pfadi_de:
+      invoice_button_dropdown: Verbandsabrechnungen
+      invoice_button_demo_lv_members: Mitglieder, Rechnung an Landesverband (Demo)
+      invoice_button_demo_stamm_members: Mitglieder, Rechnung an Stamm (Demo)

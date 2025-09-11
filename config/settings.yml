@@ -10,6 +10,9 @@ application:
   languages:
     de: Deutsch
 
+currency:
+  unit: EUR
+
   # non UI languages for assigning to person#language
   # additional_languages:
   #   en: Englisch
@@ -32,3 +35,50 @@ phone_number:
 # Initially, a password reset token may be mailed from the application
 # to this address to set a password.
 root_email: hitobito-pfadi-de@puzzle.ch
+
+invoice_lists:
+  fixed_fees:
+    demo_lv_members:
+      account: DE56 0483 5035 4099 6000 0
+      cost_center: 3007
+      receivers:
+        layer: Group::Landesverband
+        roles:
+          - Group::Landesvorstand::Landesschatzmeister
+          - Group::Landesvorstand::LandesschatzmeisterStv
+          - Group::Landesvorstand::Landesvorsitz
+      items:
+        - key: aktiv
+          unit_cost: 5
+          roles:
+            - Group::Mitglieder::OrdentlicheMitgliedschaft
+        - key: zweitmitgliedschaft
+          unit_cost: 2
+          roles:
+            - Group::Mitglieder::Zweitmitgliedschaft
+        - key: foerdermitgliedschaft
+          unit_cost: 0.5
+          roles:
+            - Group::Mitglieder::Foerdermitgliedschaft
+    demo_stamm_members:
+      account: DE56 0483 5035 4099 6000 0
+      cost_center: 3007
+      receivers:
+        layer: Group::Stamm
+        roles:
+          - Group::Stamm::Stammesschatzmeister
+          - Group::Stamm::StammesschatzmeisterStv
+          - Group::Stamm::Stammesfuehrung
+      items:
+        - key: aktiv
+          unit_cost: 7
+          roles:
+            - Group::Mitglieder::OrdentlicheMitgliedschaft
+        - key: zweitmitgliedschaft
+          unit_cost: 3
+          roles:
+            - Group::Mitglieder::Zweitmitgliedschaft
+        - key: foerdermitgliedschaft
+          unit_cost: 1
+          roles:
+            - Group::Mitglieder::Foerdermitgliedschaft
