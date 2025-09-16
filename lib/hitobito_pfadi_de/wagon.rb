@@ -33,6 +33,9 @@ module HitobitoPfadiDe
       PeopleController.prepend PfadiDe::PeopleController
 
       Wizards::Steps::NewUserForm.support_company = false
+
+      PersonResource.prepend PfadiDe::PersonResource
+      GroupResource.prepend PfadiDe::GroupResource
     end
 
     initializer "pfadi_de.add_settings" do |_app|
