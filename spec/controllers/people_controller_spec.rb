@@ -22,7 +22,8 @@ describe PeopleController do
         bank_account_owner: "John Doe",
         iban: "DE00 0000 0000 0000 0000 0",
         bic: "ASDF",
-        bank_name: "Finanzinstitut"
+        bank_name: "Finanzinstitut",
+        payment_method: "debit"
       }}
       expect(assigns(:person).pronoun).to eq("sie")
       expect(assigns(:person).exit_date).to eq(Date.parse("01.01.2020"))
@@ -31,6 +32,7 @@ describe PeopleController do
       expect(assigns(:person).iban).to eq("DE00 0000 0000 0000 0000 0")
       expect(assigns(:person).bic).to eq("ASDF")
       expect(assigns(:person).bank_name).to eq("Finanzinstitut")
+      expect(assigns(:person).payment_method).to eq("debit")
     end
   end
 
