@@ -36,6 +36,8 @@ module HitobitoPfadiDe
 
       PersonResource.prepend PfadiDe::PersonResource
       GroupResource.prepend PfadiDe::GroupResource
+
+      Export::Tabular::People::PeopleAddress.prepend PfadiDe::Export::Tabular::People::PeopleAddress
     end
 
     initializer "pfadi_de.add_settings" do |_app|
