@@ -5,11 +5,10 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
-module PfadiDe::PeopleController
-  extend ActiveSupport::Concern
+class AddPaymentMethodToPeople < ActiveRecord::Migration[7.1]
+  def change
+    add_column :people, :payment_method, :string, null: false, default: "invoice"
 
-  def permitted_attrs
-    super + PfadiDe::Contactable::BANK_ACCOUNT_ATTRS +
-      [:pronoun, :exit_date, :payment_method, :consent_data_retention]
+    Person.reset_column_information
   end
 end

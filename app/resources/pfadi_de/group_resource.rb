@@ -5,11 +5,13 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
-module PfadiDe::PeopleController
+module PfadiDe::GroupResource
   extend ActiveSupport::Concern
 
-  def permitted_attrs
-    super + PfadiDe::Contactable::BANK_ACCOUNT_ATTRS +
-      [:pronoun, :exit_date, :payment_method, :consent_data_retention]
+  prepended do
+    attribute :bank_account_owner, :string
+    attribute :iban, :string
+    attribute :bic, :string
+    attribute :bank_name, :string
   end
 end

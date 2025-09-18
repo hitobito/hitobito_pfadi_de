@@ -5,7 +5,8 @@
 
 = f.labeled_input_field(:pronoun)
 
-= render 'contactable/bank_account_fields', f: f
+= render 'contactable/bank_account_fields', f: f do
+  = f.labeled_i18n_enum_field :payment_method, Person.payment_method_labels.to_a, class: 'form-select form-select-sm'
 
 = f.labeled_input_field(:exit_date)
 = f.labeled_input_field(:consent_data_retention)
