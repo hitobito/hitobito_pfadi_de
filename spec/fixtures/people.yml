@@ -1,4 +1,4 @@
-#  Copyright (c) 2012-2025, BDP and DPSG. This file is part of
+#  Copyright (c) 2012-2025, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
@@ -12,15 +12,22 @@ admin:
   contact_data_visible: true
   primary_group: root
 
-leader:
+stammesverwaltung:
+  first_name: Some
+  last_name: Stammesverwalterin
+  email: some.stammesfuehrerin@hitobito.example.com
+  contact_data_visible: true
+  primary_group: adler
+
+bottom_leader:
   first_name: A
   last_name: Leader
   email: a.leader@hitobito.example.com
   contact_data_visible: true
-  primary_group: root
+  primary_group: pfadfinder
 
 member:
   first_name: My
   last_name: Member
   email: member0@hitobito.example.com
-  primary_group: root
+  primary_group: pfadfinder

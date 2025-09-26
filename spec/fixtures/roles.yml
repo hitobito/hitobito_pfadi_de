@@ -1,4 +1,4 @@
-#  Copyright (c) 2012-2025, BDP and DPSG. This file is part of
+#  Copyright (c) 2025, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
@@ -7,16 +7,23 @@
 admin:
   person: admin
   group: root
-  type: Group::Root::Leader
+  type: Group::Bundesebene::MVAdmin
+  start_on: '2025-07-07'
 
-# TODO use group and type of the main base leader
-leader:
-  person: leader
-  group: root
-  type: Group::Root::Leader
+stammesverwaltung:
+  person: stammesverwaltung
+  group: adler
+  type: Group::Stamm::Stammesmitgliederverwaltung
+  start_on: '2025-01-01'
 
-# TODO use group and type of the main base member
+bottom_leader:
+  person: bottom_leader
+  group: pfadfinder
+  type: Group::Sippe::Sippenfuehrung
+  start_on: '2025-08-01'
+
 member:
   person: member
-  group: root
-  type: Group::Root::Member
+  group: pfadfinder
+  type: Group::Sippe::Pfadfinder
+  start_on: '2025-06-03'

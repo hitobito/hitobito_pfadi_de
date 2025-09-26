@@ -1,25 +1,51 @@
-#  Copyright (c) 2012-2025, BDP and DPSG. This file is part of
+#  Copyright (c) 2012-2025, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
-
 de:
   activerecord:
-    models:
+    attributes:
+      group:
+        address: Anschrift
+        bank_account_owner: Kontoinhaber
+        bank_name: Kreditinstitut
+        bic: BIC
+        consent_data_retention: Einwilligung Weiternutzung Kontaktdaten nach Austritt
+        entry_date: Eintrittsdatum
+        exit_date: Austrittsdatum
+        iban: IBAN
+        pronoun: Pronomen
 
-      ### GROUPS
-
-      group/root:
-        one: Hauptgruppe
-        other: Hauptgruppen
-
-
-      ### ROLES
-
-      group/root/leader:
-        one: Leitung
-        description: Leitungspersonen verwalten die Applikation.
-      group/root/member:
-        one: Mitglied
-        description: Mitglieder sind alle anderen.
+      person:
+        address: Anschrift
+        bank_account_owner: Kontoinhaber
+        bank_name: Kreditinstitut
+        bic: BIC
+        consent_data_retention: Einwilligung Weiternutzung Kontaktdaten nach Austritt
+        entry_date: Eintrittsdatum
+        exit_date: Austrittsdatum
+        genders:
+          d: divers
+        iban: IBAN
+        id: Mitgliedsnummer
+        nickname: Spitzname
+        payment_method: Zahlungsart
+        payment_methods:
+          debit: Lastschrift
+          invoice: Rechnung
+        pronoun: Pronomen
+  fixed_fees:
+    demo_lv_members:
+      aktiv: Aktivmitglieder
+      foerdermitgliedschaft: Fördermitgliedschaften
+      zweitmitgliedschaft: Zweitmitgliedschaften
+    demo_stamm_members:
+      aktiv: Aktivmitglieder
+      foerdermitgliedschaft: Fördermitgliedschaften
+      zweitmitgliedschaft: Zweitmitgliedschaften
+  groups:
+    actions_show_pfadi_de:
+      invoice_button_dropdown: Verbandsabrechnungen
+      invoice_button_demo_lv_members: Mitglieder, Rechnung an Landesverband (Demo)
+      invoice_button_demo_stamm_members: Mitglieder, Rechnung an Stamm (Demo)

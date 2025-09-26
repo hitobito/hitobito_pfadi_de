@@ -1,0 +1,12 @@
+-#  Copyright (c) 2025, BdP and DPSG. This file is part of
+-#  hitobito_pfadi_de and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_pfadi_de.
+
+= f.labeled_input_field(:pronoun)
+
+= render 'contactable/bank_account_fields', f: f do
+  = f.labeled_i18n_enum_field :payment_method, Person.payment_method_labels.to_a, class: 'form-select form-select-sm'
+
+= f.labeled_input_field(:exit_date)
+= f.labeled_input_field(:consent_data_retention)

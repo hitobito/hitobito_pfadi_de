@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_27_090212) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_16_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -495,6 +495,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_27_090212) do
     t.string "housenumber", limit: 20
     t.string "address_care_of"
     t.string "postbox"
+    t.string "bank_account_owner"
+    t.string "iban"
+    t.string "bic"
+    t.string "bank_name"
     t.index ["layer_group_id"], name: "index_groups_on_layer_group_id"
     t.index ["lft", "rgt"], name: "index_groups_on_lft_and_rgt"
     t.index ["parent_id"], name: "index_groups_on_parent_id"
@@ -963,6 +967,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_27_090212) do
     t.string "housenumber", limit: 20
     t.string "address_care_of"
     t.string "postbox"
+    t.string "pronoun"
+    t.date "exit_date"
+    t.boolean "consent_data_retention", default: false, null: false
+    t.string "bank_account_owner"
+    t.string "iban"
+    t.string "bic"
+    t.string "bank_name"
+    t.string "payment_method", default: "invoice", null: false
     t.index ["authentication_token"], name: "index_people_on_authentication_token"
     t.index ["confirmation_token"], name: "index_people_on_confirmation_token", unique: true
     t.index ["email"], name: "index_people_on_email", unique: true

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#  Copyright (c) 2012-2025, BDP and DPSG. This file is part of
+#  Copyright (c) 2012-2025, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
@@ -25,6 +25,19 @@ module HitobitoPfadiDe
 
       # extend application classes here
       Role.include PfadiDe::Role
+      Group.include PfadiDe::Group
+      Person.prepend PfadiDe::Person
+      Contactable.include PfadiDe::Contactable
+
+      GroupsController.prepend PfadiDe::GroupsController
+      PeopleController.prepend PfadiDe::PeopleController
+
+      Wizards::Steps::NewUserForm.support_company = false
+
+      PersonResource.prepend PfadiDe::PersonResource
+      GroupResource.prepend PfadiDe::GroupResource
+
+      Export::Tabular::People::PeopleAddress.prepend PfadiDe::Export::Tabular::People::PeopleAddress
     end
 
     initializer "pfadi_de.add_settings" do |_app|
