@@ -5,5 +5,6 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_bdp.
 
-class Group::StammesArbeitsbereichPolitischeBildungPolitikUndGesellschaft < Group::StammesArbeitsbereich
+class Group::StammesArbeitsbereichPolitischeBildungPolitikUndGesellschaft <
+  Group::StammesArbeitsbereich
 end

@@ -11,7 +11,8 @@ module PfadiDe::Person
   PAYMENT_METHODS = %w[invoice debit].freeze
 
   prepended do
-    Person::PUBLIC_ATTRS.push(:pronoun, :exit_date, :bank_account_owner, :iban, :bic, :bank_name, :payment_method)
+    Person::PUBLIC_ATTRS.push(:pronoun, :exit_date, :bank_account_owner, :iban, :bic,
+      :bank_name, :payment_method)
 
     include I18nSettable
     include I18nEnums
