@@ -82,3 +82,9 @@ invoice_lists:
           unit_cost: 1
           roles:
             - Group::Mitglieder::Foerdermitgliedschaft
+
+people:
+  people_managers:
+    enabled: true
+    self_service_managed_creation:
+      enabled: false
