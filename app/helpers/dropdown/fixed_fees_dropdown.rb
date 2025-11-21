@@ -8,7 +8,7 @@
 class Dropdown::FixedFeesDropdown < Dropdown::Base
   # rubocop:disable Rails/HelperInstanceVariable
   #
-  delegate :t, :new_group_invoice_list_path, to: :template
+  delegate :t, :new_group_invoice_run_path, to: :template
 
   def initialize(template, group)
     super(template, template.t(".invoice_button_dropdown"), :"money-bill-alt")
@@ -17,9 +17,9 @@ class Dropdown::FixedFeesDropdown < Dropdown::Base
   end
 
   def init_items
-    Settings.invoice_lists.fixed_fees.each do |key, config|
+    Settings.invoice_runs.fixed_fees.each do |key, config|
       next if /membership/.match?(key)
-      link = new_group_invoice_list_path(@group, fixed_fees: key)
+      link = new_group_invoice_run_path(@group, fixed_fees: key)
 
       add_item(template.t(".invoice_button_#{key}"), link)
     end
