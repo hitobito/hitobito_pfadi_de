@@ -36,7 +36,7 @@ phone_number:
 # to this address to set a password.
 root_email: hitobito-pfadi-de@puzzle.ch
 
-invoice_lists:
+invoice_runs:
   fixed_fees:
     demo_lv_members:
       account: DE56 0483 5035 4099 6000 0
