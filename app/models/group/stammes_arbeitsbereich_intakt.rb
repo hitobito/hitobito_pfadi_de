@@ -6,7 +6,7 @@
 #  https://github.com/hitobito/hitobito_bdp.
 
 class Group::StammesArbeitsbereichIntakt < Group::StammesArbeitsbereich
-  children Group::StammesArbeitsbereichIntaktPraeventionUndIntegration,
+  children Group::StammesArbeitsbereichIntaktPraeventionUndIntervention,
     Group::StammesArbeitsbereichIntaktPsychischeGesundheit,
     Group::StammesArbeitsbereichIntaktMachtUndMiteinander
 end

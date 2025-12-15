@@ -5,5 +5,5 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_bdp.
 
-class Group::StammesArbeitsbereichIntaktPraeventionUndIntegration < Group::StammesArbeitsbereich
+class Group::ArbeitsbereichIntaktPraeventionUndIntervention < Group::Arbeitsbereich
 end
