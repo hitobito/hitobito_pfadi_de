@@ -29,6 +29,8 @@ module HitobitoPfadiDe
       Person.prepend PfadiDe::Person
       Contactable.include PfadiDe::Contactable
 
+      VariousAbility.include PfadiDe::VariousAbility
+
       GroupsController.prepend PfadiDe::GroupsController
       PeopleController.prepend PfadiDe::PeopleController
 
