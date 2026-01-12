@@ -29,6 +29,10 @@ phone_number:
     - Fax
     - Andere
 
+groups:
+  period_invoice_templates:
+    enabled: true
+
 # The person with this email has root access to everything
 # This person should only be used by the operators of the application,
 # not the customers.
