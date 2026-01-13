@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   extend LanguageRouteScope
 
   language_scope do
-    # Define wagon routes here
+    resources :groups do
+      resources :fee_kinds, except: [:destroy]
+    end
   end
 end
