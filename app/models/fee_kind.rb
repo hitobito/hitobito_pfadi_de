@@ -14,34 +14,63 @@ class FeeKind < ActiveRecord::Base
   validates :role_type, presence: true, if: -> { top_layer? }
   validates :role_type, absence: true, unless: -> { top_layer? }
 
+  validates :parent, absence: true, if: -> { top_layer? }
   validates :parent, presence: true, unless: -> { top_layer? }
   validate :validate_unique_fee_parent_in_hierarchy, on: :create
 
   alias_method :group, :layer
 
+  def self.root_fee_kind_of(fee_kind)
+    return nil if fee_kind.parent_id.nil?
+
+    query = <<-SQL
+      WITH RECURSIVE root_fee_kind AS (
+          SELECT *
+          FROM fee_kinds
+          WHERE id = #{fee_kind.parent_id}
+        UNION ALL
+          SELECT fee_kinds.*
+          FROM fee_kinds
+          JOIN root_fee_kind ON fee_kinds.id = root_fee_kind.parent_id
+      )
+      SELECT * FROM root_fee_kind WHERE parent_id IS NULL;
+    SQL
+
+    find_by_sql(query)
+  end
+
   def to_s
-    name
+    parent_role_type = if parent_id.nil?
+      role_type
+    else
+      self.class.root_fee_kind_of(self).first.role_type
+    end
+
+    "#{name} (#{parent_role_type})"
   end
 
   def top_layer?
-    return false if layer.nil?
-
-    layer.parent.nil?
+    layer&.parent.nil?
   end
 
   def possible_fee_kind_parents
-    layer.ancestors.joins(:fee_kinds).select("fee_kinds.*")
+    FeeKind.where.not(id: used_fee_kind_parents.pluck("fee_kinds.parent_id"))
+      .where.not(layer: layer)
   end
 
   private
 
   def validate_unique_fee_parent_in_hierarchy
-    fee_kind_in_hierarchy = possible_fee_kind_parents.where(fee_kinds: {parent_id: parent_id})
-      .pick("fee_kinds.name")
+    return if parent_id.nil?
 
-    if fee_kind_in_hierarchy.present?
-      errors.add(:parent_id, :parent_already_used_in_hierarchy,
-        fee_kind_name: fee_kind_in_hierarchy.to_s)
+    unless possible_fee_kind_parents.exists?(id: parent_id)
+      taken_name = used_fee_kind_parents
+        .where(fee_kinds: {parent_id: parent_id})
+        .pick("fee_kinds.name")
+
+      errors.add(:parent_id, :parent_already_used_in_hierarchy, fee_kind_name: taken_name)
     end
   end
+
+  def used_fee_kind_parents = layer.ancestors.joins(:fee_kinds)
 end

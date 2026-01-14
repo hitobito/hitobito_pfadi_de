@@ -8,4 +8,4 @@
     - unless entry.top_layer?
         = f.labeled_collection_select(:parent_id, entry.possible_fee_kind_parents, :id, :to_s, {}, class: 'form-select form-select-sm')
     - else
-        = f.labeled_collection_select(:role_type, entry.layer.roles, :type, :to_s, {}, class: 'form-select form-select-sm', disabled: entry.persisted?)
+        = f.labeled_collection_select(:role_type, Role.all_types, :type, :to_s, {}, class: 'form-select form-select-sm', disabled: entry.persisted?)

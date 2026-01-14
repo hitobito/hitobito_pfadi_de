@@ -18,14 +18,14 @@ describe FeeKind do
       expect(fee_kind).not_to be_valid
     end
 
-    it "validates presence of layer" do
-      fee_kind.layer = nil
-      expect(fee_kind).not_to be_valid
-    end
-
     it "does not validate presence of parent" do
       fee_kind.parent = nil
       expect(fee_kind).to be_valid
+    end
+
+    it "validates absence of parent" do
+      fee_kind.parent = fee_kinds(:top_fee_kind)
+      expect(fee_kind).not_to be_valid
     end
 
     it "validates presence of role_type" do

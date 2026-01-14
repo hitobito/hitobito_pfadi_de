@@ -6,7 +6,7 @@
 module Sheet
   class FeeKind < Sheet::Invoice
     def title
-      ::FeeKind.model_name.human(count: 2)
+      entry&.to_s || ::FeeKind.model_name.human(count: 2)
     end
   end
 end

@@ -6,9 +6,19 @@
 require "spec_helper"
 
 describe Sheet::FeeKind do
-  let(:sheet) { described_class.new(self, nil, nil) }
+  context "list" do
+    let(:sheet) { described_class.new(self, nil, nil) }
 
-  it "uses Beitragsarten as title" do
-    expect(sheet.title).to eq "Beitragsarten"
+    it "uses Beitragsarten as title" do
+      expect(sheet.title).to eq "Beitragsarten"
+    end
+  end
+
+  context "show" do
+    let(:sheet) { described_class.new(self, nil, fee_kinds(:top_fee_kind)) }
+
+    it "uses name of fee kind as title" do
+      expect(sheet.title).to eq "Top Fee Kind (Group::Sippe::Pfadfinder)"
+    end
   end
 end
