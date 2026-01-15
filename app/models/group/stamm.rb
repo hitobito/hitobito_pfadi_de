@@ -9,28 +9,16 @@ class Group::Stamm < ::Group
   self.layer = true
 
   children Group::Mitglieder,
-    Group::StammesArbeitsbereichWoelflingsstufe,
-    Group::StammesArbeitsbereichPfadfinderstufe,
-    Group::StammesArbeitsbereichRangerRoverstufe,
-    Group::StammesArbeitsbereichStufen,
-    Group::StammesArbeitsbereichErwachsenenarbeit,
-    Group::StammesArbeitsbereichAusbildung,
-    Group::StammesArbeitsbereichInternationales,
-    Group::StammesArbeitsbereichIntakt,
-    Group::StammesArbeitsbereichOeffentlichkeitsarbeitMedien,
-    Group::StammesArbeitsbereichPolitischeBildungPolitikUndGesellschaft,
-    Group::StammesArbeitsbereichIt,
-    Group::StammesArbeitsbereichFindungskommission,
-    Group::StammesArbeitsbereichRainbow,
-    Group::StammesArbeitsbereichInklusion,
-    Group::StammesArbeitsbereichSonstiges,
+    Group::StammArbeitsbereiche,
     Group::HeimZeltplatzLiegenschaft,
     Group::GruppierungsspezifischesGremium,
     Group::Foerderverein,
-    Group::Meute,
-    Group::Gilde,
-    Group::Sippe,
-    Group::Runde
+    Group::Gruppen
+
+  self.default_children = [
+    Group::Mitglieder,
+    Group::Gruppen
+  ]
 
   ### ROLES
 
@@ -45,12 +33,12 @@ class Group::Stamm < ::Group
   end
 
   class Stammesschatzmeister < ::Role
-    self.permissions = [:group_read]
+    self.permissions = [:group_read, :finance]
     self.sgbviii_required = true
   end
 
   class StammesschatzmeisterStv < ::Role
-    self.permissions = [:group_read]
+    self.permissions = [:group_read, :finance]
     self.sgbviii_required = true
   end
 

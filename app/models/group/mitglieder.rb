@@ -6,6 +6,8 @@
 #  https://github.com/hitobito/hitobito_bdp.
 
 class Group::Mitglieder < ::Group
+  self.static_name = true
+
   ### ROLES
 
   class OrdentlicheMitgliedschaft < ::Role

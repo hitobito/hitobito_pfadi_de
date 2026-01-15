@@ -11,7 +11,11 @@ class Group::Bezirk < ::Group
   children Group::Stamm,
     Group::Bezirksgeschaeftsstelle,
     Group::GruppierungsspezifischesGremium,
-    Group::HeimZeltplatzLiegenschaft
+    Group::Bezirksversammlung,
+    Group::HeimZeltplatzLiegenschaft,
+    Group::Kontakte,
+    Group::BezirkArbeitsbereiche,
+    Group::Foerderverein
 
   ### ROLES
 
