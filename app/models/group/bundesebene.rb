@@ -14,31 +14,18 @@ class Group::Bundesebene < ::Group
     Group::Ombudsrat,
     Group::Betrieb,
     Group::Bundesversammlung,
-    Group::Projekt,
+    Group::Projekte,
     Group::Kontakte,
     Group::Mitglieder,
-    Group::ArbeitsbereichWoelflingsstufe,
-    Group::ArbeitsbereichPfadfinderstufe,
-    Group::ArbeitsbereichRangerRoverstufe,
-    Group::ArbeitsbereichStufen,
-    Group::ArbeitsbereichErwachsenenarbeit,
-    Group::ArbeitsbereichAusbildung,
-    Group::ArbeitsbereichInternationales,
-    Group::ArbeitsbereichIntakt,
-    Group::ArbeitsbereichOeffentlichkeitsarbeitMedien,
-    Group::ArbeitsbereichPolitischeBildungPolitikUndGesellschaft,
-    Group::ArbeitsbereichIt,
-    Group::ArbeitsbereichFindungskommission,
-    Group::ArbeitsbereichRainbow,
-    Group::ArbeitsbereichInklusion,
-    Group::ArbeitsbereichSonstiges,
+    Group::BundArbeitsbereiche,
     Group::GruppierungsspezifischesGremium,
     Group::HeimZeltplatzLiegenschaft,
     Group::Foerderverein
 
   self.default_children = [
     Group::Bundesvorstand,
-    Group::Ombudsrat
+    Group::Ombudsrat,
+    Group::Mitglieder
   ]
 
   ### ROLES

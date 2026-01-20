@@ -15,27 +15,14 @@ class Group::Landesverband < ::Group
     Group::Landesversammlung,
     Group::Mitglieder,
     Group::Kontakte,
-    Group::ArbeitsbereichWoelflingsstufe,
-    Group::ArbeitsbereichPfadfinderstufe,
-    Group::ArbeitsbereichRangerRoverstufe,
-    Group::ArbeitsbereichStufen,
-    Group::ArbeitsbereichErwachsenenarbeit,
-    Group::ArbeitsbereichAusbildung,
-    Group::ArbeitsbereichInternationales,
-    Group::ArbeitsbereichIntakt,
-    Group::ArbeitsbereichOeffentlichkeitsarbeitMedien,
-    Group::ArbeitsbereichPolitischeBildungPolitikUndGesellschaft,
-    Group::ArbeitsbereichIt,
-    Group::ArbeitsbereichFindungskommission,
-    Group::ArbeitsbereichRainbow,
-    Group::ArbeitsbereichInklusion,
-    Group::ArbeitsbereichSonstiges,
+    Group::LandArbeitsbereiche,
     Group::GruppierungsspezifischesGremium,
     Group::HeimZeltplatzLiegenschaft,
     Group::Foerderverein
 
   self.default_children = [
-    Group::Landesvorstand
+    Group::Landesvorstand,
+    Group::Mitglieder
   ]
 
   ### ROLES
