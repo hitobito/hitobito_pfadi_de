@@ -6,6 +6,6 @@
 = entry_form(buttons_top: false) do |f|
     = f.labeled_input_fields :name
     - unless entry.top_layer?
-        = f.labeled_collection_select(:parent_id, entry.possible_fee_kind_parents, :id, :to_s, {}, class: 'form-select form-select-sm')
+        = f.labeled_collection_select(:parent_id, entry.possible_fee_kind_parents, :id, ->(fee_kind) { fee_kind.to_s(:with_role_type) }, {}, class: 'form-select form-select-sm', disabled: entry.persisted?)
     - else
         = f.labeled_collection_select(:role_type, Role.all_types, :type, :to_s, {}, class: 'form-select form-select-sm', disabled: entry.persisted?)

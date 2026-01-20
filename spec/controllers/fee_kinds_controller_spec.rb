@@ -33,7 +33,7 @@ describe FeeKindsController do
         }
       }
     end.to change { FeeKind.count }.by 1
-    expect(flash[:notice]).to eq "Beitragsart <i>Test Foo (Cool::Role::Type)</i> wurde " \
+    expect(flash[:notice]).to eq "Beitragsart <i>Test Foo</i> wurde " \
                                  "erfolgreich erstellt."
   end
 
@@ -43,7 +43,7 @@ describe FeeKindsController do
         params: {group_id: group, id: fee_kind.id,
                  fee_kind: {name: "Updated Foo"}}
     end.to change { fee_kind.reload.name }
-    expect(flash[:notice]).to eq "Beitragsart <i>Updated Foo (Group::Sippe::Pfadfinder)</i> " \
+    expect(flash[:notice]).to eq "Beitragsart <i>Updated Foo</i> " \
                                  "wurde erfolgreich aktualisiert."
   end
 end

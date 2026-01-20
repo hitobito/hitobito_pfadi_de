@@ -6,6 +6,31 @@
 require "spec_helper"
 
 describe FeeKind do
+  context "#to_s" do
+    let(:top_fee_kind) { fee_kinds(:baden_wuerttemberg_kind) }
+    let(:bottom_fee_kind) { fee_kinds(:baden_wuerttemberg_kind) }
+
+    it "returns name" do
+      expect(bottom_fee_kind.to_s).to eq bottom_fee_kind.name
+    end
+
+    it "returns name and role_type of parent when format is with_role_type" do
+      expect(bottom_fee_kind.to_s(:with_role_type)).to eq "#{bottom_fee_kind.name} (Rolle)"
+    end
+
+    it "returns name and role_type when format is with_role_type and fee_kind is top layer" do
+      expect(top_fee_kind.to_s(:with_role_type)).to eq "#{top_fee_kind.name} (Rolle)"
+    end
+  end
+
+  context "#human_role_name" do
+    let(:top_fee_kind) { fee_kinds(:baden_wuerttemberg_kind) }
+
+    it "returns translated role label" do
+      expect(top_fee_kind.human_role_name).to eq "Rolle"
+    end
+  end
+
   context "top layer" do
     let(:fee_kind) { fee_kinds(:top_fee_kind) }
 
@@ -51,6 +76,42 @@ describe FeeKind do
     it "validates absence of role_type" do
       fee_kind.role_type = roles(:member).type
       expect(fee_kind).not_to be_valid
+    end
+
+    it "cannot change parent_id after create" do
+      fee_kind.update!(parent: FeeKind.build(name: "New Fee Kind",
+        parent: fee_kinds(:top_fee_kind),
+        layer: groups(:root)))
+      fee_kind.reload
+      expect(fee_kind.parent).to eq fee_kinds(:top_fee_kind)
+    end
+  end
+
+  context "root_fee_kind_of" do
+    let(:root) { fee_kinds(:top_fee_kind) }
+    let(:level_1) {
+      FeeKind.create!(name: "Level 1", parent: root, layer: groups(:baden_wuerttemberg))
+    }
+    let(:group_level_2) { Fabricate(Group::Stamm.sti_name, parent: groups(:baden_wuerttemberg)) }
+    let(:level_2) { FeeKind.create!(name: "Level 2", parent: level_1, layer: group_level_2) }
+    let(:group_level_3) { Fabricate(Group::Mitglieder.sti_name, parent: group_level_2) }
+    let(:level_3) { FeeKind.create!(name: "Level 3", parent: level_2, layer: group_level_3) }
+
+    it "returns nil if fee_kind has no parent" do
+      expect(FeeKind.root_fee_kind_of(root)).to be_nil
+    end
+
+    it "returns the parent if only two levels exist" do
+      result = FeeKind.root_fee_kind_of(level_1)
+      expect(result.first).to eq(root)
+    end
+
+    it "climbs multiple levels to find the root ancestor" do
+      result = FeeKind.root_fee_kind_of(level_3)
+
+      expect(result.size).to eq(1)
+      expect(result.first).to eq(root)
+      expect(result.first.parent_id).to be_nil
     end
   end
 

@@ -20,6 +20,7 @@ de:
         parent_id: Erbt von
         name: Name
         role_type: Mitgliedsart
+        human_role_name: Mitgliedsart
         created_at: Erstellt
         updated_at: Geändert
 

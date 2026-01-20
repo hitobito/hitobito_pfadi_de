@@ -5,9 +5,9 @@
 
 class FeeKind < ActiveRecord::Base
   belongs_to :layer, class_name: "Group"
-  belongs_to :parent, class_name: "FeeKind"
+  belongs_to :parent, class_name: "FeeKind", optional: true
 
-  attr_readonly :role_type
+  attr_readonly :parent_id, :role_type
 
   validates :name, presence: true
 
@@ -39,14 +39,24 @@ class FeeKind < ActiveRecord::Base
     find_by_sql(query)
   end
 
-  def to_s
-    parent_role_type = if parent_id.nil?
-      role_type
-    else
-      self.class.root_fee_kind_of(self).first.role_type
-    end
+  def to_s(format = :default)
+    if format == :with_role_type
+      parent_role_type = if parent_id.nil?
+        role_type
+      else
+        self.class.root_fee_kind_of(self).first.role_type
+      end
 
-    "#{name} (#{parent_role_type})"
+      "#{name} (#{parent_role_type.constantize.model_name.human})"
+    else
+      name
+    end
+  end
+
+  def human_role_name
+    (self[:role_type] || self.class.root_fee_kind_of(self).pick(:role_type)).constantize
+      .model_name
+      .human
   end
 
   def top_layer?
