@@ -16,5 +16,7 @@ module PfadiDe::Group
     root_types Group::Bundesebene
 
     validates :iban, iban: true, on: :update, allow_blank: true
+
+    has_many :fee_kinds, inverse_of: :layer, dependent: :destroy
   end
 end

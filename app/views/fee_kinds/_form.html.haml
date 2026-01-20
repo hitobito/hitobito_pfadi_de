@@ -1,0 +1,11 @@
+-#  Copyright (c) 2026, Hitobito AG. This file is part of
+-#  hitobito and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito.
+
+= entry_form(buttons_top: false) do |f|
+    = f.labeled_input_fields :name
+    - unless entry.top_layer?
+        = f.labeled_collection_select(:parent_id, entry.possible_fee_kind_parents, :id, ->(fee_kind) { fee_kind.to_s(:with_role_type) }, {}, class: 'form-select form-select-sm', disabled: entry.persisted?)
+    - else
+        = f.labeled_collection_select(:role_type, Role.all_types, :to_s, ->(role_type) { role_type.model_name.human }, {}, class: 'form-select form-select-sm', disabled: entry.persisted?)

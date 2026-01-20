@@ -16,6 +16,13 @@ de:
         exit_date: Austrittsdatum
         iban: IBAN
         pronoun: Pronomen
+      fee_kind:
+        parent_id: Erbt von
+        name: Name
+        role_type: Mitgliedsart
+        human_role_name: Mitgliedsart
+        created_at: Erstellt
+        updated_at: Geändert
 
       person:
         address: Anschrift
@@ -35,6 +42,16 @@ de:
           debit: Lastschrift
           invoice: Rechnung
         pronoun: Pronomen
+    errors:
+      models:
+        fee_kind:
+          attributes:
+            parent_id:
+              parent_already_used_in_hierarchy: wurde bereits durch eine Beitragsart (%{fee_kind_name}) überschrieben welche sich in einer höheren Ebene befindet.
+    models:
+      fee_kind:
+        one: Beitragsart
+        other: Beitragsarten
   fixed_fees:
     demo_lv_members:
       aktiv: Aktivmitglieder
