@@ -36,25 +36,15 @@ class FeeKind < ActiveRecord::Base
       SELECT * FROM root_fee_kind WHERE parent_id IS NULL;
     SQL
 
-    find_by_sql(query)
+    find_by_sql(query)&.first
   end
 
   def to_s(format = :default)
-    if format == :with_role_type
-      parent_role_type = if parent_id.nil?
-        role_type
-      else
-        self.class.root_fee_kind_of(self).first.role_type
-      end
-
-      "#{name} (#{parent_role_type.constantize.model_name.human})"
-    else
-      name
-    end
+    (format == :with_role_type) ? "#{name} (#{human_role_name})" : name
   end
 
   def human_role_name
-    (self[:role_type] || self.class.root_fee_kind_of(self).pick(:role_type)).constantize
+    (self[:role_type] || self.class.root_fee_kind_of(self)&.role_type).constantize
       .model_name
       .human
   end
@@ -65,7 +55,7 @@ class FeeKind < ActiveRecord::Base
 
   def possible_fee_kind_parents
     FeeKind.where.not(id: used_fee_kind_parents.pluck("fee_kinds.parent_id"))
-      .where.not(layer: layer)
+      .where(layer: layer.ancestors)
   end
 
   private

@@ -94,8 +94,6 @@ describe FeeKind do
     }
     let(:group_level_2) { Fabricate(Group::Stamm.sti_name, parent: groups(:baden_wuerttemberg)) }
     let(:level_2) { FeeKind.create!(name: "Level 2", parent: level_1, layer: group_level_2) }
-    let(:group_level_3) { Fabricate(Group::Mitglieder.sti_name, parent: group_level_2) }
-    let(:level_3) { FeeKind.create!(name: "Level 3", parent: level_2, layer: group_level_3) }
 
     it "returns nil if fee_kind has no parent" do
       expect(FeeKind.root_fee_kind_of(root)).to be_nil
@@ -103,15 +101,14 @@ describe FeeKind do
 
     it "returns the parent if only two levels exist" do
       result = FeeKind.root_fee_kind_of(level_1)
-      expect(result.first).to eq(root)
+      expect(result).to eq(root)
     end
 
     it "climbs multiple levels to find the root ancestor" do
-      result = FeeKind.root_fee_kind_of(level_3)
+      result = FeeKind.root_fee_kind_of(level_2)
 
-      expect(result.size).to eq(1)
-      expect(result.first).to eq(root)
-      expect(result.first.parent_id).to be_nil
+      expect(result).to eq(root)
+      expect(result.parent_id).to be_nil
     end
   end
 
