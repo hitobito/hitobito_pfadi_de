@@ -7,6 +7,7 @@
 
 class Group::Bundesebene < ::Group
   self.layer = true
+  self.event_types = [Event, Event::Course]
 
   children Group::Landesverband,
     Group::Bundesvorstand,
