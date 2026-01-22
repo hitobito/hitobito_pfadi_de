@@ -56,6 +56,7 @@ class FeeKind < ActiveRecord::Base
   def possible_fee_kind_parents
     FeeKind.where.not(id: used_fee_kind_parents.pluck("fee_kinds.parent_id"))
       .where(layer: layer.ancestors)
+      .where(archived_at: nil).or(FeeKind.where("archived_at > ?", Time.zone.now))
   end
 
   private

@@ -134,27 +134,43 @@ describe FeeKind do
 
   context "#possible_fee_kind_parents" do
     let(:group) { groups(:baden_wuerttemberg) }
+    let(:parent_fee_kind) { fee_kinds(:top_fee_kind) }
 
-    subject(:fee_kind) { FeeKind.build(name: "TheLänd-Beitrag", layer: group.layer_group) }
+    subject(:fee_kind) do
+      FeeKind.create(
+        name: "TheLänd-Beitrag",
+        layer: group.layer_group,
+        parent: parent_fee_kind
+      )
+    end
 
     it "returns fee kinds from all parent layers" do
       expect(fee_kind.possible_fee_kind_parents).to match_array [
-        fee_kinds(:top_fee_kind)
+        parent_fee_kind
       ]
     end
 
     it "does not include those already used in higher layers" do
-      fee_kind.parent = fee_kinds(:top_fee_kind)
-      fee_kind.save!
-
       stamm = Fabricate(Group::Stamm.sti_name, parent: groups(:baden_wuerttemberg))
       stamm_fee_kind = FeeKind.build(name: "NichtHochdeutschBeitrag", layer: stamm.layer_group)
 
-      expect(stamm_fee_kind.possible_fee_kind_parents).to_not include(fee_kinds(:top_fee_kind))
+      expect(stamm_fee_kind.possible_fee_kind_parents).to_not include(parent_fee_kind)
       expect(stamm_fee_kind.possible_fee_kind_parents).to match_array [
         fee_kinds(:baden_wuerttemberg_kind),
         fee_kind
       ]
+    end
+
+    it "does not include archived fee kinds" do
+      parent_fee_kind.update(archived_at: 2.days.ago.to_date)
+
+      expect(fee_kind.possible_fee_kind_parents).to_not include(parent_fee_kind)
+    end
+
+    it "does include fee kinds archived in the future" do
+      parent_fee_kind.update(archived_at: 2.days.from_now.to_date)
+
+      expect(fee_kind.possible_fee_kind_parents).to include(parent_fee_kind)
     end
   end
 end
