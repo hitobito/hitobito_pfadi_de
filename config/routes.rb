@@ -5,13 +5,12 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
-
 Rails.application.routes.draw do
   extend LanguageRouteScope
 
   language_scope do
     resources :groups do
-      resources :fee_kinds, except: [:destroy]
+      resources :fee_kinds
     end
   end
 end
