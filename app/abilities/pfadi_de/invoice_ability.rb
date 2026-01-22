@@ -9,7 +9,7 @@ module PfadiDe::InvoiceAbility
   included do
     on(FeeKind) do
       permission(:finance).may(:show, :index).in_layer
-      permission(:finance).may(:new, :create, :edit, :update).in_layer_if_active
+      permission(:finance).may(:new, :create, :edit, :update, :destroy).in_layer_if_active
     end
   end
 end

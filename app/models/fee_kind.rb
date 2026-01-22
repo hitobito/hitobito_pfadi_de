@@ -20,6 +20,14 @@ class FeeKind < ActiveRecord::Base
 
   alias_method :group, :layer
 
+  scope :not_archived, -> {
+    where(archived_at: nil).or(FeeKind.where("archived_at > ?", Time.zone.now))
+  }
+
+  def archive
+    touch(:archived_at)
+  end
+
   def self.root_fee_kind_of(fee_kind)
     return nil if fee_kind.parent_id.nil?
 
@@ -56,7 +64,7 @@ class FeeKind < ActiveRecord::Base
   def possible_fee_kind_parents
     FeeKind.where.not(id: used_fee_kind_parents.pluck("fee_kinds.parent_id"))
       .where(layer: layer.ancestors)
-      .where(archived_at: nil).or(FeeKind.where("archived_at > ?", Time.zone.now))
+      .not_archived
   end
 
   private

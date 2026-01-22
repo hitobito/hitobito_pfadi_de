@@ -66,3 +66,9 @@ de:
       invoice_button_dropdown: Verbandsabrechnungen
       invoice_button_demo_lv_members: Mitglieder, Rechnung an Landesverband (Demo)
       invoice_button_demo_stamm_members: Mitglieder, Rechnung an Stamm (Demo)
+
+  fee_kinds:
+    global:
+      link:
+        delete: Archivieren
+      confirm_delete: Wollen Sie diese Beitragsart wirklich archivieren?
