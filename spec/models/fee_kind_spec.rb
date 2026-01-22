@@ -117,10 +117,10 @@ describe FeeKind do
     new_fee_kind = FeeKind.build(name: "New Fee Kind", parent: fee_kinds(:top_fee_kind),
       layer: group)
     expect(new_fee_kind).not_to be_valid
-    expect(new_fee_kind.errors.full_messages.first).to eq "Erbt von wurde bereits durch eine " \
-                                                          "Beitragsart (Bottom Fee Kind) " \
-                                                          "überschrieben welche sich in einer " \
-                                                          "höheren Ebene befindet."
+    expect(new_fee_kind.errors.full_messages.first).to eq(<<~MSG.squish)
+      Erbt von wurde bereits durch eine Beitragsart (#{fee_kinds(:baden_wuerttemberg_kind)})
+      überschrieben welche sich in einer höheren Ebene befindet.
+    MSG
     fee_kinds(:baden_wuerttemberg_kind).destroy!
     expect(new_fee_kind).to be_valid
   end
@@ -130,5 +130,31 @@ describe FeeKind do
     new_fee_kind = FeeKind.build(name: "New Fee Kind", parent: fee_kinds(:top_fee_kind),
       layer: groups(:baden_wuerttemberg))
     expect(new_fee_kind).to be_valid
+  end
+
+  context "#possible_fee_kind_parents" do
+    let(:group) { groups(:baden_wuerttemberg) }
+
+    subject(:fee_kind) { FeeKind.build(name: "TheLänd-Beitrag", layer: group.layer_group) }
+
+    it "returns fee kinds from all parent layers" do
+      expect(fee_kind.possible_fee_kind_parents).to match_array [
+        fee_kinds(:top_fee_kind)
+      ]
+    end
+
+    it "does not include those already used in higher layers" do
+      fee_kind.parent = fee_kinds(:top_fee_kind)
+      fee_kind.save!
+
+      stamm = Fabricate(Group::Stamm.sti_name, parent: groups(:baden_wuerttemberg))
+      stamm_fee_kind = FeeKind.build(name: "NichtHochdeutschBeitrag", layer: stamm.layer_group)
+
+      expect(stamm_fee_kind.possible_fee_kind_parents).to_not include(fee_kinds(:top_fee_kind))
+      expect(stamm_fee_kind.possible_fee_kind_parents).to match_array [
+        fee_kinds(:baden_wuerttemberg_kind),
+        fee_kind
+      ]
+    end
   end
 end

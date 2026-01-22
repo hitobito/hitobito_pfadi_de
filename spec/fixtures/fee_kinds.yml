@@ -10,6 +10,6 @@ top_fee_kind:
   role_type: Group::Sippe::Pfadfinder
 
 baden_wuerttemberg_kind:
-  name: Bottom Fee Kind
+  name: BaWü Kind
   layer: baden_wuerttemberg
   parent: top_fee_kind
