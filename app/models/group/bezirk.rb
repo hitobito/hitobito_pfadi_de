@@ -7,6 +7,7 @@
 
 class Group::Bezirk < ::Group
   self.layer = true
+  self.event_types = [Event, Event::Course]
 
   children Group::Stamm,
     Group::Bezirksgeschaeftsstelle,

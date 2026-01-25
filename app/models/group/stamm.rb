@@ -7,6 +7,7 @@
 
 class Group::Stamm < ::Group
   self.layer = true
+  self.event_types = [Event, Event::Course]
 
   children Group::Mitglieder,
     Group::StammArbeitsbereiche,

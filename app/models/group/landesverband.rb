@@ -7,6 +7,7 @@
 
 class Group::Landesverband < ::Group
   self.layer = true
+  self.event_types = [Event, Event::Course]
 
   children Group::Bezirk,
     Group::Stamm,
