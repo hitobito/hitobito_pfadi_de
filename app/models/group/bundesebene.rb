@@ -26,6 +26,8 @@ class Group::Bundesebene < ::Group
   self.default_children = [
     Group::Bundesvorstand,
     Group::Ombudsrat,
+    Group::BundArbeitsbereiche,
+    Group::Projekte,
     Group::Mitglieder
   ]
 

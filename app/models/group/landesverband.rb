@@ -23,6 +23,7 @@ class Group::Landesverband < ::Group
 
   self.default_children = [
     Group::Landesvorstand,
+    Group::LandArbeitsbereiche,
     Group::Mitglieder
   ]
 
