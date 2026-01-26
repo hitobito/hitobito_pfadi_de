@@ -6,8 +6,6 @@
 #  https://github.com/hitobito/hitobito_bdp.
 
 class Group::StammArbeitsbereiche < ::Group
-  self.layer = true
-
   children Group::StammWoelflingsstufe,
     Group::StammPfadfinderstufe,
     Group::StammRangerRoverstufe,
