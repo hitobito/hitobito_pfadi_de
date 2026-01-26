@@ -71,4 +71,4 @@ de:
     global:
       link:
         delete: Archivieren
-      confirm_delete: Wollen Sie diese Beitragsart wirklich archivieren?
+      confirm_delete: Wollen Sie diese Beitragsart wirklich archivieren? Sie kann danach nicht mehr neu auf Rollen zugewiesen werden.

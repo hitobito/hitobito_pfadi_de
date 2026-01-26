@@ -21,7 +21,7 @@ class FeeKind < ActiveRecord::Base
   alias_method :group, :layer
 
   scope :not_archived, -> {
-    where(archived_at: nil).or(FeeKind.where("archived_at > ?", Time.zone.now))
+    where(archived_at: nil).or(where("archived_at > ?", Time.zone.now))
   }
 
   def archive
