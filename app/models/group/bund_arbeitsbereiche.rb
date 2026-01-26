@@ -6,8 +6,6 @@
 #  https://github.com/hitobito/hitobito_bdp.
 
 class Group::BundArbeitsbereiche < ::Group
-  self.layer = true
-
   children Group::BundWoelflingsstufe,
     Group::BundPfadfinderstufe,
     Group::BundRangerRoverstufe,

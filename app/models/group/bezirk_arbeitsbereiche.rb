@@ -6,8 +6,6 @@
 #  https://github.com/hitobito/hitobito_bdp.
 
 class Group::BezirkArbeitsbereiche < ::Group
-  self.layer = true
-
   children Group::BezirkWoelflingsstufe,
     Group::BezirkPfadfinderstufe,
     Group::BezirkRangerRoverstufe,

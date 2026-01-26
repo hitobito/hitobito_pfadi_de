@@ -6,8 +6,6 @@
 #  https://github.com/hitobito/hitobito_bdp.
 
 class Group::LandArbeitsbereiche < ::Group
-  self.layer = true
-
   children Group::LandWoelflingsstufe,
     Group::LandPfadfinderstufe,
     Group::LandRangerRoverstufe,

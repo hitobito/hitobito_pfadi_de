@@ -4,7 +4,6 @@
 #  https://github.com/hitobito/hitobito_bdp.
 
 class Group::Gruppen < ::Group
-  self.layer = true
   self.static_name = true
 
   children Group::Meute,
