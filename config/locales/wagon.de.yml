@@ -23,7 +23,8 @@ de:
         human_role_name: Mitgliedsart
         created_at: Erstellt
         updated_at: Geändert
-
+        archived_at: Archiviert
+        archived: archiviert
       person:
         address: Anschrift
         bank_account_owner: Kontoinhaber
@@ -66,7 +67,6 @@ de:
       invoice_button_dropdown: Verbandsabrechnungen
       invoice_button_demo_lv_members: Mitglieder, Rechnung an Landesverband (Demo)
       invoice_button_demo_stamm_members: Mitglieder, Rechnung an Stamm (Demo)
-
   fee_kinds:
     global:
       link:
