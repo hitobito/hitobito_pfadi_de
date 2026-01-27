@@ -18,6 +18,6 @@ class FeeKindsController < CrudController
   private
 
   def list_entries
-    super.not_archived.includes([:parent]).includes(:parent)
+    super.includes([:parent]).includes(:parent)
   end
 end

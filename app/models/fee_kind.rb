@@ -48,7 +48,14 @@ class FeeKind < ActiveRecord::Base
   end
 
   def to_s(format = :default)
-    (format == :with_role_type) ? "#{name} (#{human_role_name})" : name
+    archived_suffix = "(#{I18n.t(:"activerecord.attributes.fee_kind.archived")})" if archived_at?
+    roles_suffix = "(#{human_role_name})" if format == :with_role_type
+
+    [
+      name,
+      roles_suffix,
+      archived_suffix
+    ].compact.join(" ")
   end
 
   def human_role_name
