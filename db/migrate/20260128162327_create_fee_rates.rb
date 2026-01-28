@@ -8,7 +8,7 @@
 class CreateFeeRates < ActiveRecord::Migration[8.0]
   def change
     create_table :fee_rates do |t|
-      t.references :fee_kind, foreign_key: false
+      t.references :fee_kind, foreign_key: false, null: false
       t.string :name
       t.decimal :amount, precision: 15, scale: 2, default: "0.0", null: false
       t.date :valid_from, null: false

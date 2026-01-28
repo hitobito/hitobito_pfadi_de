@@ -15,10 +15,20 @@ describe FeeRate, type: :model do
       is_expected.to be_valid
     end
 
-    it "valid_from needs to be filled" do
+    it "valid_from to be filled" do
       subject.valid_from = nil
 
       expect(subject).to_not be_valid
     end
+
+    it "fee_kind_id to be present" do
+      subject.fee_kind_id = nil
+
+      expect(subject).to_not be_valid
+    end
+  end
+
+  it "belongs to a FeeKind" do
+    expect(subject.fee_kind).to be_a FeeKind
   end
 end

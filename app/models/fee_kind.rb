@@ -6,6 +6,7 @@
 class FeeKind < ActiveRecord::Base
   belongs_to :layer, class_name: "Group"
   belongs_to :parent, class_name: "FeeKind", optional: true
+  has_many :fee_rates, dependent: :destroy
 
   attr_readonly :parent_id, :role_type
 

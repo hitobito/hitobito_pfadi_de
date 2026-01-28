@@ -173,4 +173,14 @@ describe FeeKind do
       expect(fee_kind.possible_fee_kind_parents).to include(parent_fee_kind)
     end
   end
+
+  context "can have many FeeRates," do
+    it "but does not need to" do
+      expect(fee_kinds(:top_fee_kind)).to have(0).fee_rates
+    end
+
+    it "which belong to it" do
+      expect(fee_kinds(:baden_wuerttemberg_kind)).to have(3).fee_rates
+    end
+  end
 end
