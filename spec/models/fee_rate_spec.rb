@@ -14,5 +14,11 @@ describe FeeRate, type: :model do
     it "valid fixtures" do
       is_expected.to be_valid
     end
+
+    it "valid_from needs to be filled" do
+      subject.valid_from = nil
+
+      expect(subject).to_not be_valid
+    end
   end
 end

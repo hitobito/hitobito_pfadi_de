@@ -6,5 +6,7 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 class FeeRate < ApplicationRecord
+  validates_by_schema
+
   belongs_to :fee_kind
 end
