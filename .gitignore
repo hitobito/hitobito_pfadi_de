@@ -13,8 +13,9 @@ zeus.json
 .idea
 .rakeTasks
 
-# ignore Gemfile.lock for wagons
+# ignore Gemfile.lock and local tooling for wagons
 Gemfile.lock
+bin/wagon
 
 # reports
 spec/coverage
@@ -27,5 +28,6 @@ coverage
 .pry_history
 .envrc
 
+# auto-generated
 db/schema.rb
 db/schema.rb.diff
