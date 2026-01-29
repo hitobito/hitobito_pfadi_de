@@ -26,10 +26,10 @@ de:
         archived_at: Archiviert
         archived: archiviert
       fee_rate:
-        fee_kind_id: Gehört zu
-        name: Name
+        fee_kind_id: Beitragsart
+        name: Bezeichnung
         amount: Betrag in EUR
-        valid_from: Gültig ab
+        valid_from: Gültig von
         valid_until: Gültig bis
         max_member_months: max. Mitgliedsdauer in Monaten
         max_age: maximales Alter des Mitglieds
