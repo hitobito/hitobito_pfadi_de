@@ -31,4 +31,8 @@ describe FeeRate, type: :model do
   it "belongs to a FeeKind" do
     expect(subject.fee_kind).to be_a FeeKind
   end
+
+  it "has a readable to_s" do
+    expect(subject.to_s).to eq "Jahresbeitrag"
+  end
 end

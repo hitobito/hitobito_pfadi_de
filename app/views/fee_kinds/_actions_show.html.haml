@@ -4,3 +4,5 @@
 -#  https://github.com/hitobito/hitobito.
 
 = button_action_edit if can?(:edit, entry)
+= action_button(t('activerecord.models.fee_rate.other'),
+    group_fee_kind_fee_rates_path(entry.group, entry))

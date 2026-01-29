@@ -6,7 +6,11 @@
 module Sheet
   class FeeKind < Sheet::Invoice
     def title
-      entry&.to_s || ::FeeKind.model_name.human(count: 2)
+      if entry
+        link_to entry.to_s, @view.group_fee_kind_path(entry.group, entry)
+      else
+        ::FeeKind.model_name.human(count: 2)
+      end
     end
   end
 end

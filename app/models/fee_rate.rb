@@ -9,4 +9,7 @@ class FeeRate < ApplicationRecord
   validates_by_schema
 
   belongs_to :fee_kind
+  has_one :group, through: :fee_kind, source: :layer
+
+  def to_s = name
 end
