@@ -55,6 +55,11 @@ de:
           debit: Lastschrift
           invoice: Rechnung
         pronoun: Pronomen
+      role:
+        class:
+          permission:
+            description:
+              group_and_below_efz: "Zeugnisse nach SGB VIII erfassen in dieser Gruppen und deren Untergruppen."
     errors:
       models:
         fee_kind:
