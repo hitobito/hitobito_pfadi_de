@@ -11,5 +11,7 @@ class FeeRate < ApplicationRecord
   belongs_to :fee_kind
   has_one :group, through: :fee_kind, source: :layer
 
+  scope :list, -> { order("valid_from DESC, valid_until DESC NULLS FIRST") }
+
   def to_s = name
 end

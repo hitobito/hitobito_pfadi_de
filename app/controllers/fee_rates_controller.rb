@@ -21,6 +21,6 @@ class FeeRatesController < CrudController
   private
 
   def list_entries
-    super.includes(fee_kind: [:layer])
+    super.includes(fee_kind: [:layer]).list
   end
 end

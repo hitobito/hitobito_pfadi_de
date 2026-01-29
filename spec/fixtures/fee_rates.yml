@@ -7,11 +7,19 @@ jahresbeitragssatz:
   fee_kind: baden_wuerttemberg_kind
   name: Jahresbeitrag
   amount: 90.0
-  valid_from: 2025-01-01
+  valid_from: 2024-01-01
+
+alter_halbjahresbeitragssatz:
+  fee_kind: baden_wuerttemberg_kind
+  name: Halbjahresbeitrag (alt)
+  amount: 30.0
+  valid_from: 2024-01-01
+  valid_until: 2024-12-31
+  max_member_months: 6
 
 halbjahresbeitragssatz:
   fee_kind: baden_wuerttemberg_kind
-  name: Halbjahresbeitrag
+  name: Halbjahresbeitrag (neu)
   amount: 45.0
   valid_from: 2025-01-01
   max_member_months: 6
@@ -21,5 +29,6 @@ kleinkinderbeitragssatz:
   name: Kleinkinderbeitrag
   amount: 20
   valid_from: 2025-01-01
+  valid_until: <%= DateTime.current.end_of_year.to_date.iso8601 %>
   max_age: 8
 

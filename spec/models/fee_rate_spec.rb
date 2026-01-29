@@ -35,4 +35,13 @@ describe FeeRate, type: :model do
   it "has a readable to_s" do
     expect(subject.to_s).to eq "Jahresbeitrag"
   end
+
+  it "can be sorted by descending valid_from and valid_until" do
+    expect(described_class.list.map(&:name)).to eql [
+      fee_rates(:halbjahresbeitragssatz),
+      fee_rates(:kleinkinderbeitragssatz),
+      fee_rates(:jahresbeitragssatz),
+      fee_rates(:alter_halbjahresbeitragssatz)
+    ].map(&:name)
+  end
 end
