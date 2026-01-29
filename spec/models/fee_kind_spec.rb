@@ -180,7 +180,7 @@ describe FeeKind do
     end
 
     it "which belong to it" do
-      expect(fee_kinds(:baden_wuerttemberg_kind)).to have(3).fee_rates
+      expect(fee_kinds(:baden_wuerttemberg_kind)).to have(4).fee_rates
     end
   end
 end
