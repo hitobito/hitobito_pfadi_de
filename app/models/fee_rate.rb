@@ -9,7 +9,7 @@ class FeeRate < ApplicationRecord
   validates_by_schema
 
   belongs_to :fee_kind
-  has_one :group, through: :fee_kind, source: :layer
+  has_one :layer, through: :fee_kind
 
   scope :list, -> { order("valid_from DESC, valid_until DESC NULLS FIRST") }
 
