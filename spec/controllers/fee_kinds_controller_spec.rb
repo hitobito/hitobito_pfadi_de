@@ -29,7 +29,8 @@ describe FeeKindsController do
         fee_kind: {
           name: "Test Foo",
           layer_id: groups(:root),
-          role_type: "Cool::Role::Type"
+          role_type: "Cool::Role::Type",
+          restricted: true
         }
       }
     end.to change { FeeKind.count }.by 1

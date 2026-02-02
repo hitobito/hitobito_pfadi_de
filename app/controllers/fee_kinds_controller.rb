@@ -6,7 +6,7 @@
 class FeeKindsController < CrudController
   self.nesting = Group
 
-  self.permitted_attrs = [:name, :layer_id, :parent_id, :role_type]
+  self.permitted_attrs = [:name, :layer_id, :parent_id, :role_type, :restricted]
 
   def destroy
     destroyed = run_callbacks(:destroy) { entry.archive } # this is archive instead of destroy

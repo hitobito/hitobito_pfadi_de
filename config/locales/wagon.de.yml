@@ -19,6 +19,8 @@ de:
       fee_kind:
         parent_id: Erbt von
         name: Name
+        restricted: Rechtebeschränkt
+        restricted?: Rechtebeschränkt
         role_type: Mitgliedsart
         human_role_name: Mitgliedsart
         created_at: Erstellt
@@ -72,3 +74,5 @@ de:
       link:
         delete: Archivieren
       confirm_delete: Wollen Sie diese Beitragsart wirklich archivieren? Sie kann danach nicht mehr neu auf Rollen zugewiesen werden.
+    form:
+      caption_resricted: Beitragsart darf nur durch speziell berechtigte Personen vergeben werden
