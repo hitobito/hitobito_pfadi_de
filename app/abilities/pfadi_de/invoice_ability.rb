@@ -11,5 +11,10 @@ module PfadiDe::InvoiceAbility
       permission(:finance).may(:show, :index).in_layer
       permission(:finance).may(:new, :create, :edit, :update, :destroy).in_layer_if_active
     end
+
+    on(FeeRate) do
+      permission(:finance).may(:show, :index).in_layer
+      permission(:finance).may(:new, :create, :edit, :update, :destroy).in_layer_if_active
+    end
   end
 end

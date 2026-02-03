@@ -10,7 +10,9 @@ Rails.application.routes.draw do
 
   language_scope do
     resources :groups do
-      resources :fee_kinds
+      resources :fee_kinds do
+        resources :fee_rates
+      end
     end
   end
 end

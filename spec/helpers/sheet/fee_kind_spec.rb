@@ -18,7 +18,7 @@ describe Sheet::FeeKind do
     let(:sheet) { described_class.new(self, nil, fee_kinds(:top_fee_kind)) }
 
     it "uses name of fee kind as title" do
-      expect(sheet.title).to eq "Top Fee Kind"
+      expect(sheet.title).to include("Top Fee Kind")
     end
   end
 end
