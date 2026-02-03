@@ -4,10 +4,6 @@
 -#  https://github.com/hitobito/hitobito.
 
 = crud_table do |table|
-  - table.col(t('activerecord.attributes.fee_rate.fee_kind_id')) do |rate|
-    - kind = rate.fee_kind
-    = link_to kind, group_fee_kind_path(kind.layer, kind)
-
   - table.col(t('activerecord.attributes.fee_rate.name')) do |rate|
     = link_to rate, group_fee_kind_fee_rate_path(rate.layer, rate.fee_kind, rate)
 

@@ -19,6 +19,7 @@ class FeeKind < ActiveRecord::Base
   validates :parent, presence: true, unless: -> { top_layer? }
   validate :validate_unique_fee_parent_in_hierarchy, on: :create
 
+  # Used for ability, we don't want to override the methods that check group permissions
   alias_method :group, :layer
 
   scope :not_archived, -> {
