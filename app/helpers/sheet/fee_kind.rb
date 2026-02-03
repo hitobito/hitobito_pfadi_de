@@ -5,6 +5,14 @@
 
 module Sheet
   class FeeKind < Sheet::Invoice
+    tab "fee_kinds.tabs.info",
+      :group_fee_kind_path,
+      if: ->(_, _, entry) { entry.present? }
+
+    tab "fee_kinds.tabs.fee_rates",
+      :group_fee_kind_fee_rates_path,
+      if: ->(_, _, entry) { entry.present? }
+
     def title
       entry&.to_s || ::FeeKind.model_name.human(count: 2)
     end

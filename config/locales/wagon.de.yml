@@ -27,6 +27,16 @@ de:
         updated_at: Geändert
         archived_at: Archiviert
         archived: archiviert
+      fee_rate:
+        fee_kind_id: Beitragsart
+        name: Bezeichnung
+        amount: Betrag in EUR
+        valid_from: Gültig von
+        valid_until: Gültig bis
+        max_member_months: max. Mitgliedsdauer in Monaten
+        max_age: maximales Alter des Mitglieds
+        created_at: Erstellt
+        updated_at: Geändert
       person:
         address: Anschrift
         bank_account_owner: Kontoinhaber
@@ -55,6 +65,9 @@ de:
       fee_kind:
         one: Beitragsart
         other: Beitragsarten
+      fee_rate:
+        one: Beitragssatz
+        other: Beitragssätze
   fixed_fees:
     demo_lv_members:
       aktiv: Aktivmitglieder
@@ -70,6 +83,9 @@ de:
       invoice_button_demo_lv_members: Mitglieder, Rechnung an Landesverband (Demo)
       invoice_button_demo_stamm_members: Mitglieder, Rechnung an Stamm (Demo)
   fee_kinds:
+    tabs:
+      info: Info
+      fee_rates: Beitragssätze
     global:
       link:
         delete: Archivieren
