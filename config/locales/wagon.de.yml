@@ -81,6 +81,9 @@ de:
       invoice_button_demo_lv_members: Mitglieder, Rechnung an Landesverband (Demo)
       invoice_button_demo_stamm_members: Mitglieder, Rechnung an Stamm (Demo)
   fee_kinds:
+    tabs:
+      info: Info
+      fee_rates: Beitragssätze
     global:
       link:
         delete: Archivieren

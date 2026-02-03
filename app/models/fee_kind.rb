@@ -19,8 +19,6 @@ class FeeKind < ActiveRecord::Base
   validates :parent, presence: true, unless: -> { top_layer? }
   validate :validate_unique_fee_parent_in_hierarchy, on: :create
 
-  alias_method :group, :layer
-
   scope :not_archived, -> {
     where(archived_at: nil).or(where("archived_at > ?", Time.zone.now))
   }

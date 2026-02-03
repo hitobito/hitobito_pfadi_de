@@ -7,7 +7,9 @@
 
 module Sheet
   class FeeRate < Sheet::Invoice
-    def parent_sheet = create_parent(Sheet::FeeKind)
+    define_method(:parent_sheet, Sheet::Base.instance_method(:parent_sheet))
+
+    self.parent_sheet = Sheet::FeeKind
 
     def title
       entry&.to_s || ::FeeRate.model_name.human(count: 2)
