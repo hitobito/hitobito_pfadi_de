@@ -6,5 +6,5 @@
 - unless entry.top_layer?
     = render_attrs entry, :parent_id
 
-= render_attrs entry, :name, :human_role_name
+= render_attrs entry, :name, :human_role_name, :restricted?
 = render_present_attrs entry, :archived_at, :created_at, :updated_at

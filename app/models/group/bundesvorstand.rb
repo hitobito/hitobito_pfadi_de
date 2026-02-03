@@ -11,25 +11,27 @@ class Group::Bundesvorstand < ::Group
   ### ROLES
 
   class Bundesvorsitz < ::Role
-    self.permissions = [:layer_and_below_full, :contact_data]
+    self.permissions = [:layer_and_below_full, :contact_data, :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
 
   class BundesvorsitzStv < ::Role
-    self.permissions = [:layer_and_below_full, :contact_data]
+    self.permissions = [:layer_and_below_full, :contact_data, :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
 
   class Bundesschatzmeister < ::Role
-    self.permissions = [:layer_and_below_full, :contact_data, :finance]
+    self.permissions = [:layer_and_below_full, :contact_data, :finance,
+      :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
 
   class BundesschatzmeisterStv < ::Role
-    self.permissions = [:layer_and_below_full, :contact_data, :finance]
+    self.permissions = [:layer_and_below_full, :contact_data, :finance,
+      :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end

@@ -58,10 +58,21 @@ describe FeeKind do
       expect(fee_kind).not_to be_valid
     end
 
+    it "validates presence of restricted" do
+      fee_kind.restricted = nil
+      expect(fee_kind).not_to be_valid
+    end
+
     it "cannot change role_type after create" do
       fee_kind.update!(role_type: "new_role_type")
       fee_kind.reload
       expect(fee_kind.role_type).to eq "Group::Sippe::Pfadfinder"
+    end
+
+    it "#restricted? returns restricted value" do
+      expect(fee_kind.restricted?).to be_falsy
+      fee_kind.restricted = true
+      expect(fee_kind.restricted?).to be_truthy
     end
   end
 
@@ -78,12 +89,23 @@ describe FeeKind do
       expect(fee_kind).not_to be_valid
     end
 
+    it "validates absence of restricted" do
+      fee_kind.restricted = false
+      expect(fee_kind).not_to be_valid
+    end
+
     it "cannot change parent_id after create" do
       fee_kind.update!(parent: FeeKind.build(name: "New Fee Kind",
         parent: fee_kinds(:top_fee_kind),
         layer: groups(:root)))
       fee_kind.reload
       expect(fee_kind.parent).to eq fee_kinds(:top_fee_kind)
+    end
+
+    it "#restricted? returns restricted value of highest parent" do
+      expect(fee_kind.restricted?).to be_falsy
+      fee_kind.parent.update!(restricted: true)
+      expect(fee_kind.restricted?).to be_truthy
     end
   end
 

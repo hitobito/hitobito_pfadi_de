@@ -9,7 +9,8 @@ class Group::Bundesgeschaeftsstelle < ::Group
   ### ROLES
 
   class Bundesgeschaeftsfuehrung < ::Role
-    self.permissions = [:layer_and_below_full, :admin, :contact_data, :finance]
+    self.permissions = [:layer_and_below_full, :admin, :contact_data, :finance,
+      :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
@@ -21,19 +22,19 @@ class Group::Bundesgeschaeftsstelle < ::Group
   end
 
   class HauptamtlichSachbearbeitung < ::Role
-    self.permissions = [:layer_and_below_full, :contact_data]
+    self.permissions = [:layer_and_below_full, :contact_data, :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
 
   class HauptamtlichReferent < ::Role
-    self.permissions = [:layer_and_below_read, :contact_data]
+    self.permissions = [:layer_and_below_read, :contact_data, :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
 
   class Hauptamtlich < ::Role
-    self.permissions = [:contact_data]
+    self.permissions = [:contact_data, :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end

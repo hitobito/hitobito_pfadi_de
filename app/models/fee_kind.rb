@@ -18,6 +18,7 @@ class FeeKind < ActiveRecord::Base
   validates :parent, absence: true, if: -> { top_layer? }
   validates :parent, presence: true, unless: -> { top_layer? }
   validate :validate_unique_fee_parent_in_hierarchy, on: :create
+  validate :validate_restricted
 
   # Used for ability, we don't want to override the methods that check group permissions
   alias_method :group, :layer
@@ -76,6 +77,12 @@ class FeeKind < ActiveRecord::Base
       .not_archived
   end
 
+  def restricted?
+    return restricted if top_layer?
+
+    self.class.root_fee_kind_of(self)&.restricted
+  end
+
   private
 
   def validate_unique_fee_parent_in_hierarchy
@@ -91,4 +98,12 @@ class FeeKind < ActiveRecord::Base
   end
 
   def used_fee_kind_parents = layer.ancestors.joins(:fee_kinds)
+
+  def validate_restricted
+    if top_layer?
+      errors.add(:restricted, :blank) if restricted.nil?
+    else
+      errors.add(:restricted, :present) unless restricted.nil?
+    end
+  end
 end
