@@ -12,10 +12,12 @@ class Group::Mitglieder < ::Group
 
   class OrdentlicheMitgliedschaft < ::Role
     self.permissions = []
+    self.has_fee_kind = true
   end
 
   class Foerdermitgliedschaft < ::Role
     self.permissions = []
+    self.has_fee_kind = true
   end
 
   class Zweitmitgliedschaft < ::Role
