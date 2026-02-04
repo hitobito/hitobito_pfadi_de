@@ -7,7 +7,7 @@
 root:
   parent:
   lft: 1
-  rgt: 8
+  rgt: 10
   name: Hauptgruppe
   type: Group::Bundesebene
   email: root@example.net
@@ -18,7 +18,7 @@ root:
 baden_wuerttemberg:
   parent: root
   lft: 2
-  rgt: 7
+  rgt: 9
   name: Baden-Württemberg
   type: Group::Landesverband
   layer_group_id: <%= ActiveRecord::FixtureSet.identify(:baden_wuerttemberg) %>
@@ -26,15 +26,23 @@ baden_wuerttemberg:
 adler:
   parent: root
   lft: 3
-  rgt: 6
+  rgt: 8
   name: Adler
   type: Group::Stamm
   layer_group_id: <%= ActiveRecord::FixtureSet.identify(:adler) %>
 
-pfadfinder:
-  parent: root
+adler_mitglieder:
+  parent: adler
   lft: 4
   rgt: 5
+  name: Mitglieder
+  type: Group::Mitglieder
+  layer_group_id: <%= ActiveRecord::FixtureSet.identify(:adler) %>
+
+pfadfinder:
+  parent: root
+  lft: 6
+  rgt: 7
   name: "Pfadfinder*innen"
   type: Group::Sippe
   layer_group_id: <%= ActiveRecord::FixtureSet.identify(:pfadfinder) %>

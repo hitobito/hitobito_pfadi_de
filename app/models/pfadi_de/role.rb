@@ -12,5 +12,23 @@ module PfadiDe::Role
     # A valid and up-to-date Führungszeugnis is required for this role
     class_attribute :sgbviii_required
     self.sgbviii_required = false
+
+    # this is a role that costs, so it needs a FeeKind to determine the cost/Fee
+    class_attribute :has_fee_kind
+    self.has_fee_kind = false
+
+    belongs_to :fee_kind
+
+    validate :validate_fee_kind
+  end
+
+  private
+
+  def validate_fee_kind
+    if self.class.has_fee_kind
+      errors.add(:fee_kind, :blank) if fee_kind_id.nil?
+    else
+      errors.add(:fee_kind, :present) if fee_kind.present? # rubocop:disable Style/IfInsideElse match the condition above more closely
+    end
   end
 end

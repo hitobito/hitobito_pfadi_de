@@ -27,3 +27,10 @@ member:
   group: pfadfinder
   type: Group::Sippe::Pfadfinder
   start_on: '2025-06-03'
+
+paying_member:
+  person: member
+  group: pfadfinder
+  type: Group::Mitglieder::OrdentlicheMitgliedschaft
+  start_on: '2026-01-01'
+  fee_kind: baden_wuerttemberg_kind
