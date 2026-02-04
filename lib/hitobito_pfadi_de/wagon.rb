@@ -21,7 +21,7 @@ module HitobitoPfadiDe
 
     config.to_prepare do
       # :group_and_below_efz may manage the SGB VIII EFZ qualifications of people
-      Role::Permissions << :group_and_below_efz
+      Role::Permissions << :group_and_below_efz << :assign_restricted_fee_kinds
 
       # extend application classes here
       Role.include PfadiDe::Role
