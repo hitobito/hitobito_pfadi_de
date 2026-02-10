@@ -6,7 +6,7 @@
 top_fee_kind:
   name: Top Fee Kind
   layer: root
-  role_type: Group::Sippe::Pfadfinder
+  role_type: Group::Mitglieder::OrdentlicheMitgliedschaft
   restricted: false
 
 baden_wuerttemberg_kind:

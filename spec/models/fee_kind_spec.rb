@@ -66,7 +66,7 @@ describe FeeKind do
     it "cannot change role_type after create" do
       fee_kind.update!(role_type: "new_role_type")
       fee_kind.reload
-      expect(fee_kind.role_type).to eq "Group::Sippe::Pfadfinder"
+      expect(fee_kind.role_type).to eq "Group::Mitglieder::OrdentlicheMitgliedschaft"
     end
 
     it "#restricted? returns restricted value" do
@@ -95,10 +95,9 @@ describe FeeKind do
     end
 
     it "cannot change parent_id after create" do
-      fee_kind.update!(parent: FeeKind.build(name: "New Fee Kind",
-        parent: fee_kinds(:top_fee_kind),
-        layer: groups(:root)))
+      fee_kind.update!(parent: Fabricate(:fee_kind))
       fee_kind.reload
+
       expect(fee_kind.parent).to eq fee_kinds(:top_fee_kind)
     end
 
@@ -110,15 +109,14 @@ describe FeeKind do
   end
 
   context "root_fee_kind_of" do
+    let(:group_bawue) { groups(:baden_wuerttemberg) }
     let(:root) { fee_kinds(:top_fee_kind) }
-    let(:level_1) {
-      FeeKind.create!(name: "Level 1", parent: root, layer: groups(:baden_wuerttemberg))
-    }
-    let(:group_level_2) { Fabricate(Group::Stamm.sti_name, parent: groups(:baden_wuerttemberg)) }
-    let(:level_2) { FeeKind.create!(name: "Level 2", parent: level_1, layer: group_level_2) }
+    let(:level_1) { Fabricate(:fee_kind, parent: root, layer: group_bawue) }
+    let(:group_level_2) { Fabricate(Group::Stamm.sti_name, parent: group_bawue) }
+    let(:level_2) { Fabricate(:fee_kind, parent: level_1, layer: group_level_2) }
 
     it "returns nil if fee_kind has no parent" do
-      expect(FeeKind.root_fee_kind_of(root)).to be_nil
+      expect(FeeKind.root_fee_kind_of(root)).to be root
     end
 
     it "returns the parent if only two levels exist" do
@@ -136,8 +134,8 @@ describe FeeKind do
 
   it "validates that no parent match on create" do
     group = Fabricate(Group::Stamm.sti_name, parent: groups(:baden_wuerttemberg))
-    new_fee_kind = FeeKind.build(name: "New Fee Kind", parent: fee_kinds(:top_fee_kind),
-      layer: group)
+    new_fee_kind = Fabricate.build(:fee_kind, parent: fee_kinds(:top_fee_kind), layer: group)
+
     expect(new_fee_kind).not_to be_valid
     expect(new_fee_kind.errors.full_messages.first).to eq(<<~MSG.squish)
       Erbt von wurde bereits durch eine Beitragsart (#{fee_kinds(:baden_wuerttemberg_kind)})
@@ -149,7 +147,8 @@ describe FeeKind do
 
   it "allows creation of multiple fee kinds per layer with same parent" do
     expect(groups(:baden_wuerttemberg).fee_kinds.count).to eq 1
-    new_fee_kind = FeeKind.build(name: "New Fee Kind", parent: fee_kinds(:top_fee_kind),
+    new_fee_kind = Fabricate.build(:fee_kind,
+      parent: fee_kinds(:top_fee_kind),
       layer: groups(:baden_wuerttemberg))
     expect(new_fee_kind).to be_valid
   end
