@@ -33,7 +33,7 @@ class FeeKind < ActiveRecord::Base
   end
 
   def self.root_fee_kind_of(fee_kind)
-    return nil if fee_kind.parent_id.nil?
+    return fee_kind if fee_kind.parent_id.nil?
 
     query = <<-SQL
       WITH RECURSIVE root_fee_kind AS (
