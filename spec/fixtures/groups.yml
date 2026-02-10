@@ -12,7 +12,7 @@ root:
   type: Group::Bundesebene
   email: root@example.net
   zip_code: 2843
-  town: Neu Carlscheid
+  town: Neu Carlohausen
   layer_group_id: <%= ActiveRecord::FixtureSet.identify(:root) %>
 
 baden_wuerttemberg:
@@ -24,7 +24,7 @@ baden_wuerttemberg:
   layer_group_id: <%= ActiveRecord::FixtureSet.identify(:baden_wuerttemberg) %>
 
 adler:
-  parent: root
+  parent: baden_wuerttemberg
   lft: 3
   rgt: 8
   name: Adler
@@ -40,7 +40,7 @@ adler_mitglieder:
   layer_group_id: <%= ActiveRecord::FixtureSet.identify(:adler) %>
 
 pfadfinder:
-  parent: root
+  parent: adler
   lft: 6
   rgt: 7
   name: "Pfadfinder*innen"

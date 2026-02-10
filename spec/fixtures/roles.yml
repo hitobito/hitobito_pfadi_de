@@ -30,7 +30,7 @@ member:
 
 paying_member:
   person: member
-  group: pfadfinder
+  group: adler_mitglieder
   type: Group::Mitglieder::OrdentlicheMitgliedschaft
   start_on: '2026-01-01'
   fee_kind: baden_wuerttemberg_kind
