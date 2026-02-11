@@ -20,15 +20,29 @@ module PfadiDe::Role
     belongs_to :fee_kind
 
     validate :validate_fee_kind
+
+    before_validation :ensure_fee_kind, on: :create
   end
 
   private
 
   def validate_fee_kind
     if self.class.has_fee_kind
-      errors.add(:fee_kind, :blank) if fee_kind_id.nil?
-    else
-      errors.add(:fee_kind, :present) if fee_kind.present? # rubocop:disable Style/IfInsideElse match the condition above more closely
+      if fee_kind_id.nil?
+        errors.add(:fee_kind, :blank)
+      else
+        possibles = FeeKindChooser.new(self).possible
+        errors.add(:fee_kind, :inclusion, in: possibles) unless possibles.include?(fee_kind)
+      end
+
+    elsif fee_kind.present?
+      errors.add(:fee_kind, :present)
+    end
+  end
+
+  def ensure_fee_kind
+    if self.class.has_fee_kind
+      self.fee_kind = FeeKindChooser.new(self).default
     end
   end
 end
