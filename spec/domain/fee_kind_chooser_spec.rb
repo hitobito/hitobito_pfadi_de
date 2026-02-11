@@ -101,12 +101,62 @@ describe FeeKindChooser, type: :domain do
   end
 
   context "if asked by a person with fewer rights" do
-    let(:role) { roles(:paying_member_role).update_attribute!(fee_kind_id: nil) }
+    let(:role_type) { "Group::Mitglieder::Foerdermitgliedschaft" }
+    let!(:restricted_kind) do
+      Fabricate(:fee_kind, restricted: true, role_type: role_type)
+    end
+    let!(:non_restricted_kind) do
+      Fabricate(:fee_kind, restricted: false, role_type: role_type)
+    end
+
+    let(:role) do
+      Fabricate.build(
+        role_type.to_sym,
+        group: groups(:adler_mitglieder),
+        fee_kind_id: nil
+      )
+    end
+
     let(:allow_restricted) { false }
 
-    it "can return a (non-restricted) default fee_kind"
-    it "can list possible fee_kinds"
+    it "has assumptions" do
+      # core concern
+      potentials = subject.send(:potential_fee_kinds)
+      expect(potentials).to_not be_empty
+      expect(potentials)
+        .to include(non_restricted_kind)
+        .and include(restricted_kind)
 
-    it "does not list restricted fee_kinds as possible"
+      # rejection hurts, but here we go
+      relevants = potentials.reject do |fk|
+        fk.restricted?
+      end
+
+      expect(relevants).to_not include(restricted_kind)
+      expect(relevants).to include(non_restricted_kind)
+
+      # interaction with other rules
+      possibles = subject.possible
+
+      expect(possibles).to_not include(restricted_kind)
+      expect(possibles).to include(non_restricted_kind)
+
+      expect(possibles.map(&:name)).to eq [
+        non_restricted_kind
+      ].map(&:name)
+    end
+
+    it "can return a (non-restricted) default fee_kind" do
+      expect(subject.default).to eq non_restricted_kind
+    end
+
+    it "can list possible fee_kinds" do
+      expect(subject.possible).to eql [non_restricted_kind]
+    end
+
+    it "does not list restricted fee_kinds as possible" do
+      expect(subject.default).to_not eq restricted_kind
+      expect(subject.possible).to_not include(restricted_kind)
+    end
   end
 end
