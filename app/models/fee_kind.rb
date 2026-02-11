@@ -79,9 +79,7 @@ class FeeKind < ActiveRecord::Base
   end
 
   def restricted?
-    return restricted if top_layer?
-
-    self.class.root_fee_kind_of(self)&.restricted
+    self.class.root_fee_kind_of(self).restricted
   end
 
   private
