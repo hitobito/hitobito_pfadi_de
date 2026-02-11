@@ -14,18 +14,18 @@ class FeeKindChooser
   def default
     return @role.fee_kind if @role.fee_kind_id
 
-    relevant_fee_kinds.first
+    allowed_fee_kinds.first
   end
 
   def possible
-    relevant_fee_kinds
+    allowed_fee_kinds
   end
 
   private
 
   # This returns FeeKinds which have a parent with a non-matching role_type.
   # Therefore, it may include too many kinds. Also, this alone does not
-  # cover all the edge-cases and requirements
+  # cover all the edge-cases and requirements, see allowed_fee_kinds below.
   def potential_fee_kinds
     return FeeKind.none unless @role.class.has_fee_kind
 
@@ -36,7 +36,9 @@ class FeeKindChooser
       .joins(:layer).order("layer.lft DESC")
   end
 
-  def relevant_fee_kinds
+  # Apply domain-rules for further limiting of the result set. The previously
+  # created order should stay intact as we only remove items from the list.
+  def allowed_fee_kinds
     potential_fee_kinds.reject do |fee_kind|
       # remove fee-kinds with non-matching role-types
       next true if FeeKind.root_fee_kind_of(fee_kind).role_type != @role.type
@@ -46,10 +48,9 @@ class FeeKindChooser
 
       # remove non-leaf fee-kinds
       next true if FeeKind.where(parent_id: fee_kind.id).any?
+
+      # reject restricted kinds if the current user does not have the rights
+      fee_kind.restricted? unless @allow_restricted
     end
   end
-
-  # unless @allow_restricted
-  #   candidates.reject!(&:restricted?)
-  # end
 end
