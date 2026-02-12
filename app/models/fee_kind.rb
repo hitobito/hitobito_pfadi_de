@@ -24,7 +24,8 @@ class FeeKind < ActiveRecord::Base
   alias_method :group, :layer
 
   scope :not_archived, -> {
-    where(archived_at: nil).or(where("archived_at > ?", Time.zone.now))
+    t = FeeKind.arel_table
+    where(t[:archived_at].eq(nil)).or(where(t[:archived_at].gt(Time.zone.now)))
   }
 
   def archive
@@ -32,7 +33,7 @@ class FeeKind < ActiveRecord::Base
   end
 
   def self.root_fee_kind_of(fee_kind)
-    return nil if fee_kind.parent_id.nil?
+    return fee_kind if fee_kind.parent_id.nil?
 
     query = <<-SQL
       WITH RECURSIVE root_fee_kind AS (
@@ -78,9 +79,7 @@ class FeeKind < ActiveRecord::Base
   end
 
   def restricted?
-    return restricted if top_layer?
-
-    self.class.root_fee_kind_of(self)&.restricted
+    self.class.root_fee_kind_of(self).restricted
   end
 
   private
