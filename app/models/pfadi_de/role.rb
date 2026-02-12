@@ -13,7 +13,9 @@ module PfadiDe::Role
     class_attribute :sgbviii_required
     self.sgbviii_required = false
 
-    # this is a role that costs, so it needs a FeeKind to determine the cost/Fee
+    # this may be a role that costs, so it needs a FeeKind to determine the cost/Fee
+    # if "has_fee_kind" is true, you also need to mark the attribute `fee_kind_id` as
+    # used, so that it is a permitted attribute.
     class_attribute :has_fee_kind
     self.has_fee_kind = false
 

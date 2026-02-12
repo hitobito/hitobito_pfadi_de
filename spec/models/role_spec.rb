@@ -20,6 +20,11 @@ describe Role, type: :model do
           .to include(fee_kinds(:baden_wuerttemberg_kind))
       end
 
+      it "permit the attribute fee_kind_id" do
+        expect(paying_member_role.class.used_attributes)
+          .to include(:fee_kind_id)
+      end
+
       it "is invalid with missing fee_kind" do
         paying_member_role.fee_kind = nil
         expect(paying_member_role).to_not be_valid
@@ -84,6 +89,11 @@ describe Role, type: :model do
       it "has assumptions" do
         expect(normal_role.class).to_not have_fee_kind
         expect(normal_role.fee_kind).to be_nil
+      end
+
+      it "does not permit the attribute fee_kind_id" do
+        expect(normal_role.class.used_attributes)
+          .to_not include(:fee_kind_id)
       end
 
       it "is valid without a fee_kind" do
