@@ -43,14 +43,14 @@ class FeeKindChooser
       # remove fee-kinds with non-matching role-types
       next true if FeeKind.root_fee_kind_of(fee_kind).role_type != @role.type
 
+      # reject restricted kinds if the current user does not have the rights
+      next fee_kind.restricted? unless @allow_restricted
+
       # do not reject the current layer, even if there may be child-fee_kinds
       next false if fee_kind.layer_id == @role.group.layer_group_id
 
       # remove non-leaf fee-kinds
       next true if FeeKind.where(parent_id: fee_kind.id).any?
-
-      # reject restricted kinds if the current user does not have the rights
-      fee_kind.restricted? unless @allow_restricted
     end
   end
 end

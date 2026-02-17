@@ -158,5 +158,14 @@ describe FeeKindChooser, type: :domain do
       expect(subject.default).to_not eq restricted_kind
       expect(subject.possible).to_not include(restricted_kind)
     end
+
+    it "does not include restricted of current layer" do
+      top_restricted = Fabricate(:fee_kind, restricted: true, role_type: role_type)
+      current_layer_restricted = Fabricate(
+        :fee_kind, parent: top_restricted, layer: role.group.layer_group
+      )
+
+      expect(subject.possible).to_not include(current_layer_restricted)
+    end
   end
 end
