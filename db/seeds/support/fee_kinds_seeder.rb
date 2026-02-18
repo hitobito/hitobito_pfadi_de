@@ -27,7 +27,8 @@ class FeeKindsSeeder
   ]
 
   def seed_fee_kinds
-    Role.all_types.select(&:has_fee_kind).each do |role_type|
+    role_types = Role.all_types.select(&:has_fee_kind)
+    role_types.each do |role_type|
       root_fee_kind = FeeKind.seed_once(
         name: "Bundesbeitrag #{role_type.model_name.human}",
         role_type: role_type.sti_name,
@@ -44,6 +45,10 @@ class FeeKindsSeeder
           FeeKind.seed_once(name: FEE_KIND_NAMES.sample, parent: landesverband_fee_kind, layer: stamm)
         end
       end
+    end
+
+    Role.with_inactive.where(type: role_types, fee_kind_id: nil).find_each do |role|
+      role.update(fee_kind: FeeKindChooser.new(role).default)
     end
 
     FeeKind.find_each do |fee_kind|
