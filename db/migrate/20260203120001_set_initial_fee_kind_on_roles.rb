@@ -7,8 +7,8 @@
 
 class SetInitialFeeKindOnRoles < ActiveRecord::Migration[8.0]
   def up
-    types = Role.all_types.select(&:has_fee_kind)
-    scope = Role.where(type: types, fee_kind_id: nil)
+    types = Role.all_types.select(&:has_fee_kind).map(&:name)
+    scope = Role.with_inactive.where(type: types, fee_kind_id: nil)
 
     say_with_time("Setting the initial FeeKind on Role where needed") do
       say("Handling #{scope.count} Roles", :subitem)
