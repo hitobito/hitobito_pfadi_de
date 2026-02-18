@@ -12,8 +12,13 @@ class FeeKindsSeeder
   ]
 
   def seed_fee_kinds
-    Group.root.role_types.each do |role_type|
-      root_fee_kind = FeeKind.seed_once(name: "Bundesbeitrag", role_type: role_type.sti_name, layer: Group.root, restricted: false).first
+    Role.all_types.select(&:has_fee_kind).each do |role_type|
+      root_fee_kind = FeeKind.seed_once(
+        name: "Bundesbeitrag #{role_type.model_name.human}",
+        role_type: role_type.sti_name,
+        layer: Group.root,
+        restricted: false
+      ).first
 
       Group.where(parent: Group.root, type: Group::Landesverband.sti_name).each do |group|
         landesverband_fee_kind = FeeKind.seed_once(name: FEE_KIND_NAMES.sample, parent: root_fee_kind, layer: group).first
