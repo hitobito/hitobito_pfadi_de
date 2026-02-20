@@ -1,48 +1,288 @@
-#  Copyright (c) 2025, BdP and DPSG. This file is part of
+#  Copyright (c) 2025-2026, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
-
+---
 root:
-  parent:
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:root)%>"
   lft: 1
-  rgt: 10
-  name: Hauptgruppe
+  rgt: 66
+  name: Bundesebene
   type: Group::Bundesebene
   email: root@example.net
-  zip_code: 2843
+  street: Schellingstr.
+  housenumber: 8
+  zip_code: 4692
   town: Neu Carlohausen
-  layer_group_id: <%= ActiveRecord::FixtureSet.identify(:root) %>
-
-baden_wuerttemberg:
+bundesvorstand_2:
   parent: root
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:root)%>"
   lft: 2
-  rgt: 9
-  name: Baden-Württemberg
-  type: Group::Landesverband
-  layer_group_id: <%= ActiveRecord::FixtureSet.identify(:baden_wuerttemberg) %>
-
-adler:
-  parent: baden_wuerttemberg
-  lft: 3
-  rgt: 8
-  name: Adler
-  type: Group::Stamm
-  layer_group_id: <%= ActiveRecord::FixtureSet.identify(:adler) %>
-
-adler_mitglieder:
-  parent: adler
+  rgt: 3
+  name: Bundesvorstand
+  short_name: Bundesvorstand
+  type: Group::Bundesvorstand
+  email: rupert_shanahan@hitobito.example.com
+  street: Lingenfeld
+  housenumber: 96b
+  zip_code: 3819
+  town: Neu Marius
+ombudsrat_3:
+  parent: root
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:root)%>"
   lft: 4
   rgt: 5
-  name: Mitglieder
-  type: Group::Mitglieder
-  layer_group_id: <%= ActiveRecord::FixtureSet.identify(:adler) %>
-
-pfadfinder:
-  parent: adler
+  name: Ombudsrat
+  short_name: Ombudsrat
+  type: Group::Ombudsrat
+  email: noma.grant@hitobito.example.com
+  street: Forellental
+  housenumber: 89b
+  zip_code: 8086
+  town: Presslerhagen
+mitglieder_4:
+  parent: root
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:root)%>"
   lft: 6
   rgt: 7
-  name: "Pfadfinder*innen"
+  name: Mitglieder
+  short_name: Mitglieder
+  type: Group::Mitglieder
+  email: janeth_larkin@hitobito.example.com
+  street: Im Bühl
+  housenumber: 78c
+  zip_code: 9926
+  town: Moormannscheid
+baden_wuerttemberg:
+  parent: root
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:baden_wuerttemberg)%>"
+  lft: 8
+  rgt: 61
+  name: Baden-Württemberg
+  short_name: BaWü
+  type: Group::Landesverband
+  email: baden_wuerttemberg@pfadfinden.de
+  street: Ludwigstraße
+  housenumber: 5
+  zip_code: 75045
+  town: Walzbachtal
+landesvorstand_12:
+  parent: baden_wuerttemberg
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:baden_wuerttemberg)%>"
+  lft: 9
+  rgt: 10
+  name: Landesvorstand
+  short_name: Landesvorstand
+  type: Group::Landesvorstand
+mitglieder_13:
+  parent: baden_wuerttemberg
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:baden_wuerttemberg)%>"
+  lft: 11
+  rgt: 12
+  name: Mitglieder
+  short_name: Mitglieder
+  type: Group::Mitglieder
+adler:
+  parent: baden_wuerttemberg
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:adler)%>"
+  lft: 13
+  rgt: 24
+  name: Adler
+  type: Group::Stamm
+  email: kirstin_labadie@hitobito.example.com
+  street: Legienstr.
+  housenumber: 258
+  zip_code: 4064
+  town: Bad Noahburg
+adler_mitglieder:
+  parent: adler
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:adler)%>"
+  lft: 14
+  rgt: 15
+  name: Mitglieder
+  short_name: Mitglieder
+  type: Group::Mitglieder
+gruppen_26:
+  parent: adler
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:adler)%>"
+  lft: 16
+  rgt: 23
+  name: Gruppen
+  short_name: Gruppen
+  type: Group::Gruppen
+burg_karlsruhe:
+  parent: baden_wuerttemberg
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
+  lft: 25
+  rgt: 42
+  name: Burg Karlsruhe
+  type: Group::Stamm
+  email: lissette.bailey@hitobito.example.com
+  street: Otto-Varnhagen-Str.
+  housenumber: 47b
+  zip_code: 6103
+  town: Kassland
+mitglieder_28:
+  parent: burg_karlsruhe
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
+  lft: 26
+  rgt: 27
+  name: Mitglieder
+  short_name: Mitglieder
+  type: Group::Mitglieder
+gruppen_29:
+  parent: burg_karlsruhe
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
+  lft: 28
+  rgt: 41
+  name: Gruppen
+  short_name: Gruppen
+  type: Group::Gruppen
+silberreiher:
+  parent: baden_wuerttemberg
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
+  lft: 43
+  rgt: 58
+  name: Silberreiher
+  type: Group::Stamm
+  email: ricky@hitobito.example.com
+  street: Gutenbergstr.
+  housenumber: 94a
+  zip_code: 8394
+  town: Büttnerland
+mitglieder_31:
+  parent: silberreiher
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
+  lft: 44
+  rgt: 45
+  name: Mitglieder
+  short_name: Mitglieder
+  type: Group::Mitglieder
+gruppen_32:
+  parent: silberreiher
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
+  lft: 46
+  rgt: 57
+  name: Gruppen
+  short_name: Gruppen
+  type: Group::Gruppen
+woelflinge:
+  parent: gruppen_26
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:adler)%>"
+  lft: 17
+  rgt: 18
+  name: Wölflinge
+  type: Group::Meute
+werwoelflinge:
+  parent: gruppen_29
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
+  lft: 29
+  rgt: 30
+  name: Werwölflinge
+  type: Group::Meute
+baghira:
+  parent: gruppen_32
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
+  lft: 47
+  rgt: 48
+  name: Baghira
+  type: Group::Meute
+pfadfinder:
+  parent: gruppen_26
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:adler)%>"
+  lft: 19
+  rgt: 20
+  name: Pfadfinder*innen
   type: Group::Sippe
-  layer_group_id: <%= ActiveRecord::FixtureSet.identify(:pfadfinder) %>
+mondphoenixe:
+  parent: gruppen_29
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
+  lft: 31
+  rgt: 32
+  name: Mondphönixe
+  type: Group::Sippe
+sternkrieger:
+  parent: gruppen_29
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
+  lft: 33
+  rgt: 34
+  name: Sternkrieger
+  type: Group::Sippe
+beluga:
+  parent: gruppen_29
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
+  lft: 35
+  rgt: 36
+  name: Beluga
+  type: Group::Sippe
+eiswoelfe:
+  parent: gruppen_29
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
+  lft: 37
+  rgt: 38
+  name: Eiswölfe
+  type: Group::Sippe
+seegurke:
+  parent: gruppen_32
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
+  lft: 49
+  rgt: 50
+  name: Seegurke
+  type: Group::Sippe
+schneeeule:
+  parent: gruppen_32
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
+  lft: 51
+  rgt: 52
+  name: Schneeeule
+  type: Group::Sippe
+die_runde_runde:
+  parent: gruppen_26
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:adler)%>"
+  lft: 21
+  rgt: 22
+  name: Die runde Runde
+  type: Group::Runde
+ranger_rover:
+  parent: gruppen_29
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
+  lft: 39
+  rgt: 40
+  name: Ranger & Rover
+  type: Group::Runde
+feuerfuechse:
+  parent: gruppen_32
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
+  lft: 53
+  rgt: 54
+  name: Feuerfüchse
+  type: Group::Runde
+singerrunde_der_passiven:
+  parent: gruppen_32
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
+  lft: 55
+  rgt: 56
+  name: Singerrunde der Passiven
+  type: Group::Runde
+arbeitsbereiche_59:
+  parent: root
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:root)%>"
+  lft: 62
+  rgt: 63
+  name: Arbeitsbereiche
+  type: Group::BundArbeitsbereiche
+projekte:
+  parent: root
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:root)%>"
+  lft: 64
+  rgt: 65
+  name: Projekte
+  type: Group::Projekte
+arbeitsbereiche_63:
+  parent: baden_wuerttemberg
+  layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:baden_wuerttemberg)%>"
+  lft: 59
+  rgt: 60
+  name: Arbeitsbereiche
+  type: Group::LandArbeitsbereiche
