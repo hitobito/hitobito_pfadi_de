@@ -15,7 +15,7 @@ root:
   housenumber: 8
   zip_code: 4692
   town: Neu Carlohausen
-bundesvorstand_2:
+bundesvorstand:
   parent: root
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:root)%>"
   lft: 2
@@ -67,7 +67,7 @@ baden_wuerttemberg:
   housenumber: 5
   zip_code: 75045
   town: Walzbachtal
-landesvorstand_12:
+landesvorstand_bw:
   parent: baden_wuerttemberg
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:baden_wuerttemberg)%>"
   lft: 9
@@ -75,7 +75,7 @@ landesvorstand_12:
   name: Landesvorstand
   short_name: Landesvorstand
   type: Group::Landesvorstand
-mitglieder_13:
+mitglieder_bw:
   parent: baden_wuerttemberg
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:baden_wuerttemberg)%>"
   lft: 11

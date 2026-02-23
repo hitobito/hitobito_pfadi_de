@@ -70,7 +70,7 @@ describe FeeKindChooser, type: :domain do
       top_layer_fee_kind = Fabricate(:fee_kind, role_type: role_type)
 
       middle_layer = groups(:baden_wuerttemberg)
-      middle_group = Fabricate(:"Group::Mitglieder", parent: middle_layer)
+      middle_group = groups(:mitglieder_bw)
       middle_layer_fee_kind = Fabricate(:fee_kind, parent: top_layer_fee_kind, layer: middle_layer)
 
       lower_layer = groups(:adler)
