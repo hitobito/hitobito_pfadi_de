@@ -1111,6 +1111,279 @@
       ]
     },
     {
+      "name": "FeeKindResource",
+      "type": "fee_kinds",
+      "graphql_entrypoint": "feeKinds",
+      "description": null,
+      "attributes": {
+        "id": {
+          "type": "integer_id",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "name": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "layer_id": {
+          "type": "integer",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "parent_id": {
+          "type": "integer",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "role_type": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "restricted": {
+          "type": "boolean",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "archived_at": {
+          "type": "date",
+          "readable": true,
+          "writable": true,
+          "description": null
+        }
+      },
+      "extra_attributes": {},
+      "sorts": {
+        "id": {}
+      },
+      "filters": {
+        "id": {
+          "type": "integer_id",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "layer_id": {
+          "type": "integer",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        }
+      },
+      "relationships": {
+        "layer": {
+          "type": "belongs_to",
+          "description": null,
+          "resource": "GroupResource"
+        },
+        "parent": {
+          "type": "belongs_to",
+          "description": null,
+          "resource": "FeeKindResource"
+        },
+        "fee_rates": {
+          "type": "has_many",
+          "description": null,
+          "resource": "FeeRateResource"
+        }
+      },
+      "stats": {
+        "total": [
+          "count"
+        ]
+      }
+    },
+    {
+      "name": "FeeRateResource",
+      "type": "fee_rates",
+      "graphql_entrypoint": "feeRates",
+      "description": null,
+      "attributes": {
+        "id": {
+          "type": "integer_id",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "name": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "amount": {
+          "type": "float",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "valid_from": {
+          "type": "date",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "valid_until": {
+          "type": "date",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "max_member_months": {
+          "type": "integer",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "max_age": {
+          "type": "integer",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "fee_kind_id": {
+          "type": "integer",
+          "readable": true,
+          "writable": true,
+          "description": null
+        }
+      },
+      "extra_attributes": {},
+      "sorts": {
+        "id": {},
+        "name": {},
+        "amount": {},
+        "valid_from": {},
+        "valid_until": {},
+        "max_member_months": {},
+        "max_age": {},
+        "fee_kind_id": {}
+      },
+      "filters": {
+        "id": {
+          "type": "integer_id",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
+        },
+        "amount": {
+          "type": "float",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "valid_from": {
+          "type": "date",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "valid_until": {
+          "type": "date",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "max_member_months": {
+          "type": "integer",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "max_age": {
+          "type": "integer",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "fee_kind_id": {
+          "type": "integer",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        }
+      },
+      "relationships": {
+        "fee_kind": {
+          "type": "belongs_to",
+          "description": null,
+          "resource": "FeeKindResource"
+        }
+      },
+      "stats": {
+        "total": [
+          "count"
+        ]
+      }
+    },
+    {
       "name": "GroupResource",
       "type": "groups",
       "graphql_entrypoint": "groups",
@@ -3580,6 +3853,16 @@
         },
         "show": {
           "resource": "EventResource"
+        }
+      }
+    },
+    "/api/fee_kinds": {
+      "actions": {
+        "index": {
+          "resource": "FeeKindResource"
+        },
+        "show": {
+          "resource": "FeeKindResource"
         }
       }
     },
