@@ -12,6 +12,10 @@ class FeeRate < ApplicationRecord
   has_one :layer, through: :fee_kind
 
   scope :list, -> { order("valid_from DESC, valid_until DESC NULLS FIRST") }
+  scope :valid_today, -> {
+    today = Date.current
+    where("valid_from <= ? AND (valid_until IS NULL OR valid_until >= ?)", today, today)
+  }
 
   def to_s = name
 end
