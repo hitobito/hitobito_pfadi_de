@@ -15,4 +15,13 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  scope path: ApplicationResource.endpoint_namespace, module: :json_api,
+    constraints: {format: "jsonapi"}, defaults: {format: "jsonapi"} do
+    resources :fee_kinds, only: [:index, :show] do
+      member do
+        resources :fee_rates, only: [:index, :show]
+      end
+    end
+  end
 end
