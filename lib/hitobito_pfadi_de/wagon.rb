@@ -31,6 +31,7 @@ module HitobitoPfadiDe
 
       VariousAbility.include PfadiDe::VariousAbility
       InvoiceAbility.include PfadiDe::InvoiceAbility
+      TokenAbility.include PfadiDe::TokenAbility
 
       GroupsController.prepend PfadiDe::GroupsController
       PeopleController.prepend PfadiDe::PeopleController
