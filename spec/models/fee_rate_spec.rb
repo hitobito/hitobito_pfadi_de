@@ -44,4 +44,12 @@ describe FeeRate, type: :model do
       fee_rates(:alter_halbjahresbeitragssatz)
     ].map(&:name)
   end
+
+  it "can be scoped to FeeRates which are valid today" do
+    expect(described_class.valid_today.map(&:name)).to match_array [
+      fee_rates(:halbjahresbeitragssatz),
+      fee_rates(:kleinkinderbeitragssatz),
+      fee_rates(:jahresbeitragssatz)
+    ].map(&:name)
+  end
 end
