@@ -3866,6 +3866,16 @@
         }
       }
     },
+    "/api/fee_rates": {
+      "actions": {
+        "index": {
+          "resource": "FeeRateResource"
+        },
+        "show": {
+          "resource": "FeeRateResource"
+        }
+      }
+    },
     "/api/groups": {
       "actions": {
         "index": {

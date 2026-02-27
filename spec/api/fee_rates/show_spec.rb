@@ -8,21 +8,24 @@
 require "spec_helper"
 
 describe "fee_rates#show", type: :request do
-  let(:params) { {} }
+  it_behaves_like "jsonapi authorized requests", required_flags: ["fee_kinds"], person: nil do
+    let(:service_token) { service_tokens(:fee_kind_bawue_token) }
+    let(:params) { {} }
 
-  subject(:make_request) do
-    jsonapi_get "/api//fee_rates/#{fee_rate.id}", params: params
-  end
+    let(:fee_rate) { fee_rates(:jahresbeitragssatz) }
 
-  describe "basic fetch" do
-    let!(:fee_rate) { create(:fee_rate) }
+    subject(:make_request) do
+      jsonapi_get "/api/fee_rates/#{fee_rate.id}", params: params
+    end
 
-    it "works" do
-      expect(FeeRateResource).to receive(:find).and_call_original
-      make_request
-      expect(response.status).to eq(200)
-      expect(d.jsonapi_type).to eq("fee_rates")
-      expect(d.id).to eq(fee_rate.id)
+    describe "basic fetch" do
+      it "works" do
+        expect(FeeRateResource).to receive(:find).and_call_original
+        make_request
+        expect(response.status).to eq(200)
+        expect(d.jsonapi_type).to eq("fee_rates")
+        expect(d.id).to eq(fee_rate.id)
+      end
     end
   end
 end

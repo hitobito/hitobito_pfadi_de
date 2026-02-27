@@ -15,11 +15,17 @@ module PfadiDe::TokenAbility
 
     if token.fee_kinds?
       define_fee_kind_abilities
+      define_fee_rate_abilities
     end
   end
 
   def define_fee_kind_abilities
     can(:index, FeeKind) { |fk| token.layer.id == fk.layer_id }
     can(:show, FeeKind) { |fk| token.layer.id == fk.layer_id }
+  end
+
+  def define_fee_rate_abilities
+    can(:index, FeeRate) { |fr| token.layer.id == fr.fee_kind.layer_id }
+    can(:show, FeeRate) { |fr| token.layer.id == fr.fee_kind.layer_id }
   end
 end

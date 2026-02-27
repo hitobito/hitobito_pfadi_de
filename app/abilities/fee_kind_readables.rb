@@ -15,6 +15,7 @@ class FeeKindReadables < GroupReadables
     @token = ability.try(:token) # some abilities have this
 
     can :index, FeeKind, accessible_fee_kinds
+    can :index, FeeRate, accessible_fee_rates
   end
 
   private
@@ -23,6 +24,12 @@ class FeeKindReadables < GroupReadables
     return FeeKind.all if user.root?
 
     FeeKind.where(layer_id: layer_group_ids).where(archived_at: nil).distinct
+  end
+
+  def accessible_fee_rates
+    return FeeRate.all if user.root?
+
+    FeeRate.where(fee_kind: {layer_id: layer_group_ids}).valid_today
   end
 
   def layer_group_ids

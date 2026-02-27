@@ -8,8 +8,8 @@
 require "spec_helper"
 
 describe "fee_kinds#index", type: :request do
-  it_behaves_like "jsonapi authorized requests", person: nil do
-    let(:token) { service_tokens(:permitted_root_token).token }
+  it_behaves_like "jsonapi authorized requests", required_flags: ["fee_kinds"], person: nil do
+    let(:service_token) { service_tokens(:fee_kind_bawue_token) }
     let(:params) { {} }
 
     subject(:make_request) do
@@ -17,15 +17,15 @@ describe "fee_kinds#index", type: :request do
     end
 
     describe "basic fetch" do
-      let!(:fee_kind1) { fee_kinds(:top_fee_kind) }
-      let!(:fee_kind2) { fee_kinds(:baden_wuerttemberg_kind) }
+      # let!(:fee_kind_root) { fee_kinds(:top_fee_kind) }
+      let(:fee_kind_bw) { fee_kinds(:baden_wuerttemberg_kind) }
 
       it "works" do
         expect(FeeKindResource).to receive(:all).and_call_original
         make_request
         expect(response.status).to eq(200), response.body
         expect(d.map(&:jsonapi_type).uniq).to match_array(["fee_kinds"])
-        expect(d.map(&:id)).to match_array([fee_kind1.id, fee_kind2.id])
+        expect(d.map(&:id)).to match_array([fee_kind_bw.id])
       end
     end
   end

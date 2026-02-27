@@ -12,3 +12,13 @@ permitted_root_token:
   event_participations: true
   mailing_lists: true
   register_people: false
+  fee_kinds: true
+
+fee_kind_bawue_token:
+  layer: baden_wuerttemberg
+  name: Oberon
+  description: Not Titania, Oberon
+  token: BobSentMe
+  last_access: 2025-12-31 11:11:11
+  permission: layer_full
+  fee_kinds: true
