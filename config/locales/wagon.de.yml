@@ -55,6 +55,9 @@ de:
           debit: Lastschrift
           invoice: Rechnung
         pronoun: Pronomen
+      service_token:
+        fee_kinds: Beitragsarten und -Sätze
+
       role:
         class:
           permission:

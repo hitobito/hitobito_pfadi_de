@@ -5,27 +5,21 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
-module JsonApi
-  class FeeKindAbility
-    include CanCan::Ability
+class JsonApi::FeeKindAbility
+  include CanCan::Ability
 
-    def initialize(main_ability)
-      can :index, FeeKind, build_conditions(main_ability)
-      can :index, FeeRate, {fee_kind: build_conditions(main_ability)}
-    end
+  def initialize(main_ability)
+    can :index, FeeKind, readable_fee_kinds(main_ability)
+    can :index, FeeRate, readable_fee_rates(main_ability)
+  end
 
-    private
+  private
 
-    def build_conditions(main_ability)
-      layer_group_ids = read_layer_ids(main_ability)
-      {layer_id: layer_group_ids, archived_at: nil}
-    end
+  def readable_fee_kinds(main_ability)
+    FeeKind.accessible_by(FeeKindReadables.new(main_ability)).unscope(:select)
+  end
 
-    def read_layer_ids(main_ability)
-      case main_ability
-      when TokenAbility then [main_ability.token.layer.id] if main_ability.token.invoices?
-      else main_ability.user_context.permission_layer_ids(:finance)
-      end
-    end
+  def readable_fee_rates(main_ability)
+    FeeRate.where(fee_kind_id: readable_fee_kinds(main_ability).pluck(:id))
   end
 end
