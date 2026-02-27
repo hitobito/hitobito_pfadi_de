@@ -6,15 +6,20 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 module PfadiDe::TokenAbility
+  extend ActiveSupport::Concern
+
   private
 
-  def define_invoice_abilities
+  def define_token_abilities
     super
 
-    can :index, FeeKind { |fk| token.layer.id == fk.layer_id }
-    can :show, FeeKind { |fk| token.layer.id == fk.layer_id }
+    if token.fee_kinds?
+      define_fee_kind_abilities
+    end
+  end
 
-    # can :index, FeeRate { |fr| token.layer.id == fr.fee_kind.layer_id }
-    # can :show, FeeRate { |fr| token.layer.id == fr.fee_kind.layer_id }
+  def define_fee_kind_abilities
+    can(:index, FeeKind) { |fk| token.layer.id == fk.layer_id }
+    can(:show, FeeKind) { |fk| token.layer.id == fk.layer_id }
   end
 end

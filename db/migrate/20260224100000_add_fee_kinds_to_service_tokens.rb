@@ -5,20 +5,8 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
-class JsonApi::FeeKindsController < JsonApiController
-  def index
-    authorize!(:index, FeeKind)
-    super
-  end
-
-  def show
-    authorize!(:show, entry)
-    super
-  end
-
-  private
-
-  def entry
-    @entry ||= FeeKind.find(params[:id])
+class AddFeeKindsToServiceTokens < ActiveRecord::Migration[8.0]
+  def change
+    add_column :service_tokens, :fee_kinds, :boolean, default: false, null: false
   end
 end
