@@ -8,22 +8,30 @@
 require "spec_helper"
 
 describe "fee_rates#index", type: :request do
-  let(:params) { {} }
+  it_behaves_like "jsonapi authorized requests", required_flags: ["fee_kinds"], person: nil do
+    let(:service_token) { service_tokens(:fee_kind_bawue_token) }
+    let(:params) { {} }
 
-  subject(:make_request) do
-    jsonapi_get "/api//fee_rates", params: params
-  end
+    subject(:make_request) do
+      jsonapi_get "/api/fee_rates", params: params
+    end
 
-  describe "basic fetch" do
-    let!(:fee_rate1) { create(:fee_rate) }
-    let!(:fee_rate2) { create(:fee_rate) }
+    describe "basic fetch" do
+      let(:fee_rate_jahr) { fee_rates(:jahresbeitragssatz) }
+      let(:fee_rate_halbjahr) { fee_rates(:halbjahresbeitragssatz) }
+      let(:fee_rate_kinder) { fee_rates(:kleinkinderbeitragssatz) }
 
-    it "works" do
-      expect(FeeRateResource).to receive(:all).and_call_original
-      make_request
-      expect(response.status).to eq(200), response.body
-      expect(d.map(&:jsonapi_type).uniq).to match_array(["fee_rates"])
-      expect(d.map(&:id)).to match_array([fee_rate1.id, fee_rate2.id])
+      it "works" do
+        expect(FeeRateResource).to receive(:all).and_call_original
+        make_request
+        expect(response.status).to eq(200), response.body
+        expect(d.map(&:jsonapi_type).uniq).to match_array(["fee_rates"])
+        expect(d.map(&:id)).to match_array [
+          fee_rate_jahr,
+          fee_rate_halbjahr,
+          fee_rate_kinder
+        ].map(&:id)
+      end
     end
   end
 end
