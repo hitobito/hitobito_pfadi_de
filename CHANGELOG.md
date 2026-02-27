@@ -7,3 +7,4 @@
 * Beitragsarten können "rechtebeschränkt" werden, damit diese nur noch von gewissen Rollen zugewiesen werden können (hitobito_pfadi_de#17)
 * Zu Beitragsarten können Beitragssätze erfasst und verwaltet werden (hitobito_pfadi_de#19)
 * Jeder Rolle mit Beitragsart wird beim Anlegen eine Beitragsart automatisch zugeordnet (hitobito_pfadi_de#16)
+* Lesende JSON-API für Beitragsartzen und -sätze inklusive speziell hierfür ausgestellter ServiceTokens kann genutzt werden (hitobito_pfadi_de#20)
