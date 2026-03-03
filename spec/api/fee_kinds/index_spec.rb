@@ -29,4 +29,29 @@ describe "fee_kinds#index", type: :request do
       end
     end
   end
+
+  it_behaves_like "jsonapi authorized requests", required_flags: ["fee_kinds"], person: nil do
+    let(:service_token) { service_tokens(:permitted_root_token) }
+    let(:params) { {} }
+
+    subject(:make_request) do
+      jsonapi_get "/api/fee_kinds", params: params
+    end
+
+    describe "basic fetch" do
+      let(:fee_kind_bw) { fee_kinds(:baden_wuerttemberg_kind) }
+      let(:fee_kind_top) { fee_kinds(:top_fee_kind) }
+
+      it "works" do
+        expect(FeeKindResource).to receive(:all).and_call_original
+        make_request
+        expect(response.status).to eq(200), response.body
+        expect(d.map(&:jsonapi_type).uniq).to match_array(["fee_kinds"])
+        expect(d.map(&:id)).to match_array([
+          fee_kind_top.id,
+          fee_kind_bw.id
+        ])
+      end
+    end
+  end
 end
