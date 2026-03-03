@@ -12,7 +12,7 @@ class FeeKindReadables < GroupReadables
 
   def initialize(ability)
     super(ability.user)
-    @token = ability.try(:token) # some abilities have this
+    @token = ability.try(:token) # if this is a TokenAbility
 
     can :index, FeeKind, accessible_fee_kinds
     can :index, FeeRate, accessible_fee_rates

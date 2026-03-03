@@ -17,7 +17,6 @@ describe "fee_kinds#index", type: :request do
     end
 
     describe "basic fetch" do
-      # let!(:fee_kind_root) { fee_kinds(:top_fee_kind) }
       let(:fee_kind_bw) { fee_kinds(:baden_wuerttemberg_kind) }
 
       it "works" do
