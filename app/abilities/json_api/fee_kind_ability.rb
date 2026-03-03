@@ -20,6 +20,6 @@ class JsonApi::FeeKindAbility
   end
 
   def readable_fee_rates(main_ability)
-    FeeRate.where(fee_kind_id: readable_fee_kinds(main_ability).pluck(:id))
+    FeeRate.where(fee_kind_id: readable_fee_kinds(main_ability).select(:id))
   end
 end
