@@ -28,8 +28,7 @@ describe FeeKindResource, type: :resource do
         :layer_id,
         :parent_id,
         :role_type,
-        :restricted,
-        :archived_at
+        :restricted
       ]
     end
 

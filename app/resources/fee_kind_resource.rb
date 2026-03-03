@@ -14,7 +14,6 @@ class FeeKindResource < ApplicationResource
     attribute :parent_id, :integer
     attribute :role_type, :string
     attribute :restricted, :boolean
-    attribute :archived_at, :date
   end
 
   belongs_to :layer, resource: GroupResource
