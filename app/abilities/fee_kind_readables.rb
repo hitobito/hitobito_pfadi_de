@@ -34,7 +34,15 @@ class FeeKindReadables < GroupReadables
 
   def layer_group_ids
     if @token&.fee_kinds?
-      [@token.layer_group_id]
+      case @token.permission
+      when "layer_full", "layer_read"
+        [@token.layer_group_id]
+      when "layer_and_below_read", "layer_and_below_full"
+        layer = @token.layer
+        Group.layers.where(lft: (layer.lft...layer.rgt)).select(:id)
+      else
+        []
+      end
     else
       user_context.permission_layer_ids(:finance)
     end
