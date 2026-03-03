@@ -8,13 +8,11 @@
 class FeeKindResource < ApplicationResource
   primary_endpoint "fee_kinds", [:index, :show]
 
-  with_options filterable: false, sortable: false do
-    attribute :name, :string
-    attribute :layer_id, :integer, filterable: true
-    attribute :parent_id, :integer
-    attribute :role_type, :string
-    attribute :restricted, :boolean
-  end
+  attribute :name, :string
+  attribute :layer_id, :integer
+  attribute :parent_id, :integer
+  attribute :role_type, :string
+  attribute :restricted, :boolean
 
   belongs_to :layer, resource: GroupResource
   belongs_to :parent, resource: FeeKindResource
