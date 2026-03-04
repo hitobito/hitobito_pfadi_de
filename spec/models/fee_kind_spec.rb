@@ -137,10 +137,7 @@ describe FeeKind do
     new_fee_kind = Fabricate.build(:fee_kind, parent: fee_kinds(:top_fee_kind), layer: group)
 
     expect(new_fee_kind).not_to be_valid
-    expect(new_fee_kind.errors.full_messages.first).to eq(<<~MSG.squish)
-      Erbt von wurde bereits durch eine Beitragsart (#{fee_kinds(:baden_wuerttemberg_kind)})
-      überschrieben welche sich in einer höheren Ebene befindet.
-    MSG
+    expect(new_fee_kind.errors.full_messages.first).to eq("Parent ist kein gültiger Wert")
     fee_kinds(:baden_wuerttemberg_kind).destroy!
     expect(new_fee_kind).to be_valid
   end
@@ -156,8 +153,7 @@ describe FeeKind do
   context "#possible_fee_kind_parents" do
     let(:group) { groups(:baden_wuerttemberg) }
     let(:parent_fee_kind) { fee_kinds(:top_fee_kind) }
-
-    subject(:fee_kind) do
+    let!(:fee_kind) do
       FeeKind.create(
         name: "TheLänd-Beitrag",
         layer: group.layer_group,
@@ -165,13 +161,15 @@ describe FeeKind do
       )
     end
 
+    subject { fee_kind }
+
     it "returns fee kinds from all parent layers" do
       expect(fee_kind.possible_fee_kind_parents).to match_array [
         parent_fee_kind
       ]
     end
 
-    it "does not include those already used in higher layers" do
+    it "does not include fee kinds for role types already covered in intermediate layers" do
       stamm = Fabricate(Group::Stamm.sti_name, parent: groups(:baden_wuerttemberg))
       stamm_fee_kind = FeeKind.build(name: "NichtHochdeutschBeitrag", layer: stamm.layer_group)
 
@@ -180,6 +178,24 @@ describe FeeKind do
         fee_kinds(:baden_wuerttemberg_kind),
         fee_kind
       ]
+    end
+
+    it "applies the layer-upward search separately for each role type" do
+      FeeKind.destroy_all
+      middle_layer = groups(:baden_wuerttemberg)
+      stamm = Fabricate(Group::Stamm.sti_name, parent: middle_layer)
+      role_type = "Group::Mitglieder::Foerdermitgliedschaft"
+      role_type_2 = "Group::Mitglieder::OrdentlicheMitgliedschaft"
+      top_layer_fee_kind_1 = Fabricate(:fee_kind, role_type: role_type)
+      top_layer_fee_kind_2 = Fabricate(:fee_kind, role_type: role_type_2)
+      middle_layer_fee_kind_1 = Fabricate(:fee_kind, parent: top_layer_fee_kind_1,
+        layer: middle_layer)
+
+      stamm_fee_kind = FeeKind.build(name: "NichtHochdeutschBeitrag", layer: stamm.layer_group)
+
+      expect(stamm_fee_kind.possible_fee_kind_parents).to match_array([
+        middle_layer_fee_kind_1, top_layer_fee_kind_2
+      ])
     end
 
     it "does not include archived fee kinds" do

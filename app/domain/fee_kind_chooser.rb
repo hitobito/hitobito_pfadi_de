@@ -23,7 +23,9 @@ class FeeKindChooser
   end
 
   def possible_parents(layer)
-    allowed_fee_kinds(layers: layer.ancestors)
+    Role.all_types.select(&:has_fee_kind).flat_map do |role_type|
+      allowed_fee_kinds(layers: layer.ancestors, role_type: role_type.name)
+    end
   end
 
   private
@@ -42,10 +44,8 @@ class FeeKindChooser
   # This filters the raw list of fee kinds by role type, which is inherited
   # from the root of the fee kind parent hierarchy.
   # It still does not cover all requirements, see allowed_fee_kinds below.
-  def matching_fee_kinds(layers:, role_type: nil)
+  def matching_fee_kinds(layers:, role_type:)
     potential_fee_kinds(layers:).reject do |fee_kind|
-      next false if role_type.blank?
-
       # remove fee kinds with non-matching role-types
       next true if FeeKind.root_fee_kind_of(fee_kind).role_type != role_type
     end
@@ -53,7 +53,7 @@ class FeeKindChooser
 
   # Apply domain-rules for further limiting of the result set. The previously
   # created order should stay intact as we only remove items from the list.
-  def allowed_fee_kinds(layers:, role_type: nil)
+  def allowed_fee_kinds(layers:, role_type:)
     matching = matching_fee_kinds(layers:, role_type:)
     lft_of_lowest_non_empty_layer = matching.map(&:layer).map(&:lft).max
 
