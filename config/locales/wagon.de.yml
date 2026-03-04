@@ -63,12 +63,6 @@ de:
           permission:
             description:
               group_and_below_efz: "Zeugnisse nach SGB VIII erfassen in dieser Gruppen und deren Untergruppen."
-    errors:
-      models:
-        fee_kind:
-          attributes:
-            parent_id:
-              parent_already_used_in_hierarchy: wurde bereits durch eine Beitragsart (%{fee_kind_name}) überschrieben welche sich in einer höheren Ebene befindet.
     models:
       fee_kind:
         one: Beitragsart
