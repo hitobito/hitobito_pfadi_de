@@ -1151,17 +1151,16 @@
           "readable": true,
           "writable": true,
           "description": null
-        },
-        "archived_at": {
-          "type": "date",
-          "readable": true,
-          "writable": true,
-          "description": null
         }
       },
       "extra_attributes": {},
       "sorts": {
-        "id": {}
+        "id": {},
+        "name": {},
+        "layer_id": {},
+        "parent_id": {},
+        "role_type": {},
+        "restricted": {}
       },
       "filters": {
         "id": {
@@ -1175,6 +1174,21 @@
             "lte"
           ]
         },
+        "name": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
+        },
         "layer_id": {
           "type": "integer",
           "operators": [
@@ -1185,6 +1199,39 @@
             "lt",
             "lte"
           ]
+        },
+        "parent_id": {
+          "type": "integer",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "role_type": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
+        },
+        "restricted": {
+          "type": "boolean",
+          "operators": [
+            "eq"
+          ],
+          "single": true
         }
       },
       "relationships": {
