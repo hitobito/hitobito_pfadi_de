@@ -16,7 +16,7 @@ describe Role, type: :model do
         expect(paying_member_role.class).to have_fee_kind
         expect(paying_member_role.fee_kind).to eql fee_kinds(:baden_wuerttemberg_kind)
 
-        expect(FeeKindChooser.new(paying_member_role).possible)
+        expect(FeeKindChooser.new.possible_for_role(paying_member_role))
           .to include(fee_kinds(:baden_wuerttemberg_kind))
       end
 

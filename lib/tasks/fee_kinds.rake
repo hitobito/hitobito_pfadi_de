@@ -13,7 +13,7 @@ namespace :fee_kinds do
     warn "Trying to set initial FeeKind on #{scope.count} Roles..."
 
     scope.find_each do |role|
-      result = role.update(fee_kind: FeeKindChooser.new(role).default)
+      result = role.update(fee_kind: FeeKindChooser.new.default(role))
       $stderr.print result ? "." : "F"
     end
   end

@@ -48,7 +48,7 @@ class FeeKindsSeeder
     end
 
     Role.with_inactive.where(type: role_types, fee_kind_id: nil).find_each do |role|
-      role.update(fee_kind: FeeKindChooser.new(role).default)
+      role.update(fee_kind: FeeKindChooser.new.default(role))
     end
 
     FeeKind.find_each do |fee_kind|
