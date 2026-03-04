@@ -61,9 +61,9 @@ describe FeeKindChooser, type: :domain do
       förder_fee_kind = Fabricate(:fee_kind, role_type: role_type)
       förder_role = Fabricate.build(role_type.to_sym, group: current_group)
 
-      oberon = described_class.new(förder_role, allow_restricted)
+      chooser = described_class.new(förder_role, allow_restricted)
 
-      expect(oberon.default).to eql förder_fee_kind
+      expect(chooser.default).to eql förder_fee_kind
     end
 
     it "tries to find a fee_kind in the current layer" do
@@ -78,25 +78,39 @@ describe FeeKindChooser, type: :domain do
 
       middle_group_role = Fabricate.build(role_type.to_sym, group: middle_group)
 
-      oberon = described_class.new(middle_group_role, allow_restricted)
+      chooser = described_class.new(middle_group_role, allow_restricted)
 
       # assumptions
       expect(FeeKind.root_fee_kind_of(middle_layer_fee_kind).role_type).to eq role_type
       expect(middle_layer_fee_kind.layer_id).to eq middle_group_role.group.layer_group_id
-      expect(oberon.send(:potential_fee_kinds)).to include(middle_layer_fee_kind)
+      expect(chooser.send(:potential_fee_kinds)).to include(middle_layer_fee_kind)
 
-      expect(oberon.possible).to include(middle_layer_fee_kind)
-      expect(oberon.default).to eql(middle_layer_fee_kind)
+      expect(chooser.possible).to include(middle_layer_fee_kind)
+      expect(chooser.default).to eql(middle_layer_fee_kind)
     end
 
     it "also accepts fee_kinds without children of higher layers" do
       top_layer_fee_kind = Fabricate(:fee_kind, role_type: role_type)
       förder_role = Fabricate.build(role_type.to_sym, group: current_group)
 
-      oberon = described_class.new(förder_role, allow_restricted)
+      chooser = described_class.new(förder_role, allow_restricted)
 
-      expect(oberon.default).to eql top_layer_fee_kind
-      expect(oberon.possible).to have(1).item
+      expect(chooser.default).to eql top_layer_fee_kind
+      expect(chooser.possible).to have(1).item
+    end
+
+    it "does not allow fee_kinds without children of layers higher than necessary" do
+      middle_layer = groups(:baden_wuerttemberg)
+      top_layer_fee_kind = Fabricate(:fee_kind, role_type: role_type)
+      top_layer_fee_kind_without_children = Fabricate(:fee_kind, role_type: role_type)
+      middle_layer_fee_kind = Fabricate(:fee_kind, parent: top_layer_fee_kind, layer: middle_layer)
+      förder_role = Fabricate.build(role_type.to_sym, group: current_group)
+
+      chooser = described_class.new(förder_role, allow_restricted)
+
+      expect(chooser.default).to eql middle_layer_fee_kind
+      expect(chooser.possible).to have(1).item
+      expect(chooser.possible).not_to include(top_layer_fee_kind_without_children)
     end
   end
 
