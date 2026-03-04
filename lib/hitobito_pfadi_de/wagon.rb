@@ -35,6 +35,9 @@ module HitobitoPfadiDe
 
       GroupsController.prepend PfadiDe::GroupsController
       PeopleController.prepend PfadiDe::PeopleController
+      ServiceTokensController.permitted_attrs += [:fee_kinds]
+
+      ServiceTokenDecorator.kinds += [:fee_kinds]
 
       Wizards::Steps::NewUserForm.support_company = false
 
