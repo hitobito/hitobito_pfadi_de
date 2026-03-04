@@ -12,12 +12,14 @@ class FeeKind < ActiveRecord::Base
 
   validates :name, presence: true
 
-  validates :role_type, presence: true, if: -> { top_layer? }
-  validates :role_type, absence: true, unless: -> { top_layer? }
+  validates :role_type, presence: true, if: :top_layer?
+  validates :role_type, absence: true, unless: :top_layer?
 
-  validates :parent, absence: true, if: -> { top_layer? }
-  validates :parent, presence: true, unless: -> { top_layer? }
-  validate :validate_unique_fee_parent_in_hierarchy, on: :create
+  validates :parent, absence: true, if: :top_layer?
+  validates :parent, presence: true, unless: :top_layer?
+  validates :parent, inclusion: {in: ->(fee_kind) {
+    fee_kind.possible_fee_kind_parents
+  }}, on: :create, unless: :top_layer?
   validate :validate_restricted
 
   # Used for ability, we don't want to override the methods that check group permissions
@@ -72,9 +74,7 @@ class FeeKind < ActiveRecord::Base
   end
 
   def possible_fee_kind_parents
-    FeeKind.where.not(id: used_fee_kind_parents.pluck("fee_kinds.parent_id"))
-      .where(layer: layer.ancestors)
-      .not_archived
+    FeeKindChooser.new(allow_restricted: true).possible_parents(layer)
   end
 
   def restricted?
@@ -82,20 +82,6 @@ class FeeKind < ActiveRecord::Base
   end
 
   private
-
-  def validate_unique_fee_parent_in_hierarchy
-    return if parent_id.nil?
-
-    unless possible_fee_kind_parents.exists?(id: parent_id)
-      taken_name = used_fee_kind_parents
-        .where(fee_kinds: {parent_id: parent_id})
-        .pick("fee_kinds.name")
-
-      errors.add(:parent_id, :parent_already_used_in_hierarchy, fee_kind_name: taken_name)
-    end
-  end
-
-  def used_fee_kind_parents = layer.ancestors.joins(:fee_kinds)
 
   def validate_restricted
     if top_layer?

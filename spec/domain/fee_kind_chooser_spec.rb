@@ -8,18 +8,18 @@
 require "spec_helper"
 
 describe FeeKindChooser, type: :domain do
-  subject { described_class.new(role, allow_restricted) }
+  subject { described_class.new(allow_restricted:) }
 
   context "for a role without a fee_kind" do
     let(:role) { roles(:member) }
     let(:allow_restricted) { true }
 
     it "defaults to nil" do
-      expect(subject.default).to be_nil
+      expect(subject.default(role)).to be_nil
     end
 
     it "allows nothing" do
-      expect(subject.possible).to be_empty
+      expect(subject.possible_for_role(role)).to be_empty
     end
   end
 
@@ -33,11 +33,11 @@ describe FeeKindChooser, type: :domain do
     let(:allow_restricted) { true }
 
     it "can return a default fee_kind" do
-      expect(subject.default).to eql fee_kinds(:baden_wuerttemberg_kind)
+      expect(subject.default(role)).to eql fee_kinds(:baden_wuerttemberg_kind)
     end
 
     it "can list possible (leaf) fee_kinds" do
-      expect(subject.possible.map(&:name)).to match_array [
+      expect(subject.possible_for_role(role).map(&:name)).to match_array [
         fee_kinds(:baden_wuerttemberg_kind)
       ].map(&:name)
     end
@@ -47,7 +47,7 @@ describe FeeKindChooser, type: :domain do
         :fee_kind,
         archived_at: 2.days.ago.to_date
       )
-      expect(subject.possible).not_to include(archived)
+      expect(subject.possible_for_role(role)).not_to include(archived)
     end
   end
 
@@ -61,9 +61,9 @@ describe FeeKindChooser, type: :domain do
       förder_fee_kind = Fabricate(:fee_kind, role_type: role_type)
       förder_role = Fabricate.build(role_type.to_sym, group: current_group)
 
-      chooser = described_class.new(förder_role, allow_restricted)
+      chooser = described_class.new(allow_restricted:)
 
-      expect(chooser.default).to eql förder_fee_kind
+      expect(chooser.default(förder_role)).to eql förder_fee_kind
     end
 
     it "tries to find a fee_kind in the current layer" do
@@ -78,25 +78,24 @@ describe FeeKindChooser, type: :domain do
 
       middle_group_role = Fabricate.build(role_type.to_sym, group: middle_group)
 
-      chooser = described_class.new(middle_group_role, allow_restricted)
+      chooser = described_class.new(allow_restricted:)
 
       # assumptions
       expect(FeeKind.root_fee_kind_of(middle_layer_fee_kind).role_type).to eq role_type
       expect(middle_layer_fee_kind.layer_id).to eq middle_group_role.group.layer_group_id
-      expect(chooser.send(:potential_fee_kinds)).to include(middle_layer_fee_kind)
 
-      expect(chooser.possible).to include(middle_layer_fee_kind)
-      expect(chooser.default).to eql(middle_layer_fee_kind)
+      expect(chooser.possible_for_role(middle_group_role)).to include(middle_layer_fee_kind)
+      expect(chooser.default(middle_group_role)).to eql(middle_layer_fee_kind)
     end
 
     it "also accepts fee_kinds without children of higher layers" do
       top_layer_fee_kind = Fabricate(:fee_kind, role_type: role_type)
       förder_role = Fabricate.build(role_type.to_sym, group: current_group)
 
-      chooser = described_class.new(förder_role, allow_restricted)
+      chooser = described_class.new(allow_restricted:)
 
-      expect(chooser.default).to eql top_layer_fee_kind
-      expect(chooser.possible).to have(1).item
+      expect(chooser.default(förder_role)).to eql top_layer_fee_kind
+      expect(chooser.possible_for_role(förder_role)).to have(1).item
     end
 
     it "does not allow fee_kinds without children of layers higher than necessary" do
@@ -106,11 +105,13 @@ describe FeeKindChooser, type: :domain do
       middle_layer_fee_kind = Fabricate(:fee_kind, parent: top_layer_fee_kind, layer: middle_layer)
       förder_role = Fabricate.build(role_type.to_sym, group: current_group)
 
-      chooser = described_class.new(förder_role, allow_restricted)
+      chooser = described_class.new(allow_restricted:)
 
-      expect(chooser.default).to eql middle_layer_fee_kind
-      expect(chooser.possible).to have(1).item
-      expect(chooser.possible).not_to include(top_layer_fee_kind_without_children)
+      expect(chooser.default(förder_role)).to eql middle_layer_fee_kind
+      expect(chooser.possible_for_role(förder_role)).to have(1).item
+      expect(chooser.possible_for_role(förder_role)).not_to include(
+        top_layer_fee_kind_without_children
+      )
     end
   end
 
@@ -134,23 +135,8 @@ describe FeeKindChooser, type: :domain do
     let(:allow_restricted) { false }
 
     it "has assumptions" do
-      # core concern
-      potentials = subject.send(:potential_fee_kinds)
-      expect(potentials).to_not be_empty
-      expect(potentials)
-        .to include(non_restricted_kind)
-        .and include(restricted_kind)
-
-      # rejection hurts, but here we go
-      relevants = potentials.reject do |fk|
-        fk.restricted?
-      end
-
-      expect(relevants).to_not include(restricted_kind)
-      expect(relevants).to include(non_restricted_kind)
-
       # interaction with other rules
-      possibles = subject.possible
+      possibles = subject.possible_for_role(role)
 
       expect(possibles).to_not include(restricted_kind)
       expect(possibles).to include(non_restricted_kind)
@@ -161,25 +147,30 @@ describe FeeKindChooser, type: :domain do
     end
 
     it "can return a (non-restricted) default fee_kind" do
-      expect(subject.default).to eq non_restricted_kind
+      expect(subject.default(role)).to eq non_restricted_kind
     end
 
     it "can list possible fee_kinds" do
-      expect(subject.possible).to eql [non_restricted_kind]
+      expect(subject.possible_for_role(role)).to eql [non_restricted_kind]
     end
 
     it "does not list restricted fee_kinds as possible" do
-      expect(subject.default).to_not eq restricted_kind
-      expect(subject.possible).to_not include(restricted_kind)
+      expect(subject.default(role)).to_not eq restricted_kind
+      expect(subject.possible_for_role(role)).to_not include(restricted_kind)
     end
 
     it "does not include restricted of current layer" do
       top_restricted = Fabricate(:fee_kind, restricted: true, role_type: role_type)
+      middle_restricted = Fabricate(
+        :fee_kind, parent: top_restricted, layer: groups(:baden_wuerttemberg)
+      )
       current_layer_restricted = Fabricate(
-        :fee_kind, parent: top_restricted, layer: role.group.layer_group
+        :fee_kind, parent: middle_restricted, layer: role.group.layer_group
       )
 
-      expect(subject.possible).to_not include(current_layer_restricted)
+      förder_role = Fabricate.build(role_type.to_sym, group: groups(:adler))
+
+      expect(subject.possible_for_role(förder_role)).to_not include(current_layer_restricted)
     end
   end
 end

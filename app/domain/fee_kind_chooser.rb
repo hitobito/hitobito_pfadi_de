@@ -6,19 +6,24 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 class FeeKindChooser
-  def initialize(role, allow_restricted = false)
-    @role = role
+  def initialize(allow_restricted: false)
     @allow_restricted = allow_restricted
   end
 
-  def default
-    return @role.fee_kind if @role.fee_kind_id
+  def default(role)
+    return role.fee_kind if role.fee_kind_id
 
-    allowed_fee_kinds.first
+    possible_for_role(role).first
   end
 
-  def possible
-    allowed_fee_kinds
+  def possible_for_role(role)
+    return FeeKind.none unless role.class.has_fee_kind
+
+    allowed_fee_kinds(layers: role.group.layer_group.hierarchy, role_type: role.type)
+  end
+
+  def possible_parents(layer)
+    allowed_fee_kinds(layers: layer.ancestors)
   end
 
   private
@@ -26,12 +31,9 @@ class FeeKindChooser
   # This includes FeeKinds which have a parent with a non-matching role_type.
   # Therefore, it may include too many kinds. Also, this alone does not
   # cover all the edge-cases and requirements, see below.
-  def potential_fee_kinds
-    return FeeKind.none unless @role.class.has_fee_kind
-
+  def potential_fee_kinds(layers:)
     FeeKind
-      .where(role_type: [@role.type, nil])
-      .where(layer: @role.group.layer_group.hierarchy)
+      .where(layer: layers)
       .not_archived
       .joins(:layer)
       .order(created_at: :asc)
@@ -40,19 +42,22 @@ class FeeKindChooser
   # This filters the raw list of fee kinds by role type, which is inherited
   # from the root of the fee kind parent hierarchy.
   # It still does not cover all requirements, see allowed_fee_kinds below.
-  def matching_fee_kinds
-    @matching_fee_kinds ||= potential_fee_kinds.reject do |fee_kind|
+  def matching_fee_kinds(layers:, role_type: nil)
+    potential_fee_kinds(layers:).reject do |fee_kind|
+      next false if role_type.blank?
+
       # remove fee kinds with non-matching role-types
-      next true if FeeKind.root_fee_kind_of(fee_kind).role_type != @role.type
+      next true if FeeKind.root_fee_kind_of(fee_kind).role_type != role_type
     end
   end
 
   # Apply domain-rules for further limiting of the result set. The previously
   # created order should stay intact as we only remove items from the list.
-  def allowed_fee_kinds
-    lft_of_lowest_non_empty_layer = matching_fee_kinds.map(&:layer).map(&:lft).max
+  def allowed_fee_kinds(layers:, role_type: nil)
+    matching = matching_fee_kinds(layers:, role_type:)
+    lft_of_lowest_non_empty_layer = matching.map(&:layer).map(&:lft).max
 
-    matching_fee_kinds.reject do |fee_kind|
+    matching.reject do |fee_kind|
       # remove fee kinds from layers higher than necessary
       next true if fee_kind.layer.lft != lft_of_lowest_non_empty_layer
 

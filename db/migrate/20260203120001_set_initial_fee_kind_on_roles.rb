@@ -15,7 +15,7 @@ class SetInitialFeeKindOnRoles < ActiveRecord::Migration[8.0]
 
       scope.in_batches do |batch|
         batch.each do |role|
-          role.update(fee_kind: FeeKindChooser.new(role).default)
+          role.update(fee_kind: FeeKindChooser.new.default(role))
         end
 
         $stderr.print "."
