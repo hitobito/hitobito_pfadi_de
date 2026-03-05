@@ -70,15 +70,6 @@ de:
       fee_rate:
         one: Beitragssatz
         other: Beitragssätze
-  fixed_fees:
-    demo_lv_members:
-      aktiv: Aktivmitglieder
-      foerdermitgliedschaft: Fördermitgliedschaften
-      zweitmitgliedschaft: Zweitmitgliedschaften
-    demo_stamm_members:
-      aktiv: Aktivmitglieder
-      foerdermitgliedschaft: Fördermitgliedschaften
-      zweitmitgliedschaft: Zweitmitgliedschaften
   groups:
     actions_show_pfadi_de:
       invoice_button_dropdown: Verbandsabrechnungen
