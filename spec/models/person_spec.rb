@@ -13,9 +13,15 @@ describe Person do
   subject { person }
 
   describe "entry_date" do
-    before { person.roles.first.update(start_on: "2025-08-01") }
+    before do
+      person.roles.first.update(start_on: nil)
+      person.roles.create!(type: person.roles.first.type, group: person.roles.first.group,
+        start_on: "2025-12-31")
+      person.roles.create!(type: person.roles.first.type, group: person.roles.first.group,
+        start_on: "2020-08-01")
+    end
 
-    its(:entry_date) { should eq Date.parse("2025-08-01") }
+    its(:entry_date) { should eq Date.parse("2020-08-01") }
   end
 
   describe "iban" do

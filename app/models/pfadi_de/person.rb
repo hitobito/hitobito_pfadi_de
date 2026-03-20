@@ -29,6 +29,6 @@ module PfadiDe::Person
   end
 
   def entry_date
-    roles.with_inactive.first&.start_on
+    roles.with_inactive.where.not(start_on: nil).order(:start_on).first&.start_on
   end
 end
