@@ -1,0 +1,15 @@
+- #  Copyright (c) 2026, BdP and DPSG. This file is part of
+- #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
+- #  or later. See the COPYING file at the top-level directory or at
+- #  https://github.com/hitobito/hitobito_pfadi_de.
+
+= hidden_field_tag :autosubmit
+= turbo_frame_tag :role_fee_kind_id, target: :_top do
+  - if entry.used_attributes(:fee_kind_id).present?
+    - possible_fee_kinds = FeeKindChooser.new(allow_restricted: can?(:assign_restricted_fee_kinds, entry)).possible_for_role(entry.role)
+    = f.labeled_collection_select(:fee_kind_id,
+                                  possible_fee_kinds,
+                                  :id,
+                                  :name,
+                                  {},
+                                  { required: true, class: "form-select form-select-sm", disabled: !entry.new_record? || possible_fee_kinds.one? })

@@ -15,11 +15,15 @@ describe FeeKind do
     end
 
     it "returns name and role_type of parent when format is with_role_type" do
-      expect(bottom_fee_kind.to_s(:with_role_type)).to eq "#{bottom_fee_kind.name} (Rolle)"
+      expect(bottom_fee_kind.to_s(:with_role_type)).to eq(
+        "#{bottom_fee_kind.name} (Ordentliche Mitgliedschaft)"
+      )
     end
 
     it "returns name and role_type when format is with_role_type and fee_kind is top layer" do
-      expect(top_fee_kind.to_s(:with_role_type)).to eq "#{top_fee_kind.name} (Rolle)"
+      expect(top_fee_kind.to_s(:with_role_type)).to eq(
+        "#{top_fee_kind.name} (Ordentliche Mitgliedschaft)"
+      )
     end
   end
 
@@ -27,7 +31,7 @@ describe FeeKind do
     let(:top_fee_kind) { fee_kinds(:baden_wuerttemberg_kind) }
 
     it "returns translated role label" do
-      expect(top_fee_kind.human_role_name).to eq "Rolle"
+      expect(top_fee_kind.human_role_name).to eq "Ordentliche Mitgliedschaft"
     end
   end
 

@@ -43,14 +43,14 @@ module PfadiDe::Role
     FeeKindChooser.new(allow_restricted: true).possible_for_role(self)
   end
 
+  def ensure_fee_kind
+    self.fee_kind = FeeKindChooser.new.default(self)
+  end
+
   private
 
   def has_fee_kind?
     self.class.has_fee_kind
-  end
-
-  def ensure_fee_kind
-    self.fee_kind = FeeKindChooser.new.default(self)
   end
 
   def mark_person_for_entry_date_recalculation

@@ -59,6 +59,7 @@ de:
         fee_kinds: Beitragsarten und -Sätze
 
       role:
+        fee_kind_id: Beitragsart
         class:
           permission:
             description:
@@ -70,6 +71,16 @@ de:
       fee_rate:
         one: Beitragssatz
         other: Beitragssätze
+      group/mitglieder/ordentliche_mitgliedschaft:
+        one: Ordentliche Mitgliedschaft
+        description: Ordentliche Mitgliedschaft
+      group/mitglieder/foerdermitgliedschaft:
+        one: Fördermitgliedschaft
+        description: Fördermitgliedschaft
+      group/mitglieder/zweitmitgliedschaft:
+        one: Zweitmitgliedschaft
+        description: Zweitmitgliedschaft
+
   groups:
     actions_show_pfadi_de:
       invoice_button_dropdown: Verbandsabrechnungen

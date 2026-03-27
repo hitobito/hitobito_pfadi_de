@@ -39,6 +39,7 @@ module HitobitoPfadiDe
 
       GroupsController.prepend PfadiDe::GroupsController
       PeopleController.prepend PfadiDe::PeopleController
+      RolesController.prepend PfadiDe::RolesController
       ServiceTokensController.permitted_attrs += [:fee_kinds]
 
       ServiceTokenDecorator.kinds += [:fee_kinds]
