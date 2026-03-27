@@ -45,6 +45,7 @@ module HitobitoPfadiDe
       PersonResource.prepend PfadiDe::PersonResource
       GroupResource.prepend PfadiDe::GroupResource
       RoleResource.prepend PfadiDe::RoleResource
+      SelfRegistrationResource.prepend PfadiDe::SelfRegistrationResource
 
       Export::Tabular::People::PeopleAddress.prepend PfadiDe::Export::Tabular::People::PeopleAddress
 

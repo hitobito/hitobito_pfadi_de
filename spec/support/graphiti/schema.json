@@ -4049,6 +4049,12 @@
           "readable": true,
           "writable": true,
           "description": null
+        },
+        "fee_kind_id": {
+          "type": "integer",
+          "readable": true,
+          "writable": true,
+          "description": null
         }
       },
       "extra_attributes": {},
