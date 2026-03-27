@@ -59,6 +59,7 @@ de:
         fee_kinds: Beitragsarten und -Sätze
 
       role:
+        fee_kind_id: Beitragsart
         class:
           permission:
             description:
