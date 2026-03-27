@@ -220,4 +220,166 @@ describe FeeKind do
       expect(fee_kinds(:baden_wuerttemberg_kind)).to have(4).fee_rates
     end
   end
+
+  context "#applicable_fee_rate" do
+    let(:fee_kind) { Fabricate(:fee_kind) }
+    let(:person) { people(:member) }
+    let(:period_start_on) { Date.new(2026, 1, 1) }
+    let(:period_end_on) { Date.new(2026, 12, 31) }
+
+    def create_rate(attrs = {})
+      defaults = {fee_kind: fee_kind, valid_from: Date.new(2025, 1, 1)}
+      Fabricate(:fee_rate, **defaults.merge(attrs))
+    end
+
+    it "returns nil when no FeeRates exist" do
+      expect(fee_kind.applicable_fee_rate(person, period_start_on, period_end_on)).to be_nil
+    end
+
+    it "returns the only FeeRate when one exists" do
+      rate = create_rate
+      expect(fee_kind.applicable_fee_rate(person, period_start_on, period_end_on)).to eq(rate)
+    end
+
+    context "active filter" do
+      it "excludes FeeRates not yet valid on period_start_on" do
+        create_rate(valid_from: period_start_on + 1.day)
+        expect(fee_kind.applicable_fee_rate(person, period_start_on, period_end_on)).to be_nil
+      end
+
+      it "excludes FeeRates expired before period_start_on" do
+        create_rate(valid_from: Date.new(2024, 1, 1), valid_until: period_start_on - 1.day)
+        expect(fee_kind.applicable_fee_rate(person, period_start_on, period_end_on)).to be_nil
+      end
+
+      it "includes FeeRates valid on period_start_on regardless of person entry date" do
+        rate = create_rate(valid_from: Date.new(2025, 1, 1))
+        person.last_entry_date_with_fee_kind = period_start_on + 1.month
+        expect(fee_kind.applicable_fee_rate(person, period_start_on, period_end_on)).to eq(rate)
+      end
+    end
+
+    context "max_age filter" do
+      let(:rate_with_max_age) { create_rate(max_age: 8) }
+      let(:rate_without_max_age) { create_rate }
+
+      before {
+        rate_with_max_age
+        rate_without_max_age
+      }
+
+      it "includes max_age rate when person is young enough" do
+        # reference_date = period_start_on = 2026-01-01
+        # threshold = 2026-01-01 - 8 years = 2018-01-01
+        # person born 2018-06-01 is under 8, qualifies
+        person.birthday = Date.new(2018, 6, 1)
+        result = fee_kind.applicable_fee_rate(person, period_start_on, period_end_on)
+        expect(result).to eq(rate_with_max_age)
+      end
+
+      it "excludes max_age rate when person is too old" do
+        person.birthday = Date.new(2015, 1, 1)
+        result = fee_kind.applicable_fee_rate(person, period_start_on, period_end_on)
+        expect(result).to eq(rate_without_max_age)
+      end
+
+      it "excludes max_age rate when person has no birthday (treated as old)" do
+        person.birthday = nil
+        result = fee_kind.applicable_fee_rate(person, period_start_on, period_end_on)
+        expect(result).to eq(rate_without_max_age)
+      end
+
+      it "includes rate with max_age nil for any person" do
+        person.birthday = Date.new(1980, 1, 1)
+        expect(fee_kind.applicable_fee_rate(person, period_start_on, period_end_on))
+          .to eq(rate_without_max_age)
+      end
+    end
+
+    context "max_member_months filter" do
+      # period_end_on = 2026-12-31
+      # For max_member_months=6: threshold = 2026-12-31 - 6 months = 2026-06-30
+      # Qualifies if reference_date >= 2026-06-30 (member joined late in period)
+      let(:half_year_rate) { create_rate(max_member_months: 6) }
+      let(:full_year_rate) { create_rate }
+
+      before {
+        half_year_rate
+        full_year_rate
+      }
+
+      it "applies half-year rate when person joined late in period" do
+        # entry_date 2026-07-01, within period -> reference_date = 2026-07-01
+        # threshold: 2026-06-30 <= 2026-07-01 -> qualifies for half-year
+        person.last_entry_date_with_fee_kind = Date.new(2026, 7, 1)
+        expect(fee_kind.applicable_fee_rate(person, period_start_on, period_end_on))
+          .to eq(half_year_rate)
+      end
+
+      it "applies full-year rate when person was already member before period" do
+        # entry_date nil -> reference_date = period_start_on = 2026-01-01
+        # threshold: 2026-06-30 <= 2026-01-01 -> false -> only full year matches
+        person.last_entry_date_with_fee_kind = nil
+        expect(fee_kind.applicable_fee_rate(person, period_start_on, period_end_on))
+          .to eq(full_year_rate)
+      end
+
+      it "applies full-year rate when entry_date is before period_start_on" do
+        person.last_entry_date_with_fee_kind = period_start_on - 1.day
+        expect(fee_kind.applicable_fee_rate(person, period_start_on, period_end_on))
+          .to eq(full_year_rate)
+      end
+
+      it "applies full-year rate when entry_date is after period_end_on (fallback)" do
+        person.last_entry_date_with_fee_kind = period_end_on + 1.day
+        expect(fee_kind.applicable_fee_rate(person, period_start_on, period_end_on))
+          .to eq(full_year_rate)
+      end
+    end
+
+    context "reference_date calculation" do
+      it "uses period_start_on when last_entry_date_with_fee_kind is nil" do
+        person.last_entry_date_with_fee_kind = nil
+        # max_member_months=11: threshold=2026-01-31, reference_date=2026-01-01 => no match
+        create_rate(max_member_months: 11)
+        expect(fee_kind.applicable_fee_rate(person, period_start_on, period_end_on)).to be_nil
+      end
+
+      it "uses entry_date when inside period" do
+        person.last_entry_date_with_fee_kind = Date.new(2026, 8, 1)
+        # max_member_months=5: threshold = 2026-07-31, reference_date=2026-08-01 => qualifies
+        rate = create_rate(max_member_months: 5)
+        expect(fee_kind.applicable_fee_rate(person, period_start_on, period_end_on)).to eq(rate)
+      end
+
+      it "falls back to period_start_on when entry_date is after period_end_on" do
+        person.last_entry_date_with_fee_kind = period_end_on + 1.month
+        # threshold=2026-01-31, reference_date=2026-01-01 => no match
+        create_rate(max_member_months: 11)
+        expect(fee_kind.applicable_fee_rate(person, period_start_on, period_end_on)).to be_nil
+      end
+    end
+
+    context "sorting" do
+      it "selects max_age rate first when both max_age and max_member_months match" do
+        person.birthday = Date.new(2020, 1, 1)
+        person.last_entry_date_with_fee_kind = Date.new(2026, 8, 1)
+
+        age_rate = create_rate(max_age: 8)
+        create_rate(max_member_months: 6)
+        create_rate
+
+        result = fee_kind.applicable_fee_rate(person, period_start_on, period_end_on)
+        expect(result).to eq(age_rate)
+      end
+
+      it "sorts by valid_from ascending when max_age and max_member_months are equal" do
+        older_rate = create_rate(valid_from: Date.new(2023, 1, 1))
+        create_rate(valid_from: Date.new(2024, 1, 1))
+
+        result = fee_kind.applicable_fee_rate(person, period_start_on, period_end_on)
+        expect(result).to eq(older_rate)
+      end
+    end
+  end
 end

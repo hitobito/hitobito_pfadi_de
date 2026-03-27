@@ -81,7 +81,33 @@ class FeeKind < ActiveRecord::Base
     self.class.root_fee_kind_of(self).restricted
   end
 
+  def applicable_fee_rate(person, period_start_on, period_end_on)
+    reference_date = fee_rate_reference_date(person, period_start_on, period_end_on)
+    reference_birthday = person.birthday || 100.years.ago.to_date
+
+    age_condition = "(max_age IS NULL OR
+      (:reference_date::date - make_interval(years => max_age))::date <= :reference_birthday)"
+    months_condition = "(max_member_months IS NULL OR
+      :period_end_on <= (:reference_date::date + make_interval(months => max_member_months))::date)"
+
+    fee_rates
+      .active(period_start_on)
+      .where("#{age_condition} AND #{months_condition}",
+        reference_date:, reference_birthday:, period_end_on:)
+      .order("max_age ASC NULLS LAST, max_member_months ASC NULLS LAST, valid_from ASC")
+      .first
+  end
+
   private
+
+  def fee_rate_reference_date(person, period_start_on, period_end_on)
+    entry_date = person.last_entry_date_with_fee_kind
+    if entry_date.present? && entry_date >= period_start_on && entry_date <= period_end_on
+      entry_date
+    else
+      period_start_on
+    end
+  end
 
   def validate_restricted
     if top_layer?
