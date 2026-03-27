@@ -3810,6 +3810,12 @@
           "readable": true,
           "writable": true,
           "description": null
+        },
+        "fee_kind_id": {
+          "type": "integer",
+          "readable": true,
+          "writable": "guarded",
+          "description": null
         }
       },
       "extra_attributes": {},
@@ -3823,7 +3829,8 @@
         "person_id": {},
         "group_id": {},
         "type": {},
-        "label": {}
+        "label": {},
+        "fee_kind_id": {}
       },
       "filters": {
         "id": {
@@ -3954,6 +3961,17 @@
             "eq"
           ],
           "single": true
+        },
+        "fee_kind_id": {
+          "type": "integer",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
         }
       },
       "relationships": {
@@ -3971,6 +3989,11 @@
           "type": "has_one",
           "description": null,
           "resource": "GroupResource"
+        },
+        "fee_kind": {
+          "type": "belongs_to",
+          "description": null,
+          "resource": "FeeKindResource"
         }
       },
       "stats": {
@@ -4023,6 +4046,12 @@
         },
         "privacy_policy_accepted": {
           "type": "boolean",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "fee_kind_id": {
+          "type": "integer",
           "readable": true,
           "writable": true,
           "description": null

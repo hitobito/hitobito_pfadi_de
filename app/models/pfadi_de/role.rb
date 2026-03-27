@@ -26,22 +26,20 @@ module PfadiDe::Role
     validates :fee_kind, presence: true, if: :has_fee_kind?
     validates :fee_kind, inclusion: {in: ->(role) { role.possible_fee_kinds }}, if: :has_fee_kind?
 
-    before_validation :ensure_fee_kind, on: :create
+    before_validation :ensure_fee_kind
   end
 
   def possible_fee_kinds
-    FeeKindChooser.new.possible_for_role(self)
+    FeeKindChooser.new(allow_restricted: true).possible_for_role(self)
+  end
+
+  def ensure_fee_kind
+    self.fee_kind = FeeKindChooser.new.default(self)
   end
 
   private
 
   def has_fee_kind?
     self.class.has_fee_kind
-  end
-
-  def ensure_fee_kind
-    if self.class.has_fee_kind
-      self.fee_kind = FeeKindChooser.new.default(self)
-    end
   end
 end
