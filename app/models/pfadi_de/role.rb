@@ -30,9 +30,9 @@ module PfadiDe::Role
 
     belongs_to :fee_kind
 
-    validates :fee_kind, absence: true, unless: :has_fee_kind?
-    validates :fee_kind, presence: true, if: :has_fee_kind?
-    validates :fee_kind, inclusion: {in: ->(role) { role.possible_fee_kinds }}, if: :has_fee_kind?
+    validates :fee_kind, absence: true, unless: :fee_kind_type?
+    validates :fee_kind, presence: true, if: :fee_kind_type?
+    validates :fee_kind, inclusion: {in: ->(role) { role.possible_fee_kinds }}, if: :fee_kind_type?
 
     before_validation :ensure_fee_kind
 
@@ -47,14 +47,14 @@ module PfadiDe::Role
     self.fee_kind = FeeKindChooser.new.default(self)
   end
 
-  private
-
-  def has_fee_kind?
-    self.class.has_fee_kind
+  def fee_kind_type?
+    (type.safe_constantize || self.class).has_fee_kind
   end
 
+  private
+
   def mark_person_for_entry_date_recalculation
-    return unless self.class.has_fee_kind
+    return unless fee_kind_type?
 
     person.update_attribute(:should_recalculate_last_entry_date_with_fee_kind, true)
   end

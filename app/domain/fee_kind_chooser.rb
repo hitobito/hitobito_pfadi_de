@@ -11,14 +11,14 @@ class FeeKindChooser
   end
 
   def default(role)
-    return nil unless role.class.has_fee_kind?
+    return nil unless role.fee_kind_type?
     return role.fee_kind if valid?(role)
 
     possible_for_role(role).first
   end
 
   def possible_for_role(role)
-    return FeeKind.none unless role.class.has_fee_kind
+    return FeeKind.none unless role.fee_kind_type?
 
     allowed_fee_kinds(layers: role.group.layer_group.hierarchy, role_type: role.type)
   end
