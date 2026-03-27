@@ -52,4 +52,49 @@ describe FeeRate, type: :model do
       fee_rates(:jahresbeitragssatz)
     ].map(&:name)
   end
+
+  describe ".active" do
+    let(:fee_kind) { fee_kinds(:baden_wuerttemberg_kind) }
+    let(:reference_date) { Date.new(2025, 6, 1) }
+
+    def create_rate(attrs)
+      Fabricate(:fee_rate, fee_kind:, **attrs)
+    end
+
+    it "includes FeeRate with valid_from on reference_date and no valid_until" do
+      rate = create_rate(valid_from: reference_date)
+      expect(described_class.active(reference_date)).to include(rate)
+    end
+
+    it "includes FeeRate with valid_from before reference_date and no valid_until" do
+      rate = create_rate(valid_from: reference_date - 1.year)
+      expect(described_class.active(reference_date)).to include(rate)
+    end
+
+    it "includes FeeRate when reference_date is within valid_from and valid_until" do
+      rate = create_rate(valid_from: reference_date - 1.month,
+        valid_until: reference_date + 1.month)
+      expect(described_class.active(reference_date)).to include(rate)
+    end
+
+    it "excludes FeeRate with valid_from after reference_date" do
+      rate = create_rate(valid_from: reference_date + 1.day)
+      expect(described_class.active(reference_date)).not_to include(rate)
+    end
+
+    it "excludes FeeRate with valid_until before reference_date" do
+      rate = create_rate(valid_from: reference_date - 1.year, valid_until: reference_date - 1.day)
+      expect(described_class.active(reference_date)).not_to include(rate)
+    end
+
+    it "includes FeeRate with valid_until exactly on reference_date" do
+      rate = create_rate(valid_from: reference_date - 1.year, valid_until: reference_date)
+      expect(described_class.active(reference_date)).to include(rate)
+    end
+
+    it "defaults to Date.current when no reference_date given" do
+      rate = create_rate(valid_from: Date.current, valid_until: Date.current)
+      expect(described_class.active).to include(rate)
+    end
+  end
 end
