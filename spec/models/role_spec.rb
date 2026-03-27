@@ -25,12 +25,10 @@ describe Role, type: :model do
           .to include(:fee_kind_id)
       end
 
-      it "is invalid with missing fee_kind" do
+      it "when missing fee_kind, automatically sets default before validation" do
         paying_member_role.fee_kind = nil
-        expect(paying_member_role).to_not be_valid
-
-        blank_errors = paying_member_role.errors.where(:fee_kind, :blank)
-        expect(blank_errors).to have(1).item
+        expect(paying_member_role).to be_valid
+        expect(paying_member_role.fee_kind).not_to be_nil
       end
 
       it "sets the fee_kind if none is set" do
@@ -51,17 +49,16 @@ describe Role, type: :model do
         expect(paying_member_role).to be_valid
       end
 
-      it "validates that a given fee-kind is possible on save" do
+      it "replaces invalid fee kind with a valid one on save" do
         social_fee_kind = Fabricate(
           :fee_kind,
           role_type: "Group::Mitglieder::Foerdermitgliedschaft"
         )
         paying_member_role.fee_kind = social_fee_kind
 
-        expect(paying_member_role).to_not be_valid
-
-        inclusion_errors = paying_member_role.errors.where(:fee_kind, :inclusion)
-        expect(inclusion_errors).to have(1).item
+        expect(paying_member_role.fee_kind).to eq social_fee_kind
+        expect(paying_member_role).to be_valid
+        expect(paying_member_role.fee_kind).not_to eq social_fee_kind
       end
 
       it "validates that a given fee-kind is possible on create" do
@@ -76,10 +73,9 @@ describe Role, type: :model do
           fee_kind: social_fee_kind
         )
 
-        expect(new_role.save).to be_falsey
-
-        inclusion_errors = new_role.errors.where(:fee_kind, :inclusion)
-        expect(inclusion_errors).to have(1).item
+        expect(new_role.fee_kind).to eq social_fee_kind
+        expect(new_role.save).to be_truthy
+        expect(new_role.fee_kind).not_to eq social_fee_kind
       end
     end
 
@@ -114,14 +110,10 @@ describe Role, type: :model do
         expect(new_role).to be_valid
       end
 
-      it "complains about present fee_kind" do
+      it "auto-fixes present fee_kind where none should be present" do
         normal_role.fee_kind = fee_kinds(:baden_wuerttemberg_kind)
-        expect(normal_role).to_not be_valid
-        expect(normal_role).to be_invalid
-
-        errors = normal_role.errors.where(:fee_kind)
-        expect(errors).to have(1).item
-        expect(errors.first.type).to eql :present
+        expect(normal_role).to be_valid
+        expect(normal_role.fee_kind).to be_nil
       end
     end
   end
