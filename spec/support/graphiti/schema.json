@@ -4138,7 +4138,7 @@
         },
         "fee_kind_id": {
           "type": "integer",
-          "readable": true,
+          "readable": false,
           "writable": true,
           "description": null
         }
