@@ -23,7 +23,7 @@ class FeeKindChooser
   end
 
   def possible_parents(layer)
-    Role.all_types.select(&:has_fee_kind).flat_map do |role_type|
+    Role.types_with_fee_kind.flat_map do |role_type|
       allowed_fee_kinds(layers: layer.ancestors, role_type: role_type.name)
     end
   end

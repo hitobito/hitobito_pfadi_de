@@ -8,6 +8,14 @@
 module PfadiDe::Role
   extend ActiveSupport::Concern
 
+  class_methods do
+    # All role types that are fee-relevant (has_fee_kind = true).
+    # Used for database queries and fee kind management.
+    def types_with_fee_kind
+      all_types.select(&:has_fee_kind)
+    end
+  end
+
   included do
     # A valid and up-to-date Führungszeugnis is required for this role
     class_attribute :sgbviii_required
