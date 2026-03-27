@@ -35,6 +35,8 @@ module PfadiDe::Role
     validates :fee_kind, inclusion: {in: ->(role) { role.possible_fee_kinds }}, if: :has_fee_kind?
 
     before_validation :ensure_fee_kind, on: :create
+
+    after_commit :mark_person_for_entry_date_recalculation
   end
 
   def possible_fee_kinds
@@ -51,5 +53,11 @@ module PfadiDe::Role
     if self.class.has_fee_kind
       self.fee_kind = FeeKindChooser.new.default(self)
     end
+  end
+
+  def mark_person_for_entry_date_recalculation
+    return unless self.class.has_fee_kind
+
+    person.update_attribute(:should_recalculate_last_entry_date_with_fee_kind, true)
   end
 end
