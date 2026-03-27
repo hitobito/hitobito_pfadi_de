@@ -40,7 +40,8 @@ module HitobitoPfadiDe
 
       ServiceTokenDecorator.kinds += [:fee_kinds]
 
-      Wizards::Steps::NewUserForm.support_company = false
+      Wizards::RegisterNewUserWizard.prepend PfadiDe::Wizards::RegisterNewUserWizard
+      Wizards::Steps::NewUserForm.prepend PfadiDe::Wizards::Steps::NewUserForm
 
       PersonResource.prepend PfadiDe::PersonResource
       GroupResource.prepend PfadiDe::GroupResource
