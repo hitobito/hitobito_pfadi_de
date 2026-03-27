@@ -14,6 +14,13 @@ module PfadiDe::Person
     Person::PUBLIC_ATTRS.push(:pronoun, :exit_date, :bank_account_owner, :iban, :bic,
       :bank_name, :payment_method)
 
+    Person::INTERNAL_ATTRS.push(:last_entry_date_with_fee_kind,
+      :should_recalculate_last_entry_date_with_fee_kind)
+    paper_trail_options[:skip].concat([
+      "last_entry_date_with_fee_kind",
+      "should_recalculate_last_entry_date_with_fee_kind"
+    ])
+
     include I18nSettable
     include I18nEnums
 
