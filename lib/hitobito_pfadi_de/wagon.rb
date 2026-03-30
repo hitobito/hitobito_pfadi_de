@@ -30,10 +30,12 @@ module HitobitoPfadiDe
       Group.include PfadiDe::Group
       Person.prepend PfadiDe::Person
       Contactable.include PfadiDe::Contactable
+      ServiceToken.prepend PfadiDe::ServiceToken
 
       VariousAbility.include PfadiDe::VariousAbility
       InvoiceAbility.include PfadiDe::InvoiceAbility
-      TokenAbility.prepend PfadiDe::TokenAbility
+      TokenAbility.prepend PfadiDe::ApiScopeAbility
+      DoorkeeperTokenAbility.prepend PfadiDe::ApiScopeAbility
 
       GroupsController.prepend PfadiDe::GroupsController
       PeopleController.prepend PfadiDe::PeopleController
