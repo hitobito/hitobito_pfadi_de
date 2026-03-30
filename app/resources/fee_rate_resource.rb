@@ -8,6 +8,9 @@
 class FeeRateResource < ApplicationResource
   primary_endpoint "fee_rates", [:index, :show]
 
+  self.readable_class = JsonApi::FeeKindAbility
+  self.acceptable_scopes += %w[fee_kinds]
+
   attribute :name, :string
   attribute :amount, :float
   attribute :valid_from, :date
@@ -17,12 +20,4 @@ class FeeRateResource < ApplicationResource
   attribute :fee_kind_id, :integer
 
   belongs_to :fee_kind, resource: FeeKindResource
-
-  def index_ability
-    JsonApi::FeeKindAbility.new(current_ability)
-  end
-
-  def base_scope
-    super.valid_today
-  end
 end

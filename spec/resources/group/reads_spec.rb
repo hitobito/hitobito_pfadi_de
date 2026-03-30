@@ -8,6 +8,8 @@
 require "spec_helper"
 
 describe GroupResource, type: :resource do
+  before { allow(Graphiti.context[:object]).to receive(:current_scopes).and_return(["api"]) }
+
   describe "serialization" do
     let!(:group) { groups(:adler) }
     let!(:person) { people(:stammesverwaltung) }

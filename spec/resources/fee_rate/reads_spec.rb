@@ -33,9 +33,10 @@ describe FeeRateResource, type: :resource do
 
     it "works" do
       render
-      data = jsonapi_data[0]
+      expect(jsonapi_data.length).to eq 3
+      data = jsonapi_data.find { |data| data.id == fee_rate.id }
       expect(data.jsonapi_type).to eq("fee_rates")
-      expect(data.id).to eq(fee_rate.id)
+      expect(data.attributes["amount"]).to eq(fee_rate.amount)
     end
   end
 

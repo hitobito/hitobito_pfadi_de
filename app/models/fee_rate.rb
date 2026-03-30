@@ -17,5 +17,7 @@ class FeeRate < ApplicationRecord
     where("valid_from <= ? AND (valid_until IS NULL OR valid_until >= ?)", today, today)
   }
 
+  def group = layer
+
   def to_s = name
 end
