@@ -27,7 +27,7 @@ class FeeKindsSeeder
   ]
 
   def seed_fee_kinds
-    role_types = Role.all_types.select(&:has_fee_kind)
+    role_types = Role.types_with_fee_kind
     role_types.each do |role_type|
       root_fee_kind = FeeKind.seed_once(
         name: "Bundesbeitrag #{role_type.model_name.human}",
