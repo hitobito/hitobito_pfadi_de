@@ -8,7 +8,7 @@
 require "spec_helper"
 
 describe "fee_rates#index", type: :request do
-  it_behaves_like "jsonapi authorized requests", required_flags: ["fee_kinds"], person: nil do
+  it_behaves_like "jsonapi authorized requests", required_scopes: ["fee_kinds"], person: nil do
     let(:service_token) { service_tokens(:fee_kind_bawue_token) }
     let(:params) { {} }
 

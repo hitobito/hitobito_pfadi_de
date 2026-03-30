@@ -10,6 +10,8 @@ require "spec_helper"
 describe PersonResource, type: :resource do
   let(:user) { people(:stammesverwaltung) }
 
+  before { allow(Graphiti.context[:object]).to receive(:current_scopes).and_return(["api"]) }
+
   around do |example|
     RSpec::Mocks.with_temporary_scope do
       Graphiti.with_context(double({

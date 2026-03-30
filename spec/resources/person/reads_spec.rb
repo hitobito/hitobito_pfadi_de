@@ -8,6 +8,8 @@
 require "spec_helper"
 
 describe PersonResource, type: :resource do
+  before { allow(Graphiti.context[:object]).to receive(:current_scopes).and_return(["api"]) }
+
   describe "serialization" do
     let!(:person) { people(:bottom_leader) }
 

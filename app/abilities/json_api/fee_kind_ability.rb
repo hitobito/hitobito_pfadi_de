@@ -8,18 +8,31 @@
 class JsonApi::FeeKindAbility
   include CanCan::Ability
 
-  def initialize(main_ability)
-    can :index, FeeKind, readable_fee_kinds(main_ability)
-    can :index, FeeRate, readable_fee_rates(main_ability)
+  def initialize(user)
+    @user = user
+    @user_context = AbilityDsl::UserContext.new(user)
+    can :index, FeeKind, accessible_fee_kinds
+    can :index, FeeRate, accessible_fee_rates
   end
 
   private
 
-  def readable_fee_kinds(main_ability)
-    FeeKind.accessible_by(FeeKindReadables.new(main_ability)).unscope(:select)
+  def accessible_fee_kinds
+    return true if @user.root?
+
+    {layer_id: layer_group_ids, archived_at: nil}
   end
 
-  def readable_fee_rates(main_ability)
-    FeeRate.where(fee_kind_id: readable_fee_kinds(main_ability).select(:id))
+  def accessible_fee_rates
+    return true if @user.root?
+
+    {
+      fee_kind: {layer_id: layer_group_ids, archived_at: nil},
+      valid_from: ..Time.zone.today, valid_until: [nil, Time.zone.today..]
+    }
+  end
+
+  def layer_group_ids
+    @user_context.permission_layer_ids(:finance)
   end
 end
