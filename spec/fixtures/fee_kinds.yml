@@ -8,8 +8,12 @@ top_fee_kind:
   layer: root
   role_type: Group::Mitglieder::OrdentlicheMitgliedschaft
   restricted: false
+  lft: 1
+  rgt: 4
 
 baden_wuerttemberg_kind:
   name: BaWü Kind
   layer: baden_wuerttemberg
   parent: top_fee_kind
+  lft: 2
+  rgt: 3
