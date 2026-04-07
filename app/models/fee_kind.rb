@@ -4,6 +4,8 @@
 #  https://github.com/hitobito/hitobito.
 
 class FeeKind < ActiveRecord::Base
+  acts_as_nested_set dependent: :destroy
+
   belongs_to :layer, class_name: "Group"
   belongs_to :parent, class_name: "FeeKind", optional: true
   has_many :fee_rates, dependent: :destroy
