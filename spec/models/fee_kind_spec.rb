@@ -100,11 +100,11 @@ describe FeeKind do
 
     it "cannot change parent_id after create" do
       new_parent = Fabricate(:fee_kind)
-      
+
       expect {
         fee_kind.update!(parent: new_parent)
       }.to raise_error(ActiveRecord::RecordInvalid)
-      
+
       fee_kind.reload
       expect(fee_kind.parent).to eq fee_kinds(:top_fee_kind)
     end
