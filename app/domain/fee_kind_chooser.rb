@@ -50,7 +50,7 @@ class FeeKindChooser
       .includes(:layer)
       .to_a
       .select do |fee_kind| # TODO do this in SQL after hitobito_pfadi_de#52 is implemented
-      FeeKind.root_fee_kind_of(fee_kind).role_type == role_type
+      fee_kind.root.role_type == role_type
     end
   end
 

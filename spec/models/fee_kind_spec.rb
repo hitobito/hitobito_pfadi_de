@@ -75,7 +75,7 @@ describe FeeKind do
 
     it "#restricted? returns restricted value" do
       expect(fee_kind.restricted?).to be_falsy
-      fee_kind.restricted = true
+      fee_kind.update!(restricted: true)
       expect(fee_kind.restricted?).to be_truthy
     end
   end
@@ -99,9 +99,13 @@ describe FeeKind do
     end
 
     it "cannot change parent_id after create" do
-      fee_kind.update!(parent: Fabricate(:fee_kind))
+      new_parent = Fabricate(:fee_kind)
+      
+      expect {
+        fee_kind.update!(parent: new_parent)
+      }.to raise_error(ActiveRecord::RecordInvalid)
+      
       fee_kind.reload
-
       expect(fee_kind.parent).to eq fee_kinds(:top_fee_kind)
     end
 
@@ -112,24 +116,24 @@ describe FeeKind do
     end
   end
 
-  context "root_fee_kind_of" do
+  context "#root" do
     let(:group_bawue) { groups(:baden_wuerttemberg) }
     let(:root) { fee_kinds(:top_fee_kind) }
     let(:level_1) { Fabricate(:fee_kind, parent: root, layer: group_bawue) }
     let(:group_level_2) { Fabricate(Group::Stamm.sti_name, parent: group_bawue) }
     let(:level_2) { Fabricate(:fee_kind, parent: level_1, layer: group_level_2) }
 
-    it "returns nil if fee_kind has no parent" do
-      expect(FeeKind.root_fee_kind_of(root)).to be root
+    it "returns self if fee_kind has no parent" do
+      expect(root.root).to eq root
     end
 
-    it "returns the parent if only two levels exist" do
-      result = FeeKind.root_fee_kind_of(level_1)
+    it "returns the root if only two levels exist" do
+      result = level_1.root
       expect(result).to eq(root)
     end
 
     it "climbs multiple levels to find the root ancestor" do
-      result = FeeKind.root_fee_kind_of(level_2)
+      result = level_2.root
 
       expect(result).to eq(root)
       expect(result.parent_id).to be_nil
