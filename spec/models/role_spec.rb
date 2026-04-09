@@ -31,16 +31,32 @@ describe Role, type: :model do
         expect(paying_member_role.fee_kind).not_to be_nil
       end
 
-      it "sets the fee_kind if none is set" do
-        new_role = Fabricate.build(
-          paying_member_role.type.to_sym,
-          group: paying_member_role.group
-        )
+      context "fee_kind" do
+        it "is set if blank on validate" do
+          new_role = Fabricate.build(
+            paying_member_role.type.to_sym,
+            group: paying_member_role.group
+          )
 
-        expect do
-          new_role.save
-        end.to change(new_role, :fee_kind)
-          .from(nil).to(fee_kinds(:baden_wuerttemberg_kind))
+          expect do
+            new_role.validate
+          end.to change(new_role, :fee_kind)
+            .from(nil).to(fee_kinds(:baden_wuerttemberg_kind))
+        end
+
+        it "is preserved when present on validate" do
+          top_fee_kind = fee_kinds(:top_fee_kind)
+          new_role = Fabricate.build(
+            paying_member_role.type.to_sym,
+            group: paying_member_role.group,
+            fee_kind: top_fee_kind
+          )
+
+          expect do
+            new_role.validate
+          end.to_not change(new_role, :fee_kind)
+            .from(top_fee_kind)
+        end
       end
 
       it "is valid with a fee_kind" do
@@ -76,6 +92,38 @@ describe Role, type: :model do
         expect(new_role.fee_kind).to eq social_fee_kind
         expect(new_role.save).to be_truthy
         expect(new_role.fee_kind).not_to eq social_fee_kind
+      end
+
+      describe "#possible_fee_kinds" do
+        it "includes restricted fee kinds" do
+          fee_kinds(:top_fee_kind).update!(restricted: true)
+          restricted_fee_kind = Fabricate(
+            :fee_kind,
+            name: "Restricted Fee Kind",
+            layer: groups(:adler),
+            parent: fee_kinds(:baden_wuerttemberg_kind)
+          )
+
+          possible = paying_member_role.possible_fee_kinds
+          expect(possible).to include(restricted_fee_kind)
+        end
+      end
+
+      describe "#fee_kind_type?" do
+        it "returns true for roles with has_fee_kind" do
+          expect(paying_member_role.fee_kind_type?).to be true
+        end
+
+        it "works with STI type as string (before constantization)" do
+          # Simulate the case during STI instantiation where type is a string
+          new_role = Role.new(type: "Group::Mitglieder::OrdentlicheMitgliedschaft")
+          expect(new_role.fee_kind_type?).to be true
+        end
+
+        it "works with already constantized class" do
+          new_role = Group::Mitglieder::OrdentlicheMitgliedschaft.new
+          expect(new_role.fee_kind_type?).to be true
+        end
       end
     end
 
@@ -114,6 +162,18 @@ describe Role, type: :model do
         normal_role.fee_kind = fee_kinds(:baden_wuerttemberg_kind)
         expect(normal_role).to be_valid
         expect(normal_role.fee_kind).to be_nil
+      end
+
+      describe "#fee_kind_type?" do
+        it "returns false for roles without has_fee_kind" do
+          expect(normal_role.fee_kind_type?).to be false
+        end
+
+        it "works with STI type as string (before constantization)" do
+          # Simulate the case during STI instantiation where type is a string
+          new_role = Role.new(type: normal_role.type)
+          expect(new_role.fee_kind_type?).to be false
+        end
       end
     end
   end

@@ -43,6 +43,8 @@ module PfadiDe::Role
     FeeKindChooser.new(allow_restricted: true).possible_for_role(self)
   end
 
+  # Sets fee_kind to the default value. If a value is present already, the `FeeKindChooser`
+  # will return the same value as long as it is a valid option for the current role type.
   def ensure_fee_kind
     self.fee_kind = FeeKindChooser.new.default(self)
   end
