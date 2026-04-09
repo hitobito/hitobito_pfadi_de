@@ -29,6 +29,10 @@ class FeeKind < ActiveRecord::Base
     where(archived_at: nil).or(where(archived_at: Time.zone.now..))
   }
 
+  def not_archived?
+    archived_at.nil? || archived_at > Time.zone.now
+  end
+
   def archive
     touch(:archived_at)
   end

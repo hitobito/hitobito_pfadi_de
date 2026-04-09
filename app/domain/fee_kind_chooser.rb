@@ -11,13 +11,14 @@ class FeeKindChooser
   end
 
   def default(role)
-    return role.fee_kind if role.fee_kind_id
+    return nil unless role.fee_kind_type?
+    return role.fee_kind if valid?(role)
 
     possible_for_role(role).first
   end
 
   def possible_for_role(role)
-    return FeeKind.none unless role.class.has_fee_kind
+    return FeeKind.none unless role.fee_kind_type?
 
     allowed_fee_kinds(layers: role.group.layer_group.hierarchy, role_type: role.type)
   end
@@ -30,34 +31,40 @@ class FeeKindChooser
 
   private
 
-  # This includes FeeKinds which have a parent with a non-matching role_type.
-  # Therefore, it may include too many kinds. Also, this alone does not
-  # cover all the edge-cases and requirements, see below.
-  def potential_fee_kinds(layers:)
-    FeeKind
-      .where(layer: layers)
-      .not_archived
-      .joins(:layer)
-      .order(created_at: :asc)
+  # Checks whether the pre-selected fee kind on a role is valid for that role.
+  # This check is independent of the user's permissions or archival or rules about
+  # present or absent parents or children. It just validates whether anyone ever
+  # could have selected this fee kind for this role.
+  def valid?(role)
+    all_candidates(layers: role.group.layer_group.hierarchy, role_type: role.type).pluck(:id)
+      .include?(role.fee_kind_id)
   end
 
-  # This filters the raw list of fee kinds by role type, which is inherited
-  # from the root of the fee kind parent hierarchy.
-  # It still does not cover all requirements, see allowed_fee_kinds below.
-  def matching_fee_kinds(layers:, role_type:)
-    potential_fee_kinds(layers:).reject do |fee_kind|
-      # remove fee kinds with non-matching role-types
-      next true if FeeKind.root_fee_kind_of(fee_kind).role_type != role_type
+  # Returns an ordered list of all fee kinds which fit the basic premises of the role:
+  # The layer and the role type.
+  def all_candidates(layers:, role_type:)
+    FeeKind
+      .where(layer: layers)
+      .joins(:layer)
+      .order(created_at: :asc)
+      .includes(:layer)
+      .to_a
+      .select do |fee_kind| # TODO do this in SQL after hitobito_pfadi_de#52 is implemented
+      FeeKind.root_fee_kind_of(fee_kind).role_type == role_type
     end
   end
 
-  # Apply domain-rules for further limiting of the result set. The previously
-  # created order should stay intact as we only remove items from the list.
-  def allowed_fee_kinds(layers:, role_type:)
-    matching = matching_fee_kinds(layers:, role_type:)
-    lft_of_lowest_non_empty_layer = matching.map(&:layer).map(&:lft).max
+  def current_candidates(layers:, role_type:)
+    all_candidates(layers:, role_type:).select(&:not_archived?)
+  end
 
-    matching.reject do |fee_kind|
+  # Applies the full list of conditions on when fee kinds may be selected.
+  def allowed_fee_kinds(layers:, role_type:)
+    candidates = current_candidates(layers:, role_type:)
+
+    lft_of_lowest_non_empty_layer = candidates.map(&:layer).map(&:lft).max
+
+    candidates.reject do |fee_kind|
       # remove fee kinds from layers higher than necessary
       next true if fee_kind.layer.lft != lft_of_lowest_non_empty_layer
 

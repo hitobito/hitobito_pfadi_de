@@ -30,33 +30,33 @@ module PfadiDe::Role
 
     belongs_to :fee_kind
 
-    validates :fee_kind, absence: true, unless: :has_fee_kind?
-    validates :fee_kind, presence: true, if: :has_fee_kind?
-    validates :fee_kind, inclusion: {in: ->(role) { role.possible_fee_kinds }}, if: :has_fee_kind?
+    validates :fee_kind, absence: true, unless: :fee_kind_type?
+    validates :fee_kind, presence: true, if: :fee_kind_type?
+    validates :fee_kind, inclusion: {in: ->(role) { role.possible_fee_kinds }}, if: :fee_kind_type?
 
-    before_validation :ensure_fee_kind, on: :create
+    before_validation :ensure_fee_kind
 
     after_commit :mark_person_for_entry_date_recalculation
   end
 
   def possible_fee_kinds
-    FeeKindChooser.new.possible_for_role(self)
+    FeeKindChooser.new(allow_restricted: true).possible_for_role(self)
+  end
+
+  # Sets fee_kind to the default value. If a value is present already, the `FeeKindChooser`
+  # will return the same value as long as it is a valid option for the current role type.
+  def ensure_fee_kind
+    self.fee_kind = FeeKindChooser.new.default(self)
+  end
+
+  def fee_kind_type?
+    (type.safe_constantize || self.class).has_fee_kind
   end
 
   private
 
-  def has_fee_kind?
-    self.class.has_fee_kind
-  end
-
-  def ensure_fee_kind
-    if self.class.has_fee_kind
-      self.fee_kind = FeeKindChooser.new.default(self)
-    end
-  end
-
   def mark_person_for_entry_date_recalculation
-    return unless self.class.has_fee_kind
+    return unless fee_kind_type?
 
     person.update_attribute(:should_recalculate_last_entry_date_with_fee_kind, true)
   end

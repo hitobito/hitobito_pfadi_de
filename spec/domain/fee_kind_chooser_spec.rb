@@ -57,13 +57,43 @@ describe FeeKindChooser, type: :domain do
     let(:current_group) { groups(:adler_mitglieder) }
     let(:current_layer) { current_group.layer_group }
 
-    it "return a correct fee_kind with a correct role-type" do
+    it "returns a correct fee_kind with a correct role-type" do
       förder_fee_kind = Fabricate(:fee_kind, role_type: role_type)
       förder_role = Fabricate.build(role_type.to_sym, group: current_group)
 
       chooser = described_class.new(allow_restricted:)
 
       expect(chooser.default(förder_role)).to eql förder_fee_kind
+    end
+
+    it "returns the pre-selected fee kind if it is a valid choice" do
+      _förder_fee_kind = Fabricate(:fee_kind, role_type: role_type, created_at: 1.year.ago)
+      förder_fee_kind_2 = Fabricate(:fee_kind, role_type: role_type, created_at: 2.weeks.ago)
+      role = Fabricate.build(role_type.to_sym, group: current_group, fee_kind: förder_fee_kind_2)
+      expect(subject.default(role)).to eq förder_fee_kind_2
+    end
+
+    it "returns a valid default if the pre-selected fee kind is invalid" do
+      förder_fee_kind = Fabricate(:fee_kind, role_type: role_type, created_at: 1.year.ago)
+      förder_fee_kind_2 = Fabricate(:fee_kind,
+        role_type: "Group::Mitglieder::OrdentlicheMitgliedschaft", created_at: 2.weeks.ago)
+      role = Fabricate.build(role_type.to_sym, group: current_group, fee_kind: förder_fee_kind_2)
+      expect(subject.default(role)).to eq förder_fee_kind
+    end
+
+    it "returns the pre-selected fee kind even if it is archived" do
+      _förder_fee_kind = Fabricate(:fee_kind, role_type: role_type, created_at: 1.year.ago)
+      förder_fee_kind_2 = Fabricate(:fee_kind, role_type: role_type, created_at: 2.weeks.ago,
+        archived_at: 2.days.ago)
+      role = Fabricate.build(role_type.to_sym, group: current_group, fee_kind: förder_fee_kind_2)
+      expect(subject.default(role)).to eq förder_fee_kind_2
+    end
+
+    it "returns nil for unrelated role with pre-selected fee kind" do
+      förder_fee_kind = Fabricate(:fee_kind, role_type: role_type, created_at: 1.year.ago)
+      role = Fabricate.build(Group::Mitglieder::Zweitmitgliedschaft.name,
+        group: current_group, fee_kind: förder_fee_kind)
+      expect(subject.default(role)).to eq nil
     end
 
     it "tries to find a fee_kind in the current layer" do
@@ -171,6 +201,14 @@ describe FeeKindChooser, type: :domain do
       förder_role = Fabricate.build(role_type.to_sym, group: groups(:adler))
 
       expect(subject.possible_for_role(förder_role)).to_not include(current_layer_restricted)
+    end
+
+    it "still treats pre-selected restricted fee kind as valid" do
+      _förder_fee_kind = Fabricate(:fee_kind, role_type: role_type, created_at: 1.year.ago)
+      förder_fee_kind_2 = Fabricate(:fee_kind, role_type: role_type, restricted: true,
+        created_at: 2.weeks.ago)
+      role.fee_kind = förder_fee_kind_2
+      expect(subject.default(role)).to eq förder_fee_kind_2
     end
   end
 end

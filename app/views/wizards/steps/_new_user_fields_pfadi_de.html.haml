@@ -1,0 +1,16 @@
+- #  Copyright (c) 2026, BdP and DPSG. This file is part of
+- #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
+- #  or later. See the COPYING file at the top-level directory or at
+- #  https://github.com/hitobito/hitobito_pfadi_de.
+
+- role_class = f.object.wizard.self_registration_role_type.constantize
+- if role_class.used_attributes.include?(:fee_kind_id)
+  - role = role_class.new(group: f.object.wizard.group)
+  - possible_fee_kinds = FeeKindChooser.new.possible_for_role(role)
+  = f.labeled_collection_select(:fee_kind_id,
+                                possible_fee_kinds,
+                                :id,
+                                :name,
+                                { selected: f.object.fee_kind_id || FeeKindChooser.new.default(role).id },
+                                { required: true, class: "form-select form-select-sm w-100",
+                                  label: Role.human_attribute_name(:fee_kind_id), disabled: possible_fee_kinds.one? })

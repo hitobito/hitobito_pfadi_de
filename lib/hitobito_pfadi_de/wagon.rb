@@ -39,14 +39,18 @@ module HitobitoPfadiDe
 
       GroupsController.prepend PfadiDe::GroupsController
       PeopleController.prepend PfadiDe::PeopleController
+      RolesController.prepend PfadiDe::RolesController
       ServiceTokensController.permitted_attrs += [:fee_kinds]
 
       ServiceTokenDecorator.kinds += [:fee_kinds]
 
-      Wizards::Steps::NewUserForm.support_company = false
+      Wizards::RegisterNewUserWizard.prepend PfadiDe::Wizards::RegisterNewUserWizard
+      Wizards::Steps::NewUserForm.prepend PfadiDe::Wizards::Steps::NewUserForm
 
       PersonResource.prepend PfadiDe::PersonResource
       GroupResource.prepend PfadiDe::GroupResource
+      RoleResource.prepend PfadiDe::RoleResource
+      SelfRegistrationResource.prepend PfadiDe::SelfRegistrationResource
 
       Export::Tabular::People::PeopleAddress.prepend PfadiDe::Export::Tabular::People::PeopleAddress
 
