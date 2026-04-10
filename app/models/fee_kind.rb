@@ -4,6 +4,8 @@
 #  https://github.com/hitobito/hitobito.
 
 class FeeKind < ActiveRecord::Base
+  acts_as_nested_set dependent: :destroy
+
   belongs_to :layer, class_name: "Group"
   belongs_to :parent, class_name: "FeeKind", optional: true
   has_many :fee_rates, dependent: :destroy
@@ -11,6 +13,7 @@ class FeeKind < ActiveRecord::Base
   attr_readonly :parent_id, :role_type
 
   validates :name, presence: true
+  validate :parent_id_unchanged, on: :update
 
   validates :role_type, presence: true, if: :top_layer?
   validates :role_type, absence: true, unless: :top_layer?
@@ -37,25 +40,6 @@ class FeeKind < ActiveRecord::Base
     touch(:archived_at)
   end
 
-  def self.root_fee_kind_of(fee_kind)
-    return fee_kind if fee_kind.parent_id.nil?
-
-    query = <<-SQL
-      WITH RECURSIVE root_fee_kind AS (
-          SELECT *
-          FROM fee_kinds
-          WHERE id = #{fee_kind.parent_id}
-        UNION ALL
-          SELECT fee_kinds.*
-          FROM fee_kinds
-          JOIN root_fee_kind ON fee_kinds.id = root_fee_kind.parent_id
-      )
-      SELECT * FROM root_fee_kind WHERE parent_id IS NULL;
-    SQL
-
-    find_by_sql(query)&.first
-  end
-
   def to_s(format = :default)
     archived_suffix = "(#{I18n.t(:"activerecord.attributes.fee_kind.archived")})" if archived_at?
     roles_suffix = "(#{human_role_name})" if format == :with_role_type
@@ -68,7 +52,7 @@ class FeeKind < ActiveRecord::Base
   end
 
   def human_role_name
-    (self[:role_type] || self.class.root_fee_kind_of(self)&.role_type).constantize
+    (self[:role_type] || root&.role_type).constantize
       .model_name
       .human
   end
@@ -82,10 +66,14 @@ class FeeKind < ActiveRecord::Base
   end
 
   def restricted?
-    self.class.root_fee_kind_of(self).restricted
+    root.restricted
   end
 
   private
+
+  def parent_id_unchanged
+    errors.add(:parent_id, :readonly) if parent_id_changed?
+  end
 
   def validate_restricted
     if top_layer?
