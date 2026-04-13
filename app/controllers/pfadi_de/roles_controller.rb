@@ -20,7 +20,7 @@ module PfadiDe::RolesController
 
   private
 
-  def permitted_attrs
+  def permitted_attrs(role_type = entry.class)
     super - (entry.new_record? ? [] : [:fee_kind_id])
   end
 end
