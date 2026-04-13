@@ -61,6 +61,13 @@ module HitobitoPfadiDe
     initializer "pfadi_de.add_settings" do |_app|
       Settings.add_source!(File.join(paths["config"].existent, "settings.yml"))
       Settings.reload!
+
+      if Rails.env.test?
+        Settings.application.languages = {
+          de: "Deutsch"
+        }.with_indifferent_access
+        Settings.application.additional_languages = {}.with_indifferent_access
+      end
     end
 
     initializer "pfadi_de.add_inflections" do |_app|
