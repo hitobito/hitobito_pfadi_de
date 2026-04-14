@@ -87,8 +87,8 @@ class FeeKindChooser
     # - Its rgt is <= root's rgt (ends before or at root)
     # - The root has no parent (parent_id IS NULL)
     join_condition = fee_kinds[:lft].gteq(root_alias[:lft])      # fee_kinds.lft >= root.lft
-                                    .and(fee_kinds[:rgt].lteq(root_alias[:rgt]))               # AND fee_kinds.rgt <= root.rgt
-                                    .and(root_alias[:parent_id].eq(nil))                       # AND root.parent_id IS NULL
+      .and(fee_kinds[:rgt].lteq(root_alias[:rgt]))               # AND fee_kinds.rgt <= root.rgt
+      .and(root_alias[:parent_id].eq(nil))                       # AND root.parent_id IS NULL
 
     # Build the JOIN and convert to format ActiveRecord understands
     # .join() creates the JOIN, .on() adds the condition, .join_sources extracts for AR
@@ -101,7 +101,7 @@ class FeeKindChooser
 
     # Join to root fee_kinds and filter where root.restricted is false or NULL
     relation.joins(join_to_root_fee_kinds(root_for_restricted))
-            .where(root_for_restricted[:restricted].eq(false)          # WHERE root.restricted = false
-                                                   .or(root_for_restricted[:restricted].eq(nil)))           # OR root.restricted IS NULL
+      .where(root_for_restricted[:restricted].eq(false)          # WHERE root.restricted = false
+      .or(root_for_restricted[:restricted].eq(nil)))             # OR root.restricted IS NULL
   end
 end
