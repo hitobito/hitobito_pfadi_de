@@ -5,7 +5,7 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de
 
-class AddNestedSetToFeeKinds < ActiveRecord::Migration[7.0]
+class AddNestedSetToFeeKinds < ActiveRecord::Migration[8.0]
   def change
     change_table :fee_kinds, bulk: true do |t|
       t.integer :lft, null: false, default: 0, index: true
