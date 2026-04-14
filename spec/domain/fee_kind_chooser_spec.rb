@@ -8,6 +8,8 @@
 require "spec_helper"
 
 describe FeeKindChooser, type: :domain do
+  include QueryHelpers
+
   subject { described_class.new(allow_restricted:) }
 
   context "for a role without a fee_kind" do
@@ -111,7 +113,7 @@ describe FeeKindChooser, type: :domain do
       chooser = described_class.new(allow_restricted:)
 
       # assumptions
-      expect(FeeKind.root_fee_kind_of(middle_layer_fee_kind).role_type).to eq role_type
+      expect(middle_layer_fee_kind.root.role_type).to eq role_type
       expect(middle_layer_fee_kind.layer_id).to eq middle_group_role.group.layer_group_id
 
       expect(chooser.possible_for_role(middle_group_role)).to include(middle_layer_fee_kind)
@@ -181,7 +183,7 @@ describe FeeKindChooser, type: :domain do
     end
 
     it "can list possible fee_kinds" do
-      expect(subject.possible_for_role(role)).to eql [non_restricted_kind]
+      expect(subject.possible_for_role(role).to_a).to eql [non_restricted_kind]
     end
 
     it "does not list restricted fee_kinds as possible" do
@@ -209,6 +211,58 @@ describe FeeKindChooser, type: :domain do
         created_at: 2.weeks.ago)
       role.fee_kind = förder_fee_kind_2
       expect(subject.default(role)).to eq förder_fee_kind_2
+    end
+  end
+
+  context "uses SQL-based queries for performance" do
+    let(:allow_restricted) { true }
+    let(:role_type) { "Group::Mitglieder::Foerdermitgliedschaft" }
+
+    it "avoids N+1 queries when loading multiple fee_kinds" do
+      # Arrange
+      role = roles(:paying_member)
+      role.group.layer_group  # Force loading to avoid counting these queries
+
+      # Add multiple fee_kinds to ensure we're not doing N+1 queries
+      2.times {
+        Fabricate(:fee_kind, parent: fee_kinds(:top_fee_kind), layer: groups(:baden_wuerttemberg))
+      }
+
+      chooser = described_class.new(allow_restricted:)
+
+      result = nil
+      expect { result = chooser.possible_for_role(role).to_a }
+        .to make(2).db_queries.with(
+          "FeeKind Maximum": 1,
+          "FeeKind Load": 1
+        )
+
+      # Make sure we really got multiple fee_kinds (1 from fixtures + 2 created)
+      expect(result.size).to eq(3)
+    end
+
+    it "uses constant queries regardless of layer hierarchy depth" do
+      top_fee_kind = Fabricate(:fee_kind, role_type: role_type)
+      middle_layer = groups(:baden_wuerttemberg)
+      lower_layer = groups(:adler)
+
+      # Create a 3-level deep hierarchy
+      middle_layer_fee_kind = Fabricate(:fee_kind, parent: top_fee_kind, layer: middle_layer)
+      Fabricate(:fee_kind, parent: middle_layer_fee_kind, layer: lower_layer)
+
+      förder_role = Fabricate.build(role_type.to_sym, group: groups(:adler_mitglieder))
+      förder_role.group.layer_group  # Preload to avoid counting
+      chooser = described_class.new(allow_restricted:)
+
+      # Query count stays constant even with deep layer hierarchies
+      result = nil
+      expect { result = chooser.possible_for_role(förder_role).to_a }
+        .to make(2).db_queries.with(
+          "FeeKind Maximum": 1,
+          "FeeKind Load": 1
+        )
+
+      expect(result).to be_present
     end
   end
 end
