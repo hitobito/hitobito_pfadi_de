@@ -23,4 +23,11 @@ class FeeRate < ApplicationRecord
   def group = layer
 
   def to_s = name
+
+  def total_yearly_amount(date = Time.zone.today)
+    return amount unless FeatureGate.enabled?("membership_fees.relative_fee_rates")
+
+    fee_kind.ancestors.joins(:fee_rates).merge(FeeRate.active(date)).sum("fee_rates.amount") +
+      amount
+  end
 end

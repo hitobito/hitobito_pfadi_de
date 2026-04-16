@@ -45,3 +45,7 @@ people:
     enabled: true
     self_service_managed_creation:
       enabled: false
+
+membership_fees:
+  relative_fee_rates:
+    enabled: false
