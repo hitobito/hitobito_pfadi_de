@@ -80,6 +80,9 @@ de:
       group/mitglieder/zweitmitgliedschaft:
         one: Zweitmitgliedschaft
         description: Zweitmitgliedschaft
+      period_invoice_template/fee_calculation_item:
+        one: Beitragsabrechnung
+        other: Beitragsabrechnungen
 
   export/pdf/invoice/processed_subjects_section:
     header: Einzelnachweise

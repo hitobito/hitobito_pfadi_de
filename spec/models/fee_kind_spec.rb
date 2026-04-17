@@ -237,7 +237,7 @@ describe FeeKind do
 
     subject(:applicable_fee_rate) do
       Person.where(id: person.id).joins("INNER JOIN fee_kinds ON fee_kinds.id = #{fee_kind.id}")
-        .merge(FeeKind.joins_applicable_fee_rate(period_start_on, period_end_on))
+        .merge(FeeKind.joins_applicable_fee_rate(period_start_on:, period_end_on:))
         .pick("fee_rates.id")
     end
 
@@ -443,7 +443,7 @@ describe FeeKind do
 
         # Query both people at once using CROSS JOIN
         results = FeeKind.where(id: fee_kind.id)
-          .joins_applicable_fee_rate(period_start_on, period_end_on)
+          .joins_applicable_fee_rate(period_start_on:, period_end_on:)
           .joins("CROSS JOIN people")
           .where(people: {id: [child.id, adult.id]})
           .select("people.id AS person_id")
@@ -470,7 +470,7 @@ describe FeeKind do
 
         # Query both people at once using CROSS JOIN
         results = FeeKind.where(id: fee_kind.id)
-          .joins_applicable_fee_rate(period_start_on, period_end_on)
+          .joins_applicable_fee_rate(period_start_on:, period_end_on:)
           .joins("CROSS JOIN people")
           .where(people: {id: [early_joiner.id, late_joiner.id]})
           .select("people.id AS person_id")

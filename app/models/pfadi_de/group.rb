@@ -18,5 +18,6 @@ module PfadiDe::Group
     validates :iban, iban: true, on: :update, allow_blank: true
 
     has_many :fee_kinds, inverse_of: :layer, dependent: :destroy
+    has_many :fee_rates, through: :fee_kinds, dependent: :destroy
   end
 end
