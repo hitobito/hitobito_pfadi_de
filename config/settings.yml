@@ -32,6 +32,10 @@ phone_number:
 groups:
   period_invoice_templates:
     enabled: true
+    item_classes:
+      "PeriodInvoiceTemplate::FeeCalculationItem":
+      "PeriodInvoiceTemplate::RoleCountItem":
+        role_types: []
 
 # The person with this email has root access to everything
 # This person should only be used by the operators of the application,
@@ -48,4 +52,6 @@ people:
 
 membership_fees:
   relative_fee_rates:
+    enabled: false
+  half_year_periods:
     enabled: false

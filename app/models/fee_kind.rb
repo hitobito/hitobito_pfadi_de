@@ -87,30 +87,28 @@ class FeeKind < ActiveRecord::Base
     # Example usage:
     # Person.joins(roles: :fee_kind)
     #   .merge(FeeKind.join_applicable_fee_rate(1.year.ago, 1.day.ago))
-    def joins_applicable_fee_rate(period_start_on, period_end_on, people_table_name: "people")
-      reference_date_sql = fee_rate_reference_date_sql(
-        people_table_name, period_start_on, period_end_on
-      )
-      age_condition = fee_rate_age_condition_sql(people_table_name, reference_date_sql)
+    def joins_applicable_fee_rate(period_start_on:, period_end_on:,
+      fee_kinds_table_name: "fee_kinds")
+      reference_date_sql = fee_rate_reference_date_sql(period_start_on, period_end_on)
+      age_condition = fee_rate_age_condition_sql(reference_date_sql)
       months_condition = fee_rate_months_condition_sql(reference_date_sql, period_end_on)
 
-      joins(:fee_rates).merge(
-        build_fee_rate_query(period_start_on, people_table_name, age_condition, months_condition)
+      joins("INNER JOIN fee_rates ON #{fee_kinds_table_name}.id=fee_rates.fee_kind_id").merge(
+        build_fee_rate_query(period_start_on, age_condition, months_condition)
       )
     end
 
     private
 
     # Builds the FeeRate query with DISTINCT ON to get one rate per person
-    def build_fee_rate_query(period_start_on, people_table_name,
-      age_condition, months_condition)
+    def build_fee_rate_query(period_start_on, age_condition, months_condition)
       FeeRate
-        .select("DISTINCT ON (#{people_table_name}.id) fee_rates.*")
+        .select("DISTINCT ON (people.id) fee_rates.*")
         .active(period_start_on)
         .where(age_condition)
         .where(months_condition)
         .order(
-          "#{people_table_name}.id, " \
+          "people.id, " \
           "fee_rates.max_age ASC NULLS LAST, " \
           "fee_rates.max_member_months ASC NULLS LAST, " \
           "fee_rates.valid_from ASC"
@@ -122,13 +120,13 @@ class FeeKind < ActiveRecord::Base
     # Calculates the reference date for age and membership duration checks.
     # Uses the person's entry date if it falls within the billing period,
     # otherwise falls back to the period start date.
-    def fee_rate_reference_date_sql(people_table_name, period_start, period_end)
+    def fee_rate_reference_date_sql(period_start, period_end)
       <<~SQL
         (CASE
-          WHEN #{people_table_name}.last_entry_date_with_fee_kind IS NOT NULL
-               AND #{people_table_name}.last_entry_date_with_fee_kind >= #{quote(period_start)}
-               AND #{people_table_name}.last_entry_date_with_fee_kind <= #{quote(period_end)}
-          THEN #{people_table_name}.last_entry_date_with_fee_kind
+          WHEN people.last_entry_date_with_fee_kind IS NOT NULL
+               AND people.last_entry_date_with_fee_kind >= #{quote(period_start)}
+               AND people.last_entry_date_with_fee_kind <= #{quote(period_end)}
+          THEN people.last_entry_date_with_fee_kind
           ELSE #{quote(period_start)}
         END)
       SQL
@@ -138,13 +136,13 @@ class FeeKind < ActiveRecord::Base
     # - Rates with max_age = NULL match any person (no age restriction)
     # - Otherwise, checks if person's birthday is after (reference_date - max_age years)
     # - People without birthdays are treated as 100 years old (excluded from age-restricted rates)
-    def fee_rate_age_condition_sql(people_table_name, reference_date_sql)
+    def fee_rate_age_condition_sql(reference_date_sql)
       fallback_birthday = quote(FeeRate::BIRTHDAY_FALLBACK_YEARS.years.ago.to_date)
 
       <<~SQL
         (fee_rates.max_age IS NULL OR
          (#{reference_date_sql}::date - make_interval(years => fee_rates.max_age))::date
-         <= COALESCE(#{people_table_name}.birthday, #{fallback_birthday})::date)
+         <= COALESCE(people.birthday, #{fallback_birthday})::date)
       SQL
     end
 

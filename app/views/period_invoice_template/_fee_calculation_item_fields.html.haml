@@ -1,0 +1,14 @@
+-#  Copyright (c) 2026, BdP and DPSG. This file is part of
+-#  hitobito_pfadi_de and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_pfadi_de.
+
+-# This intentionally does not render the shared_item_fields partial, because we want to
+-# hide some of the fields such as the unit cost input.
+
+%h3= f.object.class.model_name.human
+= f.hidden_field :name, value: f.object.class.model_name.human
+= f.hidden_field :unit_cost, name: f.object_name + "[dynamic_cost_parameters][unit_cost]", value: 0
+.d-flex.flex-row.gap-2
+  = f.input_field :cost_center, placeholder: placeholder(:cost_center), class: "mb-2"
+  = f.input_field :account, placeholder: placeholder(:account), class: "mb-2"
