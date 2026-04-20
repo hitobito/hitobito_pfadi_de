@@ -97,4 +97,54 @@ describe FeeRate, type: :model do
       expect(described_class.active).to include(rate)
     end
   end
+
+  describe "#total_yearly_amount" do
+    let(:fee_rate) { fee_rates(:jahresbeitragssatz) }
+    let(:fee_kind) { fee_kinds(:baden_wuerttemberg_kind) }
+    let(:date) { Time.zone.today }
+
+    subject { fee_rate.total_yearly_amount(date) }
+
+    context "without relative fee rates (BdP)" do
+      before do
+        allow(FeatureGate).to receive(:enabled?).with("membership_fees.relative_fee_rates")
+          .and_return false
+      end
+
+      it "returns the fee rate's amount" do
+        is_expected.to eq 90
+      end
+
+      it "ignores parent fee rate's amount" do
+        Fabricate(:fee_rate, fee_kind: fee_kind.parent, amount: 10)
+        is_expected.to eq 90
+      end
+
+      it "ignores parent inactive fee rate" do
+        Fabricate(:fee_rate, fee_kind: fee_kind.parent, amount: 10, valid_until: 1.year.ago)
+        is_expected.to eq 90
+      end
+    end
+
+    context "with relative fee rates (DPSG)" do
+      before do
+        allow(FeatureGate).to receive(:enabled?).with("membership_fees.relative_fee_rates")
+          .and_return true
+      end
+
+      it "returns the fee rate's amount" do
+        is_expected.to eq 90
+      end
+
+      it "adds parent fee rate's amount" do
+        Fabricate(:fee_rate, fee_kind: fee_kind.parent, amount: 10)
+        is_expected.to eq 100
+      end
+
+      it "ignores parent inactive fee rate" do
+        Fabricate(:fee_rate, fee_kind: fee_kind.parent, amount: 10, valid_until: 1.year.ago)
+        is_expected.to eq 90
+      end
+    end
+  end
 end
