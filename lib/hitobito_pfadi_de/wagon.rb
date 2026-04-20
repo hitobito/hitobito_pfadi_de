@@ -42,6 +42,8 @@ module HitobitoPfadiDe
       RolesController.prepend PfadiDe::RolesController
       ServiceTokensController.permitted_attrs += [:fee_kinds]
 
+      GroupDecorator.prepend PfadiDe::GroupDecorator
+
       Wizards::RegisterNewUserWizard.prepend PfadiDe::Wizards::RegisterNewUserWizard
       Wizards::Steps::NewUserForm.prepend PfadiDe::Wizards::Steps::NewUserForm
 
