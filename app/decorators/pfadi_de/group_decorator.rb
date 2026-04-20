@@ -9,6 +9,6 @@ module PfadiDe::GroupDecorator
   extend ActiveSupport::Concern
 
   def show_new_period_invoice_template_for_groups?
-    (type.constantize.child_types - [type.constantize]).any? { |type| type.layer? }
+    (model.class.child_types - [model.class]).any? { |type| type.layer? }
   end
 end
