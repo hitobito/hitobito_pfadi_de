@@ -16,7 +16,8 @@ class Group::Bundesgeschaeftsstelle < ::Group
   end
 
   class MitgliederverwaltungBund < ::Role
-    self.permissions = [:layer_and_below_full, :admin, :contact_data, :finance]
+    self.permissions = [:layer_and_below_full, :admin, :contact_data, :finance,
+      :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end

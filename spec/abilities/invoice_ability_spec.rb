@@ -9,11 +9,17 @@ describe InvoiceAbility do
   subject { ability }
 
   let(:ability) { Ability.new(person) }
-  let(:person) { people(:admin) }
+  let(:person) { Fabricate(:person) }
   let(:group) { Fabricate(Group::Bundesgeschaeftsstelle.sti_name, parent: groups(:root)) }
   let(:fee_kind) { FeeKind.build(layer: group) }
 
+  before do
+    Fabricate(role_class.sti_name, person:, group:)
+  end
+
   context "without finance permission" do
+    let(:role_class) { Group::Bundesgeschaeftsstelle::HauptamtlichSachbearbeitung }
+
     [:index, :show, :new, :create, :edit, :update].each do |action|
       it "can not #{action} fee kind" do
         is_expected.not_to be_able_to(action, fee_kind)
@@ -22,9 +28,7 @@ describe InvoiceAbility do
   end
 
   context "with finance permission" do
-    before do
-      Fabricate(Group::Bundesgeschaeftsstelle::Bundesgeschaeftsfuehrung.sti_name, person:, group:)
-    end
+    let(:role_class) { Group::Bundesgeschaeftsstelle::Bundesgeschaeftsfuehrung }
 
     [:index, :show, :new, :create, :edit, :update].each do |action|
       it "can #{action} fee kind" do
