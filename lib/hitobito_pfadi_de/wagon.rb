@@ -60,14 +60,14 @@ module HitobitoPfadiDe
     end
 
     initializer "pfadi_de.add_settings" do |_app|
+      Settings.add_source!(File.join(paths["config"].existent, "reset-languages.yml"))
       Settings.add_source!(File.join(paths["config"].existent, "settings.yml"))
       Settings.reload!
 
       if Rails.env.test?
-        Settings.application.languages = {
-          de: "Deutsch"
-        }.with_indifferent_access
-        Settings.application.additional_languages = {}.with_indifferent_access
+        Rails.application.configure do
+          default_url_options.delete(:locale)
+        end
       end
     end
 

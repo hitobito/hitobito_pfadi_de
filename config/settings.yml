@@ -9,6 +9,7 @@
 application:
   languages:
     de: Deutsch
+  additional_languages:
 
 currency:
   unit: EUR

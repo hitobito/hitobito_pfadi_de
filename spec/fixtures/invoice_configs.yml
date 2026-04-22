@@ -1,3 +1,8 @@
+# Copyright (c) 2026, BdP and DPSG. This file is part of
+# hitobito_pfadi_de and licensed under the Affero General Public License version 3
+# or later. See the COPYING file at the top-level directory or at
+# https://github.com/hitobito/hitobito_pfadi_de.
+
 root:
   group: root
   sequence_number: 1
@@ -14,3 +19,31 @@ root:
   payment_slip: "qr"
   participant_number: "10-5318-6"
   vat_number: "DE 1234"
+
+baden_wuerttemberg:
+  group: baden_wuerttemberg
+  sequence_number: 1
+  beneficiary: BaWü
+  payee_name: BaWü
+  payee_street: Badenstrasse
+  payee_housenumber: 123
+  payee_zip_code: 54321
+  payee_town: Württemberg
+  payee_country: DE
+  address: "baden württemberg address"
+  iban: "CH66 0076 2011 6238 5295 8"
+  account_number: "01-162-5"
+
+adler:
+  group: adler
+  sequence_number: 1
+  beneficiary: Stamm Adler
+  payee_name: Stamm Adler
+  payee_street: Adlerweg
+  payee_housenumber: 1a
+  payee_zip_code: 33333
+  payee_town: Adlerlingen
+  payee_country: DE
+  address: "adler address"
+  iban: "CH10 0221 1981 6169 5329 8"
+  account_number: "03-162-4"
