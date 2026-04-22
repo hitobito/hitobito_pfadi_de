@@ -22,7 +22,7 @@ class Invoice::FeeCalculationItem < Invoice::PeriodItem
 
   def unit_cost
     self[:unit_cost] ||= BigDecimal(fee_rate&.total_yearly_amount(period_start_on) || 0) /
-                         period_duration
+      period_duration
   end
 
   def count
