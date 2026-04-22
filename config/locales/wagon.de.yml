@@ -82,11 +82,12 @@ de:
         description: Zweitmitgliedschaft
 
   export/pdf/invoice/processed_subjects_section:
-      header: Einzelnachweise
-      id: ID
-      name: Name
-      item: Beitrag
-      amount: Betrag
+    header: Einzelnachweise
+    id: Mitgliedsnr.
+    name: Name
+    item: Beitrag
+    amount: Betrag
+    invoiced_period: 'Abrechnungsperiode: %{start_on} - %{end_on}'
 
 
   groups:

@@ -16,29 +16,30 @@ module Export::Pdf::Invoice
 
     def render
       start_new_page
+
       render_header
-      invoice_items.each.with_index do |item, index|
-        subject_data = prepare_subjects(item)
-        subject_data.prepend(table_header) if index.zero?
-        render_subjects_table(subject_data)
-      end
+      render_subjects_table
     end
+
+    private
 
     def render_header
       font_size(14) do
         text t(:header)
       end
       move_down(10)
+
+      font_size(10) do
+        period = invoice_item_infos.values.first.last
+        text t(:invoiced_period, start_on: I18n.l(period.begin), end_on: I18n.l(period.end))
+      end
+      move_down(5)
     end
 
-    def table_header
-      COLUMNS.pluck(:label).map { |label| t(label) }
-    end
-
-    def render_subjects_table(subject_data)
+    def render_subjects_table
       column_widths = COLUMNS.pluck(:width).map { |width| bounds.width * width }
-      font_size 10 do
-        table(subject_data,
+      font_size 8 do
+        table(table_header + table_data,
           header: true,
           column_widths:,
           cell_style: {borders: [:bottom],
@@ -49,32 +50,52 @@ module Export::Pdf::Invoice
       end
     end
 
-    def prepare_subjects(item)
-      subjects = []
-      Person.where(id: processed_subjects(item)).order(:id).find_each do |person|
-        subjects << [
-          person.id,
-          person.to_s,
-          item.name,
-          format_currency(dynamic_cost(item))
-        ]
+    def table_header
+      [COLUMNS.pluck(:label).map { |label| t(label) }]
+    end
+
+    def table_data
+      people_scope.find_each.with_object([]) do |person, subjects|
+        Array(processed_subject_infos[person.id]).each do |item_id|
+          subjects << [
+            person.id,
+            person.to_s,
+            invoice_item_infos[item_id].first,
+            format_currency(invoice_item_infos[item_id].second)
+          ]
+        end
       end
-      subjects
     end
 
-    def processed_subjects(item)
-      InvoiceRun::ProcessedSubject
+    def people_scope
+      Person
+        .only_public_data
+        .order_by_name
+        .where(id: processed_subject_infos.keys)
+    end
+
+    def invoice_item_infos
+      @invoice_item_infos ||= invoice.invoice_items.map do |item|
+        unit_cost, start_on, end_on = item.dynamic_cost_parameters.with_indifferent_access.slice(
+          :unit_cost,
+          :period_start_on,
+          :period_end_on
+        ).values
+        [item.id, [item.name, unit_cost, start_on..end_on]]
+      end.to_h
+    end
+
+    def processed_subject_infos
+      @processed_subject_infos ||= InvoiceRun::ProcessedSubject
         .where(subject_type: Person.sti_name)
-        .where(item_id: item)
-        .select(:subject_id)
+        .pluck(:subject_id, :item_id)
+        .group_by(&:shift)
+        .to_h
+        .transform_values(&:flatten)
     end
 
-    def dynamic_cost(item)
-      item.dynamic_cost_parameters.with_indifferent_access[:unit_cost]
-    end
-
-    def t(key)
-      I18n.t(key, scope: self.class.to_s.underscore)
+    def t(key, options = {})
+      I18n.t(key, **options.merge(scope: self.class.to_s.underscore))
     end
 
     def format_currency(amount)
