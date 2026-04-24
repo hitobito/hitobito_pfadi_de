@@ -30,7 +30,6 @@ module Export::Pdf::Invoice
       move_down(10)
 
       font_size(10) do
-        period = invoice_item_infos.values.first.last
         text t(:invoiced_period, start_on: I18n.l(period.begin), end_on: I18n.l(period.end))
       end
       move_down(5)
@@ -92,6 +91,10 @@ module Export::Pdf::Invoice
         .group_by(&:shift)
         .to_h
         .transform_values(&:flatten)
+    end
+
+    def period
+      @period ||= invoice_item_infos.values.first.last
     end
 
     def t(key, options = {})

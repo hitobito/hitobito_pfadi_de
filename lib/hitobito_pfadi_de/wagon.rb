@@ -32,7 +32,6 @@ module HitobitoPfadiDe
       Contactable.include PfadiDe::Contactable
       ServiceToken.prepend PfadiDe::ServiceToken
 
-
       VariousAbility.include PfadiDe::VariousAbility
       InvoiceAbility.include PfadiDe::InvoiceAbility
       TokenAbility.prepend PfadiDe::ApiScopeAbility
@@ -53,6 +52,7 @@ module HitobitoPfadiDe
       RoleResource.prepend PfadiDe::RoleResource
       SelfRegistrationResource.prepend PfadiDe::SelfRegistrationResource
 
+      Export::Tabular::People::PeopleAddress.prepend PfadiDe::Export::Tabular::People::PeopleAddress
       Export::Pdf::Invoice.runner = Export::Pdf::Invoice::RunnerWithProcessedSubjects
 
       NavigationHelper::MAIN.find { _1[:label] == :groups }[:inactive_for].push("fee_kinds")
