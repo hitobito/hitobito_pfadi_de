@@ -1,0 +1,16 @@
+root:
+  group: root
+  sequence_number: 1
+  beneficiary: Pfadi DE
+  payee_name: Pfadi DE
+  payee_street: Schellingstr.
+  payee_housenumber: 8
+  payee_zip_code: 4692
+  payee_town: Neu Carlohausen
+  payee_country: DE
+  address: "bund layer address"
+  iban: "DE93 0076 2011 6238 5295 7"
+  account_number: "10-5318-5"
+  payment_slip: "qr"
+  participant_number: "10-5318-6"
+  vat_number: "DE 1234"

@@ -81,6 +81,15 @@ de:
         one: Zweitmitgliedschaft
         description: Zweitmitgliedschaft
 
+  export/pdf/invoice/processed_subjects_section:
+    header: Einzelnachweise
+    id: Mitgliedsnr.
+    name: Name
+    item: Beitrag
+    amount: Betrag
+    invoiced_period: 'Abrechnungsperiode: %{start_on} - %{end_on}'
+
+
   groups:
     actions_show_pfadi_de:
       invoice_button_dropdown: Verbandsabrechnungen
