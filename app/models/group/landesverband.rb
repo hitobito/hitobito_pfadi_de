@@ -30,7 +30,7 @@ class Group::Landesverband < ::Group
   ### ROLES
 
   class Landesmitgliederverwaltung < ::Role
-    self.permissions = [:layer_and_below_full, :contact_data]
+    self.permissions = [:layer_and_below_full, :contact_data, :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
   end
 

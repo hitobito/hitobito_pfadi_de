@@ -34,7 +34,8 @@ class Group::Bundesebene < ::Group
   ### ROLES
 
   class MVAdmin < ::Role
-    self.permissions = [:layer_and_below_full, :admin, :impersonation]
+    self.permissions = [:layer_and_below_full, :admin, :finance, :impersonation,
+      :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
   end
 

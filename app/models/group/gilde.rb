@@ -11,12 +11,12 @@ class Group::Gilde < ::Group
   ### ROLES
 
   class Gildenfuehrung < ::Role
-    self.permissions = [:group_read]
+    self.permissions = [:group_and_below_read]
     self.sgbviii_required = true
   end
 
   class GildenfuehrungStv < ::Role
-    self.permissions = [:group_read]
+    self.permissions = [:group_and_below_read]
     self.sgbviii_required = true
   end
 

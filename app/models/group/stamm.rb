@@ -24,22 +24,22 @@ class Group::Stamm < ::Group
   ### ROLES
 
   class Stammesfuehrung < ::Role
-    self.permissions = [:group_read]
+    self.permissions = [:layer_and_below_read]
     self.sgbviii_required = true
   end
 
   class StammesfuehrungStv < ::Role
-    self.permissions = [:group_read]
+    self.permissions = [:layer_and_below_read]
     self.sgbviii_required = true
   end
 
   class Stammesschatzmeister < ::Role
-    self.permissions = [:group_read, :finance]
+    self.permissions = [:layer_and_below_read, :finance]
     self.sgbviii_required = true
   end
 
   class StammesschatzmeisterStv < ::Role
-    self.permissions = [:group_read, :finance]
+    self.permissions = [:layer_and_below_read, :finance]
     self.sgbviii_required = true
   end
 
