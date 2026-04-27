@@ -27,7 +27,7 @@ describe RolesController, js: true do
   end
 
   describe "create" do
-    let(:person) { Fabricate(:person) }
+    let(:person) { Fabricate(:person, first_name: "test", last_name: "person", nickname: "") }
     let!(:existing_role) {
       Fabricate(Group::Stamm::Stammesbeauftragt.name, person:,
         group: groups(:adler))
@@ -48,11 +48,16 @@ describe RolesController, js: true do
     end
 
     it "creates role without fee kind" do
+      # To avoid a race condition, first select another role and check for a certain text...
+      choose_role("Ordentliche Mitgliedschaft")
+      expect(page).to have_content "Beitragsart"
+      # ... then choose the actual role and check that text has vanished.
       choose_role("Zweitmitgliedschaft")
+      expect(page).not_to have_content "Beitragsart"
       expect do
         first(:button, "Speichern").click
-        expect(page).to have_content "Rolle Zweitmitgliedschaft für"
-        expect(page).to have_content "erfolgreich erstellt"
+        expect(page).to have_content "Rolle Zweitmitgliedschaft für test person " \
+          "in Gruppe wurde erfolgreich erstellt."
       end.to change { person.roles.count }.by(1)
     end
 
