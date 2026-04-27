@@ -7,7 +7,8 @@ module Sheet
   class FeeKind < Sheet::Invoice
     tab "fee_kinds.tabs.info",
       :group_fee_kind_path,
-      if: ->(_, _, entry) { entry.present? }
+      if: ->(_, _, entry) { entry.present? },
+      no_alt: true
 
     tab "fee_kinds.tabs.fee_rates",
       :group_fee_kind_fee_rates_path,
