@@ -55,6 +55,9 @@ de:
           debit: Lastschrift
           invoice: Rechnung
         pronoun: Pronomen
+      period_invoice_template:
+        billing_period: Abrechnungsperiode
+
       service_token:
         fee_kinds: Beitragsarten und -Sätze
 

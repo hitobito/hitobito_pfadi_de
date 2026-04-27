@@ -16,7 +16,11 @@ describe :period_invoice_templates, js: true do
   }
   let(:group) { groups(:root) }
 
-  before { sign_in(user) }
+  before do
+    travel_to(Time.zone.local(2026, 4, 27))
+    allow(Settings).to receive_message_chain(:membership_fees, :half_year_periods, enabled: true)
+    sign_in(user)
+  end
 
   context "create" do
     let(:new_path) { new_group_period_invoice_template_path(group) }
@@ -26,8 +30,7 @@ describe :period_invoice_templates, js: true do
       expect(page).not_to have_text "Beitragsabrechnung"
 
       fill_in "Bezeichnung", with: "Mitgliedsrechnung"
-      fill_in "Rechnungsperiode Start", with: "1.1.2026"
-      fill_in "Rechnungsperiode Start", with: "31.12.2026"
+      select "01.07.2025 - 31.12.2025", from: "Abrechnungsperiode"
 
       click_link "Rechnungsposten hinzufügen"
       click_link "Beitragsabrechnung"
@@ -49,8 +52,7 @@ describe :period_invoice_templates, js: true do
       expect(page).to have_text group.name
 
       fill_in "Bezeichnung", with: "Mitgliedsrechnung"
-      fill_in "Rechnungsperiode Start", with: "1.1.2026"
-      fill_in "Rechnungsperiode Start", with: "31.12.2026"
+      select "01.01.2026 - 30.06.2026", from: "Abrechnungsperiode"
 
       click_link "Rechnungsposten hinzufügen"
       click_link "Beitragsabrechnung"
