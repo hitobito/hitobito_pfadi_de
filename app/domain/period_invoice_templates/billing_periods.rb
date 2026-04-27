@@ -4,26 +4,10 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 #
 module PeriodInvoiceTemplates
-  class Period
-    delegate :begin, :end, to: :range
-
-    attr_reader :range
-
-    def initialize(start_on, end_on)
-      @range = Date.parse(start_on.to_s)..Date.parse(end_on.to_s)
-    end
-
-    def to_s = [I18n.l(range.begin), I18n.l(range.end)].join(" - ")
-
-    def current? = range.cover?(Time.zone.today)
-
-    def <=>(other) = range.begin <=> other.begin
-  end
-
   class BillingPeriods
     def initialize(start_on = nil, end_on = nil)
       @year = Time.zone.today.year
-      @half_year = Settings.membership_fees.half_year_periods
+      @half_year = Settings.membership_fees.half_year_periods.enabled
       @current = Period.new(start_on, end_on) if [start_on, end_on].all?(&:present?)
     end
 

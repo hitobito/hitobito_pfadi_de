@@ -10,7 +10,8 @@ describe PeriodInvoiceTemplates::BillingPeriods do
 
   before do
     travel_to(Time.zone.local(2026, 4, 24))
-    allow(Settings).to receive_message_chain(:membership_fees, half_year_periods:)
+    allow(Settings).to receive_message_chain(:membership_fees, :half_year_periods,
+      enabled: half_year_periods)
   end
 
   describe "#list" do

@@ -18,6 +18,7 @@ describe :period_invoice_templates, js: true do
 
   before do
     travel_to(Time.zone.local(2026, 4, 27))
+    allow(Settings).to receive_message_chain(:membership_fees, :half_year_periods, enabled: true)
     sign_in(user)
   end
 
@@ -37,7 +38,6 @@ describe :period_invoice_templates, js: true do
 
       click_button "Speichern"
 
-      binding.pry
       expect(page).to have_text "Sammelrechnung Mitgliedsrechnung wurde erfolgreich erstellt"
       entry = group.period_invoice_templates.first
       expect(entry).not_to be_nil
