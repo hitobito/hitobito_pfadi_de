@@ -75,18 +75,13 @@ module Export::Pdf::Invoice
 
     def invoice_item_infos
       @invoice_item_infos ||= invoice.invoice_items.map do |item|
-        unit_cost, start_on, end_on = item.dynamic_cost_parameters.with_indifferent_access.slice(
-          :unit_cost,
-          :period_start_on,
-          :period_end_on
-        ).values
-        [item.id, [item.name, unit_cost, start_on..end_on]]
+        [item.id, [item.name, item.unit_cost]]
       end.to_h
     end
 
     def processed_subject_infos
       @processed_subject_infos ||= InvoiceRun::ProcessedSubject
-        .where(subject_type: Person.sti_name)
+        .where(subject_type: Person.sti_name, item_id: invoice.invoice_items.map(&:id))
         .pluck(:subject_id, :item_id)
         .group_by(&:shift)
         .to_h
@@ -94,8 +89,12 @@ module Export::Pdf::Invoice
     end
 
     def period
-      @period ||= invoice_item_infos.values.first.last
+      @period ||= period_start_on..period_end_on
     end
+
+    def period_start_on = invoice.invoice_items.first.period_start_on
+
+    def period_end_on = invoice.invoice_items.first.period_end_on
 
     def t(key, options = {})
       I18n.t(key, **options.merge(scope: self.class.to_s.underscore))
