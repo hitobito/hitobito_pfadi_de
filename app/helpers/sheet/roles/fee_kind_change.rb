@@ -5,21 +5,14 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
-class FeeRatesController < CrudController
-  self.nesting = [Group, FeeKind]
+module Sheet
+  module Roles
+    class FeeKindChange < Base
+      def self.parent_sheet = Sheet::Group
 
-  self.permitted_attrs = [
-    :name,
-    :amount,
-    :valid_from,
-    :valid_until,
-    :max_member_months,
-    :max_age
-  ]
-
-  private
-
-  def list_entries
-    super.includes(fee_kind: [:layer]).list
+      def title
+        I18n.t("roles.fee_kind_changes.title")
+      end
+    end
   end
 end

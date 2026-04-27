@@ -4,6 +4,12 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 de:
+  activemodel:
+    attributes:
+      role/fee_kind_change:
+        fee_kind_id: Beitragsart
+        start_on: Ab
+
   activerecord:
     attributes:
       group:
@@ -62,12 +68,15 @@ de:
         fee_kinds: Beitragsarten und -Sätze
 
       role:
+        fee_kind: Beitragsart
         fee_kind_id: Beitragsart
+        group: Gruppe
         class:
           permission:
             description:
               assign_restricted_fee_kinds: "Rechtebeschränkte Beitragsarten vergeben."
               group_and_below_efz: "Zeugnisse nach SGB VIII erfassen in dieser Gruppen und deren Untergruppen."
+              assign_restricted_fee_kinds: "Darf alle Beitragsarten zuweisen."
     models:
       fee_kind:
         one: Beitragsart
@@ -112,3 +121,13 @@ de:
       confirm_delete: Wollen Sie diese Beitragsart wirklich archivieren? Sie kann danach nicht mehr neu auf Rollen zugewiesen werden.
     form:
       caption_resricted: Beitragsart darf nur durch speziell berechtigte Personen vergeben werden
+  roles:
+    fee_kind_change_link: Beitragsart ändern
+    fee_kind_changes:
+      title: Beitragsart ändern
+      new:
+        subtitle: Neue Beitragsart
+      not_applicable: Rolle hat keine Beitragsart.
+      success: Die Beitragsart der Rolle wurde auf %{fee_kind} geändert.
+      success_future_change: Die Beitragsart der Rolle wird am %{start_on} auf %{fee_kind} geändert.
+

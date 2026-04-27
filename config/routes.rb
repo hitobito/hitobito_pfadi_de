@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   extend LanguageRouteScope
 
   language_scope do
+    resources :roles do
+      resources :fee_kind_changes, only: [:new, :create], module: :roles
+    end
     resources :groups do
       resources :fee_kinds do
         resources :fee_rates
