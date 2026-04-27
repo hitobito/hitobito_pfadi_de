@@ -40,6 +40,23 @@ describe PeriodInvoiceTemplates::BillingPeriods do
         expect(list[0].begin).to eq Date.new(2000, 1, 1)
         expect(list[1].begin).to eq Date.new(2023, 1, 1)
       end
+
+      it "deduplicates list" do
+        list = described_class.new(Date.new(2026, 1, 1), Date.new(2026, 12, 31)).list
+
+        expect(list[0].begin).to eq Date.new(2023, 1, 1)
+        expect(list[0].end).to eq Date.new(2023, 12, 31)
+        expect(list[1].begin).to eq Date.new(2024, 1, 1)
+        expect(list[1].end).to eq Date.new(2024, 12, 31)
+        expect(list[2].begin).to eq Date.new(2025, 1, 1)
+        expect(list[2].end).to eq Date.new(2025, 12, 31)
+        expect(list[3].begin).to eq Date.new(2026, 1, 1)
+        expect(list[3].end).to eq Date.new(2026, 12, 31)
+        expect(list[4].begin).to eq Date.new(2027, 1, 1)
+        expect(list[4].end).to eq Date.new(2027, 12, 31)
+        expect(list[5].begin).to eq Date.new(2028, 1, 1)
+        expect(list[5].end).to eq Date.new(2028, 12, 31)
+      end
     end
 
     context "half year" do

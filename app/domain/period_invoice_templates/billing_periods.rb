@@ -20,7 +20,7 @@ module PeriodInvoiceTemplates
         build_period(start_on),
         build_period(start_on + offset),
         build_period(start_on + (offset * 2))
-      ].compact_blank.sort
+      ].compact_blank.sort.uniq(&:to_s)
     end
 
     def current = (@current || list.find(&:current?)).to_s
