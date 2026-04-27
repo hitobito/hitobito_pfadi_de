@@ -162,8 +162,6 @@ class FeeKind < ActiveRecord::Base
     end
   end
 
-  private
-
   def parent_id_unchanged
     errors.add(:parent_id, :readonly) if parent_id_changed?
   end

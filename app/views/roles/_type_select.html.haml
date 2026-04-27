@@ -12,6 +12,7 @@
                       roles_type_select_options(@group, entry),
                       { include_blank: "",
                         class: 'form-select form-select-sm',
+                        disabled: !entry.new_record? && entry.fee_kind_type?,
                         data: { remote: true,
                           url: details_group_roles_path(@group),
                           placeholder: ta(:please_select),

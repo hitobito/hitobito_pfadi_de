@@ -50,6 +50,7 @@ module PfadiDe::Role
   end
 
   def fee_kind_type?
+    return false if new_record? && type.nil? && instance_of?(Role) # undetermined so far
     (type.safe_constantize || self.class).has_fee_kind
   end
 

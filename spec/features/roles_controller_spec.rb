@@ -12,6 +12,16 @@ describe RolesController, js: true do
 
   let(:group) { groups(:adler_mitglieder) }
 
+  let(:root) { fee_kinds(:top_fee_kind) }
+  let!(:other_fee_kind) {
+    Fabricate(:fee_kind, parent: root, layer: groups(:baden_wuerttemberg),
+      name: "Other Fee Kind")
+  }
+  let!(:foerder_fee_kind) {
+    Fabricate(:fee_kind, layer: groups(:root), name: "Förderbeitragsart",
+      role_type: "Group::Mitglieder::Foerdermitgliedschaft")
+  }
+
   def choose_role(role)
     expect(page).to have_css("#role_type_select #role_type")
     find("#role_type_select #role_type").click
@@ -31,15 +41,6 @@ describe RolesController, js: true do
     let!(:existing_role) {
       Fabricate(Group::Stamm::Stammesbeauftragt.name, person:,
         group: groups(:adler))
-    }
-    let(:root) { fee_kinds(:top_fee_kind) }
-    let!(:other_fee_kind) {
-      Fabricate(:fee_kind, parent: root, layer: groups(:baden_wuerttemberg),
-        name: "Other Fee Kind")
-    }
-    let!(:foerder_fee_kind) {
-      Fabricate(:fee_kind, layer: groups(:root), name: "Förderbeitragsart",
-        role_type: "Group::Mitglieder::Foerdermitgliedschaft")
     }
 
     before do
@@ -112,6 +113,53 @@ describe RolesController, js: true do
 
     it "disables select for fee kind" do
       expect(page).to have_field "Beitragsart", disabled: true
+    end
+
+    it "disables select for type if role is a membership role type" do
+      expect(page).to have_field "Rolle", disabled: true
+    end
+
+    describe "changing role type" do
+      let!(:existing_role) {
+        Fabricate(Group::Mitglieder::Zweitmitgliedschaft.name, person:,
+          group: groups(:adler_mitglieder), created_at: 1.year.ago)
+      }
+
+      it "changes to role type with default fee kind" do
+        choose_role("Ordentliche Mitgliedschaft")
+        expect(page).to have_content "Beitragsart"
+        expect do
+          first(:button, "Speichern").click
+          expect(page).to have_content "Rolle Zweitmitgliedschaft"
+          expect(page).to have_content "in Gruppe zu Ordentliche Mitgliedschaft geändert"
+        end.to change { person.roles.with_inactive.count }.by(1)
+        expect(person.roles.last.fee_kind_id).to eq(fee_kinds(:baden_wuerttemberg_kind).id)
+      end
+
+      it "creates role with manually selected fee kind" do
+        choose_role("Ordentliche Mitgliedschaft")
+        expect(page).to have_content "Beitragsart"
+        choose_fee_kind("Other Fee Kind")
+        expect do
+          first(:button, "Speichern").click
+          expect(page).to have_content "Rolle Zweitmitgliedschaft"
+          expect(page).to have_content "in Gruppe zu Ordentliche Mitgliedschaft geändert"
+        end.to change { person.roles.with_inactive.count }.by(1)
+        expect(person.roles.last.fee_kind_id).to eq(other_fee_kind.id)
+      end
+
+      it "updates fee kind select when type changes" do
+        expect(page).not_to have_content "Beitragsart"
+
+        choose_role("Ordentliche Mitgliedschaft")
+        expect(page).to have_content "Beitragsart"
+        expect(page).to have_content "BaWü Kind"
+        expect(page).not_to have_content "Förderbeitragsart"
+
+        choose_role("Fördermitgliedschaft")
+        expect(page).not_to have_content "BaWü Kind"
+        expect(page).to have_content "Förderbeitragsart"
+      end
     end
   end
 end

@@ -8,6 +8,10 @@
 module PfadiDe::RolesController
   extend ActiveSupport::Concern
 
+  prepended do
+    helper_method :may_change_fee_kind?
+  end
+
   def create
     if params[:autosubmit].present?
       assign_attributes
@@ -18,9 +22,27 @@ module PfadiDe::RolesController
     end
   end
 
+  def update
+    if params[:autosubmit].present?
+      if change_type?
+        entry.attributes = build_new_type.attributes.except("id", "terminated")
+      else
+        assign_attributes
+      end
+      entry&.ensure_fee_kind
+      render "edit"
+    else
+      super
+    end
+  end
+
   private
 
+  def may_change_fee_kind?
+    entry.new_record? || change_type? || entry.type_changed?
+  end
+
   def permitted_attrs(role_type = entry.class)
-    super - (entry.new_record? ? [] : [:fee_kind_id])
+    super - (may_change_fee_kind? ? [] : [:fee_kind_id])
   end
 end
