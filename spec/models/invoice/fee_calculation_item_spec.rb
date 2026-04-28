@@ -148,6 +148,26 @@ describe Invoice::FeeCalculationItem do
         expect(item.count).to eq(1)
       end
 
+      context "when only_active_people toggle is set" do
+        before do
+          allow(FeatureGate).to receive(:enabled?).and_call_original
+          allow(FeatureGate).to receive(:enabled?).with("membership_fees.only_active_people")
+            .and_return true
+        end
+
+        it "ignores person with past membership role which overlaps the period at the start" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:,
+            start_on: 12.months.ago, end_on: 1.month.ago)
+          expect(item.count).to eq(0)
+        end
+
+        it "counts person with membership role which overlaps the period at the end" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:,
+            start_on: 1.month.ago, end_on: 7.months.from_now)
+          expect(item.count).to eq(1)
+        end
+      end
+
       it "ignores person with membership role outside of the specified groups" do
         Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group: groups(:mitglieder_31))
         expect(item.count).to eq(0)
@@ -379,6 +399,26 @@ describe Invoice::FeeCalculationItem do
         expect(item.count).to eq(1)
       end
 
+      context "when only_active_people toggle is set" do
+        before do
+          allow(FeatureGate).to receive(:enabled?).and_call_original
+          allow(FeatureGate).to receive(:enabled?).with("membership_fees.only_active_people")
+            .and_return true
+        end
+
+        it "ignores person with past membership role which overlaps the period" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:,
+            start_on: 12.months.ago, end_on: 1.month.ago)
+          expect(item.count).to eq(0)
+        end
+
+        it "counts person with membership role which overlaps the period at the end" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:,
+            start_on: 1.month.ago, end_on: 7.months.from_now)
+          expect(item.count).to eq(1)
+        end
+      end
+
       it "ignores person with membership role outside of the specified groups" do
         Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group: groups(:mitglieder_31))
         expect(item.count).to eq(0)
@@ -603,6 +643,26 @@ describe Invoice::FeeCalculationItem do
         expect(item.count).to eq(1)
       end
 
+      context "when only_active_people toggle is set" do
+        before do
+          allow(FeatureGate).to receive(:enabled?).and_call_original
+          allow(FeatureGate).to receive(:enabled?).with("membership_fees.only_active_people")
+            .and_return true
+        end
+
+        it "ignores person with past membership role which overlaps the period" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:, person:,
+            start_on: 12.months.ago, end_on: 1.month.ago)
+          expect(item.count).to eq(0)
+        end
+
+        it "counts person with membership role which overlaps the period at the end" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:, person:,
+            start_on: 1.month.ago, end_on: 7.months.from_now)
+          expect(item.count).to eq(1)
+        end
+      end
+
       it "ignores person with membership role outside of the specified recipient selection" do
         Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:,
           person: people(:stammesverwaltung))
@@ -806,6 +866,26 @@ describe Invoice::FeeCalculationItem do
         Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:, person:,
           start_on: 12.months.ago, end_on: 1.month.ago)
         expect(item.count).to eq(1)
+      end
+
+      context "when only_active_people toggle is set" do
+        before do
+          allow(FeatureGate).to receive(:enabled?).and_call_original
+          allow(FeatureGate).to receive(:enabled?).with("membership_fees.only_active_people")
+            .and_return true
+        end
+
+        it "ignores person with past membership role which overlaps the period" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:, person:,
+            start_on: 12.months.ago, end_on: 1.month.ago)
+          expect(item.count).to eq(0)
+        end
+
+        it "counts person with membership role which overlaps the period at the end" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:, person:,
+            start_on: 1.month.ago, end_on: 7.months.from_now)
+          expect(item.count).to eq(1)
+        end
       end
 
       it "ignores member person other than the specified recipient" do
@@ -1019,6 +1099,27 @@ describe Invoice::FeeCalculationItem do
           start_on: 12.months.ago, end_on: 1.month.ago)
         expect(item.subjects).to match_array([{subject_id: role.person_id, subject_type: "Person",
                                                template_item_id: 1337, item_id: item.id}])
+      end
+
+      context "when only_active_people toggle is set" do
+        before do
+          allow(FeatureGate).to receive(:enabled?).and_call_original
+          allow(FeatureGate).to receive(:enabled?).with("membership_fees.only_active_people")
+            .and_return true
+        end
+
+        it "ignores person with past membership role which overlaps the period" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:,
+            start_on: 12.months.ago, end_on: 1.month.ago)
+          expect(item.subjects).to eq([])
+        end
+
+        it "counts person with membership role which overlaps the period at the end" do
+          role = Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:,
+            start_on: 1.month.ago, end_on: 7.months.from_now)
+          expect(item.subjects).to match_array([{subject_id: role.person_id, subject_type: "Person",
+                                                 template_item_id: 1337, item_id: item.id}])
+        end
       end
 
       it "ignores person with membership role outside of the specified groups" do
@@ -1264,6 +1365,27 @@ describe Invoice::FeeCalculationItem do
           start_on: 12.months.ago, end_on: 1.month.ago)
         expect(item.subjects).to match_array([{subject_id: role.person_id, subject_type: "Person",
                                                template_item_id: 1337, item_id: item.id}])
+      end
+
+      context "when only_active_people toggle is set" do
+        before do
+          allow(FeatureGate).to receive(:enabled?).and_call_original
+          allow(FeatureGate).to receive(:enabled?).with("membership_fees.only_active_people")
+            .and_return true
+        end
+
+        it "ignores person with past membership role which overlaps the period" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:, person:,
+            start_on: 12.months.ago, end_on: 1.month.ago)
+          expect(item.subjects).to eq([])
+        end
+
+        it "counts person with membership role which overlaps the period at the end" do
+          role = Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:, person:,
+            start_on: 1.month.ago, end_on: 7.months.from_now)
+          expect(item.subjects).to match_array([{subject_id: role.person_id, subject_type: "Person",
+                                                 template_item_id: 1337, item_id: item.id}])
+        end
       end
 
       it "ignores member person other than the specified recipient" do
