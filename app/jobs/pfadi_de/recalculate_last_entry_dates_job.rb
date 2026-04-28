@@ -14,10 +14,14 @@ module PfadiDe
     private
 
     def perform_internal
-      ::Person.where(should_recalculate_last_entry_date_with_fee_kind: true)
+      people_scope
         .find_each do |person|
         recalculate_for_person(person)
       end
+    end
+
+    def people_scope
+      ::Person.where(should_recalculate_last_entry_date_with_fee_kind: true)
     end
 
     def recalculate_for_person(person)

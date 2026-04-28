@@ -20,7 +20,10 @@ module HitobitoPfadiDe
     ]
 
     config.to_prepare do
-      JobManager.wagon_jobs += [PfadiDe::RecalculateLastEntryDatesJob]
+      JobManager.wagon_jobs += [
+        PfadiDe::RecalculateLastEntryDatesJob,
+        PfadiDe::RecalculateRecentEntryDatesJob
+      ]
 
       # :group_and_below_efz may manage the SGB VIII EFZ qualifications of people
       Role::Permissions << :group_and_below_efz << :assign_restricted_fee_kinds
