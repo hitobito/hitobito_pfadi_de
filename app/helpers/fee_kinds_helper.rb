@@ -7,7 +7,7 @@
 
 module FeeKindsHelper
   def format_fee_kind_parent_id(fee_kind)
-    return nil unless fee_kind.parent.present?
+    return nil if fee_kind.parent.blank?
     link_to fee_kind.parent.name, group_fee_kind_path(fee_kind.parent.layer, fee_kind.parent)
   end
 end
