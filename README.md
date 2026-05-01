@@ -2,7 +2,7 @@
 
 This hitobito wagon defines the organization hierarchy with groups and roles of BdP and DPSG.
 
-This shared pfadi_de wagon should define the following, which are supposed to be the same for
+The shared pfadi_de wagon should define the following, which is supposed to be the same for
 both organizations:
 - All group and role types
 - All permissions / abilities
