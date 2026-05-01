@@ -36,6 +36,63 @@ describe Person do
     end
   end
 
+  describe "tentative membership" do
+    let(:person) { people(:member) }
+
+    def set_duration(months)
+      allow(Settings.membership_fees)
+        .to receive(:tentative_membership_duration_months).and_return(months)
+    end
+
+    context "with a duration of 0 months" do
+      before { set_duration(0) }
+
+      it "considers nobody tentative, not even somebody who entered today" do
+        person.update!(last_entry_date_with_fee_kind: Time.zone.today)
+
+        expect(Person.tentative_membership).not_to include(person)
+        expect(Person.without_tentative_membership).to include(person)
+        expect(person).not_to be_tentative_membership
+      end
+    end
+
+    context "with a duration of 3 months" do
+      before { set_duration(3) }
+
+      it "considers a person who entered within the duration tentative" do
+        person.update!(last_entry_date_with_fee_kind: 1.month.ago.to_date)
+
+        expect(Person.tentative_membership).to include(person)
+        expect(Person.without_tentative_membership).not_to include(person)
+        expect(person).to be_tentative_membership
+      end
+
+      it "considers a person who entered exactly at the cutoff not tentative" do
+        person.update!(last_entry_date_with_fee_kind: 3.months.ago.to_date)
+
+        expect(Person.tentative_membership).not_to include(person)
+        expect(Person.without_tentative_membership).to include(person)
+        expect(person).not_to be_tentative_membership
+      end
+
+      it "considers a person who entered before the duration not tentative" do
+        person.update!(last_entry_date_with_fee_kind: 4.months.ago.to_date)
+
+        expect(Person.tentative_membership).not_to include(person)
+        expect(Person.without_tentative_membership).to include(person)
+        expect(person).not_to be_tentative_membership
+      end
+
+      it "considers a person with an unknown entry date not tentative" do
+        person.update!(last_entry_date_with_fee_kind: nil)
+
+        expect(Person.tentative_membership).not_to include(person)
+        expect(Person.without_tentative_membership).to include(person)
+        expect(person).not_to be_tentative_membership
+      end
+    end
+  end
+
   describe "#leading_layer" do
     let(:person) { people(:member) }
     let(:group) { groups(:adler_mitglieder) }

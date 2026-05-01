@@ -399,6 +399,33 @@ describe Invoice::FeeCalculationItem do
         expect(item.count).to eq(1)
       end
 
+      context "when tentative memberships are configured" do
+        before do
+          allow(Settings.membership_fees)
+            .to receive(:tentative_membership_duration_months).and_return(3)
+        end
+
+        it "ignores person who entered within the tentative membership duration" do
+          role = Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:)
+          role.person.update!(last_entry_date_with_fee_kind: 1.month.ago.to_date)
+
+          expect(item.count).to eq(0)
+        end
+
+        it "counts person who entered before the tentative membership duration" do
+          role = Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:)
+          role.person.update!(last_entry_date_with_fee_kind: 4.months.ago.to_date)
+
+          expect(item.count).to eq(1)
+        end
+
+        it "counts person whose entry date is unknown" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:)
+
+          expect(item.count).to eq(1)
+        end
+      end
+
       context "when only_active_people toggle is set" do
         before do
           allow(FeatureGate).to receive(:enabled?).and_call_original
