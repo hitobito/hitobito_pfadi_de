@@ -81,6 +81,20 @@ describe Roles::FeeKindChangesController do
       end.to raise_error(CanCan::AccessDenied)
     end
 
+    it "redirects if changing to restricted fee_kind without permission" do
+      youth_kind.update_columns(restricted: true)
+      post :create, params: {role_id: role.id, role_fee_kind_change: model_params}
+      expect(response).to redirect_to(person_path(role.person))
+      expect(flash[:alert]).to eq "Keine Berechtigung für rechtebeschränkte Beitragsarten."
+    end
+
+    it "redirects if changing from restricted fee_kind without permission" do
+      role.fee_kind.update_columns(restricted: true)
+      post :create, params: {role_id: role.id, role_fee_kind_change: model_params}
+      expect(response).to redirect_to(person_path(role.person))
+      expect(flash[:alert]).to eq "Keine Berechtigung für rechtebeschränkte Beitragsarten."
+    end
+
     context "with view" do
       render_views
       it "re-renders form if model is invalid" do

@@ -28,6 +28,10 @@ class Role::FeeKindChange
     super(attributes)
   end
 
+  def changes_restricted?
+    FeeKind.where(restricted: true, id: [role.fee_kind_id, fee_kind_id]).exists?
+  end
+
   def save!
     raise ActiveRecord::RecordInvalid unless valid?
 

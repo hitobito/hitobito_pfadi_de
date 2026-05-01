@@ -127,7 +127,8 @@ de:
       title: Beitragsart ändern
       new:
         subtitle: Neue Beitragsart
-      not_applicable: Rolle hat keine Beitragsart.
       success: Die Beitragsart der Rolle wurde auf %{fee_kind} geändert.
       success_future_change: Die Beitragsart der Rolle wird am %{start_on} auf %{fee_kind} geändert.
+      failure_role_misses_fee_kind: Rolle hat keine Beitragsart.
+      failure_requires_assign_restricted_permission: Keine Berechtigung für rechtebeschränkte Beitragsarten.
 

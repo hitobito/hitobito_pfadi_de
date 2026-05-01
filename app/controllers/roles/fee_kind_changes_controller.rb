@@ -6,7 +6,7 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 class Roles::FeeKindChangesController < ApplicationController
-  helper_method :role, :fee_kind_change
+  helper_method :role, :fee_kind_change, :entry
 
   before_action :redirect_unless_applicable
   before_action :load_group # needed for sheets
@@ -28,13 +28,19 @@ class Roles::FeeKindChangesController < ApplicationController
 
   private
 
-  def redirect_unless_applicable
-    redirect_to person_path(role.person), alert: t(".not_applicable") unless role.fee_kind
-  end
-
   def success_message(start_on)
     key = start_on.future? ? ".success_future_change" : ".success"
     t(key, fee_kind: role.reload.fee_kind.to_s, start_on: I18n.l(start_on))
+  end
+
+  def redirect_unless_applicable
+    alert = if !role.fee_kind
+      t(".failure_role_misses_fee_kind")
+    elsif fee_kind_change.changes_restricted? && !can?(:assign_restricted_fee_kinds, role)
+      t(".failure_requires_assign_restricted_permission")
+    end
+
+    redirect_to person_path(role.person), alert: alert if alert
   end
 
   def fee_kind_change
@@ -46,4 +52,6 @@ class Roles::FeeKindChangesController < ApplicationController
   def role = @role ||= Role.find(params[:role_id])
 
   def load_group = @group = role.group
+
+  alias_method :entry, :fee_kind_change
 end
