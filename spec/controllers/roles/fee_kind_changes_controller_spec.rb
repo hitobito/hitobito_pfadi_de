@@ -43,7 +43,7 @@ describe Roles::FeeKindChangesController do
         expect(response).to be_successful
         expect(dom).to have_css "h1", text: "Beitragsart ändern"
         expect(dom).to have_css "dd", text: "My Member"
-        expect(dom).to have_css "dd", text: "Group::Mitglieder::OrdentlicheMitgliedschaft"
+        expect(dom).to have_css "dd", text: "Ordentliche Mitgliedschaft"
         expect(dom).to have_css "dd", text: "BaWü Kind"
         expect(dom).to have_css "dd", text: "01.01.2026"
         expect(dom).to have_select "Beitragsart", options: ["", "BaWü Kind", "BaWü Jugend"]

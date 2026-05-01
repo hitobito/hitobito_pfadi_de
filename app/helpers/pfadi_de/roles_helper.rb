@@ -7,6 +7,8 @@
 
 module PfadiDe
   module RolesHelper
+    def format_role_type(role) = role.class.model_name.human
+
     def link_action_change_fee_kind(role)
       label = t("roles.fee_kind_change_link")
       if can?(:edit, role)
