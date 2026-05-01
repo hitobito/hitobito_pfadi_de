@@ -9,6 +9,12 @@ de:
       role/fee_kind_change:
         fee_kind_id: Beitragsart
         start_on: Ab
+    errors:
+      models:
+        role/fee_kind_change:
+          attributes:
+            fee_kind_id:
+              already_active: ist bereits auf der Rolle aktiv
 
   activerecord:
     attributes:
@@ -129,6 +135,4 @@ de:
         subtitle: Neue Beitragsart
       success: Die Beitragsart der Rolle wurde auf %{fee_kind} geändert.
       success_future_change: Die Beitragsart der Rolle wird am %{start_on} auf %{fee_kind} geändert.
-      failure_role_misses_fee_kind: Rolle hat keine Beitragsart.
-      failure_requires_assign_restricted_permission: Keine Berechtigung für rechtebeschränkte Beitragsarten.
-
+      failure_role_does_not_allow_fee_kind: Rolle ist nicht beitragspflichtig

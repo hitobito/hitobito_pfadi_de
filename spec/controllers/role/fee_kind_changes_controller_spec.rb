@@ -46,7 +46,7 @@ describe Role::FeeKindChangesController do
         expect(dom).to have_css "dd", text: "Ordentliche Mitgliedschaft"
         expect(dom).to have_css "dd", text: "BaWü Kind"
         expect(dom).to have_css "dd", text: "01.01.2026"
-        expect(dom).to have_select "Beitragsart", options: ["", "BaWü Kind", "BaWü Jugend"]
+        expect(dom).to have_select "Beitragsart", options: ["BaWü Kind", "BaWü Jugend"]
         expect(dom).to have_field "Ab"
       end
     end
@@ -64,14 +64,14 @@ describe Role::FeeKindChangesController do
       expect do
         post :create, params: {role_id: role.id, role_fee_kind_change: model_params}
         expect(response).to redirect_to(group_person_path(role.group, role.person))
-        expect(flash[:notice]).to eq "Die Beitragsart der Rolle wurde auf BaWü Kind geändert."
+        expect(flash[:notice]).to eq "Die Beitragsart der Rolle wurde auf BaWü Jugend geändert."
       end.to change { role.reload.end_on }.to(Time.zone.yesterday)
     end
 
     it "has information about future fee kind change" do
       model_params[:start_on] = "2026-06-30"
       post :create, params: {role_id: role.id, role_fee_kind_change: model_params}
-      expect(flash[:notice]).to eq "Die Beitragsart der Rolle wird am 30.06.2026 auf BaWü Kind geändert."
+      expect(flash[:notice]).to eq "Die Beitragsart der Rolle wird am 30.06.2026 auf BaWü Jugend geändert."
     end
 
     it "raises if not authorized" do
@@ -93,9 +93,9 @@ describe Role::FeeKindChangesController do
       it "re-renders form if model is invalid" do
         post :create,
           params: {role_id: role.id, role_fee_kind_change: model_params.except(:fee_kind_id)}
-        expect(dom).to have_css ".alert-danger", text: "Beitragsart ist kein gültiger Wert"
+        expect(dom).to have_css ".alert-danger", text: "Beitragsart ist bereits auf der Rolle aktiv"
         expect(dom).to have_field "Ab"
-        expect(dom).to have_select "Beitragsart", options: ["", "BaWü Kind", "BaWü Jugend"]
+        expect(dom).to have_select "Beitragsart", options: ["BaWü Kind", "BaWü Jugend"]
       end
 
       it "re-renders form if change is effectively a no-op" do
@@ -103,7 +103,7 @@ describe Role::FeeKindChangesController do
           {role_id: role.id, role_fee_kind_change: model_params.merge(fee_kind_id: role.fee_kind_id)}
         expect(dom).to have_css ".alert-danger", text: "Beitragsart ist bereits auf der Rolle aktiv"
         expect(dom).to have_field "Ab"
-        expect(dom).to have_select "Beitragsart", options: ["", "BaWü Kind", "BaWü Jugend"]
+        expect(dom).to have_select "Beitragsart", options: ["BaWü Kind", "BaWü Jugend"]
       end
     end
   end

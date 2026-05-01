@@ -26,34 +26,39 @@ describe Role::FeeKindChange do
       expect(subject).to be_valid
     end
 
-    it "validates fee_kind presence" do
+    it "validates fee_kind presence, treats absence as no change" do
       attributes[:fee_kind_id] = ""
       expect(subject).not_to be_valid
-      expect(subject.errors.full_messages).to eq ["Beitragsart ist nicht gültig"]
+      expect(subject.errors.full_messages).to eq ["Beitragsart ist bereits auf der Rolle aktiv"]
     end
 
     it "validates fee_kind exists" do
       attributes[:fee_kind_id] = -1
       expect(subject).not_to be_valid
-      expect(subject.errors.full_messages).to eq ["Beitragsart ist nicht gültig"]
+      expect(subject.errors.full_messages).to eq ["Beitragsart ist kein gültiger Wert"]
     end
 
     it "validates fee_kind is one of the possible fee_kinds" do
       attributes[:fee_kind_id] = fee_kinds(:top_fee_kind).id
       expect(subject).not_to be_valid
-      expect(subject.errors.full_messages).to eq ["Beitragsart ist nicht gültig"]
+      expect(subject.errors.full_messages).to eq ["Beitragsart ist kein gültiger Wert"]
     end
 
     it "validates fee_kind differs from current fee kind" do
       attributes[:fee_kind_id] = role.fee_kind_id
       expect(subject).not_to be_valid
-      expect(subject.errors.full_messages).to eq ["Beitragsart ist nicht gültig"]
+      expect(subject.errors.full_messages).to eq ["Beitragsart ist bereits auf der Rolle aktiv"]
     end
 
-    it "validates start_on is after role start_on" do
+    it "allows start_on on role start_on" do
       attributes[:start_on] = role.start_on
+      expect(subject).to be_valid
+    end
+
+    it "validates start_on is on or after role start_on" do
+      attributes[:start_on] = role.start_on - 1.day
       expect(subject).not_to be_valid
-      expect(subject.errors.full_messages).to eq ["Ab muss nach 01.01.2026 sein"]
+      expect(subject.errors.full_messages).to eq ["Ab muss 01.01.2026 oder danach sein"]
     end
 
     it "validates start_on is before role end_on" do

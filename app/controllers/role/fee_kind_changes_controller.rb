@@ -36,7 +36,7 @@ class Role::FeeKindChangesController < ApplicationController
 
   def success_message(start_on)
     key = start_on.future? ? ".success_future_change" : ".success"
-    t(key, fee_kind: role.reload.fee_kind.to_s, start_on: I18n.l(start_on))
+    t(key, fee_kind: fee_kind_change.new_fee_kind.to_s, start_on: I18n.l(start_on))
   end
 
   def redirect_unless_applicable

@@ -17,9 +17,14 @@ class Role::FeeKindChange
   attribute :start_on, :date, default: -> { Time.zone.today }
 
   validates :role, :start_on, presence: true
-  validates_date :start_on, after: :role_start_on
+  validates_date :start_on, on_or_after: :role_start_on
   validates_date :start_on, before: :role_end_on, if: :role_end_on
-  validate :assert_fee_kind_valid
+  validates :fee_kind_id, inclusion: {in: ->(fee_kind_change) {
+    fee_kind_change.role.possible_fee_kinds.map(&:id)
+  }, allow_nil: true}
+  validates :fee_kind_id, exclusion: {in: ->(fee_kind_change) {
+    [nil, fee_kind_change.role.fee_kind_id]
+  }, message: :already_active}
 
   delegate :start_on, :end_on, to: :role, prefix: true
 
@@ -28,8 +33,10 @@ class Role::FeeKindChange
     super(attributes)
   end
 
-  def changes_restricted?
-    FeeKind.where(restricted: true, id: [role.fee_kind_id, fee_kind_id]).exists?
+  def new_fee_kind = @new_fee_kind ||= FeeKind.find(fee_kind_id)
+
+  def to_restricted?
+    new_fee_kind.restricted?
   end
 
   def save!
@@ -37,16 +44,7 @@ class Role::FeeKindChange
 
     Role.transaction do
       Role.create!(start_on:, fee_kind_id:, person:, type:, group:, end_on: role_end_on)
-      role.update!(end_on: start_on - 1.day)
-    end
-  end
-
-  private
-
-  def assert_fee_kind_valid
-    possible_fee_kinds = role.possible_fee_kinds.map(&:id)
-    if possible_fee_kinds.exclude?(fee_kind_id) || role.fee_kind_id == fee_kind_id
-      errors.add(:fee_kind_id, :invalid)
+      role.update!(end_on: [start_on - 1.day, role.start_on].max)
     end
   end
 end
