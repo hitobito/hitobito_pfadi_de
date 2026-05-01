@@ -10,7 +10,6 @@ module PfadiDe::Person
 
   PAYMENT_METHODS = %w[invoice debit].freeze
 
-  # rubocop:disable Metrics/BlockLength
   prepended do
     Person::PUBLIC_ATTRS.push(:pronoun, :exit_date, :bank_account_owner, :iban, :bic,
       :bank_name, :payment_method)
@@ -34,10 +33,19 @@ module PfadiDe::Person
 
     validates :iban, iban: true, on: :update, allow_blank: true
     validates :payment_method, inclusion: {in: PAYMENT_METHODS.map(&:to_s)}
+
+    scope :tentative_membership, -> do
+      duration = Settings.membership_fees.tentative_membership_duration_months.months
+      date = Time.zone.today - duration
+      where(last_entry_date_with_fee_kind: date..)
+    end
   end
-  # rubocop:enable Metrics/BlockLength
 
   def entry_date
     roles.with_inactive.where.not(start_on: nil).order(:start_on).first&.start_on
+  end
+
+  def tentative_membership?
+    @tentative_membership ||= Person.tentative_membership.where(id:).exists?
   end
 end
