@@ -16,7 +16,6 @@ stammesverwaltung:
   first_name: Some
   last_name: Stammesverwalterin
   email: some.stammesfuehrerin@hitobito.example.com
-  contact_data_visible: true
   primary_group: adler
 
 bottom_leader:

@@ -6,18 +6,11 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 module Sheet
-  class FeeKind < Sheet::Invoice
-    tab "fee_kinds.tabs.info",
-      :group_fee_kind_path,
-      if: ->(_, _, entry) { entry.present? },
-      no_alt: true
-
-    tab "fee_kinds.tabs.fee_rates",
-      :group_fee_kind_fee_rates_path,
-      if: ->(_, _, entry) { entry.present? }
+  class Role::FeeKindChange < Base
+    def self.parent_sheet = Sheet::Group
 
     def title
-      entry&.to_s || ::FeeKind.model_name.human(count: 2)
+      I18n.t("role.fee_kind_changes.title")
     end
   end
 end
