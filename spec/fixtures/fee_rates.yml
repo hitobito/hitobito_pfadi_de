@@ -1,4 +1,4 @@
-#  Copyright (c) 2026-2026, BdP and DPSG. This file is part of
+#  Copyright (c) 2026, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
@@ -15,14 +15,14 @@ alter_halbjahresbeitragssatz:
   amount: 30.0
   valid_from: 2024-01-01
   valid_until: 2024-12-31
-  max_member_months: 6
+  max_member_months: "<%= Settings.membership_fees.relative_fee_rates.enabled ? nil : 6 %>"
 
 halbjahresbeitragssatz:
   fee_kind: baden_wuerttemberg_kind
   name: Halbjahresbeitrag (neu)
   amount: 45.0
   valid_from: 2025-01-01
-  max_member_months: 6
+  max_member_months: "<%= Settings.membership_fees.relative_fee_rates.enabled ? nil : 6 %>"
 
 kleinkinderbeitragssatz:
   fee_kind: baden_wuerttemberg_kind
@@ -30,5 +30,4 @@ kleinkinderbeitragssatz:
   amount: 20
   valid_from: 2025-01-01
   valid_until: <%= DateTime.current.end_of_year.to_date.iso8601 %>
-  max_age: 8
-
+  max_age: "<%= Settings.membership_fees.relative_fee_rates.enabled ? nil : 8 %>"

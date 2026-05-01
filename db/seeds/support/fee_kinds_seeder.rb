@@ -1,7 +1,7 @@
-#  Copyright (c) 2026, Hitobito AG. This file is part of
-#  hitobito and licensed under the Affero General Public License version 3
+#  Copyright (c) 2026, BdP and DPSG. This file is part of
+#  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
-#  https://github.com/hitobito/hitobito.
+#  https://github.com/hitobito/hitobito_pfadi_de.
 
 class FeeKindsSeeder
   FEE_KIND_NAMES = [
@@ -60,8 +60,8 @@ class FeeKindsSeeder
           amount: rand(50),
           valid_from:,
           valid_until:,
-          max_member_months: [nil, nil, 6, 12].sample,
-          max_age: [nil, nil, 10, 18].sample
+          max_member_months: max_member_months(fee_kind),
+          max_age: max_age(fee_kind)
         })
       end
       FeeRate.seed(:fee_kind_id, :amount, :valid_from, :valid_until, {
@@ -70,9 +70,19 @@ class FeeKindsSeeder
         amount: rand(50),
         valid_from: FEE_RATE_VALIDITY_DATES.select(&:past?).sample,
         valid_until: nil,
-        max_member_months: [nil, nil, 6, 12].sample,
-        max_age: [nil, nil, 10, 18].sample
+        max_member_months: max_member_months(fee_kind),
+        max_age: max_age(fee_kind)
       })
     end
+  end
+
+  private
+
+  def max_member_months(fee_kind)
+    fee_kind.layer.decorate.use_fee_rate_max_member_months? ? [nil, nil, 6, 12].sample : nil
+  end
+
+  def max_age(fee_kind)
+    fee_kind.layer.decorate.use_fee_rate_max_age? ? [nil, nil, 10, 18].sample : nil
   end
 end

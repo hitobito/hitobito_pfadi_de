@@ -12,14 +12,26 @@ class FeeRatesController < CrudController
     :name,
     :amount,
     :valid_from,
-    :valid_until,
-    :max_member_months,
-    :max_age
+    :valid_until
   ]
+
+  helper_method :use_fee_rate_max_age?, :use_fee_rate_max_member_months?
+
+  delegate :use_fee_rate_max_age?, :use_fee_rate_max_member_months?, to: :layer
 
   private
 
+  def permitted_attrs
+    self.class.permitted_attrs
+      .then { |attrs| use_fee_rate_max_age? ? attrs + [:max_age] : attrs }
+      .then { |attrs| use_fee_rate_max_member_months? ? attrs + [:max_member_months] : attrs }
+  end
+
   def list_entries
     super.includes(fee_kind: [:layer]).list
+  end
+
+  def layer
+    parents.first.decorate
   end
 end

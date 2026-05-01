@@ -3,5 +3,12 @@
 -#  or later. See the COPYING file at the top-level directory or at
 -#  https://github.com/hitobito/hitobito.
 
-- attrs = entry.used? ? [:valid_until] : [:name, :amount, :valid_from, :valid_until, :max_member_months, :max_age]
-= entry_form(*attrs, buttons_top: false)
+- if entry.used?
+  = entry_form(:valid_until, buttons_top: false)
+- else
+  = entry_form(buttons_top: false) do |f|
+    = f.labeled_input_fields(:name, :amount, :valid_from, :valid_until)
+    - if use_fee_rate_max_age?
+      = f.labeled_input_field(:max_age)
+    - if use_fee_rate_max_member_months?
+      = f.labeled_input_field(:max_member_months)
