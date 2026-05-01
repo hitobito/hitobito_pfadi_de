@@ -26,7 +26,6 @@ describe "people/_roles.html.haml" do
     let(:current_user) { role.person }
 
     it "renders beitragsart icon without link" do
-      puts dom.native
       expect(dom).to have_css ".fa-money-bill-1-wave", style: "opacity: 0.5"
     end
 
