@@ -56,3 +56,4 @@ membership_fees:
     enabled: false
   half_year_periods:
     enabled: false
+  tentative_membership_duration_months: 0

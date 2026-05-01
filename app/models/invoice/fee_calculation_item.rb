@@ -44,9 +44,7 @@ class Invoice::FeeCalculationItem < Invoice::PeriodItem
   end
 
   def active_condition(start_on, end_on)
-    # This would be redundant, since People::FeeRatesQuery already considers only active roles
-    # Role.active(start_on..end_on)
-    Role.with_inactive.all
+    Person.tentative_membership.invert_where
   end
 
   def scope

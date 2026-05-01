@@ -67,6 +67,7 @@ de:
           debit: Lastschrift
           invoice: Rechnung
         pronoun: Pronomen
+        tentative_membership: Probemitgliedschaft
       period_invoice_template:
         billing_period: Abrechnungsperiode
 
@@ -136,3 +137,5 @@ de:
       success: Die Beitragsart der Rolle wurde auf %{fee_kind} geändert.
       success_future_change: Die Beitragsart der Rolle wird am %{start_on} auf %{fee_kind} geändert.
       failure_role_does_not_allow_fee_kind: Rolle ist nicht beitragspflichtig
+  person:
+    tentative_membership:
