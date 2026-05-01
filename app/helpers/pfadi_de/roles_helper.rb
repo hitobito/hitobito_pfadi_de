@@ -10,7 +10,7 @@ module PfadiDe
     def format_role_type(role) = role.class.model_name.human
 
     def link_action_change_fee_kind(role)
-      label = t("roles.fee_kind_change_link")
+      label = t("role.fee_kind_change_link")
       if can?(:edit, role)
         link_to(
           icon(:"money-bill-1-wave"),

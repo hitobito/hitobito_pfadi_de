@@ -121,7 +121,7 @@ de:
       confirm_delete: Wollen Sie diese Beitragsart wirklich archivieren? Sie kann danach nicht mehr neu auf Rollen zugewiesen werden.
     form:
       caption_resricted: Beitragsart darf nur durch speziell berechtigte Personen vergeben werden
-  roles:
+  role:
     fee_kind_change_link: Beitragsart ändern
     fee_kind_changes:
       title: Beitragsart ändern

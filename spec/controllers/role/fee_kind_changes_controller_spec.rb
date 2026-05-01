@@ -7,7 +7,7 @@
 
 require "spec_helper"
 
-describe Roles::FeeKindChangesController do
+describe Role::FeeKindChangesController do
   let(:leader) { people(:admin) }
   let(:group) { groups(:root) }
   let(:person) { role.person }
@@ -31,8 +31,8 @@ describe Roles::FeeKindChangesController do
 
     it "redirects if not applicable" do
       get :new, params: {role_id: roles(:member).id}
-      expect(response).to redirect_to(person_path(role.person))
-      expect(flash[:alert]).to eq "Rolle hat keine Beitragsart."
+      expect(response).to redirect_to(group_person_path(roles(:member).group, role.person))
+      expect(flash[:alert]).to eq "Rolle ist nicht beitragspflichtig"
     end
 
     context "with view" do
@@ -63,7 +63,7 @@ describe Roles::FeeKindChangesController do
     it "changes fee kind and redirects" do
       expect do
         post :create, params: {role_id: role.id, role_fee_kind_change: model_params}
-        expect(response).to redirect_to(person_path(role.person, format: :html))
+        expect(response).to redirect_to(group_person_path(role.group, role.person))
         expect(flash[:notice]).to eq "Die Beitragsart der Rolle wurde auf BaWü Kind geändert."
       end.to change { role.reload.end_on }.to(Time.zone.yesterday)
     end
@@ -81,18 +81,11 @@ describe Roles::FeeKindChangesController do
       end.to raise_error(CanCan::AccessDenied)
     end
 
-    it "redirects if changing to restricted fee_kind without permission" do
-      youth_kind.update_columns(restricted: true)
-      post :create, params: {role_id: role.id, role_fee_kind_change: model_params}
-      expect(response).to redirect_to(person_path(role.person))
-      expect(flash[:alert]).to eq "Keine Berechtigung für rechtebeschränkte Beitragsarten."
-    end
-
-    it "redirects if changing from restricted fee_kind without permission" do
-      role.fee_kind.update_columns(restricted: true)
-      post :create, params: {role_id: role.id, role_fee_kind_change: model_params}
-      expect(response).to redirect_to(person_path(role.person))
-      expect(flash[:alert]).to eq "Keine Berechtigung für rechtebeschränkte Beitragsarten."
+    it "raises if changing to restricted fee_kind without permission" do
+      youth_kind.root.update_columns(restricted: true)
+      expect do
+        post :create, params: {role_id: role.id, role_fee_kind_change: model_params}
+      end.to raise_error(CanCan::AccessDenied)
     end
 
     context "with view" do
@@ -100,7 +93,15 @@ describe Roles::FeeKindChangesController do
       it "re-renders form if model is invalid" do
         post :create,
           params: {role_id: role.id, role_fee_kind_change: model_params.except(:fee_kind_id)}
-        expect(dom).to have_css ".alert-danger", text: "Beitragsart ist nicht gültig"
+        expect(dom).to have_css ".alert-danger", text: "Beitragsart ist kein gültiger Wert"
+        expect(dom).to have_field "Ab"
+        expect(dom).to have_select "Beitragsart", options: ["", "BaWü Kind", "BaWü Jugend"]
+      end
+
+      it "re-renders form if change is effectively a no-op" do
+        post :create, params:
+          {role_id: role.id, role_fee_kind_change: model_params.merge(fee_kind_id: role.fee_kind_id)}
+        expect(dom).to have_css ".alert-danger", text: "Beitragsart ist bereits auf der Rolle aktiv"
         expect(dom).to have_field "Ab"
         expect(dom).to have_select "Beitragsart", options: ["", "BaWü Kind", "BaWü Jugend"]
       end

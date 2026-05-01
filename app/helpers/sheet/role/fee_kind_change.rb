@@ -6,13 +6,11 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 module Sheet
-  module Roles
-    class FeeKindChange < Base
-      def self.parent_sheet = Sheet::Group
+  class Role::FeeKindChange < Base
+    def self.parent_sheet = Sheet::Group
 
-      def title
-        I18n.t("roles.fee_kind_changes.title")
-      end
+    def title
+      I18n.t("role.fee_kind_changes.title")
     end
   end
 end

@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   language_scope do
     resources :roles do
-      resources :fee_kind_changes, only: [:new, :create], module: :roles
+      resources :fee_kind_changes, only: [:new, :create], module: :role
     end
     resources :groups do
       resources :fee_kinds do

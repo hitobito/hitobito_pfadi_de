@@ -5,7 +5,7 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
-class Roles::FeeKindChangesController < ApplicationController
+class Role::FeeKindChangesController < ApplicationController
   helper_method :role, :fee_kind_change, :entry
   helper_method :may_change_fee_kind?
 
@@ -19,9 +19,8 @@ class Roles::FeeKindChangesController < ApplicationController
   def create
     authorize!(:update, role)
     if fee_kind_change.valid?
-      fee_kind_change.save!
-      redirect_to person_path(role.person, format: :html), # unsure why we need html here
-        notice: success_message(fee_kind_change.start_on)
+      authorize!(:assign_restricted_fee_kinds, role) if fee_kind_change.to_restricted?
+      save_and_redirect
     else
       render :new, status: :unprocessable_content
     end
@@ -29,19 +28,22 @@ class Roles::FeeKindChangesController < ApplicationController
 
   private
 
+  def save_and_redirect
+    fee_kind_change.save!
+    redirect_to group_person_path(role.group, role.person),
+      notice: success_message(fee_kind_change.start_on)
+  end
+
   def success_message(start_on)
     key = start_on.future? ? ".success_future_change" : ".success"
     t(key, fee_kind: role.reload.fee_kind.to_s, start_on: I18n.l(start_on))
   end
 
   def redirect_unless_applicable
-    alert = if !role.fee_kind
-      t(".failure_role_misses_fee_kind")
-    elsif fee_kind_change.changes_restricted? && !can?(:assign_restricted_fee_kinds, role)
-      t(".failure_requires_assign_restricted_permission")
+    unless role.fee_kind_type?
+      redirect_to group_person_path(role.group, role.person),
+        alert: t(".failure_role_does_not_allow_fee_kind")
     end
-
-    redirect_to person_path(role.person), alert: alert if alert
   end
 
   def fee_kind_change

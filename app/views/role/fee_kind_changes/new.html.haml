@@ -7,7 +7,7 @@
   = render_attrs role, :person, :type, :group, :label, :start_on, :end_on, :fee_kind
 %hr
 %h2=t('.subtitle')
-= standard_form(fee_kind_change, url: role_fee_kind_changes_path(role)) do |f|
+= standard_form(fee_kind_change) do |f|
   = f.error_messages
   = render 'roles/fee_kind_field', role:, f:, disabled: false
   = f.labeled_input_field :start_on
