@@ -5,5 +5,5 @@
 
 = hidden_field_tag :autosubmit
 = turbo_frame_tag :role_fee_kind_id, target: :_top do
-  - if entry.used_attributes(:fee_kind_id).present?
-    = render "fee_kind_field", role: entry.role, f:, disabled: entry.persisted? || possible_fee_kinds.one?
+  - if entry.fee_kind_type?
+    = render "fee_kind_field", role: entry.role, f:
