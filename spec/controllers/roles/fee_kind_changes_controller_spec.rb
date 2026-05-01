@@ -99,8 +99,8 @@ describe Roles::FeeKindChangesController do
       render_views
       it "re-renders form if model is invalid" do
         post :create,
-          params: {role_id: role.id, role_fee_kind_change: model_params.except(:start_on)}
-        expect(dom).to have_css ".alert-danger", text: "Ab muss ausgefüllt werden"
+          params: {role_id: role.id, role_fee_kind_change: model_params.except(:fee_kind_id)}
+        expect(dom).to have_css ".alert-danger", text: "Beitragsart ist nicht gültig"
         expect(dom).to have_field "Ab"
         expect(dom).to have_select "Beitragsart", options: ["", "BaWü Kind", "BaWü Jugend"]
       end

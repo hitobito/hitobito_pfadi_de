@@ -14,7 +14,7 @@ class Role::FeeKindChange
   delegate :type, :person, :group, to: :role
 
   attribute :fee_kind_id, :integer
-  attribute :start_on, :date
+  attribute :start_on, :date, default: -> { Time.zone.today }
 
   validates :role, :start_on, presence: true
   validates_date :start_on, after: :role_start_on

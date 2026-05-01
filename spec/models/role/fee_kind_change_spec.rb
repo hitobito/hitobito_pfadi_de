@@ -13,7 +13,7 @@ describe Role::FeeKindChange do
       parent: fee_kinds(:top_fee_kind))
   }
 
-  let(:attributes) { {start_on: Time.zone.today, fee_kind_id: fee_kind.id} }
+  let(:attributes) { {fee_kind_id: fee_kind.id} }
   let(:person) { role.person }
   let(:role) { roles(:paying_member) }
 
@@ -68,9 +68,19 @@ describe Role::FeeKindChange do
     it "ends existing and creates new role with new fee_kind" do
       expect do
         expect(subject.save!).to be_truthy
-      end.to change { role.reload.end_on }.to(attributes[:start_on] - 1.day)
+      end.to change { role.reload.end_on }.to(Time.zone.today - 1.day)
       expect(person.roles.last.fee_kind).to eq fee_kind
       expect(person.roles.last.start_on).to eq Time.zone.today
+      expect(person.roles.last.end_on).to be_nil
+    end
+
+    it "may change start_at of new role" do
+      attributes[:start_on] = "2026-04-15"
+      expect do
+        expect(subject.save!).to be_truthy
+      end.to change { role.reload.end_on.to_s }.to eq "2026-04-14"
+      expect(person.roles.last.fee_kind).to eq fee_kind
+      expect(person.roles.last.start_on.to_s).to eq "2026-04-15"
       expect(person.roles.last.end_on).to be_nil
     end
 
@@ -78,7 +88,7 @@ describe Role::FeeKindChange do
       role.update!(end_on: "2026-12-31")
       expect do
         expect(subject.save!).to be_truthy
-      end.to change { role.reload.end_on }.to(attributes[:start_on] - 1.day)
+      end.to change { role.reload.end_on }.to(Time.zone.today - 1.day)
       expect(person.roles.last.fee_kind).to eq fee_kind
       expect(person.roles.last.start_on).to eq Time.zone.today
       expect(person.roles.last.end_on.to_s).to eq "2026-12-31"
