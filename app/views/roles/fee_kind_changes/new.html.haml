@@ -3,7 +3,8 @@
 -#  or later. See the COPYING file at the top-level directory or at
 -#  https://github.com/hitobito/hitobito_pfadi_de.
 
-= render_attrs role, :person, :type, :group, :label, :start_on, :end_on, :fee_kind
+.mw-xl-50
+  = render_attrs role, :person, :type, :group, :label, :start_on, :end_on, :fee_kind
 %hr
 %h2=t('.subtitle')
 = standard_form(fee_kind_change, url: role_fee_kind_changes_path(role)) do |f|
