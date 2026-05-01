@@ -7,6 +7,7 @@
 
 class Roles::FeeKindChangesController < ApplicationController
   helper_method :role, :fee_kind_change, :entry
+  helper_method :may_change_fee_kind?
 
   before_action :redirect_unless_applicable
   before_action :load_group # needed for sheets
@@ -52,6 +53,8 @@ class Roles::FeeKindChangesController < ApplicationController
   def role = @role ||= Role.find(params[:role_id])
 
   def load_group = @group = role.group
+
+  def may_change_fee_kind? = true
 
   alias_method :entry, :fee_kind_change
 end
