@@ -62,3 +62,4 @@ membership_fees:
     enabled: false
   only_active_people:
     enabled: false
+  tentative_membership_duration_months: 0

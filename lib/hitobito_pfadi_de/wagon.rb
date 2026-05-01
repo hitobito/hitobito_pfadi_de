@@ -57,6 +57,7 @@ module HitobitoPfadiDe
 
       GroupDecorator.prepend PfadiDe::GroupDecorator
       PersonDecorator.prepend PfadiDe::PersonDecorator
+      RoleDecorator.prepend PfadiDe::RoleDecorator
 
       Contactable::Address.prepend PfadiDe::Contactable::Address
 

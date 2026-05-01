@@ -44,9 +44,9 @@ class Invoice::FeeCalculationItem < Invoice::PeriodItem
   end
 
   def active_condition(start_on, end_on)
-    # This would be redundant, since People::FeeRatesQuery already considers only active roles
-    # Role.active(start_on..end_on)
-    Role.with_inactive.all
+    # Restricting to active roles would be redundant, since People::FeeRatesQuery already
+    # considers only active roles. People on a tentative membership are not invoiced yet.
+    Person.without_tentative_membership
   end
 
   # When invoicing groups, each recipient group also collects the fees of the people in all its
