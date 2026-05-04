@@ -38,10 +38,15 @@ class People::FeeRatesQuery
       .select("DISTINCT ON (people.id) roles.id AS role_id, roles.*")
       # only allow membership roles
       .where(type: Role.types_with_fee_kind.map(&:name))
-      # only allow roles active during the period
-      .active(period_start_on..period_end_on)
+      # only allow roles that are considered active
+      .active(active_range)
       # prefer the oldest role of each person in each layer context, tiebreak by role id
       .order("groups.layer_group_id", "people.id", :start_on, :id)
+  end
+
+  def active_range
+    return period_end_on if FeatureGate.enabled?("membership_fees.only_active_people")
+    period_start_on..period_end_on
   end
 
   def target_fee_kind_join

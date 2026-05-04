@@ -56,3 +56,5 @@ membership_fees:
     enabled: false
   half_year_periods:
     enabled: false
+  only_active_people:
+    enabled: false
