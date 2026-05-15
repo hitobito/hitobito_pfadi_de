@@ -19,7 +19,7 @@ module HitobitoPfadiDe
       #{config.root}/app/jobs
     ]
 
-    config.to_prepare do
+    config.to_prepare do # rubocop:disable Metrics/BlockLength
       JobManager.wagon_jobs += [
         PfadiDe::RecalculateLastEntryDatesJob,
         PfadiDe::RecalculateRecentEntryDatesJob
@@ -61,6 +61,10 @@ module HitobitoPfadiDe
 
       NavigationHelper::MAIN.find { _1[:label] == :groups }[:inactive_for].push("fee_kinds")
       NavigationHelper::MAIN.find { _1[:label] == :invoices }[:active_for].push("fee_kinds")
+
+      TableDisplay.register_column(Person,
+        TableDisplays::People::FeeKindColumn,
+        :fee_kind)
     end
 
     initializer "pfadi_de.add_settings" do |_app|
