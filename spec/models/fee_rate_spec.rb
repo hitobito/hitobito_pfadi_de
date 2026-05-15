@@ -10,7 +10,22 @@ require "spec_helper"
 describe FeeRate, type: :model do
   subject { fee_rates(:jahresbeitragssatz) }
 
-  describe "has validations, which enforce" do
+  def create_process_subject(dynamic_cost_parameters = {})
+    item = InvoiceItem.create!(
+      invoice_id: 1,
+      name: "name",
+      unit_cost: 1,
+      dynamic_cost_parameters:
+    )
+    InvoiceRun::ProcessedSubject.create!(
+      subject_id: 1,
+      subject_type: "Person",
+      template_item_id: 1,
+      item:
+    )
+  end
+
+  describe "::validations" do
     it "valid fixtures" do
       is_expected.to be_valid
     end
@@ -25,6 +40,57 @@ describe FeeRate, type: :model do
       subject.fee_kind_id = nil
 
       expect(subject).to_not be_valid
+    end
+
+    context "used" do
+      [
+        [:name, "newName"],
+        [:amount, 1],
+        [:valid_from, Date.yesterday],
+        [:max_member_months, 5],
+        [:max_age, 18]
+      ].each do |attr, value|
+        it "may change #{attr} if not used" do
+          subject.send(:"#{attr}=", value)
+          expect(subject).to be_valid
+        end
+
+        it "may not change #{attr} if used" do
+          create_process_subject(fee_rate_id: subject.id)
+          subject.send(:"#{attr}=", value)
+          expect(subject).not_to be_valid
+          expect(subject.errors.full_messages).to eq [
+            "#{FeeRate.human_attribute_name(attr)} darf nicht verändert werden"
+          ]
+        end
+      end
+
+      it "may change valid_until even if in used" do
+        create_process_subject(fee_rate_id: subject.id)
+        subject.valid_until = Date.tomorrow
+        expect(subject).to be_valid
+      end
+    end
+  end
+
+  describe "#used?" do
+    it "is false if no processed subjects exists" do
+      expect(subject).not_to be_used
+    end
+
+    it "is false if processed subject does not match" do
+      create_process_subject(foo: :bar)
+      expect(subject).not_to be_used
+    end
+
+    it "is false for processed subject matching other fee_rate" do
+      create_process_subject(fee_rate_id: 2)
+      expect(subject).not_to be_used
+    end
+
+    it "is true for processed subject does match" do
+      create_process_subject(fee_rate_id: subject.id)
+      expect(subject).to be_used
     end
   end
 
