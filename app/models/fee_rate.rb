@@ -43,8 +43,8 @@ class FeeRate < ApplicationRecord
   private
 
   def assert_readonly_attrs
-    changes.keys.each do |attr|
-      errors.add(attr, :readonly) unless /valid_until/.match?(attr)
+    changes.except("valid_until").keys.each do |attr|
+      errors.add(attr, :readonly)
     end
   end
 end
