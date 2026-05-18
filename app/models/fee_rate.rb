@@ -20,6 +20,8 @@ class FeeRate < ApplicationRecord
   }
   scope :valid_today, -> { active }
 
+  validate :assert_readonly_attrs, if: :used?
+
   def group = layer
 
   def to_s = name
@@ -29,5 +31,20 @@ class FeeRate < ApplicationRecord
 
     fee_kind.ancestors.joins(:fee_rates).merge(FeeRate.active(date)).sum("fee_rates.amount") +
       amount
+  end
+
+  def used?
+    InvoiceRun::ProcessedSubject
+      .joins(:item)
+      .where("invoice_items.dynamic_cost_parameters LIKE '%fee_rate_id: #{id}\n%'")
+      .exists?
+  end
+
+  private
+
+  def assert_readonly_attrs
+    changes.except("valid_until").keys.each do |attr|
+      errors.add(attr, :readonly)
+    end
   end
 end
