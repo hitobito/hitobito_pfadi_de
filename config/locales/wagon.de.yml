@@ -80,7 +80,6 @@ de:
         class:
           permission:
             description:
-              assign_restricted_fee_kinds: "Rechtebeschränkte Beitragsarten vergeben."
               group_and_below_efz: "Zeugnisse nach SGB VIII erfassen in dieser Gruppen und deren Untergruppen."
               assign_restricted_fee_kinds: "Darf alle Beitragsarten zuweisen."
     models:
