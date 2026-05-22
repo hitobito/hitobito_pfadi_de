@@ -1,6 +1,17 @@
--#  Copyright (c) 2025, BdP and DPSG. This file is part of
+-#  Copyright (c) 2026, BdP and DPSG. This file is part of
 -#  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 -#  or later. See the COPYING file at the top-level directory or at
 -#  https://github.com/hitobito/hitobito_pfadi_de.
 
-= render 'contactable/bank_account_fields', f: f
+- if entry.attr_used?(:iban)
+  = render 'contactable/bank_account_fields', f: f
+
+= f.labeled_input_fields(*entry.used_attributes(:gruendungsdatum, :aufloesungsdatum,
+  :einsichtnahme_efz_durch_gruppe, :debitorennummer, :sepa_glaeubiger_id))
+
+= render 'used_i18n_enum_field', attr: :zahlungsart, f:
+= render 'used_i18n_enum_field', attr: :rechtsform, f:
+= render 'used_i18n_enum_field', attr: :stamm_typ, f:
+
+= f.labeled_input_fields(*entry.used_attributes(:strukturnummer, :opt_out_aufnahmeantrag,
+  :opt_out_aufnahmeantrag_stammessuche, :efz_in_aufnahmeantrag, :eingeschraenkt))

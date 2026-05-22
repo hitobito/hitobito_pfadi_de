@@ -1971,25 +1971,103 @@
         "bank_account_owner": {
           "type": "string",
           "readable": true,
-          "writable": true,
+          "writable": false,
           "description": null
         },
         "iban": {
           "type": "string",
           "readable": true,
-          "writable": true,
+          "writable": false,
           "description": null
         },
         "bic": {
           "type": "string",
           "readable": true,
-          "writable": true,
+          "writable": false,
           "description": null
         },
         "bank_name": {
           "type": "string",
           "readable": true,
-          "writable": true,
+          "writable": false,
+          "description": null
+        },
+        "gruendungsdatum": {
+          "type": "date",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "aufloesungsdatum": {
+          "type": "date",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "einsichtnahme_efz_durch_gruppe": {
+          "type": "boolean",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "debitorennummer": {
+          "type": "string",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "sepa_glaeubiger_id": {
+          "type": "string",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "zahlungsart": {
+          "type": "string",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "rechtsform": {
+          "type": "string",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "strukturnummer": {
+          "type": "string",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "stamm_typ": {
+          "type": "string",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "opt_out_aufnahmeantrag": {
+          "type": "boolean",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "opt_out_aufnahmeantrag_stammessuche": {
+          "type": "boolean",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "efz_in_aufnahmeantrag": {
+          "type": "boolean",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "eingeschraenkt": {
+          "type": "boolean",
+          "readable": true,
+          "writable": false,
           "description": null
         }
       },
@@ -2030,7 +2108,20 @@
         "bank_account_owner": {},
         "iban": {},
         "bic": {},
-        "bank_name": {}
+        "bank_name": {},
+        "gruendungsdatum": {},
+        "aufloesungsdatum": {},
+        "einsichtnahme_efz_durch_gruppe": {},
+        "debitorennummer": {},
+        "sepa_glaeubiger_id": {},
+        "zahlungsart": {},
+        "rechtsform": {},
+        "strukturnummer": {},
+        "stamm_typ": {},
+        "opt_out_aufnahmeantrag": {},
+        "opt_out_aufnahmeantrag_stammessuche": {},
+        "efz_in_aufnahmeantrag": {},
+        "eingeschraenkt": {}
       },
       "filters": {
         "id": {
@@ -2365,6 +2456,153 @@
             "match",
             "not_match"
           ]
+        },
+        "gruendungsdatum": {
+          "type": "date",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "aufloesungsdatum": {
+          "type": "date",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "einsichtnahme_efz_durch_gruppe": {
+          "type": "boolean",
+          "operators": [
+            "eq"
+          ],
+          "single": true
+        },
+        "debitorennummer": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
+        },
+        "sepa_glaeubiger_id": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
+        },
+        "zahlungsart": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
+        },
+        "rechtsform": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
+        },
+        "strukturnummer": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
+        },
+        "stamm_typ": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
+        },
+        "opt_out_aufnahmeantrag": {
+          "type": "boolean",
+          "operators": [
+            "eq"
+          ],
+          "single": true
+        },
+        "opt_out_aufnahmeantrag_stammessuche": {
+          "type": "boolean",
+          "operators": [
+            "eq"
+          ],
+          "single": true
+        },
+        "efz_in_aufnahmeantrag": {
+          "type": "boolean",
+          "operators": [
+            "eq"
+          ],
+          "single": true
+        },
+        "eingeschraenkt": {
+          "type": "boolean",
+          "operators": [
+            "eq"
+          ],
+          "single": true
         }
       },
       "relationships": {

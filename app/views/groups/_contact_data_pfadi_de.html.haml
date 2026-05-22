@@ -1,0 +1,23 @@
+-#  Copyright (c) 2025, BdP and DPSG. This file is part of
+-#  hitobito_pfadi_de and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_pfadi_de.
+
+- if entry.attr_used?(:iban) && (entry.iban.present? || entry.bank_account_owner.present?)
+  .contactable.well
+    %address
+      %strong= t('.bank_account')
+      - if entry.bank_account_owner.present?
+        %div= entry.bank_account_owner
+      - if entry.iban.present?
+        %div= entry.iban
+      - if entry.bic.present?
+        %div= entry.bic
+      - if entry.bank_name.present?
+        %div= entry.bank_name
+      - if entry.debitorennummer.present?
+        %div= "#{entry.class.human_attribute_name(:debitorennummer)}: #{entry.debitorennummer}"
+      - if entry.sepa_glaeubiger_id.present?
+        %div= "#{entry.class.human_attribute_name(:sepa_glaeubiger_id)}: #{entry.sepa_glaeubiger_id}"
+      - if entry.zahlungsart.present?
+        %div= entry.class.human_attribute_name("zahlungsart/#{entry.zahlungsart}")

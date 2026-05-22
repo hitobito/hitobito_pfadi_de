@@ -31,6 +31,10 @@ phone_number:
     - Andere
 
 groups:
+  bdp:
+    enabled: true
+  dpsg:
+    enabled: false
   period_invoice_templates:
     enabled: true
     item_classes:

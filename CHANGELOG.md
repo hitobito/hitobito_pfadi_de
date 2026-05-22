@@ -2,6 +2,7 @@
 
 ## unreleased
 
+* Layer spezifische Gruppenattribute (Gründungsdatum, Rechtsform u.a.) können erfasst und über die API gelesen werden (hitobito_pfadi_de#46)
 * Beitragsarten können auf Personlisten eingeblendet und exportiert werden (hitobito_pfadi_de#31)
 * In den Rechnungseinstellungen können Beitragsarten erfasst und verwaltet werden (hitobito_pfadi_de#15)
 * Wenn eine Beitragart archiviert ist, wird sie nicht mehr zur Vererbung angeboten (hitobito_pfadi_de#22)
