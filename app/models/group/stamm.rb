@@ -6,6 +6,8 @@
 #  https://github.com/hitobito/hitobito_bdp.
 
 class Group::Stamm < ::Group
+  include PfadiDe::LayerGroup
+
   self.layer = true
   self.event_types = [Event, Event::Course]
 
@@ -20,6 +22,24 @@ class Group::Stamm < ::Group
     Group::Mitglieder,
     Group::Gruppen
   ]
+
+  self.used_attributes += [
+    :opt_out_aufnahmeantrag,
+    :opt_out_aufnahmeantrag_stammessuche,
+    :stamm_typ
+  ]
+
+  if Wagons.find("bpd")
+    self.used_attributes += [:efz_in_aufnahmeantrag]
+    i18n_enum :stamm_typ, %w[aufbaugruppe stamm],
+      i18n_prefix: "activerecord.attributes.group.stamm_typen"
+  end
+
+  if Wagons.find("dpsg")
+    self.used_attributes += [:eingeschraenkt]
+    i18n_enum :stamm_typ, %w[siedlung stamm],
+      i18n_prefix: "activerecord.attributes.group.stamm_typen"
+  end
 
   ### ROLES
 

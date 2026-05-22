@@ -81,7 +81,9 @@ module HitobitoPfadiDe
 
     initializer "pfadi_de.add_inflections" do |_app|
       ActiveSupport::Inflector.inflections do |inflect|
-        # inflect.irregular "census", "censuses"
+        inflect.irregular "rechtsform", "rechtsformen"
+        inflect.irregular "stamm_typ", "stamm_typen"
+        inflect.irregular "zahlungsart", "zahlungsarten"
       end
     end
 

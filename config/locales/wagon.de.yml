@@ -20,14 +20,38 @@ de:
     attributes:
       group:
         address: Anschrift
+        aufloesungsdatum: Auflösungsdatum
         bank_account_owner: Kontoinhaber
         bank_name: Kreditinstitut
         bic: BIC
         consent_data_retention: Einwilligung Weiternutzung Kontaktdaten nach Austritt
+        debitorennummer: Debitorennummer
+        efz_in_aufnahmeantrag: eFZ in Aufnahmeantrag
+        eingeschraenkt: Vorübergehend eingeschränkt
+        einsichtnahme_efz_durch_gruppe: Einsichtnahme eFZ durch Gruppe erlaubt
         entry_date: Eintrittsdatum
         exit_date: Austrittsdatum
+        gruendungsdatum: Gründungsdatum
         iban: IBAN
+        opt_out_aufnahmeantrag: Opt-Out digitale Aufnahme
+        opt_out_aufnahmeantrag_stammessuche: Opt-Out Stammessuche
         pronoun: Pronomen
+        rechtsform: Rechtsform
+        rechtsformen:
+          ev: "e.V."
+          kein_ev: "kein e.V."
+          unbekannt: Unbekannt
+        sepa_glaeubiger_id: SEPA-Gläubiger-ID
+        stamm_typ: Stammtyp
+        stamm_typen:
+          aufbaugruppe: Aufbaugruppe
+          siedlung: Siedlung
+          stamm: Stamm
+        strukturnummer: Strukturnummer
+        zahlungsart: Zahlungsart
+        zahlungsarten:
+          lastschrift: Lastschrift
+          rechnung: Rechnung
       fee_kind:
         parent_id: Erbt von
         name: Name
@@ -112,6 +136,8 @@ de:
 
 
   groups:
+    contact_data_pfadi_de:
+      bank_account: Bankverbindung
     actions_show_pfadi_de:
       invoice_button_dropdown: Verbandsabrechnungen
       invoice_button_demo_lv_members: Mitglieder, Rechnung an Landesverband (Demo)
