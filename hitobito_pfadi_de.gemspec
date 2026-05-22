@@ -13,4 +13,6 @@ Gem::Specification.new do |s|
   s.description = "Hitobito-Wagon für Features der BdP und DPSG"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["Rakefile"]
+
+  s.add_dependency "hexapdf"
 end
