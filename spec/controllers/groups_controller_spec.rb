@@ -26,5 +26,112 @@ describe GroupsController do
       expect(assigns(:group).bic).to eq("ASDF")
       expect(assigns(:group).bank_name).to eq("Finanzinstitut")
     end
+
+    it "cannot update non used layer attribute" do
+      expect do
+        put :update, params: {id: group.id, group: {gruendungsdatum: Date.new(1900, 5, 1)}}
+      end.not_to change { group.reload.gruendungsdatum }
+    end
+
+    context "layer group" do
+      let(:group) { groups(:adler) }
+
+      it "can update layer attribute" do
+        expect do
+          put :update, params: {id: group.id, group: {gruendungsdatum: Date.new(1900, 5, 1)}}
+        end.to change { group.reload.gruendungsdatum }.to(Date.new(1900, 5, 1))
+      end
+    end
+
+    it "may used layer_attributes on layer" do
+      expect do
+        put :update, params: {id: groups(:adler).id, group: {gruendungsdatum: Date.new(1900, 5, 1)}}
+      end.not_to change { group.reload.gruendungsdatum }
+    end
+  end
+
+  describe "views" do
+    render_views
+
+    let(:layer_attrs) do
+      {
+        gruendungsdatum: Date.new(1900, 5, 1),
+        aufloesungsdatum: Date.new(1900, 5, 1),
+        einsichtnahme_efz_durch_gruppe: true,
+        bank_account_owner: "owner",
+        iban: "DE75512108001245126199",
+        bic: "ASDF",
+        bank_name: "Finanzinstitut",
+        debitorennummer: 123,
+        sepa_glaeubiger_id: 123,
+        zahlungsart: "rechnung"
+      }
+    end
+    let(:attrs_without_label) { [:bank_account_owner, :iban, :bic, :bank_name] }
+
+    let(:dom) { Capybara::Node::Simple.new(response.body) }
+
+    before { group.update!(layer_attrs) }
+
+    def label_for(attr)
+      attrs_without_label.include?(attr) ? layer_attrs[attr] : Group.human_attribute_name(attr)
+    end
+
+    describe "GET#show" do
+      it "does not show layer attrs" do
+        get :show, params: {id: group.id}
+
+        layer_attrs.each do |attr|
+          expect(dom).not_to have_text label_for(attr)
+        end
+      end
+
+      context "layer group" do
+        let(:group) { groups(:adler) }
+
+        it "does show layer attrs" do
+          get :show, params: {id: group.id}
+
+          layer_attrs.each do |attr, _value|
+            expect(dom).to have_text label_for(attr)
+          end
+        end
+
+        it "does not show layer attrs if blank" do
+          group.update!(layer_attrs.transform_values { nil })
+          get :show, params: {id: group.id}
+
+          layer_attrs.each do |attr, _value|
+            expect(dom).not_to have_text Group.human_attribute_name(attr)
+          end
+        end
+      end
+    end
+
+    describe "GET#edit" do
+      it "does not show layer attrs" do
+        get :edit, params: {id: group.id}
+
+        layer_attrs.each do |attr|
+          expect(dom).not_to have_field Group.human_attribute_name(attr)
+        end
+      end
+
+      context "layer group" do
+        let(:group) { groups(:adler) }
+
+        before do
+          expect(Group::Stamm).to receive(:stamm_typ_labels).and_return(rechnungen: "Rechnungen")
+        end
+
+        it "does show layer attrs" do
+          get :edit, params: {id: group.id}
+
+          layer_attrs.keys.each do |attr|
+            expect(dom).to have_field Group.human_attribute_name(attr)
+          end
+        end
+      end
+    end
   end
 end

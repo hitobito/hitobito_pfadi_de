@@ -9,9 +9,24 @@ module PfadiDe::GroupResource
   extend ActiveSupport::Concern
 
   prepended do
-    attribute :bank_account_owner, :string
-    attribute :iban, :string
-    attribute :bic, :string
-    attribute :bank_name, :string
+    with_options writable: false do
+      attribute :bank_account_owner, :string
+      attribute :iban, :string
+      attribute :bic, :string
+      attribute :bank_name, :string
+      attribute :gruendungsdatum, :date
+      attribute :aufloesungsdatum, :date
+      attribute :einsichtnahme_efz_durch_gruppe, :boolean
+      attribute :debitorennummer, :string
+      attribute :sepa_glaeubiger_id, :string
+      attribute :zahlungsart, :string
+      attribute :rechtsform, :string
+      attribute :strukturnummer, :string
+      attribute :stamm_typ, :string
+      attribute :opt_out_aufnahmeantrag, :boolean
+      attribute :opt_out_aufnahmeantrag_stammessuche, :boolean
+      attribute :efz_in_aufnahmeantrag, :boolean
+      attribute :eingeschraenkt, :boolean
+    end
   end
 end

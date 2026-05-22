@@ -20,4 +20,18 @@ describe Group do
       expect(group.errors[:iban]).to include(I18n.t("errors.messages.invalid_iban"))
     end
   end
+
+  describe Group::Stamm do
+    it "has expected used attributes" do
+      expect(described_class.used_attributes).to include(
+        :opt_out_aufnahmeantrag,
+        :opt_out_aufnahmeantrag_stammessuche,
+        :stamm_typ
+      )
+    end
+
+    it "does not define stamm_typ enum yet" do
+      expect { described_class.stamm_typ_labels }.to raise_error(NoMethodError)
+    end
+  end
 end

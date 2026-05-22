@@ -6,6 +6,8 @@
 #  https://github.com/hitobito/hitobito_bdp.
 
 class Group::Bezirk < ::Group
+  include PfadiDe::LayerGroup
+
   self.layer = true
   self.event_types = [Event, Event::Course]
 
