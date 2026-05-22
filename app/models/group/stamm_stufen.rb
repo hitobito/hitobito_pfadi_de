@@ -9,4 +9,9 @@ class Group::StammStufen < Group::StammArbeitsbereich
   children Group::StammWoelflingsstufe,
     Group::StammPfadfinderstufe,
     Group::StammRangerRoverstufe
+
+  if Wagons.find("dpsg").present?
+    children Group::StammBiber,
+      Group::StammJungpfadfinderstufe
+  end
 end

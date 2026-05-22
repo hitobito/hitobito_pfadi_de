@@ -9,4 +9,9 @@ class Group::BundStufen < Group::BundArbeitsbereich
   children Group::BundWoelflingsstufe,
     Group::BundPfadfinderstufe,
     Group::BundRangerRoverstufe
+
+  if Wagons.find("dpsg").present?
+    children Group::BundBiber,
+      Group::BundJungpfadfinderstufe
+  end
 end

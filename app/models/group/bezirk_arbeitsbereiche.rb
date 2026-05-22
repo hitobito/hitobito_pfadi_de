@@ -22,4 +22,9 @@ class Group::BezirkArbeitsbereiche < ::Group
     Group::BezirkInklusion,
     Group::BezirkWachstumUndStaemme,
     Group::BezirkSonstiges
+
+  if Wagons.find("dpsg").present?
+    children Group::BezirkBiber,
+      Group::BezirkJungpfadfinderstufe
+  end
 end

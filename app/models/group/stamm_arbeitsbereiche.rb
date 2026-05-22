@@ -22,4 +22,9 @@ class Group::StammArbeitsbereiche < ::Group
     Group::StammInklusion,
     Group::StammWachstumUndStaemme,
     Group::StammSonstiges
+
+  if Wagons.find("dpsg").present?
+    children Group::StammBiber,
+      Group::StammJungpfadfinderstufe
+  end
 end
