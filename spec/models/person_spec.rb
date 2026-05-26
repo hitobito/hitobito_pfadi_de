@@ -32,4 +32,29 @@ describe Person do
       expect(person.errors[:iban]).to include(I18n.t("errors.messages.invalid_iban"))
     end
   end
+
+  describe "zip_code" do
+    it "validates with DE format by default" do
+      person.zip_code = "10000"
+      expect(person).to be_valid
+      person.zip_code = "1000"
+      expect(person).not_to be_valid
+    end
+
+    it "validates with country format if set" do
+      person.country = "CH"
+      person.zip_code = "10000"
+      expect(person).not_to be_valid
+      person.zip_code = "1000"
+      expect(person).to be_valid
+    end
+
+    it "validates with DE country format if set" do
+      person.country = "DE"
+      person.zip_code = "10000"
+      expect(person).to be_valid
+      person.zip_code = "1000"
+      expect(person).not_to be_valid
+    end
+  end
 end

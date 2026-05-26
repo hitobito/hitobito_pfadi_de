@@ -18,6 +18,14 @@ currency:
   # additional_languages:
   #   en: Englisch
 
+countries:
+  prioritized:
+    - -- # first, clear the list from the core
+    - DE
+    - AT
+    - CH
+    - LI
+
 additional_address:
   enabled: true
 
