@@ -134,6 +134,9 @@ de:
     invoiced_period: 'Abrechnungsperiode: %{start_on} - %{end_on}'
 
 
+  dropdown/people_export:
+    efz_antrag_label: "eFZ Antrag"
+
   groups:
     contact_data_pfadi_de:
       bank_account: Bankverbindung

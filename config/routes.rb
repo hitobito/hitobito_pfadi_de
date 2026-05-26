@@ -13,6 +13,9 @@ Rails.application.routes.draw do
       resources :fee_kind_changes, only: [:new, :create], module: :role
     end
     resources :groups do
+      resources :people do
+        resource :efz_antrag, only: [:show], module: :people
+      end
       resources :fee_kinds do
         resources :fee_rates
       end
