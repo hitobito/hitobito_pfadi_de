@@ -5,5 +5,12 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de
 
-class Group::BezirkBiber < Group::BezirkArbeitsbereich
-end
+require_relative "sippe"
+require_relative "runde"
+require_relative "meute"
+require_relative "gilde"
+
+Group::Gruppen.children Group::Meute,
+  Group::Gilde,
+  Group::Sippe,
+  Group::Runde

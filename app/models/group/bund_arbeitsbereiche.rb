@@ -22,9 +22,4 @@ class Group::BundArbeitsbereiche < ::Group
     Group::BundInklusion,
     Group::BundWachstumUndStaemme,
     Group::BundSonstiges
-
-  if Wagons.find("dpsg").present?
-    children Group::BundBiber,
-      Group::BundJungpfadfinderstufe
-  end
 end

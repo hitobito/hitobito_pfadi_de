@@ -9,9 +9,4 @@ class Group::BezirkStufen < Group::BezirkArbeitsbereich
   children Group::BezirkWoelflingsstufe,
     Group::BezirkPfadfinderstufe,
     Group::BezirkRangerRoverstufe
-
-  if Wagons.find("dpsg").present?
-    children Group::BezirkBiber,
-      Group::BezirkJungpfadfinderstufe
-  end
 end

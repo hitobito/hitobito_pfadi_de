@@ -5,9 +5,4 @@
 
 class Group::Gruppen < ::Group
   self.static_name = true
-
-  children Group::Meute,
-    Group::Gilde,
-    Group::Sippe,
-    Group::Runde
 end

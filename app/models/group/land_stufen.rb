@@ -9,9 +9,4 @@ class Group::LandStufen < Group::LandArbeitsbereich
   children Group::LandWoelflingsstufe,
     Group::LandPfadfinderstufe,
     Group::LandRangerRoverstufe
-
-  if Wagons.find("dpsg").present?
-    children Group::LandBiber,
-      Group::LandJungpfadfinderstufe
-  end
 end
