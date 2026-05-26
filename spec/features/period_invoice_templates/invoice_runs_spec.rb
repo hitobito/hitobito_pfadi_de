@@ -40,13 +40,13 @@ describe PeriodInvoiceTemplates::InvoiceRunsController, js: true do
       # 2 people with complete addresses in the same group
       p2 = Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name,
         group: groups(:adler_mitglieder)).person
-      p2.update!(street: "Greatstreet", zip_code: 8000, town: "Bern")
+      p2.update!(street: "Greatstreet", zip_code: 80000, town: "Bern")
       p3 = Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name,
         group: groups(:mitglieder_28)).person
-      p3.update!(street: "Greatstreet", zip_code: 8000, town: "Bern")
+      p3.update!(street: "Greatstreet", zip_code: 80000, town: "Bern")
     end
-    groups(:adler).update!(street: "Greatstreet", zip_code: 8000, town: "Bern")
-    groups(:burg_karlsruhe).update!(street: "Karlsstrasse", zip_code: 8000, town: "Karlsruhe")
+    groups(:adler).update!(street: "Greatstreet", zip_code: 80000, town: "Bern")
+    groups(:burg_karlsruhe).update!(street: "Karlsstrasse", zip_code: 80000, town: "Karlsruhe")
     invoice_configs(:root).update!(currency: "EUR")
   end
 
