@@ -22,9 +22,4 @@ class Group::LandArbeitsbereiche < ::Group
     Group::LandInklusion,
     Group::LandWachstumUndStaemme,
     Group::LandSonstiges
-
-  if Wagons.find("dpsg").present?
-    children Group::LandBiber,
-      Group::LandJungpfadfinderstufe
-  end
 end

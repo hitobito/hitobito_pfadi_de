@@ -12,7 +12,13 @@ require File.join(ENV["APP_ROOT"], "spec", "spec_helper.rb")
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[HitobitoPfadiDe::Wagon.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
+Dir[HitobitoPfadiDe::Wagon.root.join("spec/support/**/*.rb")].sort.each do |f|
+  # The test group types must be loaded in the correct order as there are inter-dependencies.
+  # The loading order is hardcoded in `spec/support/group/0_base.rb`, so we load only this
+  # specific file in the subdirectory.
+  next if %r{spec/support/group/(?!0_base.rb)}.match?(f)
+  require f
+end
 
 RSpec.configure do |config|
   config.fixture_paths = [File.expand_path("../fixtures", __FILE__)]
