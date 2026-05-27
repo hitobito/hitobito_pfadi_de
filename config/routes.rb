@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resources :groups do
       resources :people do
         resource :efz_antrag, only: [:show], module: :people
+        resources :efz_einsichtnahmen, only: [:new, :create, :destroy]
       end
       resources :fee_kinds do
         resources :fee_rates

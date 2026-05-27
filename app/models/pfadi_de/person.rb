@@ -16,11 +16,16 @@ module PfadiDe::Person
       :bank_name, :payment_method)
 
     Person::INTERNAL_ATTRS.push(:last_entry_date_with_fee_kind,
-      :should_recalculate_last_entry_date_with_fee_kind)
+      :should_recalculate_last_entry_date_with_fee_kind,
+      :latest_efz_issued_on)
+    Person::FILTER_ATTRS.push(:latest_efz_issued_on)
     paper_trail_options[:skip].concat([
       "last_entry_date_with_fee_kind",
-      "should_recalculate_last_entry_date_with_fee_kind"
+      "should_recalculate_last_entry_date_with_fee_kind",
+      "latest_efz_issued_on"
     ])
+
+    has_many :efz_einsichtnahmen, dependent: :destroy
 
     include I18nSettable
     include I18nEnums

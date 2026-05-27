@@ -36,7 +36,7 @@ describe PeopleController do
     end
   end
 
-  describe "GET #show" do
+  describe "GET#show" do
     render_views
     let(:dom) { Capybara::Node::Simple.new(response.body) }
 
@@ -49,6 +49,41 @@ describe PeopleController do
 
       expect(dom).to have_text "sieoderer"
       expect(dom).to have_text "01.01.2020"
+    end
+
+    describe "eFZ Einsichtnahme Button" do
+      it "does not render button if not permitted" do
+        get :show, params: {group_id: group.id, id: leader.id}
+        expect(dom).not_to have_link "eFZ Einsichtnahme erfassen"
+      end
+
+      it "does render button if permitted" do
+        Fabricate(Group::Stamm::ErfassungFuehrungszeugnis.sti_name, group: groups(:adler), person: leader)
+        get :show, params: {group_id: group.id, id: leader.id}
+        expect(dom).to have_link "eFZ Einsichtnahme erfassen",
+          href: new_group_person_efz_einsichtnahme_path(group, leader)
+      end
+    end
+
+    describe "latest eFZ Einsichtnahme info" do
+      let(:einsichtnehmer) { people(:stammesverwaltung) }
+      let(:latest_efz_issued_on) { dom.find("dt.muted", text: "eFZ Ausstellungsdatum").send(:parent) }
+      let(:latest_efz_einsicht_on) { dom.find("dt.muted", text: "eFZ Einsichtnahme").send(:parent) }
+
+      it "shows nothing when not present" do
+        get :show, params: {group_id: group.id, id: leader.id}
+        expect { latest_efz_issued_on }.to raise_error(Capybara::ElementNotFound)
+        expect { latest_efz_einsicht_on }.to raise_error(Capybara::ElementNotFound)
+      end
+
+      it "shows last_efz_issued_on as well as last einsichtnehmer" do
+        Fabricate(:efz_einsichtnahme, einsichtnehmer:, person: leader, issued_on: "20.05.2026",
+          einsicht_on: "29.05.2026")
+        get :show, params: {group_id: group.id, id: leader.id}
+        expect(latest_efz_issued_on).to have_text "20.05.2026"
+        expect(latest_efz_einsicht_on).to have_text "29.05.2026"
+        expect(latest_efz_einsicht_on).to have_link "Some Stammesverwalter", href: person_path(einsichtnehmer)
+      end
     end
   end
 end

@@ -17,7 +17,35 @@ de:
               already_active: ist bereits auf der Rolle aktiv
 
   activerecord:
+    models:
+      efz_einsichtnahme:
+        one: eFZ Einsichtnahme
+        other: eFZ Einsichtnahmen
+      fee_kind:
+        one: Beitragsart
+        other: Beitragsarten
+      fee_rate:
+        one: Beitragssatz
+        other: Beitragssätze
+      group/mitglieder/ordentliche_mitgliedschaft:
+        one: Ordentliche Mitgliedschaft
+        description: Ordentliche Mitgliedschaft
+      group/mitglieder/foerdermitgliedschaft:
+        one: Fördermitgliedschaft
+        description: Fördermitgliedschaft
+      group/mitglieder/zweitmitgliedschaft:
+        one: Zweitmitgliedschaft
+        description: Zweitmitgliedschaft
+      period_invoice_template/fee_calculation_item:
+        one: Beitragsabrechnung
+        other: Beitragsabrechnungen
+
     attributes:
+      efz_einsichtnahme:
+        einsicht_on: Datum der Einsicht
+        issued_on: Ausstellungsdatum eFZ
+        einsichtnehmer: Einsichtnehmer
+        confirmation: Bestätigung
       group:
         address: Anschrift
         aufloesungsdatum: Auflösungsdatum
@@ -84,12 +112,15 @@ de:
           d: divers
         iban: IBAN
         id: Mitgliedsnummer
+        latest_efz: Letzte eFZ Einsichtnahme
         nickname: Spitzname
         payment_method: Zahlungsart
         payment_methods:
           debit: Lastschrift
           invoice: Rechnung
         pronoun: Pronomen
+        latest_efz_issued_on: eFZ Ausstellungsdatum
+        latest_efz_einsicht_on: eFZ Einsichtnahme
       period_invoice_template:
         billing_period: Abrechnungsperiode
 
@@ -104,26 +135,13 @@ de:
           permission:
             description:
               group_and_below_efz: "Zeugnisse nach SGB VIII erfassen in dieser Gruppen und deren Untergruppen."
+              delete_efz: "Darf eFZ Einsichtnahmen löschen (Top-Level Admins)."
               assign_restricted_fee_kinds: "Darf alle Beitragsarten zuweisen."
-    models:
-      fee_kind:
-        one: Beitragsart
-        other: Beitragsarten
-      fee_rate:
-        one: Beitragssatz
-        other: Beitragssätze
-      group/mitglieder/ordentliche_mitgliedschaft:
-        one: Ordentliche Mitgliedschaft
-        description: Ordentliche Mitgliedschaft
-      group/mitglieder/foerdermitgliedschaft:
-        one: Fördermitgliedschaft
-        description: Fördermitgliedschaft
-      group/mitglieder/zweitmitgliedschaft:
-        one: Zweitmitgliedschaft
-        description: Zweitmitgliedschaft
-      period_invoice_template/fee_calculation_item:
-        one: Beitragsabrechnung
-        other: Beitragsabrechnungen
+
+  efz_einsichtnahmen:
+    success: Eintrag erfolgreich gespeichert.
+    form:
+      confirmation_text: "Hiermit bestätige ich, dass ein erweitertes Führungszeugnis vorgelegt wurde und dass es keine relevanten Eintragungen im Sinne des § 72a (4) SGB VIII enthält."
 
   export/pdf/invoice/processed_subjects_section:
     header: Einzelnachweise
@@ -144,6 +162,12 @@ de:
       invoice_button_dropdown: Verbandsabrechnungen
       invoice_button_demo_lv_members: Mitglieder, Rechnung an Landesverband (Demo)
       invoice_button_demo_stamm_members: Mitglieder, Rechnung an Stamm (Demo)
+  efz_einsichtnahmen:
+    created: Einsichtnahme vom %{einsicht_on} wurde erfolgreich erstellt.
+    form:
+      help_confirmation:
+        Hiermit bestätige ich, dass ein erweitertes Führungszeugnis vorgelegt wurde und dass es keine
+        relevanten Eintragungen im Sinne des § 72a (4) SGB VIII enthält.
   fee_kinds:
     tabs:
       info: Info
@@ -163,6 +187,9 @@ de:
       success: Die Beitragsart der Rolle wurde auf %{fee_kind} geändert.
       success_future_change: Die Beitragsart der Rolle wird am %{start_on} auf %{fee_kind} geändert.
       failure_role_does_not_allow_fee_kind: Rolle ist nicht beitragspflichtig
+
+  people:
+    efz_einsichtnahme_add: eFZ Einsichtnahme erfassen
 
   table_displays:
     person:
