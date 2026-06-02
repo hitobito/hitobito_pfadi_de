@@ -4,7 +4,7 @@ This hitobito wagon defines the organization hierarchy with groups and roles of 
 
 The shared pfadi_de wagon should define the following, which is supposed to be the same for
 both organizations:
-- All group and role types
+- Shared group and role types
 - All permissions / abilities
 - All business logic, including specs for the intended states of the feature toggles for both organizations
 - The complete database structure
@@ -12,7 +12,9 @@ both organizations:
 - German translation overrides, where the hitobito core uses Swiss German terms
 
 In the hitobito_bdp and hitobito_dpsg wagons, we only define the following:
+- Specific group and role types which must not exist in the other wagon
 - Translations for all group and role types
+- Customization to the used attributes of models, where absolutely necessary
 - Corporate design, colors, fonts, logo
 - Feature toggles in settings.yml to activate / deactivate logic from pfadi_de
 
