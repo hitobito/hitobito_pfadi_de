@@ -1,28 +1,28 @@
 # frozen_string_literal: true
 
-#  Copyright (c) 2012-2025, Bund der Pfadfinderinnen und Pfadfinder e.V.. This file is part of
+#  Copyright (c) 2012-2026, Bund der Pfadfinderinnen und Pfadfinder e.V.. This file is part of
 #  hitobito_bdp and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_bdp.
 
-class Group::Meute < ::Group
+class Group::StammGruppePfadfinder < ::Group
   ### ROLES
 
-  class Meutenfuehrung < ::Role
+  class Leitung < ::Role
     self.permissions = [:group_read]
     self.sgbviii_required = true
   end
 
-  class MeutenfuehrungStv < ::Role
+  class Hilfsleitung < ::Role
     self.permissions = [:group_read]
     self.sgbviii_required = true
   end
 
-  class Woelfling < ::Role
+  class Mitglied < ::Role
     self.permissions = []
   end
 
-  roles Meutenfuehrung,
-    MeutenfuehrungStv,
-    Woelfling
+  roles Leitung,
+    Hilfsleitung,
+    Mitglied
 end
