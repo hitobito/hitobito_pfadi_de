@@ -19,13 +19,13 @@ stammesverwaltung:
 bottom_leader:
   person: bottom_leader
   group: pfadfinder
-  type: Group::Sippe::Sippenfuehrung
+  type: Group::StammGruppePfadfinder::Leitung
   start_on: '2025-08-01'
 
 member:
   person: member
   group: pfadfinder
-  type: Group::Sippe::Pfadfinder
+  type: Group::StammGruppePfadfinder::Mitglied
   start_on: '2025-06-03'
 
 paying_member:

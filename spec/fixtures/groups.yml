@@ -173,98 +173,98 @@ woelflinge:
   lft: 17
   rgt: 18
   name: Wölflinge
-  type: Group::Meute
+  type: Group::StammGruppeWoelflinge
 werwoelflinge:
   parent: gruppen_29
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
   lft: 29
   rgt: 30
   name: Werwölflinge
-  type: Group::Meute
+  type: Group::StammGruppeWoelflinge
 baghira:
   parent: gruppen_32
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
   lft: 47
   rgt: 48
   name: Baghira
-  type: Group::Meute
+  type: Group::StammGruppeWoelflinge
 pfadfinder:
   parent: gruppen_26
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:adler)%>"
   lft: 19
   rgt: 20
   name: Pfadfinder*innen
-  type: Group::Sippe
+  type: Group::StammGruppePfadfinder
 mondphoenixe:
   parent: gruppen_29
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
   lft: 31
   rgt: 32
   name: Mondphönixe
-  type: Group::Sippe
+  type: Group::StammGruppePfadfinder
 sternkrieger:
   parent: gruppen_29
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
   lft: 33
   rgt: 34
   name: Sternkrieger
-  type: Group::Sippe
+  type: Group::StammGruppePfadfinder
 beluga:
   parent: gruppen_29
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
   lft: 35
   rgt: 36
   name: Beluga
-  type: Group::Sippe
+  type: Group::StammGruppePfadfinder
 eiswoelfe:
   parent: gruppen_29
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
   lft: 37
   rgt: 38
   name: Eiswölfe
-  type: Group::Sippe
+  type: Group::StammGruppePfadfinder
 seegurke:
   parent: gruppen_32
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
   lft: 49
   rgt: 50
   name: Seegurke
-  type: Group::Sippe
+  type: Group::StammGruppePfadfinder
 schneeeule:
   parent: gruppen_32
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
   lft: 51
   rgt: 52
   name: Schneeeule
-  type: Group::Sippe
+  type: Group::StammGruppePfadfinder
 die_runde_runde:
   parent: gruppen_26
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:adler)%>"
   lft: 21
   rgt: 22
   name: Die runde Runde
-  type: Group::Runde
+  type: Group::StammGruppeRover
 ranger_rover:
   parent: gruppen_29
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
   lft: 39
   rgt: 40
   name: Ranger & Rover
-  type: Group::Runde
+  type: Group::StammGruppeRover
 feuerfuechse:
   parent: gruppen_32
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
   lft: 53
   rgt: 54
   name: Feuerfüchse
-  type: Group::Runde
+  type: Group::StammGruppeRover
 singerrunde_der_passiven:
   parent: gruppen_32
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
   lft: 55
   rgt: 56
   name: Singerrunde der Passiven
-  type: Group::Runde
+  type: Group::StammGruppeRover
 arbeitsbereiche_59:
   parent: root
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:root)%>"
