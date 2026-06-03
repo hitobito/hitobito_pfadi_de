@@ -29,9 +29,5 @@ describe Group do
         :stamm_typ
       )
     end
-
-    it "does not define stamm_typ enum yet" do
-      expect { described_class.stamm_typ_labels }.to raise_error(NoMethodError)
-    end
   end
 end

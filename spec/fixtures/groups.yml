@@ -13,7 +13,7 @@ root:
   email: root@example.net
   street: Schellingstr.
   housenumber: 8
-  zip_code: 4692
+  zip_code: 46920
   town: Neu Carlohausen
 bundesvorstand:
   parent: root
@@ -26,7 +26,7 @@ bundesvorstand:
   email: rupert_shanahan@hitobito.example.com
   street: Lingenfeld
   housenumber: 96b
-  zip_code: 3819
+  zip_code: 38191
   town: Neu Marius
 ombudsrat_3:
   parent: root
@@ -39,7 +39,7 @@ ombudsrat_3:
   email: noma.grant@hitobito.example.com
   street: Forellental
   housenumber: 89b
-  zip_code: 8086
+  zip_code: 80862
   town: Presslerhagen
 mitglieder_4:
   parent: root
@@ -52,7 +52,7 @@ mitglieder_4:
   email: janeth_larkin@hitobito.example.com
   street: Im Bühl
   housenumber: 78c
-  zip_code: 9926
+  zip_code: 99263
   town: Moormannscheid
 baden_wuerttemberg:
   parent: root
@@ -93,7 +93,7 @@ adler:
   email: kirstin_labadie@hitobito.example.com
   street: Legienstr.
   housenumber: 258
-  zip_code: 4064
+  zip_code: 40640
   town: Bad Noahburg
 adler_mitglieder:
   parent: adler
@@ -121,7 +121,7 @@ burg_karlsruhe:
   email: lissette.bailey@hitobito.example.com
   street: Otto-Varnhagen-Str.
   housenumber: 47b
-  zip_code: 6103
+  zip_code: 61036
   town: Kassland
 mitglieder_28:
   parent: burg_karlsruhe
@@ -149,7 +149,7 @@ silberreiher:
   email: ricky@hitobito.example.com
   street: Gutenbergstr.
   housenumber: 94a
-  zip_code: 8394
+  zip_code: 83947
   town: Büttnerland
 mitglieder_31:
   parent: silberreiher
