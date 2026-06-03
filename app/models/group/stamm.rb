@@ -29,17 +29,8 @@ class Group::Stamm < ::Group
     :stamm_typ
   ]
 
-  if Wagons.find("bpd")
-    self.used_attributes += [:efz_in_aufnahmeantrag]
-    i18n_enum :stamm_typ, %w[aufbaugruppe stamm],
-      i18n_prefix: "activerecord.attributes.group.stamm_typen"
-  end
-
-  if Wagons.find("dpsg")
-    self.used_attributes += [:eingeschraenkt]
-    i18n_enum :stamm_typ, %w[siedlung stamm],
-      i18n_prefix: "activerecord.attributes.group.stamm_typen"
-  end
+  i18n_enum :stamm_typ, %w[other stamm],
+    i18n_prefix: "activerecord.attributes.group.stamm_typen"
 
   ### ROLES
 

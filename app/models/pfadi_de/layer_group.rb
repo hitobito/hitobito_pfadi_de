@@ -25,14 +25,7 @@ module PfadiDe::LayerGroup
     i18n_enum :zahlungsart, %w[rechnung lastschrift],
       i18n_prefix: "activerecord.attributes.group.zahlungsarten"
 
-    if Wagons.find("bpd")
-      self.used_attributes += [:rechtsform]
-      i18n_enum :rechtsform, %w[ev kein_ev unbekannt],
-        i18n_prefix: "activerecord.attributes.group.rechtsformen"
-    end
-
-    if Wagons.find("dpsg")
-      self.used_attributes += [:strukturnummer]
-    end
+    i18n_enum :rechtsform, %w[ev kein_ev unbekannt],
+      i18n_prefix: "activerecord.attributes.group.rechtsformen"
   end
 end

@@ -44,8 +44,7 @@ de:
         sepa_glaeubiger_id: SEPA-Gläubiger-ID
         stamm_typ: Stammtyp
         stamm_typen:
-          aufbaugruppe: Aufbaugruppe
-          siedlung: Siedlung
+          other: Andere
           stamm: Stamm
         strukturnummer: Strukturnummer
         zahlungsart: Zahlungsart
