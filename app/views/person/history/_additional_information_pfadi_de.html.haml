@@ -3,7 +3,7 @@
 -#  or later. See the COPYING file at the top-level directory or at
 -#  https://github.com/hitobito/hitobito_pfadi_de.
 
-- if can?(:read, EfzEinsichtnahme.new(person: person))
+- if can_read_efz_einsichtnahme?(person)
   %h2= EfzEinsichtnahme.model_name.human(count: 2)
   = table(@efz_einsichtnahmen, class: 'table table-striped table-fixed') do |t|
     - t.attrs(:issued_on, :einsicht_on, :einsichtnehmer)

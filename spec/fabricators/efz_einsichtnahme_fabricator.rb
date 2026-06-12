@@ -10,5 +10,4 @@ Fabricator(:efz_einsichtnahme) do
   einsichtnehmer(fabricator: :person)
   einsicht_on { Date.current }
   issued_on { 1.week.ago.to_date }
-  confirmation "1"
 end
