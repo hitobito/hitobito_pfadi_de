@@ -8,7 +8,8 @@
 module Export::Pdf
   class EfzAntrag
     attr_reader :person, :group, :document
-
+    attr_reader :person, :group, :document
+    
     def initialize(group, person)
       @group = group
       @person = person
