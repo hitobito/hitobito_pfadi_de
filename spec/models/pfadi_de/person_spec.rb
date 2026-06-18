@@ -8,6 +8,10 @@
 require "spec_helper"
 
 describe Person do
+  it "includes latest_efz_issued_on in FILTER_ATTRS" do
+    expect(Person::FILTER_ATTRS).to include :latest_efz_issued_on
+  end
+
   describe "PaperTrail", versioning: true do
     let(:person) { people(:member) }
 

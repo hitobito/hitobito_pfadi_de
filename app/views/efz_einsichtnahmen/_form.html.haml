@@ -1,0 +1,8 @@
+-#  Copyright (c) 2026, BdP and DPSG. This file is part of
+-#  hitobito_pfadi_de and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_pfadi_de.
+
+= entry_form(buttons_top: false, cancel_url: request.referrer) do |f|
+  = f.labeled_input_fields :einsicht_on, :issued_on
+  = f.labeled_boolean_field :confirmation, help: t(".help_confirmation")
