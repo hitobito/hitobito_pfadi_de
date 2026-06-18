@@ -9,7 +9,9 @@ module PfadiDe::PersonDecorator
   extend ActiveSupport::Concern
 
   def latest_efz_einsicht_on
-    einsichtnahme = efz_einsichtnahmen.order(:einsicht_on, :created_at).last
+    einsichtnahme = efz_einsichtnahmen.order(:issued_on, :created_at).last
+    return nil unless einsichtnahme
+
     modification_info(einsichtnahme.einsicht_on, einsichtnahme.einsichtnehmer, format: :default)
   end
 end

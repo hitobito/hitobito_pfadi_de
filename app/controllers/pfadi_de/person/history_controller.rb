@@ -15,10 +15,6 @@ module PfadiDe::Person::HistoryController
 
   def index
     super
-    @efz_einsichtnahmen = person.efz_einsichtnahmen.order(issued_on: :desc) if can_read_efz?
+    @efz_einsichtnahmen = person.efz_einsichtnahmen.order(issued_on: :desc)
   end
-
-  private
-
-  def can_read_efz? = can?(:new, person.efz_einsichtnahmen.build)
 end
