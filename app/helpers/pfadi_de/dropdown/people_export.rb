@@ -12,6 +12,9 @@ module PfadiDe::Dropdown
     def init_items
       super
 
+      # only add eFZ Antrag items if rendering in a person context
+      return unless person
+
       if groups.one?
         add_item(translate(:efz_antrag_label), antrag_path(groups.first))
       elsif groups.many?
@@ -24,10 +27,14 @@ module PfadiDe::Dropdown
 
     private
 
-    def antrag_path(group) = template.group_person_efz_antrag_path(group, @user)
+    def antrag_path(group) = template.group_person_efz_antrag_path(group, person)
+
+    def person
+      template.assigns["person"]
+    end
 
     def groups
-      @groups ||= @user.roles.flat_map(&:group).uniq.map(&:decorate).sort_by(&:lft)
+      @groups ||= person.roles.flat_map(&:group).uniq.map(&:decorate).sort_by(&:lft)
     end
   end
 end
