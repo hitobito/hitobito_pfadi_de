@@ -21,9 +21,9 @@ describe EfzEinsichtnahmenController do
       let(:dom) { Capybara::Node::Simple.new(response.body) }
 
       it "has form with required fields and assigned default value" do
-        Fabricate(Group::Bundesebene::ErfassungFuehrungszeugnis.sti_name, person: user, group: groups(:root))
+        Fabricate(Group::Stamm::ErfassungFuehrungszeugnis.sti_name, person: user, group: groups(:adler))
         get :new, params: {group_id: group.id, person_id: person.id}
-        expect(dom).to have_css "h2", text: " eFZ Einsichtnahme erfassen"
+        expect(dom).to have_css "h1", text: "eFZ Einsichtnahme erfassen"
         expect(dom).to have_field "Datum der Einsicht", with: I18n.l(Time.zone.today)
         expect(dom).to have_field "Ausstellungsdatum eFZ"
         expect(dom).to have_field "Bestätigung"
@@ -48,7 +48,7 @@ describe EfzEinsichtnahmenController do
     end
 
     it "creates a new EfzEinsichtnahme" do
-      Fabricate(Group::Bundesebene::ErfassungFuehrungszeugnis.sti_name, person: user, group: groups(:root))
+      Fabricate(Group::Stamm::ErfassungFuehrungszeugnis.sti_name, person: user, group: groups(:adler))
       expect {
         post :create, params: {group_id: group.id, person_id: person.id, efz_einsichtnahme: valid_params}
       }.to change(EfzEinsichtnahme, :count).by(1)
@@ -58,7 +58,7 @@ describe EfzEinsichtnahmenController do
     end
 
     it "renders new on failure" do
-      Fabricate(Group::Bundesebene::ErfassungFuehrungszeugnis.sti_name, person: user, group: groups(:root))
+      Fabricate(Group::Stamm::ErfassungFuehrungszeugnis.sti_name, person: user, group: groups(:adler))
       post :create,
         params: {group_id: group.id, person_id: person.id, efz_einsichtnahme: valid_params.except(:confirmation)}
       expect(response).to render_template(:new)

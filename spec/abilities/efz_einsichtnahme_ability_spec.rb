@@ -24,15 +24,15 @@ describe EfzEinsichtnahmeAbility do
     end
 
     it "cannot read without group read" do
-      expect(ability_for("Pfadfinder", :pfadfinder)).not_to be_able_to(:show, efz)
+      expect(ability_for("Mitglied", :pfadfinder)).not_to be_able_to(:show, efz)
     end
 
     it "group read can show efz" do
-      expect(ability_for("Sippenfuehrung", :pfadfinder)).to be_able_to(:show, efz)
+      expect(ability_for("Leitung", :pfadfinder)).to be_able_to(:show, efz)
     end
 
     it "group read from other group annot can show efz" do
-      expect(ability_for("Sippenfuehrung", :mondphoenixe)).not_to be_able_to(:show, efz)
+      expect(ability_for("Leitung", :mondphoenixe)).not_to be_able_to(:show, efz)
     end
 
     it "layer_and_below_full can show efz" do

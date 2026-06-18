@@ -6,6 +6,7 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 class EfzEinsichtnahme < ActiveRecord::Base
+  # transient attribute used for validation (user must check confirmation checkbox)
   attr_accessor :confirmation
 
   belongs_to :person
