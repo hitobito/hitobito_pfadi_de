@@ -59,6 +59,8 @@ module HitobitoPfadiDe
       Export::Tabular::People::PeopleAddress.prepend PfadiDe::Export::Tabular::People::PeopleAddress
       Export::Pdf::Invoice.runner = Export::Pdf::Invoice::RunnerWithProcessedSubjects
 
+      Dropdown::PeopleExport.prepend PfadiDe::Dropdown::PeopleExport
+
       NavigationHelper::MAIN.find { _1[:label] == :groups }[:inactive_for].push("fee_kinds")
       NavigationHelper::MAIN.find { _1[:label] == :invoices }[:active_for].push("fee_kinds")
 
