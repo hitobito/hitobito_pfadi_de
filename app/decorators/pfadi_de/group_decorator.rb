@@ -13,10 +13,10 @@ module PfadiDe::GroupDecorator
   end
 
   def use_fee_rate_max_member_months?
-    FeatureGate.disabled? "membership_fees.relative_fee_rates"
+    FeatureGate.disabled?("membership_fees.relative_fee_rates")
   end
 
   def use_fee_rate_max_age?
-    (FeatureGate.disabled? "membership_fees.relative_fee_rates") || !has_sublayers?
+    FeatureGate.disabled?("membership_fees.relative_fee_rates") || !has_sublayers?
   end
 end
