@@ -1,12 +1,12 @@
-#  Copyright (c) 2026, Hitobito AG. This file is part of
-#  hitobito and licensed under the Affero General Public License version 3
+#  Copyright (c) 2026, BdP and DPSG. This file is part of
+#  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
-#  https://github.com/hitobito/hitobito.
+#  https://github.com/hitobito/hitobito_pfadi_de.
 
 require "spec_helper"
 
 describe FeeKindsController do
-  let(:person) { people(:admin) }
+  let(:person) { Fabricate(Group::Stamm::Stammesschatzmeister.sti_name, group:).person }
 
   let(:group) do
     Fabricate(Group::Stamm.sti_name, name: "Falken", parent: groups(:baden_wuerttemberg))
@@ -17,9 +17,6 @@ describe FeeKindsController do
   end
 
   before do
-    # Fabricate(Group::Stamm::Stammesmitgliederverwaltung.sti_name, person:, group:)
-    Fabricate(Group::Stamm::Stammesschatzmeister.sti_name, person:, group:)
-
     sign_in(person)
   end
 

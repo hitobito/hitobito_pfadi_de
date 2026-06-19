@@ -11,4 +11,12 @@ module PfadiDe::GroupDecorator
   def show_new_period_invoice_template_for_groups?
     (model.class.child_types - [model.class]).any? { |type| type.layer? }
   end
+
+  def use_fee_rate_max_member_months?
+    FeatureGate.disabled?("membership_fees.relative_fee_rates")
+  end
+
+  def use_fee_rate_max_age?
+    FeatureGate.disabled?("membership_fees.relative_fee_rates") || !has_sublayers?
+  end
 end

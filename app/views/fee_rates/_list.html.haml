@@ -7,7 +7,12 @@
   - table.col(t('activerecord.attributes.fee_rate.name')) do |rate|
     = link_to rate, group_fee_kind_fee_rate_path(rate.layer, rate.fee_kind, rate)
 
-  - table.attrs :valid_from, :valid_until, :amount, :max_age, :max_member_months
+  - table.attrs :valid_from, :valid_until, :amount
+
+  - if use_fee_rate_max_age?
+    - table.attrs :max_age
+  - if use_fee_rate_max_member_months?
+    - table.attrs :max_member_months
 
   - action_col_edit(table)
   - action_col_destroy(table)

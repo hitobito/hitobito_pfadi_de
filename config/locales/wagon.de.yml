@@ -93,7 +93,7 @@ de:
       fee_rate:
         fee_kind_id: Beitragsart
         name: Bezeichnung
-        amount: Betrag in EUR
+        amount: Betrag pro Jahr in EUR
         valid_from: Gültig von
         valid_until: Gültig bis
         max_member_months: max. Mitgliedsdauer in Monaten
