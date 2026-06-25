@@ -1,6 +1,6 @@
 # Hitobito Changelog
 
-## unreleased
+## Version 2.9
 
 * Layer spezifische Gruppenattribute (Gründungsdatum, Rechtsform u.a.) können erfasst und über die API gelesen werden (hitobito_pfadi_de#46)
 * Beitragsarten können auf Personlisten eingeblendet und exportiert werden (hitobito_pfadi_de#31)

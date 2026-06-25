@@ -24,6 +24,8 @@ class FeeRate < ApplicationRecord
 
   def group = layer
 
+  def group = layer
+
   def to_s = name
 
   def total_yearly_amount(date = Time.zone.today)
