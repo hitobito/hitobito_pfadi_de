@@ -6,7 +6,7 @@
 .shown
   = collection_select(:role,
                       :type,
-                      GroupDecorator.decorate(@group).possible_roles(person: entry.person),
+                      roles_type_options(@group, entry),
                       :sti_name,
                       :label,
                       roles_type_select_options(@group, entry),

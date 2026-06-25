@@ -23,5 +23,9 @@ module PfadiDe
         icon(:"money-bill-1-wave", style: "opacity: 0.5")
       end
     end
+
+    def roles_type_options(group, entry)
+      super.map { |r| OpenStruct.new(label: r.first, sti_name: r.second) }
+    end
   end
 end
