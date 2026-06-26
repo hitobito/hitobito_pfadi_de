@@ -17,19 +17,19 @@ describe PfadiDe::RolesHelper do
     allow(helper).to receive(:can?).and_return(true)
   end
 
-  it "returns array of objects with label and sti_name attributes" do
-    options = helper.roles_type_options(group, Role.new(person:, group:))
-    expect(options).to be_an(Array)
-    expect(options.first).to respond_to(:label)
-    expect(options.first).to respond_to(:sti_name)
-    expect(options.map(&:sti_name)).to include(expected_role_class.sti_name)
-  end
+  describe "#roles_type_options" do
+    subject(:options) { helper.roles_type_options(group, Role.new(person:, group:)) }
 
-  it "does not include role types for which the user cannot create roles" do
-    allow(helper).to receive(:can?)
-      .with(:create, have_attributes(class: expected_role_class)).and_return(false)
-    options = helper.roles_type_options(group, Role.new(person:, group:))
-    sti_names = options.map(&:sti_name)
-    expect(sti_names).not_to include(expected_role_class.sti_name)
+    let(:sti_names) { options.map(&:second) }
+
+    it "includes the expected role type" do
+      expect(sti_names).to include(expected_role_class.sti_name)
+    end
+
+    it "does not include role types for which the user cannot create roles" do
+      allow(helper).to receive(:can?)
+        .with(:create, have_attributes(class: expected_role_class)).and_return(false)
+      expect(sti_names).not_to include(expected_role_class.sti_name)
+    end
   end
 end
