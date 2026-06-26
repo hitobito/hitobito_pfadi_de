@@ -1,5 +1,9 @@
 # Hitobito Changelog
 
+## unreleased
+
+* API Keys (ServiceTokens) können nur noch von Benutzern mit Admin-Rechten verwaltet werden. Andere user sehen die API Keys nicht (hitobito_pfadi_de#68)
+
 ## Version 2.9
 
 * Layer spezifische Gruppenattribute (Gründungsdatum, Rechtsform u.a.) können erfasst und über die API gelesen werden (hitobito_pfadi_de#46)
