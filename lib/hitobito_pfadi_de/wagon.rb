@@ -75,6 +75,12 @@ module HitobitoPfadiDe
       TableDisplay.register_column(Person,
         TableDisplays::People::FeeKindColumn,
         :fee_kind)
+
+      [Group::Mitglieder::OrdentlicheMitgliedschaft,
+        Group::Mitglieder::Foerdermitgliedschaft,
+        Group::Mitglieder::Zweitmitgliedschaft].each do |role|
+        role.membership_role = true
+      end
     end
 
     initializer "pfadi_de.add_settings" do |_app|
