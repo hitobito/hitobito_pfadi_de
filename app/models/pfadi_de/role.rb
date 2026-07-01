@@ -28,6 +28,11 @@ module PfadiDe::Role
     class_attribute :has_fee_kind
     self.has_fee_kind = false
 
+    # Marks a role as a membership role.
+    # This flag is used for additional validation rules and can be used
+    # for specific permission handling (as in the bdp wagon).
+    class_attribute :membership_role, default: false
+
     belongs_to :fee_kind
 
     validates :fee_kind, absence: true, unless: :fee_kind_type?

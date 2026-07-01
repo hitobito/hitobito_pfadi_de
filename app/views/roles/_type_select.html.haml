@@ -5,13 +5,13 @@
 
 .shown
   = select :role,
-            :type,
-            roles_type_options(@group, entry),
-            roles_type_select_options(@group, entry),
-              class: 'form-select form-select-sm',
-              disabled: !entry.new_record? && entry.fee_kind_type?,
-              data: { remote: true,
-                     url: details_group_roles_path(@group),
-                     placeholder: ta(:please_select),
-                     chosen_no_results: t('global.chosen_no_results'),
-                     action: "change->autosubmit#submit", turbo_frame: :role_fee_kind_id }
+           :type,
+           roles_type_options(@group, entry),
+           roles_type_select_options(@group, entry),
+           class: 'form-select form-select-sm',
+           disabled: !entry.new_record? && entry.fee_kind_type?,
+           data: { remote: true,
+                   url: details_group_roles_path(@group),
+                   placeholder: ta(:please_select),
+                   chosen_no_results: t('global.chosen_no_results'),
+                   action: "change->autosubmit#submit", turbo_frame: :role_fee_kind_id }

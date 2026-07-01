@@ -67,8 +67,6 @@ module HitobitoPfadiDe
 
       Dropdown::PeopleExport.prepend PfadiDe::Dropdown::PeopleExport
 
-      RolesHelper.prepend PfadiDe::RolesHelper
-
       NavigationHelper::MAIN.find { _1[:label] == :groups }[:inactive_for].push("fee_kinds")
       NavigationHelper::MAIN.find { _1[:label] == :invoices }[:active_for].push("fee_kinds")
 
@@ -77,6 +75,12 @@ module HitobitoPfadiDe
       TableDisplay.register_column(Person,
         TableDisplays::People::FeeKindColumn,
         :fee_kind)
+
+      [Group::Mitglieder::OrdentlicheMitgliedschaft,
+        Group::Mitglieder::Foerdermitgliedschaft,
+        Group::Mitglieder::Zweitmitgliedschaft].each do |role|
+        role.membership_role = true
+      end
     end
 
     initializer "pfadi_de.add_settings" do |_app|
