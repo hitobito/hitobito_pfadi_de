@@ -69,9 +69,10 @@ describe Role::FeeKindChangesController do
     end
 
     it "has information about future fee kind change" do
-      model_params[:start_on] = "2026-06-30"
+      change_date = 2.days.from_now.to_date
+      model_params[:start_on] = change_date.to_json
       post :create, params: {role_id: role.id, role_fee_kind_change: model_params}
-      expect(flash[:notice]).to eq "Die Beitragsart der Rolle wird am 30.06.2026 auf BaWü Jugend geändert."
+      expect(flash[:notice]).to eq "Die Beitragsart der Rolle wird am #{I18n.l(change_date)} auf BaWü Jugend geändert."
     end
 
     it "raises if not authorized" do
