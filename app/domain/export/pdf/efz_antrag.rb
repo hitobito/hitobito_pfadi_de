@@ -11,6 +11,7 @@ module Export::Pdf
   class EfzAntrag
     TEMPLATE_PATH = "lib/pdf_templates/efz_antrag.pdf"
     ADDRESS_LABEL_EFZ = "anschrift_efz"
+    DATE_FORMAT = "%d.%m.%Y"
 
     attr_reader :group, :person
 
@@ -35,7 +36,7 @@ module Export::Pdf
         "mitglied_name" => format_address_only_name(person),
         "mitglied_address" => format_address_without_name(person),
         "mitglied_number" => person.id.to_s,
-        "mitglied_birthdate" => person.birthday&.strftime("%d.%m.%Y") || "",
+        "mitglied_birthdate" => person.birthday&.strftime(DATE_FORMAT),
         "mitglied_city" => person.town,
 
         # Data of the group which is responsible for the eFZ inspection
@@ -51,7 +52,7 @@ module Export::Pdf
         "efz_recipient_address" =>
           format_address_without_name(efz_verantwortliche_stelle, label: ADDRESS_LABEL_EFZ),
 
-        "date" => Date.current.strftime("%d.%m.%Y")
+        "date" => Date.current.strftime(DATE_FORMAT)
       }.transform_values(&:to_s)
     end
 
