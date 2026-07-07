@@ -16,7 +16,7 @@ class AddNestedSetToFeeKinds < ActiveRecord::Migration[8.0]
     reversible do |dir|
       dir.up do
         FeeKind.reset_column_information
-        FeeKind.rebuild!
+        FeeKind.rebuild!(false) # validate_nodes = false
       end
     end
   end
