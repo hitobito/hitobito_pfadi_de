@@ -14,6 +14,12 @@ describe People::EfzAntragsController do
   before { sign_in(person) }
 
   describe "POST#create" do
+    let(:fixture_path) { HitobitoPfadiDe::Wagon.root.join("spec/fixtures/files/efz_antrag_template.pdf") }
+
+    before do
+      allow_any_instance_of(Export::Pdf::EfzAntrag).to receive(:template_path).and_return(fixture_path.to_s)
+    end
+
     it "authorizes show permission" do
       other = Fabricate(Group::StammGruppePfadfinder::Mitglied.sti_name, group:).person
       expect do

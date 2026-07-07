@@ -54,6 +54,8 @@ module HitobitoPfadiDe
       GroupDecorator.prepend PfadiDe::GroupDecorator
       PersonDecorator.prepend PfadiDe::PersonDecorator
 
+      Contactable::Address.prepend PfadiDe::Contactable::Address
+
       Wizards::RegisterNewUserWizard.prepend PfadiDe::Wizards::RegisterNewUserWizard
       Wizards::Steps::NewUserForm.prepend PfadiDe::Wizards::Steps::NewUserForm
 

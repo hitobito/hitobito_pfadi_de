@@ -43,4 +43,37 @@ describe GroupDecorator, :draper_with_helpers do
       expect(decorator.show_new_period_invoice_template_for_people?).to be_truthy
     end
   end
+
+  describe "#efz_verantwortliche_stelle" do
+    let(:model) { groups(:adler) }
+    let(:parent) { model.parent }
+    let(:grandparent) { parent.parent }
+    let(:root) { groups(:root) }
+
+    before do
+      allow_any_instance_of(Group).to receive(:einsichtnahme_efz_durch_gruppe).and_return(false)
+      allow(model).to receive(:hierarchy).and_return([root, grandparent, parent, model])
+    end
+
+    context "when group has einsichtnahme_efz_durch_gruppe = true" do
+      it "returns the group itself" do
+        allow(model).to receive(:einsichtnahme_efz_durch_gruppe).and_return(true)
+        expect(decorator.efz_verantwortliche_stelle).to eq(model)
+      end
+    end
+
+    context "when group does not have einsichtnahme_efz_durch_gruppe" do
+      it "traverses up to first parent with einsichtnahme_efz_durch_gruppe = true" do
+        allow(root).to receive(:einsichtnahme_efz_durch_gruppe).and_return(true)
+        allow(grandparent).to receive(:einsichtnahme_efz_durch_gruppe).and_return(true)
+        expect(decorator.efz_verantwortliche_stelle).to eq(grandparent)
+      end
+    end
+
+    context "when no group has einsichtnahme_efz_durch_gruppe" do
+      it "returns the root of the hierarchy" do
+        expect(decorator.efz_verantwortliche_stelle).to eq(root)
+      end
+    end
+  end
 end

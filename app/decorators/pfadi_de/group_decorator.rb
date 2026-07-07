@@ -19,4 +19,8 @@ module PfadiDe::GroupDecorator
   def use_fee_rate_max_age?
     FeatureGate.disabled?("membership_fees.relative_fee_rates") || !has_sublayers?
   end
+
+  def efz_verantwortliche_stelle
+    model.hierarchy.reverse.find { |g| g.einsichtnahme_efz_durch_gruppe } || model.hierarchy.first
+  end
 end
