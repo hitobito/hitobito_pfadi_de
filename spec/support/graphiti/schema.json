@@ -431,6 +431,149 @@
       }
     },
     {
+      "name": "EfzEinsichtnahmeResource",
+      "type": "efz_einsichtnahmen",
+      "graphql_entrypoint": "efzEinsichtnahmen",
+      "description": null,
+      "attributes": {
+        "id": {
+          "type": "integer_id",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "created_at": {
+          "type": "datetime",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "updated_at": {
+          "type": "datetime",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "person_id": {
+          "type": "integer",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "einsichtnehmer_id": {
+          "type": "integer",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "einsicht_on": {
+          "type": "date",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "issued_on": {
+          "type": "date",
+          "readable": true,
+          "writable": true,
+          "description": null
+        }
+      },
+      "extra_attributes": {},
+      "sorts": {
+        "id": {},
+        "created_at": {},
+        "updated_at": {},
+        "einsicht_on": {},
+        "issued_on": {}
+      },
+      "filters": {
+        "id": {
+          "type": "integer_id",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "created_at": {
+          "type": "datetime",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "updated_at": {
+          "type": "datetime",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "person_id": {
+          "type": "integer",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "einsicht_on": {
+          "type": "date",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "issued_on": {
+          "type": "date",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        }
+      },
+      "relationships": {
+        "person": {
+          "type": "belongs_to",
+          "description": null,
+          "resource": "PersonResource"
+        },
+        "einsichtnehmer": {
+          "type": "belongs_to",
+          "description": null,
+          "resource": "PersonResource"
+        }
+      },
+      "stats": {
+        "total": [
+          "count"
+        ]
+      }
+    },
+    {
       "name": "Event::CourseResource",
       "type": "courses",
       "graphql_entrypoint": "courses",
@@ -4758,6 +4901,22 @@
     }
   ],
   "endpoints": {
+    "/api/efz_einsichtnahmen": {
+      "actions": {
+        "index": {
+          "resource": "EfzEinsichtnahmeResource"
+        },
+        "show": {
+          "resource": "EfzEinsichtnahmeResource"
+        },
+        "create": {
+          "resource": "EfzEinsichtnahmeResource"
+        },
+        "destroy": {
+          "resource": "EfzEinsichtnahmeResource"
+        }
+      }
+    },
     "/api/event_kind_categories": {
       "actions": {
         "index": {

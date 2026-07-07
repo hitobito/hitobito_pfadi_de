@@ -126,6 +126,7 @@ de:
 
       service_token:
         fee_kinds: Beitragsarten und -Sätze
+        efz_einsichtnahmen: eFZ Einsichtnahmen
 
       role:
         fee_kind: Beitragsart
@@ -190,6 +191,15 @@ de:
 
   people:
     efz_einsichtnahme_add: eFZ Einsichtnahme erfassen
+
+  api:
+    errors:
+      resources:
+        efz_einsichtnahme_resource:
+          person_id:
+            blank: muss ausgefüllt werden
+          einsichtnehmer_id:
+            blank: muss ausgefüllt werden
 
   table_displays:
     person:

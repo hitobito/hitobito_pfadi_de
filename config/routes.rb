@@ -27,5 +27,6 @@ Rails.application.routes.draw do
     constraints: {format: "jsonapi"}, defaults: {format: "jsonapi"} do
     resources :fee_kinds, only: [:index, :show]
     resources :fee_rates, only: [:index, :show]
+    resources :efz_einsichtnahmen, only: [:index, :show, :create, :destroy]
   end
 end

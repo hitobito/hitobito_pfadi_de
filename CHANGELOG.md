@@ -3,6 +3,7 @@
 ## unreleased
 
 * API Keys (ServiceTokens) können nur noch von Benutzern mit Admin-Rechten verwaltet werden. Andere user sehen die API Keys nicht (hitobito_pfadi_de#68)
+* eFZ Einsichtnahmen können über das JSON:API aufgelistet, erstellt und gelöscht werden (hitobito_bdp#26)
 
 ## Version 2.9
 
