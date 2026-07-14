@@ -9,9 +9,6 @@ class EfzEinsichtnahmeAbility < AbilityDsl::Base
   include AbilityDsl::Constraints::Group
 
   on(EfzEinsichtnahme) do
-    # for JSON API access, actual scoping happens via JsonApi::EfzEinsichtnahmeAbility
-    class_side(:index).everybody
-
     permission(:group_read).may(:read).in_same_group
     permission(:group_and_below_read).may(:read).in_same_group_or_below
     permission(:layer_read).may(:read).may(:read).in_same_layer
