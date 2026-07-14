@@ -47,7 +47,7 @@ module HitobitoPfadiDe
       PeopleController.prepend PfadiDe::PeopleController
       RolesController.prepend PfadiDe::RolesController
       PeriodInvoiceTemplatesController.prepend PfadiDe::PeriodInvoiceTemplatesController
-      ServiceTokensController.permitted_attrs += [:fee_kinds]
+      ServiceTokensController.permitted_attrs += [:fee_kinds, :efz_einsichtnahmen]
 
       Person::HistoryController.prepend PfadiDe::Person::HistoryController
 
