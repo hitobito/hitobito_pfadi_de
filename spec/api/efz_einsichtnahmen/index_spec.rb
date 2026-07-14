@@ -33,7 +33,8 @@ describe "efz_einsichtnahmen#index", type: :request do
           params[:include] = "person,einsichtnehmer"
         end
 
-        it "does not include person and einsichtnehmer with people scope on token" do
+        it "does not include person and einsichtnehmer without people scope on token" do
+          expect(service_token.people?).to eq false
           params[:include] = "person,einsichtnehmer"
           make_request
           expect(response.status).to eq(200), response.body
