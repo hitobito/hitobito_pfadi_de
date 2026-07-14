@@ -38,6 +38,7 @@ module HitobitoPfadiDe
       Ability.store.register EfzEinsichtnahmeAbility
       ServiceTokenAbility.include PfadiDe::ServiceTokenAbility
       GroupAbility.prepend PfadiDe::GroupAbility
+      PersonAbility.prepend PfadiDe::PersonAbility
       VariousAbility.include PfadiDe::VariousAbility
       InvoiceAbility.include PfadiDe::InvoiceAbility
       TokenAbility.prepend PfadiDe::ApiScopeAbility
