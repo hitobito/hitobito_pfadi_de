@@ -190,6 +190,9 @@ de:
 
   people:
     efz_einsichtnahme_add: eFZ Einsichtnahme erfassen
+    efz_antrags:
+      show:
+        template_not_found: Die eFZ-Vorlage wurde nicht gefunden.
 
   api:
     errors:

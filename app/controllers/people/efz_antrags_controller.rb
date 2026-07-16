@@ -12,11 +12,20 @@ module People
 
     self.nesting = [Group, Person]
 
+    rescue_from Export::Pdf::EfzAntrag::TemplateNotFound, with: :handle_template_not_found
+
     def show
       group, person = parents
       authorize!(:show, person)
       pdf = Export::Pdf::EfzAntrag.new(group, person).generate
       send_data pdf, type: :pdf, disposition: :inline
+    end
+
+    private
+
+    def handle_template_not_found
+      group, person = parents
+      redirect_to group_person_path(group, person), alert: t(".template_not_found")
     end
   end
 end

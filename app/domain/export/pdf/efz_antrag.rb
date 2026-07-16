@@ -13,6 +13,8 @@ module Export::Pdf
     ADDRESS_LABEL_EFZ = "anschrift_efz"
     DATE_FORMAT = "%d.%m.%Y"
 
+    TemplateNotFound = Class.new(StandardError)
+
     attr_reader :group, :person
 
     def initialize(group, person)
@@ -66,7 +68,7 @@ module Export::Pdf
     # of the current hitobito instance.
     def template_path
       path = File.join(Wagons.all.last.root, TEMPLATE_PATH)
-      raise("Template not found: #{path}") unless File.exist?(path)
+      raise TemplateNotFound, "Template not found: #{path}" unless File.exist?(path)
       path
     end
 
