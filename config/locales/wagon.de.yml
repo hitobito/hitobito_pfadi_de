@@ -143,6 +143,10 @@ de:
     success: Eintrag erfolgreich gespeichert.
     form:
       confirmation_text: "Hiermit bestätige ich, dass ein erweitertes Führungszeugnis vorgelegt wurde und dass es keine relevanten Eintragungen im Sinne des § 72a (4) SGB VIII enthält."
+      help_confirmation:
+        Hiermit bestätige ich, dass ein erweitertes Führungszeugnis vorgelegt wurde und dass es keine
+        relevanten Eintragungen im Sinne des § 72a (4) SGB VIII enthält.
+    created: Einsichtnahme vom %{einsicht_on} wurde erfolgreich erstellt.
 
   export/pdf/invoice/processed_subjects_section:
     header: Einzelnachweise
@@ -163,12 +167,7 @@ de:
       invoice_button_dropdown: Verbandsabrechnungen
       invoice_button_demo_lv_members: Mitglieder, Rechnung an Landesverband (Demo)
       invoice_button_demo_stamm_members: Mitglieder, Rechnung an Stamm (Demo)
-  efz_einsichtnahmen:
-    created: Einsichtnahme vom %{einsicht_on} wurde erfolgreich erstellt.
-    form:
-      help_confirmation:
-        Hiermit bestätige ich, dass ein erweitertes Führungszeugnis vorgelegt wurde und dass es keine
-        relevanten Eintragungen im Sinne des § 72a (4) SGB VIII enthält.
+
   fee_kinds:
     tabs:
       info: Info
