@@ -14,16 +14,19 @@ class Group::Mitglieder < ::Group
     self.permissions = []
     self.has_fee_kind = true
     self.used_attributes += [:fee_kind_id]
+    self.membership_role = true
   end
 
   class Foerdermitgliedschaft < ::Role
     self.permissions = []
     self.has_fee_kind = true
     self.used_attributes += [:fee_kind_id]
+    self.membership_role = true
   end
 
   class Zweitmitgliedschaft < ::Role
     self.permissions = []
+    self.membership_role = true
   end
 
   roles OrdentlicheMitgliedschaft,
