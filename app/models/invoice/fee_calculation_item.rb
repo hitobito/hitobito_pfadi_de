@@ -60,7 +60,7 @@ class Invoice::FeeCalculationItem < Invoice::PeriodItem
   def fee_rate_condition
     # Only count people whose calculated fee rate matches the one this invoice item cares about
     subquery = People::FeeRatesQuery.new(
-      period_start_on:, period_end_on:, target_layer_id: invoice.group_id
+      period_start_on:, period_end_on:, target_layer_id: invoice.group_id, ancestor_groups: groups
     ).applicable_fee_rate_id
 
     Person.where("(ancestor.id, people.id, ?) IN (#{subquery.to_sql})", fee_rate_id)

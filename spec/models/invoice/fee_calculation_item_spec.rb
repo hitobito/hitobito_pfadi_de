@@ -176,10 +176,10 @@ describe Invoice::FeeCalculationItem do
       context "with nested recipient groups" do
         let(:recipient_groups) { Group.where(id: [groups(:baden_wuerttemberg).id]) }
 
-        it "does not count person with membership role in sub-layer" do
+        it "also counts person with membership role in sub-layer" do
           Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name,
             group: groups(:adler_mitglieder))
-          expect(item.count).to eq(0)
+          expect(item.count).to eq(1)
         end
       end
 
@@ -427,10 +427,10 @@ describe Invoice::FeeCalculationItem do
       context "with nested recipient groups" do
         let(:recipient_group) { groups(:baden_wuerttemberg) }
 
-        it "does not count person with membership role in sub-layer" do
+        it "also counts person with membership role in sub-layer" do
           Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name,
             group: groups(:adler_mitglieder))
-          expect(item.count).to eq(0)
+          expect(item.count).to eq(1)
         end
       end
 
@@ -672,10 +672,10 @@ describe Invoice::FeeCalculationItem do
       context "with nested recipient groups" do
         let(:recipient_groups) { Group.where(id: [groups(:baden_wuerttemberg).id]) }
 
-        it "does not count person with membership role in sub-layer" do
+        it "also counts person with membership role in sub-layer" do
           Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:,
             group: groups(:adler_mitglieder))
-          expect(item.count).to eq(0)
+          expect(item.count).to eq(1)
         end
       end
 
@@ -897,10 +897,10 @@ describe Invoice::FeeCalculationItem do
       context "with nested recipient groups" do
         let(:recipient_groups) { Group.where(id: [groups(:baden_wuerttemberg).id]) }
 
-        it "does not count person with membership role in sub-layer" do
+        it "also counts person with membership role in sub-layer" do
           Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:,
             group: groups(:adler_mitglieder))
-          expect(item.count).to eq(0)
+          expect(item.count).to eq(1)
         end
       end
 
@@ -1130,10 +1130,11 @@ describe Invoice::FeeCalculationItem do
       context "with nested recipient groups" do
         let(:recipient_group) { groups(:baden_wuerttemberg) }
 
-        it "does not count person with membership role in sub-layer" do
-          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name,
+        it "also counts person with membership role in sub-layer" do
+          role = Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name,
             group: groups(:adler_mitglieder))
-          expect(item.subjects).to eq([])
+          expect(item.subjects).to match_array([{subject_id: role.person_id, subject_type: "Person",
+                                                 template_item_id: 1337, item_id: item.id}])
         end
       end
 
@@ -1397,10 +1398,11 @@ describe Invoice::FeeCalculationItem do
       context "with nested recipient groups" do
         let(:recipient_groups) { Group.where(id: [groups(:baden_wuerttemberg).id]) }
 
-        it "does not count person with membership role in sub-layer" do
-          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:,
+        it "also counts person with membership role in sub-layer" do
+          role = Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:,
             group: groups(:adler_mitglieder))
-          expect(item.subjects).to eq([])
+          expect(item.subjects).to match_array([{subject_id: role.person_id, subject_type: "Person",
+                                                 template_item_id: 1337, item_id: item.id}])
         end
       end
 
@@ -1565,6 +1567,7 @@ describe Invoice::FeeCalculationItem do
 
     before do
       item.invoice.recipient = group
+      Group::Mitglieder::OrdentlicheMitgliedschaft.delete_all
     end
 
     it "multiplies price and count" do
