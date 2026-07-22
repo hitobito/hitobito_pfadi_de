@@ -9,6 +9,11 @@ module PfadiDe
   module RolesHelper
     def format_role_type(role) = role.class.model_name.human
 
+    def format_role_fee_kind(role)
+      return if role.fee_kind.blank?
+      link_to(role.fee_kind.to_s, group_fee_kind_path(role.group.layer_group_id, role.fee_kind))
+    end
+
     def link_action_change_fee_kind(role)
       label = t("role.fee_kind_change_link")
       if can?(:edit, role)
