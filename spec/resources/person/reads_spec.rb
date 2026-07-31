@@ -42,5 +42,27 @@ describe PersonResource, type: :resource do
         expect(data.public_send(attr)).to eq(person.public_send(attr).as_json)
       end
     end
+
+    context "when the details are only readable through an event participation" do
+      before do
+        allow(ability).to receive(:can?).and_call_original
+        allow(ability).to receive(:can?).with(:show_details, person).and_return(false)
+        allow(ability.user_context).to receive(:participation_details_person_ids)
+          .and_return(Set[person.id])
+      end
+
+      it "does not expose the membership and payment data" do
+        render
+
+        attributes = jsonapi_data[0].attributes.symbolize_keys
+
+        expect(attributes.keys).to include :gender
+        expect(attributes.keys).to include :pronoun
+
+        (serialized_attrs - [:pronoun]).each do |attr|
+          expect(attributes.keys).not_to include attr
+        end
+      end
+    end
   end
 end
