@@ -30,7 +30,7 @@ module HitobitoPfadiDe
 
       # extend application classes here
       Role.include PfadiDe::Role
-      Group.include PfadiDe::Group
+      Group.prepend PfadiDe::Group
       Person.prepend PfadiDe::Person
       Contactable.include PfadiDe::Contactable
       ServiceToken.prepend PfadiDe::ServiceToken
@@ -42,6 +42,7 @@ module HitobitoPfadiDe
       VariousAbility.include PfadiDe::VariousAbility
       InvoiceAbility.include PfadiDe::InvoiceAbility
       TokenAbility.prepend PfadiDe::ApiScopeAbility
+      TokenAbility.prepend PfadiDe::TokenAbility
       DoorkeeperTokenAbility.prepend PfadiDe::ApiScopeAbility
 
       GroupsController.prepend PfadiDe::GroupsController

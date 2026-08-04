@@ -18,6 +18,9 @@ describe :self_registration do
 
   before do
     group.update!(self_registration_role_type: Group::Mitglieder::OrdentlicheMitgliedschaft.name)
+    unless group.self_registration_active?
+      skip("for now selfreg is always disabled in pfadi_de")
+    end
 
     visit group_self_registration_path(group_id: group)
   end
