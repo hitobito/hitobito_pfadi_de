@@ -3373,6 +3373,79 @@
       }
     },
     {
+      "name": "MembershipRegistrationResource",
+      "type": "membership_registrations",
+      "graphql_entrypoint": "membershipRegistrations",
+      "description": "Registers a person with a membership role in an active Group::Mitglieder group.\n\nRequired token permission:\n- a write permission for the target group's layer (e.g. layer_and_below_full)\n\nRequired service token scopes:\n- register_people\n- create_membership_roles\n",
+      "attributes": {
+        "id": {
+          "type": "integer_id",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "first_name": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "last_name": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "email": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "group_id": {
+          "type": "integer",
+          "readable": false,
+          "writable": true,
+          "description": null
+        },
+        "role_type": {
+          "type": "string",
+          "readable": false,
+          "writable": true,
+          "description": null
+        },
+        "fee_kind_id": {
+          "type": "integer",
+          "readable": false,
+          "writable": true,
+          "description": null
+        }
+      },
+      "extra_attributes": {},
+      "sorts": {
+        "id": {}
+      },
+      "filters": {
+        "id": {
+          "type": "integer_id",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        }
+      },
+      "relationships": {},
+      "stats": {
+        "total": [
+          "count"
+        ]
+      }
+    },
+    {
       "name": "Person::NameResource",
       "type": "person-name",
       "graphql_entrypoint": "names",
@@ -5007,6 +5080,13 @@
         },
         "show": {
           "resource": "MailingListResource"
+        }
+      }
+    },
+    "/api/membership_registrations": {
+      "actions": {
+        "create": {
+          "resource": "MembershipRegistrationResource"
         }
       }
     },

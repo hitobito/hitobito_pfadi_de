@@ -127,6 +127,7 @@ de:
       service_token:
         fee_kinds: Beitragsarten und -Sätze
         efz_einsichtnahmen: eFZ Einsichtnahmen
+        create_membership_roles: Mitgliedsrollen erstellen
 
       role:
         fee_kind: Beitragsart
@@ -197,6 +198,13 @@ de:
   api:
     errors:
       resources:
+        membership_registration_resource:
+          role_type:
+            blank: muss angegeben werden
+            invalid: ist nicht gültig
+          group_id:
+            blank: muss angegeben werden
+            invalid: ist nicht gültig
         efz_einsichtnahme_resource:
           person_id:
             blank: muss ausgefüllt werden

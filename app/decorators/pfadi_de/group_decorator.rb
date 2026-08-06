@@ -23,4 +23,10 @@ module PfadiDe::GroupDecorator
   def efz_verantwortliche_stelle
     model.hierarchy.reverse.find { |g| g.einsichtnahme_efz_durch_gruppe } || model.hierarchy.first
   end
+
+  # For now, self registration is always disabled. In future it could be enabled for
+  # non-Mitglieder groups if desired.
+  def supports_self_registration?
+    false
+  end
 end

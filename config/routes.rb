@@ -28,5 +28,6 @@ Rails.application.routes.draw do
     resources :fee_kinds, only: [:index, :show]
     resources :fee_rates, only: [:index, :show]
     resources :efz_einsichtnahmen, only: [:index, :show, :create, :destroy]
+    resources :membership_registrations, only: [:create]
   end
 end
