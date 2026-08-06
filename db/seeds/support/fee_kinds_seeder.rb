@@ -74,6 +74,8 @@ class FeeKindsSeeder
         max_age: max_age(fee_kind)
       })
     end
+
+    FeeKind.rebuild!(false)
   end
 
   private
