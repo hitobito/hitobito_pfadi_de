@@ -8,3 +8,8 @@
   = table(@efz_einsichtnahmen, class: 'table table-striped table-fixed') do |t|
     - t.attrs(:issued_on, :einsicht_on, :einsichtnehmer)
     - action_col_destroy(t) { |e| group_person_efz_einsichtnahme_path(group, e.person, e) }
+
+- if can_read_membership_application_attrs?(person)
+  #membership_application.pb-3
+    %h2= t('.membership_application_title')
+    = render_present_attrs person, *PfadiDe::Person::MEMBERSHIP_APPLICATION_ATTRS

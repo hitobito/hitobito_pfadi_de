@@ -36,6 +36,10 @@ class MembershipRegistrationResource < ApplicationResource
     attribute :group_id, :integer, writable: true, readable: false
     attribute :role_type, :string, writable: true, readable: false
     attribute :fee_kind_id, :integer, writable: true, readable: false
+
+    PfadiDe::Person::MEMBERSHIP_APPLICATION_ATTRS.each do |attr|
+      attribute attr, :string, writable: true
+    end
   end
 
   before_attributes :extract_membership_attributes
