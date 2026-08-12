@@ -88,6 +88,20 @@ describe Export::Pdf::Invoice::RunnerWithProcessedSubjects do
       )
     end
 
+    context "batch with an invoice the section does not apply to" do
+      let(:non_qualifying_invoice) { Fabricate(:invoice, group:, recipient_type: Person.sti_name) }
+      let(:pdf) do
+        Export::Pdf::Invoice.render(
+          Invoice.where(id: [invoice.id, non_qualifying_invoice.id]), articles: true
+        )
+      end
+
+      it "renders Einzelnachweise once, for the invoice it applies to, not for the whole batch" do
+        occurrences = text_with_position.count { |(_x, _y, text)| text == "Einzelnachweise" }
+        expect(occurrences).to eq(1)
+      end
+    end
+
     context "multiple invoice items" do
       before do
         item = create_invoice_item(invoice_item_attrs.deep_merge(
