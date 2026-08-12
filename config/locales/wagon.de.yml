@@ -113,6 +113,12 @@ de:
         iban: IBAN
         id: Mitgliedsnummer
         latest_efz: Letzte eFZ Einsichtnahme
+        membership_application_reasons: Begründung Aufnahmeersuchen
+        membership_application_statement_stamm: Stellungnahme Stamm Aufnahmeersuchen
+        membership_application_statement_lv: Stellungnahme LV Aufnahmeersuchen
+        membership_application_statement_bund: Stellungnahme Bund Aufnahmeersuchen
+        membership_application_process_data: Prozessdaten Aufnahmeantrag
+        membership_application_uuid: UUID Digitaler Aufnahmeantrag
         nickname: Spitzname
         payment_method: Zahlungsart
         payment_methods:
@@ -188,6 +194,11 @@ de:
       success: Die Beitragsart der Rolle wurde auf %{fee_kind} geändert.
       success_future_change: Die Beitragsart der Rolle wird am %{start_on} auf %{fee_kind} geändert.
       failure_role_does_not_allow_fee_kind: Rolle ist nicht beitragspflichtig
+
+  person:
+    history:
+      additional_information_pfadi_de:
+        membership_application_title: Aufnahmeverfahren
 
   people:
     efz_einsichtnahme_add: eFZ Einsichtnahme erfassen

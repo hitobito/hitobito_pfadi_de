@@ -10,6 +10,15 @@ module PfadiDe::Person
 
   PAYMENT_METHODS = %w[invoice debit].freeze
 
+  MEMBERSHIP_APPLICATION_ATTRS = [
+    :membership_application_reasons,
+    :membership_application_statement_stamm,
+    :membership_application_statement_lv,
+    :membership_application_statement_bund,
+    :membership_application_process_data,
+    :membership_application_uuid
+  ]
+
   # rubocop:disable Metrics/BlockLength
   prepended do
     Person::PUBLIC_ATTRS.push(:pronoun, :exit_date, :bank_account_owner, :iban, :bic,
@@ -18,7 +27,10 @@ module PfadiDe::Person
     Person::INTERNAL_ATTRS.push(:last_entry_date_with_fee_kind,
       :should_recalculate_last_entry_date_with_fee_kind,
       :latest_efz_issued_on)
+    Person::INTERNAL_ATTRS.concat(MEMBERSHIP_APPLICATION_ATTRS)
+
     Person::FILTER_ATTRS.push(:latest_efz_issued_on)
+
     paper_trail_options[:skip].concat([
       "last_entry_date_with_fee_kind",
       "should_recalculate_last_entry_date_with_fee_kind",
