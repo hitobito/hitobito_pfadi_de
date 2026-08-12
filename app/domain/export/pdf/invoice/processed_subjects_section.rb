@@ -15,6 +15,8 @@ module Export::Pdf::Invoice
     delegate :start_new_page, :move_down, to: :pdf
 
     def render
+      return unless applicable?
+
       start_new_page
 
       render_header
@@ -22,6 +24,10 @@ module Export::Pdf::Invoice
     end
 
     private
+
+    def applicable?
+      invoice.recipient_type == Group.sti_name && processed_subject_infos.present?
+    end
 
     def render_header
       font_size(14) do

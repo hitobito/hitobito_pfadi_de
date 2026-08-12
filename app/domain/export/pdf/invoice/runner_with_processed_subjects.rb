@@ -8,18 +8,7 @@ module Export::Pdf::Invoice
     private
 
     def sections
-      return super unless group_recipient? && processed_subjects?
       super + [Export::Pdf::Invoice::ProcessedSubjectsSection]
-    end
-
-    def group_recipient? = @invoices.pluck(:recipient_type).any? { |type| type == Group.sti_name }
-
-    def processed_subjects?
-      invoice_item_ids = InvoiceItem.where(invoice_id: @invoices.pluck(:id))
-      InvoiceRun::ProcessedSubject
-        .where(subject_type: Person.sti_name)
-        .where(item_id: invoice_item_ids)
-        .exists?
     end
   end
 end
