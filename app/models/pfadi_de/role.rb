@@ -14,6 +14,12 @@ module PfadiDe::Role
     def types_with_fee_kind
       all_types.select(&:has_fee_kind)
     end
+
+    # All role types that represent the bylaws-defined primary/official
+    # membership in the organisation (primary_membership_role = true).
+    def primary_membership_role_types
+      all_types.select(&:primary_membership_role)
+    end
   end
 
   included do
@@ -28,10 +34,20 @@ module PfadiDe::Role
     class_attribute :has_fee_kind
     self.has_fee_kind = false
 
-    # Marks a role as a membership role.
-    # This flag is used for additional validation rules and can be used
-    # for specific permission handling (as in the bdp wagon).
+    # Marks a role as a membership role (Ordentliche Mitgliedschaft,
+    # Foerdermitgliedschaft, Zweitmitgliedschaft). Used by the bdp wagon to
+    # gate role creation behind the :create_membership_roles permission
+    # (see Bdp::RoleAbility, Bdp::MissingMembershipRoleCreatePermission).
+    # Not the same as #primary_membership_role, which is narrower.
     class_attribute :membership_role, default: false
+
+    # Marks a role as representing the bylaws-defined primary ("official",
+    # "satzungsgemässe") membership in the organisation: Ordentliche
+    # Mitgliedschaft or Foerdermitgliedschaft, but not Zweitmitgliedschaft.
+    # Independent of fee liability (see #has_fee_kind), of the broader
+    # #membership_role (used for permission gating in the bdp wagon), and
+    # of any UX-only grouping (see Person#primary_group).
+    class_attribute :primary_membership_role, default: false
 
     belongs_to :fee_kind
 

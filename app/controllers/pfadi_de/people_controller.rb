@@ -10,6 +10,6 @@ module PfadiDe::PeopleController
 
   def permitted_attrs
     super + PfadiDe::Contactable::BANK_ACCOUNT_ATTRS +
-      [:pronoun, :exit_date, :payment_method, :consent_data_retention]
+      [:pronoun, :payment_method, :consent_data_retention]
   end
 end
