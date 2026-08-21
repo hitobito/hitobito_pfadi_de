@@ -22,6 +22,13 @@ module PfadiDe::PersonResource
     attribute :bank_name, :string, readable: :show_details_on_person?
     attribute :payment_method, :string, readable: :show_details_on_person?
     attribute :consent_data_retention, :boolean, readable: :show_details_on_person?
+
+    FeatureGate.if("people.membership_group") do
+      attribute :membership_group, :string, writable: false,
+        readable: :show_details_on_person? do
+        @object.membership_group&.to_s
+      end
+    end
   end
 
   # For attributes that are not viewable in the UI on an event participation of this person

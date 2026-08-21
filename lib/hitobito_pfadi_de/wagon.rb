@@ -79,6 +79,12 @@ module HitobitoPfadiDe
       TableDisplay.register_column(Person,
         TableDisplays::People::FeeKindColumn,
         :fee_kind)
+
+      if FeatureGate.enabled?("people.membership_group")
+        TableDisplay.register_column(Person,
+          TableDisplays::People::MembershipGroupColumn,
+          :membership_group)
+      end
     end
 
     initializer "pfadi_de.add_settings" do |_app|
