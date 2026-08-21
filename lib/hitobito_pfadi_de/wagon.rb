@@ -79,6 +79,10 @@ module HitobitoPfadiDe
       TableDisplay.register_column(Person,
         TableDisplays::People::FeeKindColumn,
         :fee_kind)
+
+      TableDisplay.register_column(Person,
+        TableDisplays::People::LeadingLayerColumn,
+        :leading_layer)
     end
 
     initializer "pfadi_de.add_settings" do |_app|

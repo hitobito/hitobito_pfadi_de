@@ -57,4 +57,29 @@ module PfadiDe::Person
   def entry_date
     roles.with_inactive.where.not(start_on: nil).order(:start_on).first&.start_on
   end
+
+  # Group of the active Ordentliche Mitgliedschaft or Foerdermitgliedschaft
+  # role (per BdP/DPSG bylaws), falling back to the longest-ongoing role of
+  # any type. Distinct from the freely chosen #primary_group.
+  def leading_layer_role
+    primary_membership_types = ::Role.types_with_fee_kind.map(&:sti_name)
+    primary_membership_roles = roles.select { |role| primary_membership_types.include?(role.type) }
+    earliest_role(primary_membership_roles) || earliest_role(roles)
+  end
+
+  def leading_layer
+    leading_layer_role&.group&.layer_group
+  end
+
+  def leading_layer_id
+    leading_layer&.id
+  end
+
+  private
+
+  def earliest_role(role_list)
+    role_list
+      .select(&:active?)
+      .min_by { |role| [role.start_on || Date::Infinity.new, role.id] }
+  end
 end
