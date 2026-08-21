@@ -43,6 +43,18 @@ describe PersonResource, type: :resource do
       end
     end
 
+    describe "leading_layer" do
+      before { params[:include] = "leading_layer" }
+
+      it "works" do
+        render
+
+        leading_layer_data = jsonapi_data[0].sideload(:leading_layer)
+        expect(leading_layer_data.id).to eq person.leading_layer.id
+        expect(leading_layer_data.jsonapi_type).to eq "groups"
+      end
+    end
+
     context "when the details are only readable through an event participation" do
       before do
         allow(ability).to receive(:can?).and_call_original

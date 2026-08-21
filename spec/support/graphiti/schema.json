@@ -4301,6 +4301,11 @@
           "type": "has_many",
           "description": null,
           "resource": "Event::ParticipationResource"
+        },
+        "leading_layer": {
+          "type": "belongs_to",
+          "description": null,
+          "resource": "GroupResource"
         }
       },
       "stats": {

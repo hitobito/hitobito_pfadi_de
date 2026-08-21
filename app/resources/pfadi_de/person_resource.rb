@@ -22,6 +22,15 @@ module PfadiDe::PersonResource
     attribute :bank_name, :string, readable: :show_details_on_person?
     attribute :payment_method, :string, readable: :show_details_on_person?
     attribute :consent_data_retention, :boolean, readable: :show_details_on_person?
+
+    # rubocop:disable Rails/RedundantForeignKey
+    belongs_to :leading_layer, resource: GroupResource, writable: false,
+      foreign_key: :leading_layer_id do
+      assign do |_people, _leading_layers|
+        # PfadiDe::Person#leading_layer has no setter
+      end
+    end
+    # rubocop:enable Rails/RedundantForeignKey
   end
 
   # For attributes that are not viewable in the UI on an event participation of this person
