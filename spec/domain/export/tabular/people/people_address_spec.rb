@@ -41,12 +41,18 @@ describe Export::Tabular::People::PeopleAddress do
       before do
         person.update(
           pronoun: "er/ihn",
-          exit_date: Date.parse("2025-08-13"),
           bank_account_owner: "John Doe",
           iban: "CH66 0076 2011 6238 5295 8",
           bic: "DEUTDEFFXXX",
           bank_name: "Deutsche Bank",
           payment_method: "debit"
+        )
+        Group::Mitglieder::OrdentlicheMitgliedschaft.create!(
+          person: person,
+          group: groups(:adler_mitglieder),
+          start_on: "2025-08-01",
+          end_on: "2025-08-13",
+          fee_kind: fee_kinds(:baden_wuerttemberg_kind)
         )
       end
 

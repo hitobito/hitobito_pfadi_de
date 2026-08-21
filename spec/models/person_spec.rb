@@ -13,15 +13,76 @@ describe Person do
   subject { person }
 
   describe "entry_date" do
-    before do
-      person.roles.first.update(start_on: nil)
-      person.roles.create!(type: person.roles.first.type, group: person.roles.first.group,
-        start_on: "2025-12-31")
-      person.roles.create!(type: person.roles.first.type, group: person.roles.first.group,
-        start_on: "2020-08-01")
+    let(:group) { groups(:adler_mitglieder) }
+    let(:fee_kind) { fee_kinds(:baden_wuerttemberg_kind) }
+
+    # the :member fixture otherwise already has an active Ordentliche
+    # Mitgliedschaft (roles(:paying_member)), which would count as a
+    # membership role and conflict with the ones created below
+    before { roles(:paying_member).destroy }
+
+    it "is nil without membership roles" do
+      expect(person.entry_date).to be_nil
     end
 
-    its(:entry_date) { should eq Date.parse("2020-08-01") }
+    it "ignores non-membership roles" do
+      person.roles.create!(type: person.roles.first.type, group: person.roles.first.group,
+        start_on: "2020-08-01")
+      expect(person.entry_date).to be_nil
+    end
+
+    it "is the start date of the earliest membership role" do
+      foerder_fee_kind = Fabricate(:fee_kind, layer: Group.roots.first,
+        role_type: Group::Mitglieder::Foerdermitgliedschaft.sti_name)
+
+      Group::Mitglieder::OrdentlicheMitgliedschaft.create!(
+        person:, group:, start_on: "2025-12-31", fee_kind:
+      )
+      Group::Mitglieder::Foerdermitgliedschaft.create!(
+        person:, group:, start_on: "2020-08-01", fee_kind: foerder_fee_kind
+      )
+      expect(person.entry_date).to eq Date.parse("2020-08-01")
+    end
+  end
+
+  describe "exit_date" do
+    let(:group) { groups(:adler_mitglieder) }
+    let(:fee_kind) { fee_kinds(:baden_wuerttemberg_kind) }
+
+    # the :member fixture otherwise already has an active Ordentliche
+    # Mitgliedschaft (roles(:paying_member)), which would count as a
+    # membership role and conflict with the ones created below
+    before { roles(:paying_member).destroy }
+
+    it "is nil without membership roles" do
+      expect(person.exit_date).to be_nil
+    end
+
+    it "is nil when the membership role has no end date" do
+      Group::Mitglieder::OrdentlicheMitgliedschaft.create!(
+        person:, group:, start_on: "2020-01-01", fee_kind:
+      )
+      expect(person.exit_date).to be_nil
+    end
+
+    it "ignores non-membership roles" do
+      person.roles.create!(type: person.roles.first.type, group: person.roles.first.group,
+        start_on: "2020-01-01", end_on: "2020-12-31")
+      expect(person.exit_date).to be_nil
+    end
+
+    it "is the end date of the most recently ended membership role" do
+      foerder_fee_kind = Fabricate(:fee_kind, layer: Group.roots.first,
+        role_type: Group::Mitglieder::Foerdermitgliedschaft.sti_name)
+
+      Group::Mitglieder::OrdentlicheMitgliedschaft.create!(
+        person:, group:, start_on: "2018-01-01", end_on: "2020-12-31", fee_kind:
+      )
+      Group::Mitglieder::Foerdermitgliedschaft.create!(
+        person:, group:, start_on: "2021-01-01", end_on: "2025-08-13", fee_kind: foerder_fee_kind
+      )
+      expect(person.exit_date).to eq Date.parse("2025-08-13")
+    end
   end
 
   describe "iban" do

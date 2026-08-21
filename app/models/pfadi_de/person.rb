@@ -12,7 +12,7 @@ module PfadiDe::Person
 
   # rubocop:disable Metrics/BlockLength
   prepended do
-    Person::PUBLIC_ATTRS.push(:pronoun, :exit_date, :bank_account_owner, :iban, :bic,
+    Person::PUBLIC_ATTRS.push(:pronoun, :bank_account_owner, :iban, :bic,
       :bank_name, :payment_method)
 
     Person::INTERNAL_ATTRS.push(:last_entry_date_with_fee_kind,
@@ -42,7 +42,21 @@ module PfadiDe::Person
   end
   # rubocop:enable Metrics/BlockLength
 
+  # Date of the first membership role (Ordentliche or Foerdermitgliedschaft, in any group).
+  # Nil if no such role exists or none of them has a start date.
   def entry_date
-    roles.with_inactive.where.not(start_on: nil).order(:start_on).first&.start_on
+    membership_roles.where.not(start_on: nil).minimum(:start_on)
+  end
+
+  # Date of the last membership role (Ordentliche or Foerdermitgliedschaft, in any group)
+  # that has ended. Nil if no such role exists or none of them has an end date.
+  def exit_date
+    membership_roles.where.not(end_on: nil).maximum(:end_on)
+  end
+
+  private
+
+  def membership_roles
+    roles.with_inactive.where(type: ::Role.official_membership_role_types.map(&:sti_name))
   end
 end
