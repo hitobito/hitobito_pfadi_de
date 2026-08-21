@@ -3419,6 +3419,42 @@
           "readable": false,
           "writable": true,
           "description": null
+        },
+        "membership_application_reasons": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "membership_application_statement_stamm": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "membership_application_statement_lv": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "membership_application_statement_bund": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "membership_application_process_data": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "membership_application_uuid": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
         }
       },
       "extra_attributes": {},
