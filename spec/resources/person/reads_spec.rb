@@ -23,7 +23,8 @@ describe PersonResource, type: :resource do
         :payment_method,
         :consent_data_retention,
         :entry_date,
-        :exit_date
+        :exit_date,
+        :membership_group
       ]
     end
 
@@ -38,9 +39,11 @@ describe PersonResource, type: :resource do
 
       expect(data.attributes.symbolize_keys.keys).to include(*serialized_attrs)
 
-      serialized_attrs.each do |attr|
+      (serialized_attrs - [:membership_group]).each do |attr|
         expect(data.public_send(attr)).to eq(person.public_send(attr).as_json)
       end
+      # membership_group is a Group on the model but a plain string over the API
+      expect(data.membership_group).to eq(person.membership_group&.to_s)
     end
 
     context "when the details are only readable through an event participation" do

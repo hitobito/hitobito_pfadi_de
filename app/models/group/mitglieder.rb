@@ -15,6 +15,7 @@ class Group::Mitglieder < ::Group
     self.has_fee_kind = true
     self.used_attributes += [:fee_kind_id]
     self.membership_role = true
+    self.official_membership_role = true
   end
 
   class Foerdermitgliedschaft < ::Role
@@ -22,6 +23,7 @@ class Group::Mitglieder < ::Group
     self.has_fee_kind = true
     self.used_attributes += [:fee_kind_id]
     self.membership_role = true
+    self.official_membership_role = true
   end
 
   class Zweitmitgliedschaft < ::Role

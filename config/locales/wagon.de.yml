@@ -113,11 +113,14 @@ de:
         iban: IBAN
         id: Mitgliedsnummer
         latest_efz: Letzte eFZ Einsichtnahme
+        layer_group: Standardebene
+        layer_group_label: Standardebene
         nickname: Spitzname
         payment_method: Zahlungsart
         payment_methods:
           debit: Lastschrift
           invoice: Rechnung
+        primary_group_id: Standardgruppe
         pronoun: Pronomen
         latest_efz_issued_on: eFZ Ausstellungsdatum
         latest_efz_einsicht_on: eFZ Einsichtnahme
@@ -214,3 +217,4 @@ de:
   table_displays:
     person:
       fee_kind: Beitragsart
+      membership_group: Hauptgruppierung

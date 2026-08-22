@@ -17,7 +17,6 @@ describe PeopleController do
     it "updates pfadi_de fields" do
       put :update, params: {group_id: group.id, id: leader.id, person: {
         pronoun: "sie",
-        exit_date: "01.01.2020",
         consent_data_retention: true,
         bank_account_owner: "John Doe",
         iban: "DE00 0000 0000 0000 0000 0",
@@ -26,7 +25,6 @@ describe PeopleController do
         payment_method: "debit"
       }}
       expect(assigns(:person).pronoun).to eq("sie")
-      expect(assigns(:person).exit_date).to eq(Date.parse("01.01.2020"))
       expect(assigns(:person).consent_data_retention).to be true
       expect(assigns(:person).bank_account_owner).to eq("John Doe")
       expect(assigns(:person).iban).to eq("DE00 0000 0000 0000 0000 0")
@@ -41,7 +39,14 @@ describe PeopleController do
     let(:dom) { Capybara::Node::Simple.new(response.body) }
 
     before do
-      leader.update(pronoun: "sieoderer", exit_date: "01.01.2020")
+      leader.update(pronoun: "sieoderer")
+      Group::Mitglieder::OrdentlicheMitgliedschaft.create!(
+        person: leader,
+        group: groups(:adler_mitglieder),
+        start_on: "2019-01-01",
+        end_on: "2020-01-01",
+        fee_kind: fee_kinds(:baden_wuerttemberg_kind)
+      )
     end
 
     it "displays some of the pfadi_de fields" do

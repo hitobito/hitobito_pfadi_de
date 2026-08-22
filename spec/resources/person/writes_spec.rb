@@ -38,8 +38,7 @@ describe PersonResource, type: :resource do
             bic: "DEUTDEFFXXX",
             bank_name: "Deutsche Bank",
             payment_method: "debit",
-            consent_data_retention: true,
-            exit_date: "2025-12-12"
+            consent_data_retention: true
           }
         }
       }
@@ -60,11 +59,16 @@ describe PersonResource, type: :resource do
         .and change { person.bank_name }.to("Deutsche Bank")
         .and change { person.payment_method }.to("debit")
         .and change { person.consent_data_retention }.to(true)
-        .and change { person.exit_date }.to(Date.parse("2025-12-12"))
     end
 
     it "does not update write protected attributes" do
       payload[:data][:attributes][:entry_date] = "2025-01-01"
+
+      expect { instance.update_attributes }.to raise_error(Graphiti::Errors::InvalidRequest)
+    end
+
+    it "does not update exit_date, a write protected attribute" do
+      payload[:data][:attributes][:exit_date] = "2025-12-12"
 
       expect { instance.update_attributes }.to raise_error(Graphiti::Errors::InvalidRequest)
     end

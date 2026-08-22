@@ -3647,7 +3647,7 @@
         "exit_date": {
           "type": "date",
           "readable": "guarded",
-          "writable": true,
+          "writable": false,
           "description": null
         },
         "bank_account_owner": {
@@ -3685,6 +3685,12 @@
           "readable": "guarded",
           "writable": true,
           "description": null
+        },
+        "membership_group": {
+          "type": "string",
+          "readable": "guarded",
+          "writable": false,
+          "description": null
         }
       },
       "extra_attributes": {},
@@ -3718,7 +3724,8 @@
         "bic": {},
         "bank_name": {},
         "payment_method": {},
-        "consent_data_retention": {}
+        "consent_data_retention": {},
+        "membership_group": {}
       },
       "filters": {
         "id": {
@@ -4138,6 +4145,21 @@
             "eq"
           ],
           "single": true
+        },
+        "membership_group": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
         }
       },
       "relationships": {

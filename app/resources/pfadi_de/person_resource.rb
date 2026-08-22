@@ -13,13 +13,22 @@ module PfadiDe::PersonResource
     attribute :entry_date, :date, writable: false, readable: :show_details_on_person? do
       @object.entry_date
     end
-    attribute :exit_date, :date, readable: :show_details_on_person?
+    attribute :exit_date, :date, writable: false, readable: :show_details_on_person? do
+      @object.exit_date
+    end
     attribute :bank_account_owner, :string, readable: :show_details_on_person?
     attribute :iban, :string, readable: :show_details_on_person?
     attribute :bic, :string, readable: :show_details_on_person?
     attribute :bank_name, :string, readable: :show_details_on_person?
     attribute :payment_method, :string, readable: :show_details_on_person?
     attribute :consent_data_retention, :boolean, readable: :show_details_on_person?
+
+    FeatureGate.if("people.membership_group") do
+      attribute :membership_group, :string, writable: false,
+        readable: :show_details_on_person? do
+        @object.membership_group&.to_s
+      end
+    end
   end
 
   # For attributes that are not viewable in the UI on an event participation of this person
