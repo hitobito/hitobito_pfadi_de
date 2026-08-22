@@ -34,6 +34,7 @@ module HitobitoPfadiDe
       Person.prepend PfadiDe::Person
       Contactable.include PfadiDe::Contactable
       ServiceToken.prepend PfadiDe::ServiceToken
+      MailingList.include PfadiDe::MailingList
 
       Ability.store.register EfzEinsichtnahmeAbility
       ServiceTokenAbility.include PfadiDe::ServiceTokenAbility

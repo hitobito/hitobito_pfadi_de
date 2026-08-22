@@ -17,6 +17,16 @@ de:
               already_active: ist bereits auf der Rolle aktiv
 
   activerecord:
+    errors:
+      models:
+        mailing_list:
+          attributes:
+            mail_name:
+              must_end_with_layer_suffix: "muss mit der Layer-ID oder einer hinterlegten Abkürzung enden (z.B. %{suffix})"
+        group:
+          attributes:
+            abbreviations:
+              must_be_unique: "wird bereits von einer anderen Gruppe verwendet (%{values})"
     models:
       efz_einsichtnahme:
         one: eFZ Einsichtnahme
@@ -47,6 +57,7 @@ de:
         einsichtnehmer: Einsichtnehmer
         confirmation: Bestätigung
       group:
+        abbreviations: Abkürzungen
         address: Anschrift
         aufloesungsdatum: Auflösungsdatum
         bank_account_owner: Kontoinhaber
@@ -162,6 +173,8 @@ de:
     efz_antrag_label: "eFZ Antrag"
 
   groups:
+    general_fields_pfadi_de:
+      help_abbreviations: "Optional. Mehrere Abkürzungen mit Komma trennen. Jede Abkürzung darf nur einmal über alle Gruppen hinweg vergeben werden."
     contact_data_pfadi_de:
       bank_account: Bankverbindung
     actions_show_pfadi_de:
