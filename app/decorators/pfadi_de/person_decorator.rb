@@ -8,6 +8,18 @@
 module PfadiDe::PersonDecorator
   extend ActiveSupport::Concern
 
+  # Show the membership group instead of town/birth year in person picker labels.
+  def full_label
+    label = to_s
+    if company?
+      name = full_name
+      label << " (#{name})" if name.present?
+    else
+      label << " (#{person.leading_layer || person.id})"
+    end
+    label
+  end
+
   def latest_efz_einsicht_on
     einsichtnahme = efz_einsichtnahmen.order(:issued_on, :created_at).last
     return nil unless einsichtnahme

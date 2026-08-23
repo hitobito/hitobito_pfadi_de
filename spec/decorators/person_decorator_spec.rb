@@ -12,6 +12,34 @@ describe PersonDecorator, :draper_with_helpers do
   # let(:einsichtnehmer) { Fabricate(:person) }
   let(:current_user) { people(:admin) }
 
+  describe "#full_label" do
+    context "person with a membership group" do
+      let(:person) { people(:member).decorate }
+      let(:group) { groups(:adler_mitglieder) }
+
+      it "shows the membership group" do
+        expect(person.full_label).to eq "#{people(:member)} (#{group.layer_group})"
+      end
+    end
+
+    context "person without a membership group" do
+      it "falls back to the person's id" do
+        expect(person.full_label).to eq "#{person} (#{person.id})"
+      end
+    end
+
+    context "company" do
+      let(:person) do
+        Fabricate(:person, company: true, company_name: "Coorp",
+          first_name: "Fra", last_name: "Stuck").decorate
+      end
+
+      it "shows the company's contact person" do
+        expect(person.full_label).to eq "Coorp (Fra Stuck)"
+      end
+    end
+  end
+
   describe "#latest_efz_einsicht_on" do
     it "returns nil when no efz_einsichtnahmen exist" do
       expect(person.latest_efz_einsicht_on).to be_nil
