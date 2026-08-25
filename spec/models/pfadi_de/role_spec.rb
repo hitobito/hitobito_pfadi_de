@@ -51,22 +51,16 @@ describe Role do
   end
 
   describe "membership flags on Group::Mitglieder roles" do
-    # membership_role is used by the bdp wagon (Bdp::RoleAbility,
-    # Bdp::MissingMembershipRoleCreatePermission) to gate role creation
-    # behind :create_membership_roles and other permission related aspects
     it "sets membership_role on all three role types" do
       expect(Group::Mitglieder::OrdentlicheMitgliedschaft.membership_role).to be true
       expect(Group::Mitglieder::Foerdermitgliedschaft.membership_role).to be true
       expect(Group::Mitglieder::Zweitmitgliedschaft.membership_role).to be true
     end
 
-    # primary_membership_role is narrower: only the bylaws-defined
-    # Ordentliche/Foerdermitgliedschaft, used for Person#entry_date,
-    # #exit_date and #membership_group.
-    it "sets primary_membership_role only on Ordentliche and Foerdermitgliedschaft" do
-      expect(Group::Mitglieder::OrdentlicheMitgliedschaft.primary_membership_role).to be true
-      expect(Group::Mitglieder::Foerdermitgliedschaft.primary_membership_role).to be true
-      expect(Group::Mitglieder::Zweitmitgliedschaft.primary_membership_role).to be false
+    it "sets has_fee_kind only on Ordentliche and Foerdermitgliedschaft" do
+      expect(Group::Mitglieder::OrdentlicheMitgliedschaft.has_fee_kind).to be true
+      expect(Group::Mitglieder::Foerdermitgliedschaft.has_fee_kind).to be true
+      expect(Group::Mitglieder::Zweitmitgliedschaft.has_fee_kind).to be false
     end
   end
 end

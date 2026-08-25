@@ -7,7 +7,7 @@
 
 require "spec_helper"
 
-describe PfadiDe::LastEntryDateCalculator do
+describe PfadiDe::LatestMembershipCalculator do
   let(:person) { Fabricate(:person) }
   let(:group) { groups(:adler_mitglieder) }
 
@@ -17,9 +17,9 @@ describe PfadiDe::LastEntryDateCalculator do
     role_class.create!(person:, group:, start_on:, end_on:, fee_kind:)
   end
 
-  describe "#calculate" do
+  describe "#entry_date" do
     it "without roles returns nil" do
-      expect(described_class.new(person).calculate).to be_nil
+      expect(described_class.new(person).entry_date).to be_nil
     end
 
     it "with only non-fee-relevant roles returns nil" do
@@ -28,19 +28,19 @@ describe PfadiDe::LastEntryDateCalculator do
         group: group,
         start_on: Date.new(2020, 1, 1)
       )
-      expect(described_class.new(person).calculate).to be_nil
+      expect(described_class.new(person).entry_date).to be_nil
     end
 
     it "with one fee-relevant role returns the start date of that role" do
       role = create_fee_role(start_on: Date.new(2020, 1, 1))
-      expect(described_class.new(person).calculate).to eq(role.start_on)
+      expect(described_class.new(person).entry_date).to eq(role.start_on)
     end
 
     it "with multiple overlapping fee-relevant roles returns the earliest start date" do
       _role_a = create_fee_role(start_on: Date.new(2020, 6, 1))
       role_b = create_fee_role(start_on: Date.new(2020, 1, 1))
       _role_c = create_fee_role(start_on: Date.new(2020, 3, 1))
-      expect(described_class.new(person).calculate).to eq(role_b.start_on)
+      expect(described_class.new(person).entry_date).to eq(role_b.start_on)
     end
 
     it "with a shorter nested role uses the enclosing role's end date to bridge the gap" do
@@ -50,37 +50,37 @@ describe PfadiDe::LastEntryDateCalculator do
       role_a = create_fee_role(start_on: Date.new(2020, 1, 1), end_on: Date.new(2025, 1, 1))
       _role_b = create_fee_role(start_on: role_a.start_on + 1.year, end_on: role_a.end_on - 1.year)
       _role_c = create_fee_role(start_on: role_a.end_on + 365)
-      expect(described_class.new(person).calculate).to eq(role_a.start_on)
+      expect(described_class.new(person).entry_date).to eq(role_a.start_on)
     end
 
     it "with gap less than 1 year returns the earliest start date across the gap" do
       role = create_fee_role(start_on: Date.new(2020, 1, 1), end_on: Date.new(2020, 12, 31))
       create_fee_role(start_on: role.end_on + 6.months)
-      expect(described_class.new(person).calculate).to eq(role.start_on)
+      expect(described_class.new(person).entry_date).to eq(role.start_on)
     end
 
     it "with gap exactly 365 days returns the earliest start date across the gap" do
       role = create_fee_role(start_on: Date.new(2020, 1, 1), end_on: Date.new(2020, 12, 31))
       create_fee_role(start_on: role.end_on + 365)
-      expect(described_class.new(person).calculate).to eq(role.start_on)
+      expect(described_class.new(person).entry_date).to eq(role.start_on)
     end
 
     it "with gap greater than 365 days returns the start date after the gap" do
       role = create_fee_role(start_on: Date.new(2020, 1, 1), end_on: Date.new(2020, 12, 31))
       create_fee_role(start_on: role.end_on + 366)
-      expect(described_class.new(person).calculate).to eq(role.end_on + 366)
+      expect(described_class.new(person).entry_date).to eq(role.end_on + 366)
     end
 
     it "with role without start_on ignores that role" do
       role = create_fee_role(start_on: Date.new(2020, 1, 1))
       create_fee_role(start_on: nil)
-      expect(described_class.new(person).calculate).to eq(role.start_on)
+      expect(described_class.new(person).entry_date).to eq(role.start_on)
     end
 
     it "with role starting in the future ignores that role" do
       role = create_fee_role(start_on: Date.new(2020, 1, 1))
       create_fee_role(start_on: Date.tomorrow)
-      expect(described_class.new(person).calculate).to eq(role.start_on)
+      expect(described_class.new(person).entry_date).to eq(role.start_on)
     end
 
     it "with multiple interruptions returns only the last continuous phase" do
@@ -92,19 +92,61 @@ describe PfadiDe::LastEntryDateCalculator do
       # Gap > 365 days
       # Third phase (current)
       role_c = create_fee_role(start_on: Date.new(2023, 1, 1))
-      expect(described_class.new(person).calculate).to eq(role_c.start_on)
+      expect(described_class.new(person).entry_date).to eq(role_c.start_on)
     end
 
     it "with no active role ended less than 365 days ago returns the start date of that phase" do
       role = create_fee_role(start_on: Date.new(2020, 1, 1), end_on: 6.months.ago.to_date)
-      expect(described_class.new(person).calculate).to eq(role.start_on)
+      expect(described_class.new(person).entry_date).to eq(role.start_on)
     end
 
     it "with role without end_on treats it as still active for gap calculation" do
       role_a = create_fee_role(start_on: Date.new(2020, 1, 1))
       _role_b = create_fee_role(start_on: Date.new(2021, 1, 1))
       # No gap because first role is still active (end_on = nil)
-      expect(described_class.new(person).calculate).to eq(role_a.start_on)
+      expect(described_class.new(person).entry_date).to eq(role_a.start_on)
+    end
+  end
+
+  describe "#exit_date" do
+    it "is nil without membership roles" do
+      expect(described_class.new(person).exit_date).to be_nil
+    end
+
+    it "is nil when the membership role has no end date" do
+      create_fee_role(start_on: Date.new(2020, 1, 1))
+      expect(described_class.new(person).exit_date).to be_nil
+    end
+
+    it "ignores non-membership roles" do
+      Group::Mitglieder::Zweitmitgliedschaft.create!(
+        person: person, group: group, start_on: Date.new(2020, 1, 1), end_on: Date.new(2020, 12, 31)
+      )
+      expect(described_class.new(person).exit_date).to be_nil
+    end
+
+    it "is the end date of the most recently ended membership role" do
+      foerder_fee_kind = Fabricate(:fee_kind, layer: Group.roots.first,
+        role_type: Group::Mitglieder::Foerdermitgliedschaft.sti_name)
+
+      create_fee_role(start_on: Date.new(2018, 1, 1), end_on: Date.new(2020, 12, 31))
+      Group::Mitglieder::Foerdermitgliedschaft.create!(
+        person:, group:, start_on: Date.new(2021, 1, 1), end_on: Date.new(2025, 8, 13),
+        fee_kind: foerder_fee_kind
+      )
+      expect(described_class.new(person).exit_date).to eq(Date.new(2025, 8, 13))
+    end
+
+    it "is nil when an older membership role has ended but a newer one is still " \
+      "ongoing without an end date" do
+      foerder_fee_kind = Fabricate(:fee_kind, layer: Group.roots.first,
+        role_type: Group::Mitglieder::Foerdermitgliedschaft.sti_name)
+
+      create_fee_role(start_on: Date.new(2010, 1, 1), end_on: Date.new(2015, 12, 31))
+      Group::Mitglieder::Foerdermitgliedschaft.create!(
+        person:, group:, start_on: Date.new(2016, 1, 1), fee_kind: foerder_fee_kind
+      )
+      expect(described_class.new(person).exit_date).to be_nil
     end
   end
 end

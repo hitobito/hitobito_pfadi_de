@@ -54,53 +54,11 @@ module PfadiDe::Person
   end
   # rubocop:enable Metrics/BlockLength
 
-  # Date the person's current, uninterrupted chain of membership roles
-  # (Ordentliche or Foerdermitgliedschaft, in any group) began. Roles chain
-  # together as long as there is no day without a membership role between
-  # one ending and the next starting; a real gap starts a new chain. E.g.
-  # member 2006-2022, gap, member again since 2024: entry_date is in 2024,
-  # not 2006. Nil if the person has never held a membership role with a
-  # start date.
   def entry_date
-    chain_start_on = chain_end_on = nil
-
-    membership_roles.where.not(start_on: nil).order(:start_on, :id).each do |role|
-      if chain_start_on.nil? || gap_before?(chain_end_on, role.start_on)
-        chain_start_on = role.start_on
-        chain_end_on = role.end_on
-      else
-        chain_end_on = merge_end_on(chain_end_on, role.end_on)
-      end
-    end
-
-    chain_start_on
+    PfadiDe::LatestMembershipCalculator.new(self).entry_date
   end
 
-  # Date of the last membership role (Ordentliche or Foerdermitgliedschaft, in any group)
-  # that has ended. Nil if no such role exists, or if a membership role
-  # without an end date is still ongoing (in which case older, already
-  # ended membership roles are irrelevant).
   def exit_date
-    return nil if membership_roles.active.where(end_on: nil).exists?
-
-    membership_roles.maximum(:end_on)
-  end
-
-  private
-
-  # True if there is at least one full day without a membership role
-  # between the previous chain's end and the next role's start.
-  def gap_before?(previous_end_on, next_start_on)
-    previous_end_on && next_start_on > previous_end_on + 1.day
-  end
-
-  # Nil (open-ended) if either role is still ongoing, otherwise the later
-  # of the two end dates.
-  def merge_end_on(a, b)
-    a && b && [a, b].max
-  end
-
-  def membership_roles
-    roles.with_inactive.where(type: ::Role.primary_membership_role_types.map(&:sti_name))
+    PfadiDe::LatestMembershipCalculator.new(self).exit_date
   end
 end

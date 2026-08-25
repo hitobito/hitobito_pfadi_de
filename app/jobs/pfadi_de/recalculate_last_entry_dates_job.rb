@@ -25,7 +25,7 @@ module PfadiDe
     end
 
     def recalculate_for_person(person)
-      new_date = PfadiDe::LastEntryDateCalculator.new(person).calculate
+      new_date = PfadiDe::LatestMembershipCalculator.new(person).entry_date
       person.update_columns(
         last_entry_date_with_fee_kind: new_date,
         should_recalculate_last_entry_date_with_fee_kind: false
