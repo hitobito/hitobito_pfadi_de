@@ -13,12 +13,12 @@
 = render 'used_i18n_enum_field', attr: :rechtsform, f:
 = render 'used_i18n_enum_field', attr: :stamm_typ, f:
 
-- entry.modifiable_attributes(:abbreviations).each do |attr|
-  = f.labeled(attr) do
-    = f.text_field(attr, value: Array(entry.abbreviations).join(', '), class: 'form-control form-control-sm')
-    %span.form-text= t('.help_abbreviations')
+- if entry.layer? && can?(:modify_superior, entry)
+  = f.labeled_inline_fields_for :abbreviations do |nested_f|
+    = nested_f.input_field(:value, placeholder: t('.abbreviation_placeholder'), class: 'd-inline')
+  = f.indented do
+    = f.help_block(t('.help_abbreviations'))
 
 = f.labeled_input_fields(*entry.used_attributes(:strukturnummer, :opt_out_aufnahmeantrag,
   :opt_out_aufnahmeantrag_stammessuche, :efz_in_aufnahmeantrag, :eingeschraenkt))
-
 

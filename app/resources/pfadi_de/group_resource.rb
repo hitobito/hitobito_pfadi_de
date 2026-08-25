@@ -27,6 +27,11 @@ module PfadiDe::GroupResource
       attribute :opt_out_aufnahmeantrag_stammessuche, :boolean
       attribute :efz_in_aufnahmeantrag, :boolean
       attribute :eingeschraenkt, :boolean
+      attribute(:abbreviations, :array) do
+        next [] unless @object.layer?
+
+        @object.abbreviations.pluck(:value)
+      end
     end
   end
 end

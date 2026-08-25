@@ -64,5 +64,21 @@ describe GroupResource, type: :resource do
         expect(data.public_send(attr)).to eq(group.public_send(attr).as_json)
       end
     end
+
+    it "serializes abbreviations as an array of values" do
+      group.abbreviations.create!(value: "Adler")
+
+      render
+
+      expect(jsonapi_data[0].abbreviations).to eq(["adler"])
+    end
+
+    it "serializes an empty array of abbreviations for a non-layer group" do
+      params[:filter] = {id: {eq: groups(:pfadfinder).id}}
+
+      render
+
+      expect(jsonapi_data[0].abbreviations).to eq([])
+    end
   end
 end

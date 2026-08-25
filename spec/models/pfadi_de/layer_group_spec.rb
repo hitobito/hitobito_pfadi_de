@@ -19,8 +19,7 @@ describe PfadiDe::LayerGroup do
       :bank_name,
       :debitorennummer,
       :sepa_glaeubiger_id,
-      :zahlungsart,
-      :abbreviations
+      :zahlungsart
     ]
   end
 
@@ -60,56 +59,31 @@ describe PfadiDe::LayerGroup do
   end
 
   describe "#abbreviations" do
-    subject(:group) { Group::Stamm.new }
+    subject(:group) { groups(:adler) }
 
-    it "is a superior attribute, only modifiable from above" do
-      expect(Group::Stamm.superior_attributes).to include(:abbreviations)
+    it "has no abbreviations by default" do
+      expect(group.abbreviations).to be_empty
     end
 
-    it "normalizes a comma separated string into a downcased, unique array" do
-      group.abbreviations = "Adler, adl,  , Adler"
-      expect(group.abbreviations).to eq(%w[adler adl])
+    it "accepts nested attributes to create abbreviations" do
+      group.update!(abbreviations_attributes: [{value: "Adler"}, {value: "adl"}])
+
+      expect(group.abbreviations.map(&:value)).to contain_exactly("adler", "adl")
     end
 
-    it "normalizes an array" do
-      group.abbreviations = ["Adler", " adl ", ""]
-      expect(group.abbreviations).to eq(%w[adler adl])
+    it "accepts nested attributes to destroy abbreviations" do
+      group.abbreviations.create!(value: "adl")
+      abbreviation = group.abbreviations.first
+
+      group.update!(abbreviations_attributes: [{id: abbreviation.id, _destroy: true}])
+
+      expect(group.abbreviations).to be_empty
     end
 
-    it "defaults to an empty array" do
-      expect(group.abbreviations).to eq([])
-    end
+    it "is destroyed together with its group" do
+      association = Group::Stamm.reflect_on_association(:abbreviations)
 
-    it "is not a required field" do
-      group.abbreviations = []
-      group.valid?
-      expect(group.errors[:abbreviations]).to be_empty
-    end
-  end
-
-  describe "#abbreviations uniqueness across layers" do
-    let(:stamm) { groups(:adler) }
-    let(:other_layer) { groups(:baden_wuerttemberg) }
-
-    it "is invalid if another layer already uses the same abbreviation" do
-      other_layer.update!(abbreviations: ["adl"])
-      stamm.abbreviations = ["ADL"]
-
-      expect(stamm).not_to be_valid
-      expect(stamm.errors[:abbreviations]).to be_present
-    end
-
-    it "is valid if no other layer uses the abbreviation" do
-      stamm.abbreviations = ["adl"]
-
-      expect(stamm).to be_valid
-    end
-
-    it "allows the group to keep its own abbreviation on update" do
-      stamm.update!(abbreviations: ["adl"])
-      stamm.name = "Adler Neu"
-
-      expect(stamm).to be_valid
+      expect(association.options[:dependent]).to eq(:destroy)
     end
   end
 end

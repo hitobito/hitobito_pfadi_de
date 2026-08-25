@@ -9,6 +9,8 @@ module PfadiDe::GroupsController
   extend ActiveSupport::Concern
 
   def permitted_attrs
-    super + PfadiDe::Contactable::BANK_ACCOUNT_ATTRS
+    attrs = super + PfadiDe::Contactable::BANK_ACCOUNT_ATTRS
+    attrs += PfadiDe::Group::ABBREVIATION_ATTRS if can?(:modify_superior, entry)
+    attrs
   end
 end

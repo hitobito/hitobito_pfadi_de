@@ -7,3 +7,8 @@ info:
   group: root
   name: Info
   subscribable_for: anyone
+
+stamm_info:
+  group: adler
+  name: Info
+  subscribable_for: anyone

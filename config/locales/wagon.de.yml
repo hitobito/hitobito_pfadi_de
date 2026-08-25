@@ -22,11 +22,12 @@ de:
         mailing_list:
           attributes:
             mail_name:
-              must_end_with_layer_suffix: "muss mit der Layer-ID oder einer hinterlegten Abkürzung enden (z.B. %{suffix})"
-        group:
+              must_end_with_abbreviation: "muss mit einer für den Layer hinterlegten Abkürzung enden"
+              layer_has_no_abbreviation: "kann nicht gesetzt werden, da für den Layer keine Abkürzung hinterlegt ist"
+        group_abbreviation:
           attributes:
-            abbreviations:
-              must_be_unique: "wird bereits von einer anderen Gruppe verwendet (%{values})"
+            value:
+              taken: "wird bereits von einer anderen Gruppe verwendet"
     models:
       efz_einsichtnahme:
         one: eFZ Einsichtnahme
@@ -90,6 +91,8 @@ de:
         zahlungsarten:
           lastschrift: Lastschrift
           rechnung: Rechnung
+      group_abbreviation:
+        value: Abkürzung
       fee_kind:
         parent_id: Erbt von
         name: Name
@@ -174,7 +177,8 @@ de:
 
   groups:
     general_fields_pfadi_de:
-      help_abbreviations: "Optional. Mehrere Abkürzungen mit Komma trennen. Jede Abkürzung darf nur einmal über alle Gruppen hinweg vergeben werden."
+      help_abbreviations: "Optional. Jede Abkürzung darf nur einmal über alle Gruppen hinweg vergeben werden."
+      abbreviation_placeholder: "z.B. adl"
     contact_data_pfadi_de:
       bank_account: Bankverbindung
     actions_show_pfadi_de:

@@ -2212,6 +2212,12 @@
           "readable": true,
           "writable": false,
           "description": null
+        },
+        "abbreviations": {
+          "type": "array",
+          "readable": true,
+          "writable": false,
+          "description": null
         }
       },
       "extra_attributes": {
@@ -2264,7 +2270,8 @@
         "opt_out_aufnahmeantrag": {},
         "opt_out_aufnahmeantrag_stammessuche": {},
         "efz_in_aufnahmeantrag": {},
-        "eingeschraenkt": {}
+        "eingeschraenkt": {},
+        "abbreviations": {}
       },
       "filters": {
         "id": {
@@ -2746,6 +2753,12 @@
             "eq"
           ],
           "single": true
+        },
+        "abbreviations": {
+          "type": "array",
+          "operators": [
+            "eq"
+          ]
         }
       },
       "relationships": {

@@ -5,8 +5,15 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
-module PfadiDe::GroupsHelper
-  def format_abbreviations(obj)
-    Array(obj.abbreviations).join(", ")
+class CreateGroupAbbreviations < ActiveRecord::Migration[7.1]
+  def change
+    create_table :group_abbreviations do |t|
+      t.references :group, null: false, foreign_key: true
+      t.string :value, null: false
+
+      t.timestamps
+    end
+
+    add_index :group_abbreviations, :value, unique: true
   end
 end

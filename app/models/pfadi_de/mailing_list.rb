@@ -16,15 +16,17 @@ module PfadiDe::MailingList
     def assert_layer_suffix
       return unless mail_name_changed?
       return if mail_name.blank?
-      return if layer_group.blank?
+      return if layer_group.root?
 
-      unless mail_name.to_s.downcase.end_with?(*valid_suffixes)
-        errors.add(:mail_name, :must_end_with_layer_suffix, suffix: ".#{layer_group.id}")
+      if valid_suffixes.empty?
+        errors.add(:mail_name, :layer_has_no_abbreviation)
+      elsif !mail_name.to_s.downcase.end_with?(*valid_suffixes)
+        errors.add(:mail_name, :must_end_with_abbreviation)
       end
     end
 
     def valid_suffixes
-      ([layer_group.id.to_s] + Array(layer_group.abbreviations)).map { |suffix| ".#{suffix}" }
+      layer_group.abbreviations.pluck(:value).map { |value| ".#{value}" }
     end
 
     def layer_group
