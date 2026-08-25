@@ -30,15 +30,6 @@ countries:
 additional_address:
   enabled: true
 
-phone_number:
-  predefined_labels:
-    - Privat
-    - Mobil
-    - Arbeit
-    - Erziehungsberechtigte
-    - Fax
-    - Andere
-
 groups:
   bdp:
     enabled: true
