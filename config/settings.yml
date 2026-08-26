@@ -10,6 +10,7 @@ application:
   languages:
     de: Deutsch
   additional_languages:
+  german_variant: de_DE
 
 currency:
   unit: EUR
