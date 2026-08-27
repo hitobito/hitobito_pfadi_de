@@ -30,7 +30,7 @@ describe "fee_kinds#index", type: :request do
   end
 
   it_behaves_like "jsonapi authorized requests", required_scopes: ["fee_kinds"], person: nil do
-    let(:service_token) { service_tokens(:permitted_root_token) }
+    let(:service_token) { service_tokens(:fee_kind_bawue_and_below_token) }
     let(:params) { {} }
 
     subject(:make_request) do
@@ -46,7 +46,7 @@ describe "fee_kinds#index", type: :request do
         make_request
         expect(response.status).to eq(200), response.body
         expect(d.map(&:jsonapi_type).uniq).to match_array(["fee_kinds"])
-        expect(d.map(&:id)).to match_array([fee_kind_top.id])
+        expect(d.map(&:id)).to match_array([fee_kind_bw.id])
       end
     end
   end

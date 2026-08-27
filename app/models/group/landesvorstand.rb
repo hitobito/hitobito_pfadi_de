@@ -23,14 +23,14 @@ class Group::Landesvorstand < ::Group
   end
 
   class Landesschatzmeister < ::Role
-    self.permissions = [:layer_and_below_read, :contact_data, :finance,
+    self.permissions = [:layer_and_below_read, :contact_data, :layer_and_below_finance,
       :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
 
   class LandesschatzmeisterStv < ::Role
-    self.permissions = [:layer_and_below_read, :contact_data, :finance,
+    self.permissions = [:layer_and_below_read, :contact_data, :layer_and_below_finance,
       :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
