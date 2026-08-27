@@ -25,14 +25,14 @@ class Group::Landesverband < ::Group
 
   self.default_children = [
     Group::Landesvorstand,
-    Group::LandArbeitsbereiche,
-    Group::Mitglieder
+    Group::LandArbeitsbereiche
   ]
 
   ### ROLES
 
   class Landesmitgliederverwaltung < ::Role
-    self.permissions = [:layer_and_below_full, :contact_data, :assign_restricted_fee_kinds]
+    self.permissions = [:layer_and_below_full, :finance, :contact_data,
+                         :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
   end
 
