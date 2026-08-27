@@ -23,14 +23,14 @@ class Group::Bundesvorstand < ::Group
   end
 
   class Bundesschatzmeister < ::Role
-    self.permissions = [:layer_and_below_full, :contact_data, :finance,
+    self.permissions = [:layer_and_below_full, :contact_data, :layer_and_below_finance,
       :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
 
   class BundesschatzmeisterStv < ::Role
-    self.permissions = [:layer_and_below_full, :contact_data, :finance,
+    self.permissions = [:layer_and_below_full, :contact_data, :layer_and_below_finance,
       :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
