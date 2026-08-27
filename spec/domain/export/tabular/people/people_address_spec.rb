@@ -26,7 +26,7 @@ describe Export::Tabular::People::PeopleAddress do
       its([:pronoun]) { should eq "Pronomen" }
       its([:entry_date]) { should eq "Eintrittsdatum" }
       its([:exit_date]) { should eq "Austrittsdatum" }
-      its([:bank_account_owner]) { should eq "Kontoinhaber" }
+      its([:bank_account_owner]) { should eq "Kontoinhaber*in" }
       its([:iban]) { should eq "IBAN" }
       its([:bic]) { should eq "BIC" }
       its([:bank_name]) { should eq "Kreditinstitut" }
