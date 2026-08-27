@@ -32,7 +32,8 @@ class Group::Landesverband < ::Group
   ### ROLES
 
   class Landesmitgliederverwaltung < ::Role
-    self.permissions = [:layer_and_below_full, :contact_data, :assign_restricted_fee_kinds]
+    self.permissions = [:layer_and_below_full, :layer_and_below_finance, :contact_data,
+      :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
   end
 
@@ -43,6 +44,10 @@ class Group::Landesverband < ::Group
   end
 
   class Kassenpruefung < ::Role
+    self.permissions = []
+  end
+
+  class Datenschutzbeauftragt < ::Role
     self.permissions = []
   end
 
@@ -99,6 +104,7 @@ class Group::Landesverband < ::Group
   roles Landesmitgliederverwaltung,
     ErfassungFuehrungszeugnis,
     Kassenpruefung,
+    Datenschutzbeauftragt,
     StammeskompassModeration,
     Landesmitarbeiter,
     JuleicaInhaber,

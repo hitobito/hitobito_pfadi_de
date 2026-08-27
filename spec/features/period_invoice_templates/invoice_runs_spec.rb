@@ -104,9 +104,28 @@ describe PeriodInvoiceTemplates::InvoiceRunsController, js: true do
     end
 
     context "multiple sequential invoice runs" do
+      let!(:other_landesverband) {
+        Fabricate(Group::Landesverband.name, name: "Nordrhein-Westfalen", parent: groups(:root))
+      }
+      let!(:other_stamm) {
+        Fabricate(Group::Stamm.name, name: "Eisadler", parent: other_landesverband)
+      }
+
+      let(:user) {
+        Fabricate(Group::Landesvorstand::Landesschatzmeister.name,
+          group: groups(:landesvorstand_bw)).person
+      }
+      let(:group) { groups(:baden_wuerttemberg) }
+      let(:period_invoice_template) {
+        Fabricate(:pfadi_de_period_invoice_template, group: groups(:baden_wuerttemberg),
+          recipient_source: GroupsFilter.new(parent: groups(:baden_wuerttemberg),
+            group_type: Group::Stamm.name, active_at: Time.zone.today))
+      }
       let(:index_path) {
         group_period_invoice_template_invoice_runs_path(group, period_invoice_template)
       }
+
+      before { invoice_configs(:baden_wuerttemberg).update!(currency: "EUR") }
 
       it "only considers new members added since the last invoice run" do
         # First invoice run
@@ -149,9 +168,12 @@ describe PeriodInvoiceTemplates::InvoiceRunsController, js: true do
 
         expect(page).to have_text "Rechnung Zweiter Testlauf wurde für 3 Empfänger erstellt."
         expect(page).to have_text "1 Rechnung angezeigt."
-        expect(page).not_to have_text "Adler"
+        within(".w-100.min-w-0") { expect(page).not_to have_text "Adler" }
         expect(page).to have_text "Burg Karlsruhe"
         expect(page).to have_text "5.00 EUR"
+
+        expect(page).not_to have_text other_landesverband.name
+        expect(page).not_to have_text other_stamm.name
       end
     end
   end

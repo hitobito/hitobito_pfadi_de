@@ -9,10 +9,17 @@ module PfadiDe::ServiceToken
   extend ActiveSupport::Concern
 
   def dynamic_user
-    super.tap do |p|
-      p.roles.first.permissions << :finance if fee_kinds?
-      p.roles.first.permissions << :layer_and_below_efz << :delete_efz if efz_einsichtnahmen?
-      p.roles.first.permissions << :create_membership_roles if create_membership_roles?
+    super.tap do |person|
+      permissions = person.roles.first.permissions
+      permissions << finance_permission if fee_kinds?
+      permissions << :layer_and_below_efz << :delete_efz if efz_einsichtnahmen?
+      permissions << :create_membership_roles if create_membership_roles?
     end
+  end
+
+  private
+
+  def finance_permission
+    permission.to_s.include?("_and_below_") ? :layer_and_below_finance : :finance
   end
 end

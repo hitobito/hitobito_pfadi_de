@@ -11,7 +11,7 @@ describe PeriodInvoiceTemplatesController do
   let(:dom) { Capybara::Node::Simple.new(response.body) }
 
   before do
-    allow(Group::Bundesebene::MVAdmin).to receive(:permissions).and_return([:finance])
+    allow(Group::Bundesebene::MVAdmin).to receive(:permissions).and_return([:layer_and_below_finance])
     sign_in(leader)
     travel_to(Time.zone.local(2027, 4, 25))
   end
