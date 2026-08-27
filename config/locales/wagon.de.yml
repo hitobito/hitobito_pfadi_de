@@ -22,8 +22,8 @@ de:
         mailing_list:
           attributes:
             mail_name:
-              must_end_with_abbreviation: "muss mit einer für den Layer hinterlegten Abkürzung enden"
-              layer_has_no_abbreviation: "kann nicht gesetzt werden, da für den Layer keine Abkürzung hinterlegt ist"
+              must_end_with_abbreviation: "muss mit einer für die Ebene hinterlegten Abkürzung enden"
+              layer_has_no_abbreviation: "kann nicht gesetzt werden, da für die Ebene keine Abkürzung hinterlegt ist"
         group_abbreviation:
           attributes:
             value:

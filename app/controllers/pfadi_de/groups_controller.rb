@@ -10,7 +10,7 @@ module PfadiDe::GroupsController
 
   def permitted_attrs
     attrs = super + PfadiDe::Contactable::BANK_ACCOUNT_ATTRS
-    attrs += PfadiDe::Group::ABBREVIATION_ATTRS if can?(:modify_superior, entry)
+    attrs += PfadiDe::Group::ABBREVIATION_ATTRS if entry.layer? && can?(:modify_superior, entry)
     attrs
   end
 end

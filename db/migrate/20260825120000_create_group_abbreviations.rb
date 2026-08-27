@@ -8,7 +8,7 @@
 class CreateGroupAbbreviations < ActiveRecord::Migration[7.1]
   def change
     create_table :group_abbreviations do |t|
-      t.references :group, null: false, foreign_key: true
+      t.references :group, null: false
       t.string :value, null: false
 
       t.timestamps

@@ -80,6 +80,17 @@ describe GroupsController do
 
         expect(group.reload.abbreviations).to be_empty
       end
+
+      it "ignores abbreviations on a non-layer group even with modify_superior permission" do
+        sign_in(people(:admin))
+        non_layer_group = groups(:pfadfinder)
+
+        expect do
+          put :update, params: {id: non_layer_group.id, group: {
+            abbreviations_attributes: [{value: "Pfad"}]
+          }}
+        end.not_to change { non_layer_group.reload.abbreviations.count }
+      end
     end
   end
 

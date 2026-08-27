@@ -10,8 +10,6 @@ class GroupAbbreviation < ActiveRecord::Base
 
   before_validation :downcase_value
 
-  validates :value, presence: true, uniqueness: {case_sensitive: false}
-
   def to_s
     value
   end
