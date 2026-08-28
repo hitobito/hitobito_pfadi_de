@@ -7,6 +7,7 @@
 
 class Group::Stamm < ::Group
   include PfadiDe::LayerGroup
+  include PfadiDe::RequiredSitzanschrift
 
   self.layer = true
   self.event_types = [Event, Event::Course]
@@ -31,6 +32,8 @@ class Group::Stamm < ::Group
 
   i18n_enum :stamm_typ, %w[other stamm],
     i18n_prefix: "activerecord.attributes.group.stamm_typen"
+
+  validates :stamm_typ, presence: true
 
   ### ROLES
 
