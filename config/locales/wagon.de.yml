@@ -127,6 +127,10 @@ de:
         max_age: maximales Alter des Mitglieds
         created_at: Erstellt
         updated_at: Geändert
+      event/guest:
+        genders:
+          _nil: nicht angegeben
+          d: divers
       person:
         address: Anschrift
         bank_account_owner: Kontoinhaber*in
@@ -136,6 +140,7 @@ de:
         entry_date: Eintrittsdatum
         exit_date: Austrittsdatum
         genders:
+          _nil: nicht angegeben
           d: divers
         iban: IBAN
         id: Mitgliedsnummer
