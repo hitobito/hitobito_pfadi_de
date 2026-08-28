@@ -111,9 +111,9 @@ de:
         pronoun: Pronomen
         rechtsform: Rechtsform
         rechtsformen:
+          _nil: Unbekannt
           ev: "e.V."
           kein_ev: "kein e.V."
-          unbekannt: Unbekannt
         sepa_glaeubiger_id: SEPA-Gläubiger-ID
         stamm_typ: Stammtyp
         stamm_typen:

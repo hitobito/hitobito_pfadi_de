@@ -95,6 +95,7 @@ adler:
   housenumber: 258
   zip_code: 40640
   town: Bad Noahburg
+  stamm_typ: stamm
 adler_mitglieder:
   parent: adler
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:adler)%>"
@@ -123,6 +124,7 @@ burg_karlsruhe:
   housenumber: 47b
   zip_code: 61036
   town: Kassland
+  stamm_typ: stamm
 mitglieder_28:
   parent: burg_karlsruhe
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
@@ -151,6 +153,7 @@ silberreiher:
   housenumber: 94a
   zip_code: 83947
   town: Büttnerland
+  stamm_typ: stamm
 mitglieder_31:
   parent: silberreiher
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
