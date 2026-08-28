@@ -165,9 +165,9 @@ de:
         pronoun: Pronomen
         rechtsform: Rechtsform
         rechtsformen:
+          _nil: Unbekannt
           ev: "e.V."
           kein_ev: "kein e.V."
-          unbekannt: Unbekannt
         sepa_creditor_id: SEPA-Gläubiger-ID
         sepa_mandate_mode: SEPA-Mandate
         sepa_mandate_modes:

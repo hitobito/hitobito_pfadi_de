@@ -28,7 +28,7 @@ module PfadiDe::LayerGroup
     i18n_enum :payment_method, %w[rechnung lastschrift],
       i18n_prefix: "activerecord.attributes.group.payment_methods"
 
-    i18n_enum :rechtsform, %w[ev kein_ev unbekannt],
+    i18n_enum :rechtsform, %w[ev kein_ev],
       i18n_prefix: "activerecord.attributes.group.rechtsformen"
 
     i18n_enum :sepa_mandate_mode, SEPA_MANDATE_MODES,
