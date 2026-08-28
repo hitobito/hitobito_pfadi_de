@@ -30,7 +30,7 @@ describe GroupAbility do
   end
 
   context :admin do
-    let(:admin_group) { Fabricate(Group::Bundesebene.name) }
+    let(:admin_group) { Fabricate(Group::Bundesebene.name, **GroupPflichtfelder::SITZANSCHRIFT) }
     let(:role) { Fabricate(Group::Bundesebene::MVAdmin.name.to_sym, group: admin_group) }
 
     it "may index service tokens in group" do

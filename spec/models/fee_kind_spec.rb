@@ -120,7 +120,9 @@ describe FeeKind do
     let(:group_bawue) { groups(:baden_wuerttemberg) }
     let(:root) { fee_kinds(:top_fee_kind) }
     let(:level_1) { Fabricate(:fee_kind, parent: root, layer: group_bawue) }
-    let(:group_level_2) { Fabricate(Group::Stamm.sti_name, parent: group_bawue) }
+    let(:group_level_2) do
+      Fabricate(Group::Stamm.sti_name, parent: group_bawue, **GroupPflichtfelder::STAMM)
+    end
     let(:level_2) { Fabricate(:fee_kind, parent: level_1, layer: group_level_2) }
 
     it "returns self if fee_kind has no parent" do
@@ -141,7 +143,8 @@ describe FeeKind do
   end
 
   it "validates that no parent match on create" do
-    group = Fabricate(Group::Stamm.sti_name, parent: groups(:baden_wuerttemberg))
+    group = Fabricate(Group::Stamm.sti_name, parent: groups(:baden_wuerttemberg),
+      **GroupPflichtfelder::STAMM)
     new_fee_kind = Fabricate.build(:fee_kind, parent: fee_kinds(:top_fee_kind), layer: group)
 
     expect(new_fee_kind).not_to be_valid
@@ -178,7 +181,8 @@ describe FeeKind do
     end
 
     it "does not include fee kinds for role types already covered in intermediate layers" do
-      stamm = Fabricate(Group::Stamm.sti_name, parent: groups(:baden_wuerttemberg))
+      stamm = Fabricate(Group::Stamm.sti_name, parent: groups(:baden_wuerttemberg),
+        **GroupPflichtfelder::STAMM)
       stamm_fee_kind = FeeKind.build(name: "NichtHochdeutschBeitrag", layer: stamm.layer_group)
 
       expect(stamm_fee_kind.possible_fee_kind_parents).to_not include(parent_fee_kind)
@@ -191,7 +195,7 @@ describe FeeKind do
     it "applies the layer-upward search separately for each role type" do
       FeeKind.destroy_all
       middle_layer = groups(:baden_wuerttemberg)
-      stamm = Fabricate(Group::Stamm.sti_name, parent: middle_layer)
+      stamm = Fabricate(Group::Stamm.sti_name, parent: middle_layer, **GroupPflichtfelder::STAMM)
       role_type = "Group::Mitglieder::Foerdermitgliedschaft"
       role_type_2 = "Group::Mitglieder::OrdentlicheMitgliedschaft"
       top_layer_fee_kind_1 = Fabricate(:fee_kind, role_type: role_type)

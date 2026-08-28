@@ -105,10 +105,12 @@ describe PeriodInvoiceTemplates::InvoiceRunsController, js: true do
 
     context "multiple sequential invoice runs" do
       let!(:other_landesverband) {
-        Fabricate(Group::Landesverband.name, name: "Nordrhein-Westfalen", parent: groups(:root))
+        Fabricate(Group::Landesverband.name, name: "Nordrhein-Westfalen", parent: groups(:root),
+          **GroupPflichtfelder::SITZANSCHRIFT)
       }
       let!(:other_stamm) {
-        Fabricate(Group::Stamm.name, name: "Eisadler", parent: other_landesverband)
+        Fabricate(Group::Stamm.name, name: "Eisadler", parent: other_landesverband,
+          **GroupPflichtfelder::STAMM)
       }
 
       let(:user) {

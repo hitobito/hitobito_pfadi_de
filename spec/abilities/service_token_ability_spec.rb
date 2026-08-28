@@ -35,7 +35,7 @@ describe ServiceTokenAbility do
   end
 
   context :admin do
-    let(:admin_group) { Fabricate(Group::Bundesebene.name) }
+    let(:admin_group) { Fabricate(Group::Bundesebene.name, **GroupPflichtfelder::SITZANSCHRIFT) }
     let(:role) { Fabricate(Group::Bundesebene::MVAdmin.name.to_sym, group: admin_group) }
     let(:service_token) { Fabricate(:service_token, layer: admin_group) }
 
