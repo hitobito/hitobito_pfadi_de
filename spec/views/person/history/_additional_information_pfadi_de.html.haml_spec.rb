@@ -21,8 +21,8 @@ describe "person/history/_additional_information_pfadi_de.html.haml" do
     allow(controller).to receive(:current_user).and_return(current_user)
   end
 
-  context "as person with show_full permission" do
-    let(:current_user) { people(:stammesverwaltung) }
+  context "as person with admin permission" do
+    let(:current_user) { people(:admin) }
 
     it "renders all present attrs under the Aufnahmeverfahren heading" do
       person.update!(
@@ -74,14 +74,26 @@ describe "person/history/_additional_information_pfadi_de.html.haml" do
     end
   end
 
-  context "as the person herself" do
+  context "as root" do
     let(:current_user) { person }
 
-    it "renders the section on her own history" do
+    it "renders attrs" do
+      allow(person).to receive(:root?).and_return(true)
       person.update!(membership_application_reasons: "weil ich dabei sein möchte")
 
       is_expected.to have_css "h2", text: "Aufnahmeverfahren"
       is_expected.to have_content "weil ich dabei sein möchte"
+    end
+  end
+
+  context "as the person herself" do
+    let(:current_user) { person }
+
+    it "renders nothing, even if data is present" do
+      person.update!(membership_application_reasons: "weil ich dabei sein möchte")
+
+      is_expected.not_to have_css "h2", text: "Aufnahmeverfahren"
+      is_expected.not_to have_content "weil ich dabei sein möchte"
     end
   end
 

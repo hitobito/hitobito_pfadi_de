@@ -7,7 +7,7 @@
 
 module MembershipApplicationHelper
   def can_read_membership_application_attrs?(person)
-    can?(:show_full, person) &&
+    (current_ability.user_context.admin || current_user.root?) &&
       PfadiDe::Person::MEMBERSHIP_APPLICATION_ATTRS.any? { |attr| person.send(attr).present? }
   end
 end
