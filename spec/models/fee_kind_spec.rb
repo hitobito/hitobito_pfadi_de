@@ -303,8 +303,8 @@ describe FeeKind do
       end
 
       it "excludes max_age rate when person has no birthday (treated as old)" do
-        # person with nil birthday is treated as 100 years old, doesn't qualify for max_age=8 rate
-        person.update!(birthday: nil)
+        # person with nil birthday is treated as 100 years old, doesn't qualify for max_age=8 rate.
+        person.update_column(:birthday, nil)
         expect(applicable_fee_rate).to eq(rate_without_max_age.id)
       end
 

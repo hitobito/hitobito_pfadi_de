@@ -10,6 +10,8 @@ module PfadiDe::Person
 
   PAYMENT_METHODS = %w[invoice debit].freeze
 
+  MEMBER_REQUIRED_ATTRS = [:birthday, :gender, :street, :zip_code, :town].freeze
+
   MEMBERSHIP_APPLICATION_ATTRS = [
     :membership_application_reasons,
     :membership_application_statement_stamm,
@@ -43,7 +45,7 @@ module PfadiDe::Person
 
     after_update :revoke_sepa_mandates, if: :bank_account_changed_for_sepa?
 
-    Person::GENDERS.push("d")
+    Person::GENDERS.push("d", "n")
 
     self.used_attributes -= [:company, :company_name]
 
@@ -52,6 +54,7 @@ module PfadiDe::Person
     normalizes :bank_account_owner, with: ->(value) { value.squish }
 
     validates :iban, iban: true, on: :update, allow_blank: true
+    validates(*MEMBER_REQUIRED_ATTRS, presence: true, if: :is_member?)
 
     scope :tentative_membership, -> do
       where(arel_table[:last_entry_date_with_fee_kind].gt(tentative_membership_cutoff))
@@ -80,6 +83,14 @@ module PfadiDe::Person
 
   def sepa_mandate_reference(group)
     active_sepa_mandate_for(group)&.reference.to_s
+  end
+
+  def is_member?
+    roles.any?(&:fee_kind_type?)
+  end
+
+  def mark_as_required?(attr)
+    MEMBER_REQUIRED_ATTRS.include?(attr.to_sym) && is_member?
   end
 
   def entry_date

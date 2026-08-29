@@ -37,6 +37,7 @@ describe PeriodInvoiceTemplates::InvoiceRunsController, js: true do
     3.times do
       # 1 person with incomplete address
       Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group: groups(:adler_mitglieder))
+        .person.update_columns(street: nil, zip_code: nil, town: nil)
       # 2 people with complete addresses in the same group
       p2 = Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name,
         group: groups(:adler_mitglieder)).person
@@ -217,15 +218,15 @@ describe PeriodInvoiceTemplates::InvoiceRunsController, js: true do
       click_button "Speichern"
 
       expect(page).to have_text "Rechnung Testlauf wurde für 14 Empfänger erstellt."
-      expect(page).to have_text "Für 4 Empfänger konnte keine gültige Rechnung erzeugt werden."
+      expect(page).to have_text "Für 3 Empfänger konnte keine gültige Rechnung erzeugt werden."
       expect(page).to have_text "5.00 EUR"
 
-      expect(page).to have_text "6 Rechnungen angezeigt."
+      expect(page).to have_text "7 Rechnungen angezeigt."
       within first("#main tbody tr") do
         click_link "Testlauf"
       end
 
-      expect(page).not_to have_text "6 Rechnungen angezeigt."
+      expect(page).not_to have_text "7 Rechnungen angezeigt."
       expect(page).to have_text "Mitgliedsbeitrag       1 0.00 % 5.00 EUR 5.00 EUR"
     end
   end
