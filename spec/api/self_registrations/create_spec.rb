@@ -40,13 +40,17 @@ describe "self_registrations#create", type: :request do
       }
     }
   end
+  let(:member_attrs) {
+    {birthday: "2008-04-19", street: "Kaiserstraße", zip_code: "76133", town: "Karlsruhe"}
+  }
   let(:attributes) {
     {
       first_name: "John",
       last_name: "Doe",
       nickname: "JD",
       email: "test@puzzle.ch",
-      fee_kind_id: other_fee_kind.id
+      fee_kind_id: other_fee_kind.id,
+      **member_attrs
     }
   }
 
@@ -68,7 +72,8 @@ describe "self_registrations#create", type: :request do
         first_name: "John",
         last_name: "Doe",
         nickname: "JD",
-        email: "test@puzzle.ch"
+        email: "test@puzzle.ch",
+        **member_attrs
       }
     }
 
@@ -88,7 +93,8 @@ describe "self_registrations#create", type: :request do
         last_name: "Doe",
         nickname: "JD",
         email: "test@puzzle.ch",
-        fee_kind_id: foerder_fee_kind.id
+        fee_kind_id: foerder_fee_kind.id,
+        **member_attrs
       }
     }
 
@@ -112,7 +118,8 @@ describe "self_registrations#create", type: :request do
           first_name: "John",
           last_name: "Doe",
           nickname: "JD",
-          email: "test@puzzle.ch"
+          email: "test@puzzle.ch",
+          **member_attrs
         }
       }
 

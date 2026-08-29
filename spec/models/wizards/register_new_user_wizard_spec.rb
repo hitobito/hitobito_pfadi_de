@@ -9,6 +9,9 @@ require "spec_helper"
 
 describe Wizards::RegisterNewUserWizard do
   let(:params) { {} }
+  let(:member_attrs) do
+    {birthday: "2008-04-19", street: "Kaiserstraße", zip_code: "76133", town: "Karlsruhe"}
+  end
   let(:role_type) { Group::Mitglieder::OrdentlicheMitgliedschaft }
   let(:group) { groups(:adler_mitglieder) }
   let!(:fee_kind) do
@@ -48,7 +51,8 @@ describe Wizards::RegisterNewUserWizard do
         params[:new_user_form] = {
           first_name: "test",
           last_name: "user",
-          fee_kind_id: fee_kind.id
+          fee_kind_id: fee_kind.id,
+          **member_attrs
         }
 
         expect { wizard.save! }.to change { Person.count }.by(1)
@@ -64,7 +68,8 @@ describe Wizards::RegisterNewUserWizard do
       it "creates role without fee_kind_id if not provided" do
         params[:new_user_form] = {
           first_name: "test",
-          last_name: "user"
+          last_name: "user",
+          **member_attrs
         }
 
         expect { wizard.save! }.to change { Person.count }.by(1)

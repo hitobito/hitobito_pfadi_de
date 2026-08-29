@@ -32,6 +32,11 @@ describe "membership_registrations#create", type: :request do
       first_name: "John",
       last_name: "Doe",
       email: "test-member@example.com",
+      birthday: "2008-04-19",
+      street: "Kaiserstraße",
+      housenumber: "42",
+      zip_code: "76133",
+      town: "Karlsruhe",
       group_id: group.id,
       role_type: Group::Mitglieder::OrdentlicheMitgliedschaft.name
     }

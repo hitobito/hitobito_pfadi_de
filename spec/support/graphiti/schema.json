@@ -3531,6 +3531,54 @@
           "writable": true,
           "description": null
         },
+        "birthday": {
+          "type": "date",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "address_care_of": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "street": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "housenumber": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "postbox": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "zip_code": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "town": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "country": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
         "group_id": {
           "type": "integer",
           "readable": false,
@@ -4997,6 +5045,54 @@
         "fee_kind_id": {
           "type": "integer",
           "readable": false,
+          "writable": true,
+          "description": null
+        },
+        "birthday": {
+          "type": "date",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "address_care_of": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "street": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "housenumber": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "postbox": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "zip_code": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "town": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "country": {
+          "type": "string",
+          "readable": true,
           "writable": true,
           "description": null
         }

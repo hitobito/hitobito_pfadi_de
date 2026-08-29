@@ -10,3 +10,13 @@ Fabrication.configure do |config|
     "../hitobito_pfadi_de/spec/fabricators"]
   config.path_prefix = Rails.root
 end
+
+Fabrication.manager.load_definitions if Fabrication.manager.empty?
+Fabrication.manager[:person].process_block do
+  # deterministic, and old enough not to match age restricted fee rates
+  birthday { 30.years.ago.to_date }
+  street { Faker::Address.street_name }
+  housenumber { Faker::Address.building_number }
+  zip_code { Faker::Address.zip_code[0..4] }
+  town { Faker::Address.city }
+end

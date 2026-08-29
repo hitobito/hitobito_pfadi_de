@@ -29,6 +29,11 @@ describe MembershipRegistrationResource, type: :resource do
           first_name: "Test",
           last_name: "User",
           email: "test@example.com",
+          birthday: "2008-04-19",
+          street: "Kaiserstraße",
+          housenumber: "42",
+          zip_code: "76133",
+          town: "Karlsruhe",
           group_id: group.id,
           role_type: Group::Mitglieder::OrdentlicheMitgliedschaft.sti_name
         }

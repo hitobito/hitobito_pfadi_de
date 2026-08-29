@@ -11,6 +11,15 @@ module PfadiDe::SelfRegistrationResource
   prepended do
     with_options filterable: false, sortable: false do
       attribute :fee_kind_id, :integer, writable: true, readable: false
+
+      attribute :birthday, :date
+      attribute :address_care_of, :string
+      attribute :street, :string
+      attribute :housenumber, :string
+      attribute :postbox, :string
+      attribute :zip_code, :string
+      attribute :town, :string
+      attribute :country, :string
     end
 
     before_attributes :extract_role_attributes

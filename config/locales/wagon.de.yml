@@ -36,6 +36,12 @@ de:
           attributes:
             value:
               taken: "wird bereits von einer anderen Gruppe verwendet"
+        role:
+          attributes:
+            person:
+              incomplete_for_membership: >-
+                kann keine Mitgliedschaft erhalten, solange folgende Pflichtfelder
+                fehlen: %{attrs}
     models:
       efz_einsichtnahme:
         one: eFZ Einsichtnahme

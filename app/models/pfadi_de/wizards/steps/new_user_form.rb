@@ -12,5 +12,17 @@ module PfadiDe::Wizards::Steps::NewUserForm
     self.support_company = false
 
     attribute :fee_kind_id, :integer
+
+    # Geburtsdatum and Anschrift are Pflichtfelder for members
+    # (see PfadiDe::Person::MEMBER_REQUIRED_ATTRS). Wizards::RegisterNewUserWizard
+    # passes every attribute of this step on to the person.
+    attribute :birthday, :date
+    attribute :address_care_of, :string
+    attribute :street, :string
+    attribute :housenumber, :string
+    attribute :postbox, :string
+    attribute :zip_code, :string
+    attribute :town, :string
+    attribute :country, :string
   end
 end

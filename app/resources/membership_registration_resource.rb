@@ -33,6 +33,14 @@ class MembershipRegistrationResource < ApplicationResource
     attribute :company_name, :string if FeatureGate.enabled? :self_registration_company
     attribute :company, :boolean if FeatureGate.enabled? :self_registration_company
     attribute :email, :string
+    attribute :birthday, :date
+    attribute :address_care_of, :string
+    attribute :street, :string
+    attribute :housenumber, :string
+    attribute :postbox, :string
+    attribute :zip_code, :string
+    attribute :town, :string
+    attribute :country, :string
     attribute :group_id, :integer, writable: true, readable: false
     attribute :role_type, :string, writable: true, readable: false
     attribute :fee_kind_id, :integer, writable: true, readable: false

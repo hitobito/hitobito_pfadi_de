@@ -10,6 +10,8 @@ module PfadiDe::Person
 
   PAYMENT_METHODS = %w[invoice debit].freeze
 
+  MEMBER_REQUIRED_ATTRS = [:birthday, :street, :zip_code, :town].freeze
+
   MEMBERSHIP_APPLICATION_ATTRS = [
     :membership_application_reasons,
     :membership_application_statement_stamm,
@@ -51,8 +53,17 @@ module PfadiDe::Person
 
     validates :iban, iban: true, on: :update, allow_blank: true
     validates :payment_method, inclusion: {in: PAYMENT_METHODS.map(&:to_s)}
+    validates(*MEMBER_REQUIRED_ATTRS, presence: true, if: :is_member?)
   end
   # rubocop:enable Metrics/BlockLength
+
+  def is_member?
+    roles.any?(&:fee_kind_type?)
+  end
+
+  def mark_as_required?(attr)
+    MEMBER_REQUIRED_ATTRS.include?(attr.to_sym) && is_member?
+  end
 
   def entry_date
     PfadiDe::LatestMembershipCalculator.new(self).entry_date
