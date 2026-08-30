@@ -30,6 +30,11 @@ class Group::Stamm < ::Group
     :stamm_typ
   ]
 
+  self.superior_attributes += [
+    :opt_out_aufnahmeantrag,
+    :stamm_typ
+  ]
+
   i18n_enum :stamm_typ, %w[other stamm],
     i18n_prefix: "activerecord.attributes.group.stamm_typen"
 

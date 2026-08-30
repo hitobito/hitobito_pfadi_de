@@ -22,6 +22,20 @@ module PfadiDe::LayerGroup
       :zahlungsart
     ]
 
+    self.superior_attributes += [
+      :name,
+      :short_name,
+      :description,
+      :gruendungsdatum,
+      :aufloesungsdatum,
+      :bank_account_owner,
+      :iban,
+      :bic,
+      :bank_name,
+      :debitorennummer,
+      :zahlungsart
+    ]
+
     i18n_enum :zahlungsart, %w[rechnung lastschrift],
       i18n_prefix: "activerecord.attributes.group.zahlungsarten"
 

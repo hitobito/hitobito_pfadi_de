@@ -10,6 +10,10 @@ require "spec_helper"
 describe GroupsController do
   let(:leader) { people(:stammesverwaltung) }
   let(:group) { groups(:pfadfinder) }
+  let(:landesverwaltung) do
+    Fabricate(Group::Landesverband::Landesmitgliederverwaltung.name.to_sym,
+      group: groups(:baden_wuerttemberg)).person
+  end
 
   before { sign_in(leader) }
 
@@ -33,13 +37,83 @@ describe GroupsController do
       end.not_to change { group.reload.gruendungsdatum }
     end
 
+    context "topmost layer group" do
+      let(:group) { groups(:root) }
+
+      context "as admin" do
+        let(:leader) { people(:admin) }
+
+        it "can update superior attribute" do
+          expect do
+            put :update, params: {id: group.id, group: {gruendungsdatum: Date.new(1900, 5, 1)}}
+          end.to change { group.reload.gruendungsdatum }.to(Date.new(1900, 5, 1))
+        end
+
+        it "can update name" do
+          expect do
+            put :update, params: {id: group.id, group: {name: "Bundesebene BdP"}}
+          end.to change { group.reload.name }.to("Bundesebene BdP")
+        end
+      end
+    end
+
     context "layer group" do
       let(:group) { groups(:adler) }
 
       it "can update layer attribute" do
         expect do
+          put :update, params: {id: group.id, group: {sepa_glaeubiger_id: "DE98ZZZ09999999999"}}
+        end.to change { group.reload.sepa_glaeubiger_id }.to("DE98ZZZ09999999999")
+      end
+
+      it "cannot update superior attribute" do
+        expect do
           put :update, params: {id: group.id, group: {gruendungsdatum: Date.new(1900, 5, 1)}}
-        end.to change { group.reload.gruendungsdatum }.to(Date.new(1900, 5, 1))
+        end.not_to change { group.reload.gruendungsdatum }
+      end
+
+      it "cannot update name" do
+        expect do
+          put :update, params: {id: group.id, group: {name: "Falken"}}
+        end.not_to change { group.reload.name }
+      end
+
+      it "cannot update stamm_typ" do
+        expect do
+          put :update, params: {id: group.id, group: {stamm_typ: "other"}}
+        end.not_to change { group.reload.stamm_typ }
+      end
+
+      context "as admin" do
+        let(:leader) { people(:admin) }
+
+        it "can update superior attribute" do
+          expect do
+            put :update, params: {id: group.id, group: {gruendungsdatum: Date.new(1900, 5, 1)}}
+          end.to change { group.reload.gruendungsdatum }.to(Date.new(1900, 5, 1))
+        end
+      end
+
+      context "as person from superior layer" do
+        let(:leader) { landesverwaltung }
+
+        it "can update superior attribute" do
+          expect do
+            put :update, params: {id: group.id, group: {gruendungsdatum: Date.new(1900, 5, 1)}}
+          end.to change { group.reload.gruendungsdatum }.to(Date.new(1900, 5, 1))
+        end
+
+        it "can update name" do
+          expect do
+            put :update, params: {id: group.id, group: {name: "Falken"}}
+          end.to change { group.reload.name }.to("Falken")
+        end
+
+        it "can update stamm_typ" do
+          expect do
+            put :update, params: {id: group.id, group: {stamm_typ: "other"}}
+          end.to change { group.reload.stamm_typ }.to("other")
+        end
       end
     end
 
@@ -112,6 +186,10 @@ describe GroupsController do
       }
     end
     let(:attrs_without_label) { [:bank_account_owner, :iban, :bic, :bank_name] }
+    let(:superior_attrs) do
+      [:gruendungsdatum, :aufloesungsdatum, :bank_account_owner, :iban, :bic, :bank_name,
+        :debitorennummer, :zahlungsart]
+    end
 
     let(:dom) { Capybara::Node::Simple.new(response.body) }
 
@@ -178,14 +256,18 @@ describe GroupsController do
       context "layer group" do
         let(:group) { groups(:adler) }
 
-        before do
-          expect(Group::Stamm).to receive(:stamm_typ_labels).and_return(rechnungen: "Rechnungen")
-        end
-
-        it "does show layer attrs" do
+        it "does not show superior attrs" do
           get :edit, params: {id: group.id}
 
-          layer_attrs.keys.each do |attr|
+          superior_attrs.each do |attr|
+            expect(dom).not_to have_field Group.human_attribute_name(attr)
+          end
+        end
+
+        it "does show layer attrs which are not superior" do
+          get :edit, params: {id: group.id}
+
+          (layer_attrs.keys - superior_attrs).each do |attr|
             expect(dom).to have_field Group.human_attribute_name(attr)
           end
         end
@@ -201,6 +283,36 @@ describe GroupsController do
           get :edit, params: {id: group.id}
 
           expect(dom).to have_text Group.human_attribute_name(:abbreviations)
+        end
+        
+        it "does not show name and short_name" do
+          get :edit, params: {id: group.id}
+
+          expect(dom).not_to have_field Group.human_attribute_name(:name), exact: true
+          expect(dom).not_to have_field Group.human_attribute_name(:short_name), exact: true
+        end
+
+        context "as person from superior layer" do
+          let(:leader) { landesverwaltung }
+
+          before do
+            expect(Group::Stamm).to receive(:stamm_typ_labels).and_return(rechnungen: "Rechnungen")
+          end
+
+          it "does show layer attrs" do
+            get :edit, params: {id: group.id}
+
+            layer_attrs.keys.each do |attr|
+              expect(dom).to have_field Group.human_attribute_name(attr)
+            end
+          end
+
+          it "does show name and short_name" do
+            get :edit, params: {id: group.id}
+
+            expect(dom).to have_field Group.human_attribute_name(:name), exact: true
+            expect(dom).to have_field Group.human_attribute_name(:short_name), exact: true
+          end
         end
       end
     end
