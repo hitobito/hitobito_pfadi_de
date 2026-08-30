@@ -10,6 +10,7 @@ module PfadiDe::LayerGroup
 
   SEPA_MANDATE_MODES = %w[inactive optional required].freeze
 
+  # rubocop:disable Metrics/BlockLength
   included do
     self.used_attributes += [
       :gruendungsdatum,
@@ -22,6 +23,16 @@ module PfadiDe::LayerGroup
       :debitorennummer,
       :sepa_creditor_id,
       :sepa_mandate_mode,
+      :payment_method
+    ]
+
+    self.superior_attributes += [
+      :name,
+      :short_name,
+      :description,
+      :gruendungsdatum,
+      :aufloesungsdatum,
+      :debitorennummer,
       :payment_method
     ]
 
@@ -40,6 +51,7 @@ module PfadiDe::LayerGroup
       if: :sepa_creditor_id_changed?
     validate :assert_sepa_creditor_id_for_mandates
   end
+  # rubocop:enable Metrics/BlockLength
 
   def sepa_mandates_enabled?
     sepa_mandates_enabled_by_mode? && sepa_creditor_id.present?
