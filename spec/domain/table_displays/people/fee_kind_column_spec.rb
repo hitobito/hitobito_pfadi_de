@@ -51,7 +51,7 @@ describe TableDisplays::People::FeeKindColumn, type: :helper do
         fee_kind:
       )
       display.render(:fee_kind)
-      expect(node).to have_css "td", text: "BaWü Kind, Other"
+      expect(node.first("td").text.split(", ")).to contain_exactly("BaWü Kind", "Other")
     end
 
     describe "restricted fee kind" do
@@ -69,13 +69,13 @@ describe TableDisplays::People::FeeKindColumn, type: :helper do
 
       it "renders fehlende Berechtigung in place of name" do
         display.render(:fee_kind)
-        expect(node).to have_css "td", text: "BaWü Kind, fehlende Berechtigung"
+        expect(node.first("td").text.split(", ")).to contain_exactly("BaWü Kind", "fehlende Berechtigung")
       end
 
       it "renders fehlende Berechtigung in place of name" do
         Fabricate(Group::Bundesvorstand::Bundesvorsitz.sti_name, group: groups(:bundesvorstand), person:)
         display.render(:fee_kind)
-        expect(node).to have_css "td", text: "BaWü Kind, fehlende Berechtigung"
+        expect(node.first("td").text.split(", ")).to contain_exactly("BaWü Kind", "fehlende Berechtigung")
       end
     end
   end
