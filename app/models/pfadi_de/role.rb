@@ -32,10 +32,9 @@ module PfadiDe::Role
     class_attribute :has_fee_kind
     self.has_fee_kind = false
 
-    # Marks a role as a membership role (Ordentliche Mitgliedschaft,
-    # Foerdermitgliedschaft, Zweitmitgliedschaft). Used by the bdp wagon to
-    # gate role creation behind the :create_membership_roles permission
-    # (see Bdp::RoleAbility, Bdp::MissingMembershipRoleCreatePermission).
+    # Marks a role as a membership role.
+    # This flag is used for additional validation rules and can be used
+    # for specific permission handling.
     class_attribute :membership_role, default: false
 
     belongs_to :fee_kind
