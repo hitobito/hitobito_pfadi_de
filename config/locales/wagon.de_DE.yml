@@ -1,6 +1,410 @@
-#  Copyright (c) 2012-2026, BdP and DPSG. This file is part of
+#  Copyright (c) 2012-2025, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 de_DE:
+  activemodel:
+    attributes:
+      role/fee_kind_change:
+        fee_kind_id: Beitragsart
+        start_on: Ab
+    errors:
+      models:
+        role/fee_kind_change:
+          attributes:
+            fee_kind_id:
+              already_active: ist bereits auf der Rolle aktiv
+        event/participation_contact_datas/managed:
+          attributes:
+            base:
+              duplicates_present: "Diese Person existiert bereits. Bitte kontaktiere die Mitgliederverwaltung um sie als dein Kind zu registrieren."
+
+  activerecord:
+    errors:
+      models:
+        mailing_list:
+          attributes:
+            mail_name:
+              must_end_with_abbreviation: "muss mit einer für die Ebene hinterlegten Abkürzung enden"
+              layer_has_no_abbreviation: "kann nicht gesetzt werden, da für die Ebene keine Abkürzung hinterlegt ist"
+        group_abbreviation:
+          attributes:
+            value:
+              taken: "wird bereits von einer anderen Gruppe verwendet"
+    models:
+      efz_einsichtnahme:
+        one: eFZ Einsichtnahme
+        other: eFZ Einsichtnahmen
+      fee_kind:
+        one: Beitragsart
+        other: Beitragsarten
+      fee_rate:
+        one: Beitragssatz
+        other: Beitragssätze
+      group/mitglieder/ordentliche_mitgliedschaft:
+        one: Ordentliche Mitgliedschaft
+        description: Ordentliche Mitgliedschaft
+      group/mitglieder/foerdermitgliedschaft:
+        one: Fördermitgliedschaft
+        description: Fördermitgliedschaft
+      group/mitglieder/zweitmitgliedschaft:
+        one: Zweitmitgliedschaft
+        description: Zweitmitgliedschaft
+      period_invoice_template/fee_calculation_item:
+        one: Beitragsabrechnung
+        other: Beitragsabrechnungen
+
+      event/role/assistant_leader:
+        one: Teamer*in
+        other: Teamer*in
+      event/role/leader:
+        one: Leitung
+        other: Leitung
+      event/role/helper:
+        one: Helfer*in
+        other: Helfende
+      event/role/participant:
+        one: Teilnehmer*in
+        other: Teilnehmende
+      event/role/treasurer:
+        one: Schatzmeister*in
+        other: Schatzmeister*innen
+      event/role/speaker:
+        one: Referent*in
+        other: Referierende
+
+      subscription:
+        one: Abonnent*in
+        other: Abonnent*innen
+
+    attributes:
+      efz_einsichtnahme:
+        einsicht_on: Datum der Einsicht
+        issued_on: Ausstellungsdatum eFZ
+        einsichtnehmer: Einsichtnehmer
+        confirmation: Bestätigung
+      group:
+        abbreviations: Abkürzungen
+        address: Anschrift
+        aufloesungsdatum: Auflösungsdatum
+        bank_account_owner: Kontoinhaber*in
+        bank_name: Kreditinstitut
+        bic: BIC
+        consent_data_retention: Einwilligung Weiternutzung Kontaktdaten nach Austritt
+        debitorennummer: Debitorennummer
+        efz_in_aufnahmeantrag: eFZ in Aufnahmeantrag
+        eingeschraenkt: Vorübergehend eingeschränkt
+        einsichtnahme_efz_durch_gruppe: Einsichtnahme eFZ durch Gruppe erlaubt
+        entry_date: Eintrittsdatum
+        exit_date: Austrittsdatum
+        gruendungsdatum: Gründungsdatum
+        iban: IBAN
+        opt_out_aufnahmeantrag: Opt-Out digitale Aufnahme
+        opt_out_aufnahmeantrag_stammessuche: Opt-Out Stammessuche
+        pronoun: Pronomen
+        rechtsform: Rechtsform
+        rechtsformen:
+          ev: "e.V."
+          kein_ev: "kein e.V."
+          unbekannt: Unbekannt
+        sepa_glaeubiger_id: SEPA-Gläubiger-ID
+        stamm_typ: Stammtyp
+        stamm_typen:
+          other: Andere
+          stamm: Stamm
+        strukturnummer: Strukturnummer
+        zahlungsart: Zahlungsart
+        zahlungsarten:
+          lastschrift: Lastschrift
+          rechnung: Rechnung
+      group_abbreviation:
+        value: Abkürzung
+      group/abbreviations:
+        value: Abkürzung
+      fee_kind:
+        parent_id: Erbt von
+        name: Name
+        restricted: Rechtebeschränkt
+        restricted?: Rechtebeschränkt
+        role_type: Mitgliedsart
+        human_role_name: Mitgliedsart
+        created_at: Erstellt
+        updated_at: Geändert
+        archived_at: Archiviert
+        archived: archiviert
+      fee_rate:
+        fee_kind_id: Beitragsart
+        name: Bezeichnung
+        amount: Betrag pro Jahr in EUR
+        valid_from: Gültig von
+        valid_until: Gültig bis
+        max_member_months: max. Mitgliedsdauer in Monaten
+        max_age: maximales Alter des Mitglieds
+        created_at: Erstellt
+        updated_at: Geändert
+      event/guest:
+        genders:
+          _nil: nicht angegeben
+          d: divers
+      person:
+        address: Anschrift
+        bank_account_owner: Kontoinhaber*in
+        bank_name: Kreditinstitut
+        bic: BIC
+        consent_data_retention: Einwilligung Weiternutzung Kontaktdaten nach Austritt
+        entry_date: Eintrittsdatum
+        exit_date: Austrittsdatum
+        genders:
+          _nil: nicht angegeben
+          d: divers
+        iban: IBAN
+        id: Mitgliedsnummer
+        latest_efz: Letzte eFZ Einsichtnahme
+        membership_application_reasons: Begründung Aufnahmeersuchen
+        membership_application_statement_stamm: Stellungnahme Stamm Aufnahmeersuchen
+        membership_application_statement_lv: Stellungnahme LV Aufnahmeersuchen
+        membership_application_statement_bund: Stellungnahme Bund Aufnahmeersuchen
+        membership_application_process_data: Prozessdaten Aufnahmeantrag
+        membership_application_uuid: UUID Digitaler Aufnahmeantrag
+        nickname: Pfadi-Name
+        layer_group: Standardebene
+        layer_group_label: Standardebene
+        payment_method: Zahlungsart
+        payment_methods:
+          debit: Lastschrift
+          invoice: Rechnung
+        primary_group_id: Standardgruppe
+        pronoun: Pronomen
+        latest_efz_issued_on: eFZ Ausstellungsdatum
+        latest_efz_einsicht_on: eFZ Einsichtnahme
+      period_invoice_template:
+        billing_period: Abrechnungsperiode
+
+      service_token:
+        fee_kinds: Beitragsarten und -Sätze
+        efz_einsichtnahmen: eFZ Einsichtnahmen
+        create_membership_roles: Mitgliedsrollen erstellen
+        mailing_lists: Abonnent*innen von Mailinglisten auf dieser Ebene
+
+      role:
+        fee_kind: Beitragsart
+        fee_kind_id: Beitragsart
+        group: Gruppe
+        class:
+          permission:
+            description:
+              group_and_below_efz: "Zeugnisse nach SGB VIII erfassen in dieser Gruppen und deren Untergruppen."
+              delete_efz: "Darf eFZ Einsichtnahmen löschen (Top-Level Admins)."
+              assign_restricted_fee_kinds: "Darf alle Beitragsarten zuweisen."
+      event/participation:
+        participant_id: Teilnehmer*in
+      pass_definition:
+        owner: Besitzer*in
+      mailing_list:
+        publisher: Herausgeber*in
+        subscribers_may_post: Abonnent*innen dürfen auf die Mailingliste schreiben
+        subscribable_fors:
+          configured: Nur konfigurierte Abonnent*innen
+      message:
+        source: Empfänger*in
+        recipient_count: Anzahl Empfänger*innen
+        success_count: Empfänger*innen erfolgreich
+        failed_count: Empfänger*innen fehlerhaft
+        recipients: Empfänger*innen
+      event:
+        name: Veranstaltungstitel
+        cost: Teilnahmebeitrag / Eigenanteil
+        application_conditions: Anmeldebedingungen
+        participations_visible: Teilnahmesichtbarkeit
+        creator_id: Ersteller*in
+        dates: Termin
+  delayed_job:
+    "export/subscriptions_job": "Abonnent*innen-Export"
+
+  event:
+    lists:
+      courses:
+        explanation: "Hier werden Kurse deiner Gruppe, sowie deren direkter Übergruppen angezeigt. Andere Kurse (z.B. von anderen Landesverbänden) findest du bei der organisierenden Gruppe."
+    application_market:
+      index:
+        add_participant: "Teilnehmer*in hinzufügen"
+    participations:
+      fields:
+        send_email: "E-Mail an Teilnehmer*in senden"
+    export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
+
+  events:
+    courses:
+      group_filter:
+        filter_by_layer: "Veranstalter*in"
+    form:
+      caption_participations_visible: "Teilnehmende können sich gegenseitig in der Teilnahmeliste sehen."
+      times_are_optional: "Für getrennte Anmeldung, Vortreffen u.ä. als separate Veranstaltung anlegen. Uhrzeiten sind optional."
+      caption_globally_visible: "%{model_name} ist für alle Benutzenden der BdP Mitgliederverwaltung sichtbar"
+  
+  "events/filters":
+    leader:
+      current_user: "aktuelle*r Benutzer*in"
+
+  "event/invitations":
+    export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
+
+  "event/participations":
+    export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
+
+  filter_navigation/event/participations:
+    predefined_filters:
+      teamers: Teamende
+
+  doorkeeper:
+    scopes:
+      fee_kinds: "Lesen aller Beitragsarten und -Sätze, auf die du Zugriff hast"
+      efz_einsichtnahmen: "Lesen aller eFZ Einsichtnahmen, auf die du Zugriff hast"
+      create_membership_roles: Erstellen von Mitgliedsrollen
+
+  efz_einsichtnahmen:
+    success: Eintrag erfolgreich gespeichert.
+    form:
+      confirmation_text: "Hiermit bestätige ich, dass ein erweitertes Führungszeugnis vorgelegt wurde und dass es keine relevanten Eintragungen im Sinne des § 72a (4) SGB VIII enthält."
+      help_confirmation:
+        "Hiermit bestätige ich, dass ein erweitertes Führungszeugnis vorgelegt wurde und dass es keine relevanten Eintragungen im Sinne des § 72a (4) SGB VIII enthält."
+    created: "Einsichtnahme vom %{einsicht_on} wurde erfolgreich erstellt."
+
+  export/pdf/invoice/processed_subjects_section:
+    header: Einzelnachweise
+    id: Mitgliedsnr.
+    name: Name
+    item: Beitrag
+    amount: Betrag
+    invoiced_period: 'Abrechnungsperiode: %{start_on} - %{end_on}'
+
+
+  dropdown/people_export:
+    efz_antrag_label: "eFZ Antrag"
+
+  groups:
+    general_fields_pfadi_de:
+      help_abbreviations: "Optional. Jede Abkürzung darf nur einmal über alle Gruppen hinweg vergeben werden."
+      abbreviation_placeholder: "z.B. adl"
+    contact_data_pfadi_de:
+      bank_account: Bankverbindung
+    actions_show_pfadi_de:
+      invoice_button_dropdown: Verbandsabrechnungen
+      invoice_button_demo_lv_members: "Mitglieder, Rechnung an Landesverband (Demo)"
+      invoice_button_demo_stamm_members: "Mitglieder, Rechnung an Stamm (Demo)"
+    export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
+
+  fee_kinds:
+    tabs:
+      info: Info
+      fee_rates: Beitragssätze
+    global:
+      link:
+        delete: Archivieren
+      confirm_delete: "Wollen Sie diese Beitragsart wirklich archivieren? Sie kann danach nicht mehr neu auf Rollen zugewiesen werden."
+    form:
+      caption_resricted: Beitragsart darf nur durch speziell berechtigte Personen vergeben werden
+  role:
+    fee_kind_change_link: Beitragsart ändern
+    fee_kind_changes:
+      title: Beitragsart ändern
+      new:
+        subtitle: Neue Beitragsart
+      success: "Die Beitragsart der Rolle wurde auf %{fee_kind} geändert."
+      success_future_change: "Die Beitragsart der Rolle wird am %{start_on} auf %{fee_kind} geändert."
+      failure_role_does_not_allow_fee_kind: Rolle ist nicht beitragspflichtig
+
+  person:
+    history:
+      additional_information_pfadi_de:
+        membership_application_title: Aufnahmeverfahren
+
+  invoices:
+    export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
+
+  payments:
+    export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
+
+  people:
+    efz_einsichtnahme_add: eFZ Einsichtnahme erfassen
+    efz_antrags:
+      show:
+        template_not_found: Die eFZ-Vorlage wurde nicht gefunden.
+    export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
+
+  contactable:
+    additional_email_fields:
+      tooltip_mailings: "Newsletter (Abos), Bestätigungen per E-Mail usw. werden zusätzlich an alle hier markierten Adressen versandt."
+
+  global:
+    export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
+
+  "export/tabular/events/list":
+    group_names: "Organisator*innen"
+
+  subscriber:
+    group:
+      edit:
+        title: "Abonnent*innen bearbeiten"
+    exclude_person:
+      form:
+        exclude_subscriber: "Abonnent*in ausschliessen"
+
+  "subscriber/exclude_person":
+    failure: "%{subscriber} ist nicht Abonnent*in"
+
+  mailing_lists:
+    form:
+      help_additional_sender: "Neben den Administrator*innen darf diese E-Mail ebenfalls Nachrichten an die Mailing Liste senden."
+      caption_subscribable: "Abonnent*innen dürfen sich selbst an-/abmelden"
+      caption_subscribers_may_post: "Abonnent*innen dürfen auf die Mailingliste schreiben"
+      caption_anyone_may_post: "Beliebige Absender*innen dürfen auf die Mailingliste schreiben"
+      caption_delivery_report: "E-Mail mit Bestätigung an Absender*in schicken"
+      help_mailchimp_sync: "Abonnent*innen können an die MailChimp-Liste exportiert werden. Diese Aktion überschreibt die MailChimp-Liste und bestehende Kontakte werden gelöscht."
+    messages:
+      export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
+
+  mailing_list_decorator:
+    may_subscribe: "Abonnent*innen dürfen sich selbst an/abmelden"
+    may_not_subscribe: "Abonnent*innen dürfen sich <strong>nicht</strong> selbst an/abmelden"
+    subscribers_must_opt_in: "Abonnent*innen müssen sich <strong>selbst</strong> an/abmelden"
+    subscribers_may_post: "Abonnent*innen dürfen auf die Mailingliste schreiben"
+    subscribers_may_not_post: "Abonnent*innen dürfen <strong>nicht</strong> auf die Mailingliste schreiben"
+    anyone_may_post: "Beliebige Absender*innen dürfen auf die Mailingliste schreiben"
+    anyone_may_not_post: "Beliebige Absender*innen dürfen <strong>nicht</strong> auf die Mailingliste schreiben"
+    delivery_report: "Absender*innen erhalten ein E-Mail als Versandbestätigung"
+    no_delivery_report: "Absender*innen erhalten kein E-Mail als Versandbestätigung"
+
+  mailchimp_synchronizations:
+    wait_for_synchronization: "Ihre Daten werden aktuell an MailChimp gesendet. Dies kann einen Moment dauern. Danach wird die ausgewählte Liste mit den Kontakten aus hitobito aktualisiert sein. Der Status der Synchronisation ist auf der Seite Hintergrundprozesse zu sehen: %{overview_link}"
+
+  subscriptions:
+    list:
+      export_not_allowed: "Du darfst die Abonnent*innen dieses Abos nicht exportieren, da diese auch Rollen und/oder Veranstaltungen außerhalb deines Berechtigungsbereiches enthalten."
+    export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
+
+  job_observations:
+    index:
+      title: Hintergrundprozesse
+
+  api:
+    errors:
+      resources:
+        membership_registration_resource:
+          role_type:
+            blank: muss angegeben werden
+            invalid: ist nicht gültig
+          group_id:
+            blank: muss angegeben werden
+            invalid: ist nicht gültig
+        efz_einsichtnahme_resource:
+          person_id:
+            blank: muss ausgefüllt werden
+          einsichtnehmer_id:
+            blank: muss ausgefüllt werden
+
+  table_displays:
+    person:
+      fee_kind: Beitragsart
+      leading_layer: Hauptgruppierung
