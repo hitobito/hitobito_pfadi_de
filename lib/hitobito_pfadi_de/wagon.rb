@@ -25,8 +25,8 @@ module HitobitoPfadiDe
         PfadiDe::RecalculateRecentEntryDatesJob
       ]
 
-      # :group_and_below_efz may manage the SGB VIII EFZ qualifications of people
-      Role::Permissions << :group_and_below_efz << :delete_efz << :assign_restricted_fee_kinds
+      # :layer_and_below_efz may manage the SGB VIII eFZ qualifications of people
+      Role::Permissions << :layer_and_below_efz << :delete_efz << :assign_restricted_fee_kinds
 
       # extend application classes here
       Role.include PfadiDe::Role
@@ -75,7 +75,8 @@ module HitobitoPfadiDe
       NavigationHelper::MAIN.find { _1[:label] == :groups }[:inactive_for].push("fee_kinds")
       NavigationHelper::MAIN.find { _1[:label] == :invoices }[:active_for].push("fee_kinds")
 
-      AbilityDsl::UserContext::GROUP_PERMISSIONS << :group_and_below_efz
+      AbilityDsl::UserContext::GROUP_PERMISSIONS << :layer_and_below_efz
+      AbilityDsl::UserContext::LAYER_PERMISSIONS << :layer_and_below_efz
 
       TableDisplay.register_column(Person,
         TableDisplays::People::FeeKindColumn,
