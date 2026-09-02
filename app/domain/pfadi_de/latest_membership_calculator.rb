@@ -6,14 +6,14 @@
 #  https://github.com/hitobito/hitobito_pfadi_de
 
 module PfadiDe
-  # Calculates the start date of a person's current uninterrupted period of
-  # fee-relevant membership (last_entry_date_with_fee_kind).
+  # Calculates the entry and exit dates of a person's primary
+  # membership (currently described by has_fee_kind roles).
   #
   # Fee-relevant roles are traversed in reverse chronological order. As soon as
   # a gap of more than MAX_GAP_DAYS is found between two roles, the continuity
   # is considered broken. The start date of the most recent continuous phase is
   # returned.
-  class LastEntryDateCalculator
+  class LatestMembershipCalculator
     # Maximum gap in days between two fee-relevant roles that still counts
     # as a continuous membership.
     MAX_GAP_DAYS = 365
@@ -24,24 +24,11 @@ module PfadiDe
 
     # Returns the start date of the most recent continuous fee-relevant period,
     # or nil if no fee-relevant roles exist.
-    def calculate
-      find_last_continuous_entry_date
-    end
-
-    private
-
-    # All fee-relevant roles of the person.
-    # Excludes roles without start_on and roles with a future start date.
-    def fee_relevant_roles
-      @fee_relevant_roles ||= @person.roles.with_inactive
-        .where(type: ::Role.types_with_fee_kind.collect(&:sti_name))
-        .where(start_on: ..Date.current)
-    end
-
+    #
     # Walks roles from newest effective end to oldest, tracking the earliest
     # covered start date. Stops at the first gap exceeding MAX_GAP_DAYS.
     # Roles without end_on are treated as still active (effective end = today).
-    def find_last_continuous_entry_date
+    def entry_date
       roles_by_end = fee_relevant_roles.sort_by { |role| effective_end(role) }.reverse
       coverage_start = roles_by_end.first&.start_on
 
@@ -52,6 +39,27 @@ module PfadiDe
       end
 
       coverage_start
+    end
+
+    # Returns the end date of the person's fee-relevant membership, or nil if
+    # a fee-relevant role is still active without an end date.
+    def exit_date
+      return nil if membership_roles.active.where(end_on: nil).exists?
+
+      membership_roles.maximum(:end_on)
+    end
+
+    # All fee-relevant (has_fee_kind) roles of the person, including inactive ones.
+    def membership_roles
+      @person.roles.with_inactive.where(type: ::Role.types_with_fee_kind.collect(&:sti_name))
+    end
+
+    private
+
+    # Fee-relevant roles used for the entry date calculation.
+    # Excludes roles without start_on and roles with a future start date.
+    def fee_relevant_roles
+      @fee_relevant_roles ||= membership_roles.where(start_on: ..Date.current)
     end
 
     def effective_end(role)

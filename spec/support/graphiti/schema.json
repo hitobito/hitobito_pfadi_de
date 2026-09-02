@@ -3763,7 +3763,7 @@
         "exit_date": {
           "type": "date",
           "readable": "guarded",
-          "writable": true,
+          "writable": false,
           "description": null
         },
         "bank_account_owner": {

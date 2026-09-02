@@ -21,7 +21,7 @@ module PfadiDe::Person
 
   # rubocop:disable Metrics/BlockLength
   prepended do
-    Person::PUBLIC_ATTRS.push(:pronoun, :exit_date, :bank_account_owner, :iban, :bic,
+    Person::PUBLIC_ATTRS.push(:pronoun, :bank_account_owner, :iban, :bic,
       :bank_name, :payment_method)
 
     Person::INTERNAL_ATTRS.push(:last_entry_date_with_fee_kind,
@@ -55,6 +55,10 @@ module PfadiDe::Person
   # rubocop:enable Metrics/BlockLength
 
   def entry_date
-    roles.with_inactive.where.not(start_on: nil).order(:start_on).first&.start_on
+    PfadiDe::LatestMembershipCalculator.new(self).entry_date
+  end
+
+  def exit_date
+    PfadiDe::LatestMembershipCalculator.new(self).exit_date
   end
 end

@@ -25,12 +25,16 @@ module PfadiDe::Role
     # they require a FeeKind to determine the cost/fee.
     # If has_fee_kind is true, you also need to mark the attribute
     # fee_kind_id as used, so that it is a permitted attribute.
+    #
+    # Also used as the membership definition for PfadiDe::LatestMembershipCalculator
+    # and Person#entry_date/#exit_date - changing which role types have this
+    # flag changes those calculations too.
     class_attribute :has_fee_kind
     self.has_fee_kind = false
 
     # Marks a role as a membership role.
     # This flag is used for additional validation rules and can be used
-    # for specific permission handling (as in the bdp wagon).
+    # for specific permission handling.
     class_attribute :membership_role, default: false
 
     belongs_to :fee_kind

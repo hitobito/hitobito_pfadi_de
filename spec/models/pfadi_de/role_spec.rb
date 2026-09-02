@@ -49,4 +49,18 @@ describe Role do
       expect(recalculate_flag).to be false
     end
   end
+
+  describe "membership flags on Group::Mitglieder roles" do
+    it "sets membership_role on all three role types" do
+      expect(Group::Mitglieder::OrdentlicheMitgliedschaft.membership_role).to be true
+      expect(Group::Mitglieder::Foerdermitgliedschaft.membership_role).to be true
+      expect(Group::Mitglieder::Zweitmitgliedschaft.membership_role).to be true
+    end
+
+    it "sets has_fee_kind only on Ordentliche and Foerdermitgliedschaft" do
+      expect(Group::Mitglieder::OrdentlicheMitgliedschaft.has_fee_kind).to be true
+      expect(Group::Mitglieder::Foerdermitgliedschaft.has_fee_kind).to be true
+      expect(Group::Mitglieder::Zweitmitgliedschaft.has_fee_kind).to be false
+    end
+  end
 end

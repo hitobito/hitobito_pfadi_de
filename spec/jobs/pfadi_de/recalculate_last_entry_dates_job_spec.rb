@@ -19,14 +19,14 @@ describe PfadiDe::RecalculateLastEntryDatesJob do
 
   describe "#perform" do
     it "processes only people with flag set" do
-      expect(PfadiDe::LastEntryDateCalculator).to receive(:new).with(person1).and_call_original
-      expect(PfadiDe::LastEntryDateCalculator).not_to receive(:new).with(person2)
+      expect(PfadiDe::LatestMembershipCalculator).to receive(:new).with(person1).and_call_original
+      expect(PfadiDe::LatestMembershipCalculator).not_to receive(:new).with(person2)
 
       described_class.new.perform
     end
 
     it "updates the date with the calculated value" do
-      allow_any_instance_of(PfadiDe::LastEntryDateCalculator).to receive(:calculate)
+      allow_any_instance_of(PfadiDe::LatestMembershipCalculator).to receive(:entry_date)
         .and_return(Date.new(42, 1, 1))
       described_class.new.perform
 
@@ -41,7 +41,7 @@ describe PfadiDe::RecalculateLastEntryDatesJob do
 
     it "handles nil result from calculator" do
       person1.update_column(:last_entry_date_with_fee_kind, Date.new(42, 1, 1))
-      allow_any_instance_of(PfadiDe::LastEntryDateCalculator).to receive(:calculate).and_return(nil)
+      allow_any_instance_of(PfadiDe::LatestMembershipCalculator).to receive(:entry_date).and_return(nil)
       described_class.new.perform
 
       expect(person1.reload.last_entry_date_with_fee_kind).to be_nil
