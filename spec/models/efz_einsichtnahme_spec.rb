@@ -33,6 +33,30 @@ describe EfzEinsichtnahme do
       expect(efz).not_to be_valid
       expect(efz.errors.full_messages).to eq ["Bestätigung muss akzeptiert werden"]
     end
+
+    it "is invalid with einsicht_on in the future" do
+      efz = EfzEinsichtnahme.new(
+        person: person,
+        einsichtnehmer: einsichtnehmer,
+        einsicht_on: 1.day.from_now,
+        issued_on: 1.week.ago,
+        confirmation: "1"
+      )
+      expect(efz).not_to be_valid
+      expect(efz.errors[:einsicht_on]).to be_present
+    end
+
+    it "is invalid with issued_on in the future" do
+      efz = EfzEinsichtnahme.new(
+        person: person,
+        einsichtnehmer: einsichtnehmer,
+        einsicht_on: Date.current,
+        issued_on: 1.day.from_now,
+        confirmation: "1"
+      )
+      expect(efz).not_to be_valid
+      expect(efz.errors[:issued_on]).to be_present
+    end
   end
 
   describe "updating person#latest_efz_issued_on" do
