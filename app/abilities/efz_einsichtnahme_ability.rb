@@ -15,7 +15,7 @@ class EfzEinsichtnahmeAbility < AbilityDsl::Base
     permission(:layer_and_below_read).may(:read).in_same_layer_or_below
     permission(:layer_and_below_full).may(:read).in_same_layer_or_below
 
-    permission(:group_and_below_efz).may(:create).in_same_group_or_below
+    permission(:layer_and_below_efz).may(:create).in_same_layer_or_below
     permission(:delete_efz).may(:destroy).all
   end
 

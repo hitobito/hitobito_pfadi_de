@@ -69,8 +69,8 @@ describe EfzEinsichtnahmeAbility do
       expect(ability_for("ErfassungFuehrungszeugnis", :baden_wuerttemberg)).to be_able_to(:create, efz)
     end
 
-    it "Landesverband::ErfassungFuehrungszeugnis may not create in layer below" do
-      expect(ability_for("ErfassungFuehrungszeugnis", :baden_wuerttemberg)).not_to be_able_to(:create, efz)
+    it "Landesverband::ErfassungFuehrungszeugnis may create in layer below" do
+      expect(ability_for("ErfassungFuehrungszeugnis", :baden_wuerttemberg)).to be_able_to(:create, efz)
     end
   end
 

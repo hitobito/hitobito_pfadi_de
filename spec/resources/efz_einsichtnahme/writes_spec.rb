@@ -28,7 +28,7 @@ describe EfzEinsichtnahmeResource, type: :resource do
 
     let(:instance) { EfzEinsichtnahmeResource.build(payload) }
 
-    context "user with group_and_below_efz permission" do
+    context "user with layer_and_below_efz permission" do
       let(:role) { Fabricate(Group::Stamm::ErfassungFuehrungszeugnis.name.to_sym, group: groups(:adler)) }
       let(:ability) { Ability.new(role.person) }
 

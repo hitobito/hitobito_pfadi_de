@@ -11,7 +11,7 @@ module PfadiDe::ServiceToken
   def dynamic_user
     super.tap do |p|
       p.roles.first.permissions << :finance if fee_kinds?
-      p.roles.first.permissions << :group_and_below_efz << :delete_efz if efz_einsichtnahmen?
+      p.roles.first.permissions << :layer_and_below_efz << :delete_efz if efz_einsichtnahmen?
       p.roles.first.permissions << :create_membership_roles if create_membership_roles?
     end
   end

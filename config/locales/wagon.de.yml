@@ -194,7 +194,7 @@ de:
         class:
           permission:
             description:
-              group_and_below_efz: "Zeugnisse nach SGB VIII erfassen in dieser Gruppen und deren Untergruppen."
+              layer_and_below_efz: "Zeugnisse nach SGB VIII erfassen auf dieser Ebene und allen untergeordneten Ebenen."
               delete_efz: "Darf eFZ Einsichtnahmen löschen (Top-Level Admins)."
               assign_restricted_fee_kinds: "Darf alle Beitragsarten zuweisen."
       event/participation:

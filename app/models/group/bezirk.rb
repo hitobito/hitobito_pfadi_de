@@ -52,7 +52,7 @@ class Group::Bezirk < ::Group
   end
 
   class ErfassungFuehrungszeugnis < ::Role
-    self.permissions = [:group_and_below_efz]
+    self.permissions = [:layer_and_below_efz]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
