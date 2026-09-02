@@ -16,6 +16,7 @@ class EfzEinsichtnahme < ActiveRecord::Base
 
   validates :person, :einsichtnehmer, :einsicht_on, :issued_on, presence: true
   validates :confirmation, acceptance: {allow_nil: false}
+  validates_date :einsicht_on, :issued_on, on_or_before: ->(_record) { Date.current }
 
   has_paper_trail meta: {main_id: ->(e) { e.person_id }, main_type: Person.sti_name}
 
