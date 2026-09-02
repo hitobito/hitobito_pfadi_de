@@ -8,6 +8,8 @@
 module PfadiDe::Group
   extend ActiveSupport::Concern
 
+  ABBREVIATION_ATTRS = [abbreviations_attributes: [:id, :value, :_destroy]]
+
   prepended do
     # Define additional used attributes
     # self.used_attributes += [:website, :bank_account, :description]
@@ -19,6 +21,10 @@ module PfadiDe::Group
 
     has_many :fee_kinds, inverse_of: :layer, dependent: :destroy
     has_many :fee_rates, through: :fee_kinds, dependent: :destroy
+
+    has_many :abbreviations, class_name: "GroupAbbreviation", inverse_of: :group,
+      dependent: :destroy
+    accepts_nested_attributes_for :abbreviations, allow_destroy: true, reject_if: :all_blank
   end
 
   # For now, self registration is always disabled.

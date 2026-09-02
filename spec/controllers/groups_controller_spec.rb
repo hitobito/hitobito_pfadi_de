@@ -48,6 +48,50 @@ describe GroupsController do
         put :update, params: {id: groups(:adler).id, group: {gruendungsdatum: Date.new(1900, 5, 1)}}
       end.not_to change { group.reload.gruendungsdatum }
     end
+
+    context "abbreviations" do
+      let(:group) { groups(:adler) }
+
+      it "creates abbreviations for a user with modify_superior permission" do
+        sign_in(people(:admin))
+
+        expect do
+          put :update, params: {id: group.id, group: {
+            abbreviations_attributes: [{value: "Adler"}]
+          }}
+        end.to change { group.reload.abbreviations.map(&:value) }.from([]).to(["adler"])
+      end
+
+      it "ignores abbreviations for a user without modify_superior permission" do
+        expect do
+          put :update, params: {id: group.id, group: {
+            abbreviations_attributes: [{value: "Adler"}]
+          }}
+        end.not_to change { group.reload.abbreviations.count }
+      end
+
+      it "destroys abbreviations for a user with modify_superior permission" do
+        sign_in(people(:admin))
+        abbreviation = group.abbreviations.create!(value: "adl")
+
+        put :update, params: {id: group.id, group: {
+          abbreviations_attributes: [{id: abbreviation.id, _destroy: true}]
+        }}
+
+        expect(group.reload.abbreviations).to be_empty
+      end
+
+      it "ignores abbreviations on a non-layer group even with modify_superior permission" do
+        sign_in(people(:admin))
+        non_layer_group = groups(:pfadfinder)
+
+        expect do
+          put :update, params: {id: non_layer_group.id, group: {
+            abbreviations_attributes: [{value: "Pfad"}]
+          }}
+        end.not_to change { non_layer_group.reload.abbreviations.count }
+      end
+    end
   end
 
   describe "views" do
@@ -105,6 +149,20 @@ describe GroupsController do
             expect(dom).not_to have_text Group.human_attribute_name(attr)
           end
         end
+
+        it "shows abbreviations" do
+          group.abbreviations.create!(value: "adl")
+          get :show, params: {id: group.id}
+
+          expect(dom).to have_text Group.human_attribute_name(:abbreviations)
+          expect(dom).to have_text "adl"
+        end
+
+        it "does not show the abbreviations section if there are none" do
+          get :show, params: {id: group.id}
+
+          expect(dom).not_to have_text Group.human_attribute_name(:abbreviations)
+        end
       end
     end
 
@@ -130,6 +188,19 @@ describe GroupsController do
           layer_attrs.keys.each do |attr|
             expect(dom).to have_field Group.human_attribute_name(attr)
           end
+        end
+
+        it "does not show the abbreviations field without modify_superior permission" do
+          get :edit, params: {id: group.id}
+
+          expect(dom).not_to have_text Group.human_attribute_name(:abbreviations)
+        end
+
+        it "shows the abbreviations field with modify_superior permission" do
+          sign_in(people(:admin))
+          get :edit, params: {id: group.id}
+
+          expect(dom).to have_text Group.human_attribute_name(:abbreviations)
         end
       end
     end

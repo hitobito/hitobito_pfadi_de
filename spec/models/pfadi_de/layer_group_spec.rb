@@ -57,4 +57,33 @@ describe PfadiDe::LayerGroup do
   describe Group::Bundesebene do
     it_behaves_like "layer group attrs"
   end
+
+  describe "#abbreviations" do
+    subject(:group) { groups(:adler) }
+
+    it "has no abbreviations by default" do
+      expect(group.abbreviations).to be_empty
+    end
+
+    it "accepts nested attributes to create abbreviations" do
+      group.update!(abbreviations_attributes: [{value: "Adler"}, {value: "adl"}])
+
+      expect(group.abbreviations.map(&:value)).to contain_exactly("adler", "adl")
+    end
+
+    it "accepts nested attributes to destroy abbreviations" do
+      group.abbreviations.create!(value: "adl")
+      abbreviation = group.abbreviations.first
+
+      group.update!(abbreviations_attributes: [{id: abbreviation.id, _destroy: true}])
+
+      expect(group.abbreviations).to be_empty
+    end
+
+    it "is destroyed together with its group" do
+      association = Group::Stamm.reflect_on_association(:abbreviations)
+
+      expect(association.options[:dependent]).to eq(:destroy)
+    end
+  end
 end

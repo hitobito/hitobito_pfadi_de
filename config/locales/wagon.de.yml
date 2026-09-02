@@ -21,6 +21,17 @@ de:
               duplicates_present: "Diese Person existiert bereits. Bitte kontaktiere die Mitgliederverwaltung um sie als dein Kind zu registrieren."
 
   activerecord:
+    errors:
+      models:
+        mailing_list:
+          attributes:
+            mail_name:
+              must_end_with_abbreviation: "muss mit einer für die Ebene hinterlegten Abkürzung enden"
+              layer_has_no_abbreviation: "kann nicht gesetzt werden, da für die Ebene keine Abkürzung hinterlegt ist"
+        group_abbreviation:
+          attributes:
+            value:
+              taken: "wird bereits von einer anderen Gruppe verwendet"
     models:
       efz_einsichtnahme:
         one: eFZ Einsichtnahme
@@ -74,6 +85,7 @@ de:
         einsichtnehmer: Einsichtnehmer
         confirmation: Bestätigung
       group:
+        abbreviations: Abkürzungen
         address: Anschrift
         aufloesungsdatum: Auflösungsdatum
         bank_account_owner: Kontoinhaber*in
@@ -106,6 +118,10 @@ de:
         zahlungsarten:
           lastschrift: Lastschrift
           rechnung: Rechnung
+      group_abbreviation:
+        value: Abkürzung
+      group/abbreviations:
+        value: Abkürzung
       fee_kind:
         parent_id: Erbt von
         name: Name
@@ -269,6 +285,9 @@ de:
     efz_antrag_label: "eFZ Antrag"
 
   groups:
+    general_fields_pfadi_de:
+      help_abbreviations: "Optional. Jede Abkürzung darf nur einmal über alle Gruppen hinweg vergeben werden."
+      abbreviation_placeholder: "z.B. adl"
     contact_data_pfadi_de:
       bank_account: Bankverbindung
     actions_show_pfadi_de:

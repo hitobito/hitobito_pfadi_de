@@ -8,3 +8,6 @@
                       :rechtsform, :strukturnummer, :stamm_typ, :opt_out_aufnahmeantrag,
                       :opt_out_aufnahmeantrag_stammessuche, :einsichtnahme_efz_durch_gruppe,
                       :efz_in_aufnahmeantrag, :eingeschraenkt))
+
+- if entry.layer?
+  = render_present_attrs(entry, :abbreviations)
