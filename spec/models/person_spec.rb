@@ -112,6 +112,19 @@ describe Person do
       expect(person.exit_date).to eq Date.parse("2025-08-13")
     end
 
+    it "is the end date of the active membership role ending the furthest into the future" do
+      foerder_fee_kind = Fabricate(:fee_kind, layer: Group.roots.first,
+        role_type: Group::Mitglieder::Foerdermitgliedschaft.sti_name)
+
+      Group::Mitglieder::OrdentlicheMitgliedschaft.create!(
+        person:, group:, start_on: 1.day.ago, end_on: 10.days.from_now, fee_kind:
+      )
+      Group::Mitglieder::Foerdermitgliedschaft.create!(
+        person:, group:, start_on: 12.days.from_now, end_on: 20.days.from_now, fee_kind: foerder_fee_kind
+      )
+      expect(person.exit_date).to eq 20.days.from_now.to_date
+    end
+
     it "is nil when an older membership role has ended but a newer one is still " \
       "ongoing without an end date" do
       foerder_fee_kind = Fabricate(:fee_kind, layer: Group.roots.first,
