@@ -35,7 +35,7 @@ de:
     models:
       efz_einsichtnahme:
         one: eFZ Einsichtnahme
-        other: eFZ Einsichtnahmen
+        other: Führungszeugnisse
       fee_kind:
         one: Beitragsart
         other: Beitragsarten
@@ -82,7 +82,7 @@ de:
       efz_einsichtnahme:
         einsicht_on: Datum der Einsicht
         issued_on: Ausstellungsdatum eFZ
-        einsichtnehmer: Einsichtnehmer
+        einsichtnehmer: Einsichtnehmer*in
         confirmation: Bestätigung
       group:
         abbreviations: Abkürzungen
@@ -282,7 +282,7 @@ de:
 
 
   dropdown/people_export:
-    efz_antrag_label: "eFZ Antrag"
+    efz_antrag_label: "eFZ-Antrag"
 
   groups:
     general_fields_pfadi_de:
@@ -328,7 +328,8 @@ de:
     export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
 
   people:
-    efz_einsichtnahme_add: eFZ Einsichtnahme erfassen
+    efz_einsichtnahme_add: Führungszeugnis erfassen
+    efz_einsichtnahme_add_title: Erweitertes Führungszeugnis erfassen
     efz_antrags:
       show:
         template_not_found: Die eFZ-Vorlage wurde nicht gefunden.

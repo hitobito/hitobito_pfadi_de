@@ -23,7 +23,7 @@ describe EfzEinsichtnahmenController do
       it "has form with required fields and assigned default value" do
         Fabricate(Group::Stamm::ErfassungFuehrungszeugnis.sti_name, person: user, group: groups(:adler))
         get :new, params: {group_id: group.id, person_id: person.id}
-        expect(dom).to have_css "h1", text: "eFZ Einsichtnahme erfassen"
+        expect(dom).to have_css "h1", text: "Erweitertes Führungszeugnis erfassen"
         expect(dom).to have_field "Datum der Einsicht", with: I18n.l(Time.zone.today)
         expect(dom).to have_field "Ausstellungsdatum eFZ"
         expect(dom).to have_field "Bestätigung"

@@ -9,6 +9,6 @@ module Sheet
   class EfzEinsichtnahme < Base
     self.parent_sheet = Sheet::Person
 
-    def title = I18n.t("people.efz_einsichtnahme_add")
+    def title = I18n.t("people.efz_einsichtnahme_add_title")
   end
 end

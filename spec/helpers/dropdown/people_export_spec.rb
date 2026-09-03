@@ -33,17 +33,17 @@ describe Dropdown::PeopleExport do
 
     it "does not render link if person has no active role" do
       person.roles.update_all(end_on: Time.zone.yesterday)
-      expect(dom).not_to have_link "eFZ Antrag"
+      expect(dom).not_to have_link "eFZ-Antrag"
     end
 
     it "has single item if person has single role" do
       roles(:paying_member).destroy!
       expect(person.roles).to have(1).item
-      expect(dom).to have_link "eFZ Antrag", href: group_person_efz_antrag_path(group.id, person.id)
+      expect(dom).to have_link "eFZ-Antrag", href: group_person_efz_antrag_path(group.id, person.id)
     end
 
     it "has dropdown with multiple items if person has mulitple roles" do
-      expect(dom).to have_link "eFZ Antrag", href: "#"
+      expect(dom).to have_link "eFZ-Antrag", href: "#"
       expect(dom).to have_link "Adler / Pfadfinder*innen", href: group_person_efz_antrag_path(group.id, person.id)
       expect(dom).to have_link "Adler / Gruppe",
         href: group_person_efz_antrag_path(groups(:adler_mitglieder).id, person.id)
@@ -54,7 +54,7 @@ describe Dropdown::PeopleExport do
     let(:assigns) { {} }
 
     it "has no eFZ Antrag item" do
-      expect(dom).not_to have_link "eFZ Antrag"
+      expect(dom).not_to have_link "eFZ-Antrag"
     end
   end
 end
