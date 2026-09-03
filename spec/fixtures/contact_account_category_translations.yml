@@ -1,0 +1,211 @@
+---
+phone_number_person_private_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:phone_number_person_private) %>"
+  locale: de
+  name: Privat
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_person_mobile_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:phone_number_person_mobile) %>"
+  locale: de
+  name: Mobil
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_person_work_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:phone_number_person_work) %>"
+  locale: de
+  name: Arbeit
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_person_guardians_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:phone_number_person_guardians) %>"
+  locale: de
+  name: Erziehungsberechtigte
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_person_father_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:phone_number_person_father) %>"
+  locale: de
+  name: Vater
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_person_mother_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:phone_number_person_mother) %>"
+  locale: de
+  name: Mutter
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_person_other_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:phone_number_person_other) %>"
+  locale: de
+  name: Andere
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_group_office_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:phone_number_group_office) %>"
+  locale: de
+  name: Büro
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_group_mobile_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:phone_number_group_mobile) %>"
+  locale: de
+  name: Mobil
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_group_other_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:phone_number_group_other) %>"
+  locale: de
+  name: Andere
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_person_parents_guardians_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:additional_address_person_parents_guardians) %>"
+  locale: de
+  name: Abweichende Adresse Eltern/Erziehungsberechtigte
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_person_secondary_address_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:additional_address_person_secondary_address) %>"
+  locale: de
+  name: Zweitanschrift
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_person_other_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:additional_address_person_other) %>"
+  locale: de
+  name: Andere
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_group_mailing_address_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:additional_address_group_mailing_address) %>"
+  locale: de
+  name: Versandanschrift
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_group_efz_address_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:additional_address_group_efz_address) %>"
+  locale: de
+  name: eFZ Anschrift
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_group_rechtstraeger_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:additional_address_group_rechtstraeger) %>"
+  locale: de
+  name: Rechtsträger
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_group_other_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:additional_address_group_other) %>"
+  locale: de
+  name: Andere
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_email_person_guardians_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:additional_email_person_guardians) %>"
+  locale: de
+  name: Erziehungsberechtigte
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_email_person_father_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:additional_email_person_father) %>"
+  locale: de
+  name: Vater
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_email_person_mother_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:additional_email_person_mother) %>"
+  locale: de
+  name: Mutter
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_email_person_other_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:additional_email_person_other) %>"
+  locale: de
+  name: Andere
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_email_group_invoice_mailing_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:additional_email_group_invoice_mailing) %>"
+  locale: de
+  name: Versand Rechnungen
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_email_group_other_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:additional_email_group_other) %>"
+  locale: de
+  name: Andere
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_person_website_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:social_account_person_website) %>"
+  locale: de
+  name: Webseite
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_person_instagram_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:social_account_person_instagram) %>"
+  locale: de
+  name: Instagram
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_person_facebook_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:social_account_person_facebook) %>"
+  locale: de
+  name: Facebook
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_person_tiktok_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:social_account_person_tiktok) %>"
+  locale: de
+  name: TikTok
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_person_fediverse_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:social_account_person_fediverse) %>"
+  locale: de
+  name: Fediverse
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_person_other_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:social_account_person_other) %>"
+  locale: de
+  name: Andere
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_group_website_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:social_account_group_website) %>"
+  locale: de
+  name: Webseite
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_group_instagram_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:social_account_group_instagram) %>"
+  locale: de
+  name: Instagram
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_group_facebook_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:social_account_group_facebook) %>"
+  locale: de
+  name: Facebook
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_group_tiktok_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:social_account_group_tiktok) %>"
+  locale: de
+  name: TikTok
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_group_fediverse_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:social_account_group_fediverse) %>"
+  locale: de
+  name: Fediverse
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_group_other_de:
+  contact_account_category_id: "<%= ActiveRecord::FixtureSet.identify(:social_account_group_other) %>"
+  locale: de
+  name: Andere
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"

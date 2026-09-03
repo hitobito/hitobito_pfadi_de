@@ -1,0 +1,351 @@
+---
+phone_number_person_private:
+  contact_account_type: PhoneNumber
+  contactable_type: Person
+  key: private
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 0
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_person_mobile:
+  contact_account_type: PhoneNumber
+  contactable_type: Person
+  key: mobile
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 1
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_person_work:
+  contact_account_type: PhoneNumber
+  contactable_type: Person
+  key: work
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 2
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_person_guardians:
+  contact_account_type: PhoneNumber
+  contactable_type: Person
+  key: guardians
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 3
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_person_father:
+  contact_account_type: PhoneNumber
+  contactable_type: Person
+  key: father
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 4
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_person_mother:
+  contact_account_type: PhoneNumber
+  contactable_type: Person
+  key: mother
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 5
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_person_other:
+  contact_account_type: PhoneNumber
+  contactable_type: Person
+  key: other
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 6
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_group_office:
+  contact_account_type: PhoneNumber
+  contactable_type: Group
+  key: office
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 0
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_group_mobile:
+  contact_account_type: PhoneNumber
+  contactable_type: Group
+  key: mobile
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 1
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+phone_number_group_other:
+  contact_account_type: PhoneNumber
+  contactable_type: Group
+  key: other
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 2
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_person_parents_guardians:
+  contact_account_type: AdditionalAddress
+  contactable_type: Person
+  key: parents_guardians
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 0
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_person_secondary_address:
+  contact_account_type: AdditionalAddress
+  contactable_type: Person
+  key: secondary_address
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 1
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_person_other:
+  contact_account_type: AdditionalAddress
+  contactable_type: Person
+  key: other
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 2
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_group_mailing_address:
+  contact_account_type: AdditionalAddress
+  contactable_type: Group
+  key: mailing_address
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 0
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_group_efz_address:
+  contact_account_type: AdditionalAddress
+  contactable_type: Group
+  key: efz_address
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: true
+  position: 1
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_group_rechtstraeger:
+  contact_account_type: AdditionalAddress
+  contactable_type: Group
+  key: rechtstraeger
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 2
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_address_group_other:
+  contact_account_type: AdditionalAddress
+  contactable_type: Group
+  key: other
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 3
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_email_person_guardians:
+  contact_account_type: AdditionalEmail
+  contactable_type: Person
+  key: guardians
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 0
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_email_person_father:
+  contact_account_type: AdditionalEmail
+  contactable_type: Person
+  key: father
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 1
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_email_person_mother:
+  contact_account_type: AdditionalEmail
+  contactable_type: Person
+  key: mother
+  unique_per_contactable: true
+  used_for_invoices: false
+  efz_address: false
+  position: 2
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_email_person_other:
+  contact_account_type: AdditionalEmail
+  contactable_type: Person
+  key: other
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 3
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_email_group_invoice_mailing:
+  contact_account_type: AdditionalEmail
+  contactable_type: Group
+  key: invoice_mailing
+  unique_per_contactable: true
+  used_for_invoices: true
+  efz_address: false
+  position: 0
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+additional_email_group_other:
+  contact_account_type: AdditionalEmail
+  contactable_type: Group
+  key: other
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 1
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_person_website:
+  contact_account_type: SocialAccount
+  contactable_type: Person
+  key: website
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 0
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_person_instagram:
+  contact_account_type: SocialAccount
+  contactable_type: Person
+  key: instagram
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 1
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_person_facebook:
+  contact_account_type: SocialAccount
+  contactable_type: Person
+  key: facebook
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 2
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_person_tiktok:
+  contact_account_type: SocialAccount
+  contactable_type: Person
+  key: tiktok
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 3
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_person_fediverse:
+  contact_account_type: SocialAccount
+  contactable_type: Person
+  key: fediverse
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 4
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_person_other:
+  contact_account_type: SocialAccount
+  contactable_type: Person
+  key: other
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 5
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_group_website:
+  contact_account_type: SocialAccount
+  contactable_type: Group
+  key: website
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 0
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_group_instagram:
+  contact_account_type: SocialAccount
+  contactable_type: Group
+  key: instagram
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 1
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_group_facebook:
+  contact_account_type: SocialAccount
+  contactable_type: Group
+  key: facebook
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 2
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_group_tiktok:
+  contact_account_type: SocialAccount
+  contactable_type: Group
+  key: tiktok
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 3
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_group_fediverse:
+  contact_account_type: SocialAccount
+  contactable_type: Group
+  key: fediverse
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 4
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"
+social_account_group_other:
+  contact_account_type: SocialAccount
+  contactable_type: Group
+  key: other
+  unique_per_contactable: false
+  used_for_invoices: false
+  efz_address: false
+  position: 5
+  created_at: "<%= Time.zone.now %>"
+  updated_at: "<%= Time.zone.now %>"

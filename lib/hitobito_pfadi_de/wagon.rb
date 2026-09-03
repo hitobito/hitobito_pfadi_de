@@ -59,6 +59,8 @@ module HitobitoPfadiDe
 
       Contactable::Address.prepend PfadiDe::Contactable::Address
 
+      ContactAccountCategory.include PfadiDe::ContactAccountCategory
+
       Wizards::RegisterNewUserWizard.prepend PfadiDe::Wizards::RegisterNewUserWizard
       Wizards::Steps::NewUserForm.prepend PfadiDe::Wizards::Steps::NewUserForm
 

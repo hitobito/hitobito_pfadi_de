@@ -23,6 +23,10 @@ de_DE:
   activerecord:
     errors:
       models:
+        contact_account_category:
+          attributes:
+            unique_per_contactable:
+              required_when_efz_address: "muss aktiviert sein, wenn '%{attribute}' aktiviert ist"
         mailing_list:
           attributes:
             mail_name:
@@ -79,6 +83,8 @@ de_DE:
         other: Abonnent*innen
 
     attributes:
+      contact_account_category:
+        efz_address: eFZ Anschrift
       efz_einsichtnahme:
         einsicht_on: Datum der Einsicht
         issued_on: Ausstellungsdatum eFZ
