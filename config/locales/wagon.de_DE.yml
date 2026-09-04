@@ -77,6 +77,12 @@ de_DE:
       event/role/speaker:
         one: Referent*in
         other: Referierende
+      event/role/guest:
+        one: Gast
+        other: Gäste
+      event/role/administration:
+        one: Verwaltung
+        other: Verwaltung
 
       subscription:
         one: Abonnent*in
@@ -226,10 +232,15 @@ de_DE:
         participations_visible: Teilnahmesichtbarkeit
         creator_id: Ersteller*in
         dates: Termin
+        guest_limit: Maximale Anzahl externe Gäste pro Person
   delayed_job:
     "export/subscriptions_job": "Abonnent*innen-Export"
 
   event:
+    guests:
+      new:
+        title: Externen Gast hinzufügen
+        add_more_guests: "Anmelden und weiteren externen Gast hinzufügen (max. %{limit})"
     lists:
       courses:
         explanation: "Hier werden Kurse deiner Gruppe, sowie deren direkter Übergruppen angezeigt. Andere Kurse (z.B. von anderen Landesverbänden) findest du bei der organisierenden Gruppe."
@@ -239,7 +250,23 @@ de_DE:
     participations:
       fields:
         send_email: "E-Mail an Teilnehmer*in senden"
+      new:
+        add_guests: "Anmelden und externen Gast hinzufügen (max. %{limit})"
+      guest_of_info:
+        with_main_applicant: "(Externer Gast von %{main_applicant_name})"
+        without_main_applicant: "(Externer Gast von abgemeldeter Person)"
     export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
+
+  "event/guests":
+    guest_added_successfully: "%{guest} wurde erfolgreich als externer Gast hinzugefügt."
+    not_allowed_due_to_guest_limit: "Du kannst in diesem Anlass keine weiteren externen Gäste hinzufügen."
+
+  wizards:
+    steps:
+      new_event_guest_participation_form:
+        next_button: Externen Gast anmelden
+      new_event_guest_contact_data_form_title: Kontaktdaten des externen Gasts
+      new_event_guest_participation_form_title: Externen Gast anmelden
 
   events:
     courses:
