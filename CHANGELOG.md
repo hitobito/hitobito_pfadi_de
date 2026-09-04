@@ -1,6 +1,6 @@
 # Hitobito Changelog
 
-## unreleased
+## Version 2.10
 
 * Die satzungsgemässe Hauptgruppierung einer Person kann auf Personenlisten eingeblendet, exportiert und über die API gelesen werden. Die bisherige Hitobito-Hauptgruppe/-Hauptebene heisst neu "Standardgruppe"/"Standardebene" (hitobito_pfadi_de#47)
 * Aufnahmeverfahren-Attribute an Personen können auf dem Verlauf-Tab eingesehen werden (hitobito_bdp#27)
