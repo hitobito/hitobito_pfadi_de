@@ -8,7 +8,7 @@
 module PfadiDe
   module ContactAccountCategorySeeder
     # rubocop:disable Style/MutableConstant
-    CONTACT_ACCOUNT_CATEGORIES = {
+    CATEGORIES = {
       "PhoneNumber" => {
         "Person" => [
           {key: "private", name: {de: "Privat"}, unique_per_contactable: true},
@@ -85,10 +85,8 @@ module PfadiDe
     }
     # rubocop:enable Style/MutableConstant
 
-    private def row_for(contact_account_type, contactable_type, attrs, position)
-      super.merge(
-        efz_address: attrs.fetch(:efz_address, false)
-      )
+    def self.prepended(base)
+      base::CATEGORIES.replace(CATEGORIES)
     end
   end
 end
