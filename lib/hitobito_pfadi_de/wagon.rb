@@ -59,6 +59,8 @@ module HitobitoPfadiDe
 
       Contactable::Address.prepend PfadiDe::Contactable::Address
 
+      ContactAccountCategory.include PfadiDe::ContactAccountCategory
+
       Wizards::RegisterNewUserWizard.prepend PfadiDe::Wizards::RegisterNewUserWizard
       Wizards::Steps::NewUserForm.prepend PfadiDe::Wizards::Steps::NewUserForm
 
@@ -85,6 +87,19 @@ module HitobitoPfadiDe
       TableDisplay.register_column(Person,
         TableDisplays::People::LeadingLayerColumn,
         :leading_layer)
+
+      # contact account categories (#4359): the pfadi_de-specific categories
+      # listed in the issue (github.com/hitobito/hitobito_pfadi_de/issues/102),
+      # covering PhoneNumber/AdditionalEmail/AdditionalAddress for Person.
+      require Rails.root.join("db", "seeds", "support", "contact_account_category_seeder.rb")
+      require_relative("../../db/seeds/support/pfadi_de/contact_account_category_seeder")
+      ContactAccountCategorySeeder.prepend(PfadiDe::ContactAccountCategorySeeder)
+
+      ContactAccountCategoryMigrationJob::LABEL_KEY_MAPPING.deep_merge!({
+        "AdditionalAddress" => {"Group" => {mailing_address: ["versandadresse"]}},
+        "AdditionalEmail" => {"Person" => {parents_guardians: ["Eltern/Vertretungsberechtigte*r"]}},
+        "PhoneNumber" => {"Person" => {private: ["privat"]}}
+      })
     end
 
     initializer "pfadi_de.add_settings" do |_app|

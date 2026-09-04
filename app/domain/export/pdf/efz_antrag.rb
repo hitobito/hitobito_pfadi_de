@@ -10,7 +10,6 @@ require "hexapdf"
 module Export::Pdf
   class EfzAntrag
     TEMPLATE_PATH = "lib/pdf_templates/efz_antrag.pdf"
-    ADDRESS_LABEL_EFZ = "anschrift_efz"
     DATE_FORMAT = "%d.%m.%Y"
 
     TemplateNotFound = Class.new(StandardError)
@@ -50,9 +49,9 @@ module Export::Pdf
 
         # Data of the recipient of the eFZ
         "efz_recipient_name" =>
-          format_address_only_name(efz_verantwortliche_stelle, label: ADDRESS_LABEL_EFZ),
+          format_address_only_name(efz_verantwortliche_stelle, for_efz: true),
         "efz_recipient_address" =>
-          format_address_without_name(efz_verantwortliche_stelle, label: ADDRESS_LABEL_EFZ),
+          format_address_without_name(efz_verantwortliche_stelle, for_efz: true),
 
         "date" => Date.current.strftime(DATE_FORMAT)
       }.transform_values(&:to_s)
@@ -95,13 +94,24 @@ module Export::Pdf
       )
     end
 
-    def format_address_without_name(contactable, label: nil)
-      Contactable::Address.new(contactable, label:).efz_full_address_without_name
+    def format_address_without_name(contactable, for_efz: false)
+      contactable_address(contactable, for_efz:).efz_full_address_without_name
     end
 
-    def format_address_only_name(contactable, label: nil)
-      Contactable::Address.new(contactable, label:).efz_only_name
+    def format_address_only_name(contactable, for_efz: false)
+      contactable_address(contactable, for_efz:).efz_only_name
     end
+
+    def contactable_address(contactable, for_efz:)
+      category_key = efz_address_key if for_efz
+      Contactable::Address.new(contactable, category_key: category_key)
+    end
+
+    def efz_address_key
+      @efz_address_key ||= ContactAccountCategory.efz_address
+        .find_by(contact_account_type: "AdditionalAddress", contactable_type: "Group")&.key
+    end
+    private :efz_address_key
 
     def phone_number(contactable)
       contactable.phone_numbers.first&.number || ""

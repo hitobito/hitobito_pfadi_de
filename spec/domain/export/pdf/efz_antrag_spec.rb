@@ -111,6 +111,39 @@ describe Export::Pdf::EfzAntrag do
       expect(data["efz_recipient_address"]).to be_a(String)
       expect(data["date"]).to eq(Date.current.strftime("%d.%m.%Y"))
     end
+
+    context "with an efz_address additional address" do
+      let(:efz_verantwortliche_stelle) do
+        g = Group::Stamm.new(
+          id: 42,
+          einsichtnahme_efz_durch_gruppe: true,
+          name: "Adler Gruppe",
+          street: "Gruppenstrasse 10",
+          zip_code: "10117",
+          town: "Berlin",
+          country: "DE",
+          email: "gruppe@example.com",
+          phone_numbers_attributes: [{number: "+49 30 123 45 67"}]
+        )
+        g.additional_addresses.build(
+          street: "Efz Strasse 2",
+          zip_code: "10115",
+          town: "Efz Stadt",
+          country: "DE",
+          category: contact_account_categories(:additional_address_group_efz_address),
+          uses_contactable_name: false,
+          organization: true,
+          organization_name: "Efz Empfänger"
+        )
+        g
+      end
+
+      it "uses the additional efz address for the recipient" do
+        data = efz_antrag.form_data
+        expect(data["efz_recipient_name"]).to eq("Efz Empfänger")
+        expect(data["efz_recipient_address"]).to include("Efz Strasse 2")
+      end
+    end
   end
 
   describe "#template_path" do
