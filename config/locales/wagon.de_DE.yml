@@ -77,6 +77,12 @@ de_DE:
       event/role/speaker:
         one: Referent*in
         other: Referierende
+      event/role/guest:
+        one: Gast
+        other: Gäste
+      event/role/administration:
+        one: Verwaltung
+        other: Verwaltung
 
       subscription:
         one: Abonnent*in
