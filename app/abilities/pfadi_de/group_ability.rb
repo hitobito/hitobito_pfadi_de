@@ -11,6 +11,7 @@ module PfadiDe::GroupAbility
   prepended do
     on(Group) do
       general(:index_service_tokens).if_admin
+      permission(:admin).may(:index_service_tokens).all
     end
   end
 end
