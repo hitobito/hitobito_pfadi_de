@@ -36,5 +36,9 @@ describe GroupAbility do
     it "may index service tokens in group" do
       is_expected.to be_able_to(:index_service_tokens, admin_group)
     end
+
+    it "may index service tokens in group on another layer" do
+      is_expected.to be_able_to(:index_service_tokens, groups(:baden_wuerttemberg))
+    end
   end
 end
