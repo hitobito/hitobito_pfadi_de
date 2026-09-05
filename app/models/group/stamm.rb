@@ -16,6 +16,7 @@ class Group::Stamm < ::Group
     Group::HeimZeltplatzLiegenschaft,
     Group::GruppierungsspezifischesGremium,
     Group::Foerderverein,
+    Group::Kontakte,
     Group::Gruppen
 
   self.default_children = [
@@ -59,7 +60,7 @@ class Group::Stamm < ::Group
   end
 
   class Stammesmitgliederverwaltung < ::Role
-    self.permissions = [:layer_and_below_full]
+    self.permissions = [:layer_and_below_full, :finance]
     self.two_factor_authentication_enforced = true
   end
 
