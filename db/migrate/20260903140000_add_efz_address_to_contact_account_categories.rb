@@ -21,6 +21,7 @@ class AddEfzAddressToContactAccountCategories < ActiveRecord::Migration[8.0]
   def backfill_efz_address_flag
     require_relative File.expand_path("../seeds/support/pfadi_de/contact_account_category_seeder.rb", __dir__)
 
+    ContactAccountCategorySeeder.new.seed # run seeder again just in case it was not run before
     PfadiDe::ContactAccountCategorySeeder::CATEGORIES.each do |contact_account_type, contactable_types|
       contactable_types.each do |contactable_type, categories|
         categories.each do |attrs|
