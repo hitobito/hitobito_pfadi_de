@@ -50,6 +50,7 @@ groups:
 root_email: hitobito-pfadi-de@puzzle.ch
 
 people:
+  canton: false
   people_managers:
     enabled: true
     self_service_managed_creation:
