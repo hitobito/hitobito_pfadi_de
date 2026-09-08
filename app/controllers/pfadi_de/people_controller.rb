@@ -9,7 +9,11 @@ module PfadiDe::PeopleController
   extend ActiveSupport::Concern
 
   def permitted_attrs
-    super + PfadiDe::Contactable::BANK_ACCOUNT_ATTRS +
+    attrs = super + PfadiDe::Contactable::BANK_ACCOUNT_ATTRS +
       [:pronoun, :consent_data_retention]
+
+    return attrs unless entry.self_or_managed_by?(current_user)
+
+    attrs - PfadiDe::Person::SELF_OR_MANAGED_RESTRICTED_ATTRS.map(&:to_sym)
   end
 end

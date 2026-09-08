@@ -15,7 +15,9 @@ describe PeopleController do
 
   context "PUT update" do
     it "updates pfadi_de fields" do
-      put :update, params: {group_id: group.id, id: leader.id, person: {
+      person = people(:member)
+
+      put :update, params: {group_id: groups(:pfadfinder).id, id: person.id, person: {
         pronoun: "sie",
         consent_data_retention: true,
         bank_account_owner: "John Doe",
