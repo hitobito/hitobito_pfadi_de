@@ -37,4 +37,13 @@ module PfadiDe::PersonResource
   def show_details_on_person?(model_instance)
     can?(:show_details, model_instance)
   end
+
+  def authorize_update(model)
+    super
+
+    restricted_changed = model.changed_attribute_names_to_save &
+      PfadiDe::Person::SELF_OR_MANAGED_RESTRICTED_ATTRS
+    raise CanCan::AccessDenied if restricted_changed.present? &&
+      model.self_or_managed_by?(current_ability.user)
+  end
 end

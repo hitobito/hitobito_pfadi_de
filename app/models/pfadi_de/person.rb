@@ -12,6 +12,9 @@ module PfadiDe::Person
 
   MEMBER_REQUIRED_ATTRS = [:birthday, :street, :zip_code, :town].freeze
 
+  SELF_OR_MANAGED_RESTRICTED_ATTRS = (%w[first_name last_name birthday additional_information
+    payment_method] + PfadiDe::Contactable::BANK_ACCOUNT_ATTRS.map(&:to_s)).freeze
+
   MEMBERSHIP_APPLICATION_ATTRS = [
     :membership_application_reasons,
     :membership_application_statement_stamm,
@@ -59,6 +62,10 @@ module PfadiDe::Person
 
   def is_member?
     roles.any?(&:fee_kind_type?)
+  end
+
+  def self_or_managed_by?(user)
+    persisted? && (id == user.id || managers.exists?(id: user.id))
   end
 
   def mark_as_required?(attr)

@@ -8,8 +8,15 @@
 module PfadiDe::PeopleController
   extend ActiveSupport::Concern
 
+  # Removes restricted attributes from permitted_attrs when a person edits their own
+  # profile, or a manager edits the profile of a person they manage. This prevents
+  # self- or manager-submitted changes to payment and identity data via strong parameters.
   def permitted_attrs
-    super + PfadiDe::Contactable::BANK_ACCOUNT_ATTRS +
+    attrs = super + PfadiDe::Contactable::BANK_ACCOUNT_ATTRS +
       [:pronoun, :payment_method, :consent_data_retention]
+
+    return attrs unless entry.self_or_managed_by?(current_user)
+
+    attrs - PfadiDe::Person::SELF_OR_MANAGED_RESTRICTED_ATTRS.map(&:to_sym)
   end
 end
