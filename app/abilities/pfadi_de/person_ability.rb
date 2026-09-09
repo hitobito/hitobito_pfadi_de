@@ -13,6 +13,16 @@ module PfadiDe::PersonAbility
       general(:index_messages).herself_or_admin
 
       general(:create_tags).none
+
+      for_self_or_manageds do
+        permission(:any).may(:show_tags).herself
+      end
+
+      permission(:group_read).may(:show_tags).in_same_group
+      permission(:group_and_below_read).may(:show_tags).in_same_group_or_below
+      permission(:layer_read).may(:show_tags).in_same_layer
+      permission(:layer_and_below_read).may(:show_tags).in_same_layer_or_visible_below
+      permission(:see_invisible_from_above).may(:show_tags).in_same_layer_or_below
     end
   end
 

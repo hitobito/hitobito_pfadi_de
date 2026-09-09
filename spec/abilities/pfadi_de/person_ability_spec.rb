@@ -22,6 +22,10 @@ describe PersonAbility do
     it "may index messages" do
       is_expected.to be_able_to(:index_messages, user)
     end
+
+    it "may see own tags" do
+      is_expected.to be_able_to(:show_tags, user)
+    end
   end
 
   context "on manageds" do
@@ -36,6 +40,10 @@ describe PersonAbility do
 
     it "may index messages" do
       is_expected.to be_able_to(:index_messages, managed)
+    end
+
+    it "may see tags" do
+      is_expected.to be_able_to(:show_tags, managed)
     end
   end
 
@@ -66,6 +74,10 @@ describe PersonAbility do
 
     it "may still view details of another person" do
       is_expected.to be_able_to(:show_details, other)
+    end
+
+    it "may see tags of another person" do
+      is_expected.to be_able_to(:show_tags, other)
     end
   end
 
