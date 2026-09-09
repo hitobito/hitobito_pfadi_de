@@ -40,6 +40,7 @@ module HitobitoPfadiDe
       ServiceTokenAbility.include PfadiDe::ServiceTokenAbility
       GroupAbility.prepend PfadiDe::GroupAbility
       PersonAbility.prepend PfadiDe::PersonAbility
+      EventAbility.prepend PfadiDe::EventAbility
       VariousAbility.include PfadiDe::VariousAbility
       InvoiceAbility.include PfadiDe::InvoiceAbility
       TokenAbility.prepend PfadiDe::ApiScopeAbility

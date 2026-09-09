@@ -5,18 +5,12 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de
 
-module PfadiDe::PersonAbility
+module PfadiDe::EventAbility
   extend ActiveSupport::Concern
 
   prepended do
-    on(Person) do
-      general(:index_messages).herself_or_admin
-
+    on(Event) do
       general(:create_tags).none
     end
-  end
-
-  def herself_or_admin
-    herself || if_admin
   end
 end
