@@ -15,6 +15,7 @@ zeus.json
 
 # ignore Gemfile.lock and local tooling for wagons
 Gemfile.lock
+Gemfile.local*
 bin/wagon
 
 # reports
