@@ -11,6 +11,7 @@ module PfadiDe::PersonAbility
   prepended do
     on(Person) do
       general(:index_messages).herself_or_admin
+      permission(:group_read_contact_data).may(:show).readable_in_same_group
     end
   end
 

@@ -28,6 +28,10 @@ module HitobitoPfadiDe
       # :layer_and_below_efz may manage the SGB VIII eFZ qualifications of people
       Role::Permissions << :layer_and_below_efz << :delete_efz << :assign_restricted_fee_kinds
 
+      # :group_read_contact_data is a unidirectional counterpart to :contact_data,
+      # scoped to fellow members of the same group instead of a mutual, network-wide pool
+      Role::Permissions << :group_read_contact_data
+
       # extend application classes here
       Role.include PfadiDe::Role
       Group.prepend PfadiDe::Group
@@ -40,6 +44,7 @@ module HitobitoPfadiDe
       ServiceTokenAbility.include PfadiDe::ServiceTokenAbility
       GroupAbility.prepend PfadiDe::GroupAbility
       PersonAbility.prepend PfadiDe::PersonAbility
+      PersonReadables.prepend PfadiDe::PersonReadables
       VariousAbility.include PfadiDe::VariousAbility
       InvoiceAbility.include PfadiDe::InvoiceAbility
       TokenAbility.prepend PfadiDe::ApiScopeAbility
@@ -79,6 +84,7 @@ module HitobitoPfadiDe
 
       AbilityDsl::UserContext::GROUP_PERMISSIONS << :layer_and_below_efz
       AbilityDsl::UserContext::LAYER_PERMISSIONS << :layer_and_below_efz
+      AbilityDsl::UserContext::GROUP_PERMISSIONS << :group_read_contact_data
 
       TableDisplay.register_column(Person,
         TableDisplays::People::FeeKindColumn,

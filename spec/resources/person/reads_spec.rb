@@ -59,6 +59,7 @@ describe PersonResource, type: :resource do
       before do
         allow(ability).to receive(:can?).and_call_original
         allow(ability).to receive(:can?).with(:show_details, person).and_return(false)
+        allow(ability).to receive(:can?).with(:show_full, person).and_return(false)
         allow(ability.user_context).to receive(:participation_details_person_ids)
           .and_return(Set[person.id])
       end

@@ -73,4 +73,36 @@ describe PersonAbility do
       is_expected.to be_able_to(:show_details, other)
     end
   end
+
+  context :group_read_contact_data do
+    # Uses a different role class than the plain :member fixture (also a Mitglied in the
+    # same group) so that stubbing permissions on the acting user's role class does not
+    # incidentally grant the same permission to the other person used in these examples.
+    let(:role) do
+      Fabricate(Group::StammGruppePfadfinder::Hilfsleitung.name.to_sym, group: groups(:pfadfinder))
+    end
+    let(:other) { roles(:member).person }
+
+    before { Group::StammGruppePfadfinder::Hilfsleitung.permissions = [:group_read_contact_data] }
+
+    after { Group::StammGruppePfadfinder::Hilfsleitung.permissions = [:group_read] }
+
+    it "may show contact data of a fellow group member" do
+      is_expected.to be_able_to(:show, other)
+    end
+
+    it "may not show_full or show_details a fellow group member" do
+      is_expected.not_to be_able_to(:show_full, other)
+      is_expected.not_to be_able_to(:show_details, other)
+    end
+
+    it "may not show people outside the group" do
+      is_expected.not_to be_able_to(:show, people(:admin))
+    end
+
+    it "does not make the holder visible to the fellow group member in return" do
+      other_ability = Ability.new(other.reload)
+      expect(other_ability).not_to be_able_to(:show, user)
+    end
+  end
 end
