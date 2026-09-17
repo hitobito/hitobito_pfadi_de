@@ -9,7 +9,6 @@ module PfadiDe::Export::Tabular::People::PeopleAddress
   private
 
   def person_attributes
-    super + [:pronoun, :entry_date, :exit_date, :bank_account_owner, :iban, :bic, :bank_name,
-      :payment_method]
+    super + [:pronoun, :entry_date, :exit_date]
   end
 end

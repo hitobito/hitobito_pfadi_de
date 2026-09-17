@@ -16,11 +16,11 @@ module PfadiDe::PersonResource
     attribute :exit_date, :date, writable: false, readable: :show_details_on_person? do
       @object.exit_date
     end
-    attribute :bank_account_owner, :string, readable: :show_details_on_person?
-    attribute :iban, :string, readable: :show_details_on_person?
-    attribute :bic, :string, readable: :show_details_on_person?
-    attribute :bank_name, :string, readable: :show_details_on_person?
-    attribute :payment_method, :string, readable: :show_details_on_person?
+    attribute :bank_account_owner, :string, readable: :show_full_on_person?
+    attribute :iban, :string, readable: :show_full_on_person?
+    attribute :bic, :string, readable: :show_full_on_person?
+    attribute :bank_name, :string, readable: :show_full_on_person?
+    attribute :payment_method, :string, readable: :show_full_on_person?
     attribute :consent_data_retention, :boolean, readable: :show_details_on_person?
 
     # rubocop:disable Rails/RedundantForeignKey
@@ -36,6 +36,10 @@ module PfadiDe::PersonResource
   # For attributes that are not viewable in the UI on an event participation of this person
   def show_details_on_person?(model_instance)
     can?(:show_details, model_instance)
+  end
+
+  def show_full_on_person?(model_instance)
+    can?(:show_full, model_instance)
   end
 
   def authorize_update(model)

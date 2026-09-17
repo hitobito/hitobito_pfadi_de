@@ -15,8 +15,12 @@ describe Export::Tabular::People::PeopleAddress do
   subject { people_list }
 
   it "includes pfadfinder columns" do
-    expect(subject.attributes).to include(:pronoun, :entry_date, :exit_date, :bank_account_owner,
-      :iban, :bic, :bank_name, :payment_method)
+    expect(subject.attributes).to include(:pronoun, :entry_date, :exit_date)
+  end
+
+  it "does not include bank account or payment method columns" do
+    expect(subject.attributes).not_to include(:bank_account_owner, :iban, :bic, :bank_name,
+      :payment_method)
   end
 
   context "standard attributes" do
@@ -26,11 +30,6 @@ describe Export::Tabular::People::PeopleAddress do
       its([:pronoun]) { should eq "Pronomen" }
       its([:entry_date]) { should eq "Eintrittsdatum" }
       its([:exit_date]) { should eq "Austrittsdatum" }
-      its([:bank_account_owner]) { should eq "Kontoinhaber*in" }
-      its([:iban]) { should eq "IBAN" }
-      its([:bic]) { should eq "BIC" }
-      its([:bank_name]) { should eq "Kreditinstitut" }
-      its([:payment_method]) { should eq "Zahlungsart" }
     end
 
     context "attribute values" do
@@ -39,14 +38,7 @@ describe Export::Tabular::People::PeopleAddress do
       subject { people_list.data_rows.first }
 
       before do
-        person.update(
-          pronoun: "er/ihn",
-          bank_account_owner: "John Doe",
-          iban: "CH66 0076 2011 6238 5295 8",
-          bic: "DEUTDEFFXXX",
-          bank_name: "Deutsche Bank",
-          payment_method: "debit"
-        )
+        person.update(pronoun: "er/ihn")
         Group::Mitglieder::OrdentlicheMitgliedschaft.create!(
           person: person,
           group: groups(:adler_mitglieder),
@@ -61,11 +53,6 @@ describe Export::Tabular::People::PeopleAddress do
         expect(subject[cols.index(:pronoun)]).to eq "er/ihn"
         expect(subject[cols.index(:entry_date)]).to eq "01.08.2025"
         expect(subject[cols.index(:exit_date)]).to eq "13.08.2025"
-        expect(subject[cols.index(:bank_account_owner)]).to eq "John Doe"
-        expect(subject[cols.index(:iban)]).to eq "CH66 0076 2011 6238 5295 8"
-        expect(subject[cols.index(:bic)]).to eq "DEUTDEFFXXX"
-        expect(subject[cols.index(:bank_name)]).to eq "Deutsche Bank"
-        expect(subject[cols.index(:payment_method)]).to eq "debit"
       end
     end
   end
