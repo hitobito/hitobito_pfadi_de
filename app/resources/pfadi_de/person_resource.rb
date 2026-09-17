@@ -16,10 +16,10 @@ module PfadiDe::PersonResource
     attribute :exit_date, :date, writable: false, readable: :show_details_on_person? do
       @object.exit_date
     end
-    attribute :bank_account_owner, :string, readable: :show_details_on_person?
-    attribute :iban, :string, readable: :show_details_on_person?
-    attribute :bic, :string, readable: :show_details_on_person?
-    attribute :bank_name, :string, readable: :show_details_on_person?
+    attribute :bank_account_owner, :string, readable: :show_full_on_person?
+    attribute :iban, :string, readable: :show_full_on_person?
+    attribute :bic, :string, readable: :show_full_on_person?
+    attribute :bank_name, :string, readable: :show_full_on_person?
     attribute :consent_data_retention, :boolean, readable: :show_details_on_person?
 
     # rubocop:disable Rails/RedundantForeignKey

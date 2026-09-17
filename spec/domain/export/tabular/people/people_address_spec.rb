@@ -18,6 +18,10 @@ describe Export::Tabular::People::PeopleAddress do
     expect(subject.attributes).to include(:pronoun, :entry_date, :exit_date)
   end
 
+  it "does not include bank account columns" do
+    expect(subject.attributes).not_to include(:bank_account_owner, :iban, :bic, :bank_name)
+  end
+
   context "standard attributes" do
     context "#attribute_labels" do
       subject { people_list.attribute_labels }
