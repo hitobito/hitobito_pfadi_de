@@ -49,6 +49,13 @@ class Invoice::FeeCalculationItem < Invoice::PeriodItem
     Role.with_inactive.all
   end
 
+  # When invoicing groups, each recipient group also collects the fees of the people in all its
+  # sub-layers. When invoicing people directly, only the layer the period invoice template is
+  # attached to is relevant, so people and roles in sub-layers are ignored.
+  def layer_local?
+    recipient_type == Person.sti_name
+  end
+
   def scope
     super
       .merge(fee_rate_condition)
@@ -60,7 +67,8 @@ class Invoice::FeeCalculationItem < Invoice::PeriodItem
   def fee_rate_condition
     # Only count people whose calculated fee rate matches the one this invoice item cares about
     subquery = People::FeeRatesQuery.new(
-      period_start_on:, period_end_on:, target_layer_id: invoice.group_id, ancestor_groups: groups
+      period_start_on:, period_end_on:, target_layer_id: invoice.group_id, ancestor_groups: groups,
+      layer_local: layer_local?
     ).applicable_fee_rate_id
 
     Person.where("(ancestor.id, people.id, ?) IN (#{subquery.to_sql})", fee_rate_id)

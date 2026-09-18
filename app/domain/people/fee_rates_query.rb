@@ -6,13 +6,15 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 class People::FeeRatesQuery
-  attr_reader :period_start_on, :period_end_on, :target_layer_id, :ancestor_groups
+  attr_reader :period_start_on, :period_end_on, :target_layer_id, :ancestor_groups, :layer_local
 
-  def initialize(period_start_on:, period_end_on:, target_layer_id:, ancestor_groups:)
+  def initialize(period_start_on:, period_end_on:, target_layer_id:, ancestor_groups:,
+    layer_local: false)
     @period_start_on = period_start_on
     @period_end_on = period_end_on
     @target_layer_id = target_layer_id
     @ancestor_groups = ancestor_groups
+    @layer_local = layer_local
   end
 
   def applicable_fee_rate_id
@@ -61,8 +63,17 @@ class People::FeeRatesQuery
   end
 
   def ancestor_group_join
-    Group.joins(
-      "INNER JOIN groups ancestor ON ancestor.lft <= groups.lft AND ancestor.rgt > groups.lft"
-    ).where(ancestor: {id: ancestor_groups})
+    Group.joins("INNER JOIN groups ancestor ON #{ancestor_join_condition}")
+      .where(ancestor: {id: ancestor_groups})
+  end
+
+  # If layer_local is set, consider only roles in this layer.
+  # If it is not set, also consider roles in sub-layers.
+  def ancestor_join_condition
+    if layer_local
+      "ancestor.id = groups.layer_group_id"
+    else
+      "ancestor.lft <= groups.lft AND ancestor.rgt > groups.lft"
+    end
   end
 end
