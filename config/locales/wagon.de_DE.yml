@@ -184,6 +184,7 @@ de_DE:
         pronoun: Pronomen
         latest_efz_issued_on: eFZ Ausstellungsdatum
         latest_efz_einsicht_on: eFZ Einsichtnahme
+        tentative_membership: Probemitgliedschaft
       period_invoice_template:
         billing_period: Abrechnungsperiode
 
