@@ -30,7 +30,7 @@ describe Export::Pdf::EfzAntrag do
   end
 
   let(:efz_verantwortliche_stelle) do
-    Group::Stamm.new(
+    g = Group::Stamm.new(
       id: 42,
       einsichtnahme_efz_durch_gruppe: true,
       name: "Adler Gruppe",
@@ -41,11 +41,15 @@ describe Export::Pdf::EfzAntrag do
       email: "gruppe@example.com",
       phone_numbers_attributes: [{number: "+49 30 123 45 67"}]
     )
+    g.social_accounts.build(
+      name: "https://adler-gruppe.example.com",
+      category: contact_account_categories(:social_account_group_website)
+    )
+    g
   end
 
   before do
     allow(group).to receive(:hierarchy).and_return([efz_verantwortliche_stelle, group])
-    allow(Settings.application).to receive_messages(hostname: "example.com", schema: "https")
   end
 
   subject(:efz_antrag) { described_class.new(group, person) }
@@ -80,7 +84,7 @@ describe Export::Pdf::EfzAntrag do
       expect(data["group_address"]).to be_a(String)
       expect(data["group_mail"]).to eq("gruppe@example.com")
       expect(data["group_phone"]).to eq("+49 30 123 45 67")
-      expect(data["group_url"]).to include("https://example.com")
+      expect(data["group_url"]).to eq("https://adler-gruppe.example.com")
       expect(data["efz_recipient_name"]).to eq("Adler Gruppe")
       expect(data["efz_recipient_address"]).to be_a(String)
       expect(data["date"]).to eq(Date.current.strftime("%d.%m.%Y"))
@@ -106,7 +110,7 @@ describe Export::Pdf::EfzAntrag do
       expect(data["group_address"]).to be_a(String)
       expect(data["group_mail"]).to eq("")
       expect(data["group_phone"]).to eq("")
-      expect(data["group_url"]).to include("https://example.com")
+      expect(data["group_url"]).to eq("")
       expect(data["efz_recipient_name"]).to eq("")
       expect(data["efz_recipient_address"]).to be_a(String)
       expect(data["date"]).to eq(Date.current.strftime("%d.%m.%Y"))
@@ -181,7 +185,6 @@ describe Export::Pdf::EfzAntrag do
       raise "Fixture not found. Run: ruby spec/fixtures/files/efz_antrag_template_generate.rb" unless
         File.exist?(fixture_path)
       allow(efz_antrag).to receive(:template_path).and_return(fixture_path.to_s)
-      allow(Settings.application).to receive_messages(hostname: "example.com", schema: "https")
     end
 
     it "generates a valid PDF" do
@@ -212,7 +215,7 @@ describe Export::Pdf::EfzAntrag do
         group_zip: "10117",
         efz_recipient_name: "Adler Gruppe",
         current_date: Date.current.strftime("%d.%m.%Y"),
-        group_url: "https://example.com"
+        group_url: "https://adler-gruppe.example.com"
       }
 
       expected_values.each do |key, value|
