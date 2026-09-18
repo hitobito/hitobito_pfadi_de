@@ -28,6 +28,12 @@ module HitobitoPfadiDe
       # :layer_and_below_efz may manage the SGB VIII eFZ qualifications of people
       Role::Permissions << :layer_and_below_efz << :delete_efz << :assign_restricted_fee_kinds
 
+      # additional event/course roles
+      [Event, Event::Course].each do |event_type|
+        event_type.register_role_type(Event::Role::Guest)
+        event_type.register_role_type(Event::Role::Administration)
+      end
+
       # extend application classes here
       Role.include PfadiDe::Role
       Group.prepend PfadiDe::Group
