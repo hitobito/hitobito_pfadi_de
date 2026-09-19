@@ -9,14 +9,14 @@ class Group::Bundesgeschaeftsstelle < ::Group
   ### ROLES
 
   class Bundesgeschaeftsfuehrung < ::Role
-    self.permissions = [:layer_and_below_full, :admin, :contact_data, :finance,
+    self.permissions = [:layer_and_below_full, :admin, :contact_data, :layer_and_below_finance,
       :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
 
   class MitgliederverwaltungBund < ::Role
-    self.permissions = [:layer_and_below_full, :admin, :contact_data, :finance,
+    self.permissions = [:layer_and_below_full, :admin, :contact_data, :layer_and_below_finance,
       :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
