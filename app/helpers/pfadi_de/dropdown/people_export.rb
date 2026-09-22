@@ -15,14 +15,8 @@ module PfadiDe::Dropdown
       # only add eFZ Antrag items if rendering in a person context
       return unless person
 
-      if groups.one?
-        add_item(translate(:efz_antrag_label), antrag_path(groups.first))
-      elsif groups.many?
-        item = add_item(translate(:efz_antrag_label), "#")
-        groups.each do |group|
-          item.sub_items << Dropdown::Item.new(group.name_with_layer, antrag_path(group))
-        end
-      end
+      group = person.leading_layer
+      add_item(translate(:efz_antrag_label), antrag_path(group)) if group
     end
 
     private
@@ -31,10 +25,6 @@ module PfadiDe::Dropdown
 
     def person
       template.assigns["person"]
-    end
-
-    def groups
-      @groups ||= person.roles.flat_map(&:group).uniq.map(&:decorate).sort_by(&:lft)
     end
   end
 end
