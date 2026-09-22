@@ -36,6 +36,10 @@ module HitobitoPfadiDe
       ServiceToken.prepend PfadiDe::ServiceToken
       MailingList.include PfadiDe::MailingList
       Qualification.prepend PfadiDe::Qualification
+      Invoice.include PfadiDe::Shippable
+      InvoiceRun.include PfadiDe::Shippable
+      Message::Letter.include PfadiDe::Shippable
+      InvoiceConfig.include PfadiDe::InvoiceConfig
 
       Ability.store.register EfzEinsichtnahmeAbility
       ServiceTokenAbility.include PfadiDe::ServiceTokenAbility
