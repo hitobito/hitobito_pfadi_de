@@ -36,7 +36,7 @@ class Group::Bundesebene < ::Group
   ### ROLES
 
   class MVAdmin < ::Role
-    self.permissions = [:layer_and_below_full, :admin, :finance, :impersonation,
+    self.permissions = [:layer_and_below_full, :admin, :layer_and_below_finance, :impersonation,
       :assign_restricted_fee_kinds, :delete_efz]
     self.two_factor_authentication_enforced = true
   end
@@ -51,6 +51,10 @@ class Group::Bundesebene < ::Group
     self.permissions = []
   end
 
+  class Datenschutzbeauftragt < ::Role
+    self.permissions = []
+  end
+
   class Bundesmitarbeiter < ::Role
     self.permissions = []
     self.sgbviii_required = true
@@ -59,5 +63,6 @@ class Group::Bundesebene < ::Group
   roles MVAdmin,
     ErfassungFuehrungszeugnis,
     Kassenpruefung,
+    Datenschutzbeauftragt,
     Bundesmitarbeiter
 end

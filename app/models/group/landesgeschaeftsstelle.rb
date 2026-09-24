@@ -9,7 +9,7 @@ class Group::Landesgeschaeftsstelle < ::Group
   ### ROLES
 
   class Landesgeschaeftsfuehrung < ::Role
-    self.permissions = [:layer_and_below_full, :contact_data, :finance]
+    self.permissions = [:layer_and_below_full, :contact_data, :layer_and_below_finance]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
