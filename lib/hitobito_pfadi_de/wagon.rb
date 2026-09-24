@@ -44,6 +44,8 @@ module HitobitoPfadiDe
       EventAbility.prepend PfadiDe::EventAbility
       VariousAbility.include PfadiDe::VariousAbility
       InvoiceAbility.include PfadiDe::InvoiceAbility
+      MailingListAbility.include PfadiDe::MailingListAbility
+      SubscriptionAbility.include PfadiDe::SubscriptionAbility
       TokenAbility.prepend PfadiDe::ApiScopeAbility
       TokenAbility.prepend PfadiDe::TokenAbility
       DoorkeeperTokenAbility.prepend PfadiDe::ApiScopeAbility
