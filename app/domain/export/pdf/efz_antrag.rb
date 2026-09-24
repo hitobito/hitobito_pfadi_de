@@ -45,7 +45,7 @@ module Export::Pdf
         "group_address" => format_address_without_name(efz_verantwortliche_stelle),
         "group_mail" => efz_verantwortliche_stelle.email,
         "group_phone" => phone_number(efz_verantwortliche_stelle),
-        "group_url" => group_url(efz_verantwortliche_stelle),
+        "group_url" => website_url(efz_verantwortliche_stelle),
 
         # Data of the recipient of the eFZ
         "efz_recipient_name" =>
@@ -86,12 +86,8 @@ module Export::Pdf
       @efz_verantwortliche_stelle ||= group.decorate.efz_verantwortliche_stelle
     end
 
-    def group_url(group)
-      Rails.application.routes.url_helpers.group_url(
-        group,
-        host: Settings.application.hostname,
-        protocol: Settings.application.protocol
-      )
+    def website_url(group)
+      group.social_accounts.find { |a| a.category&.key == "website" }&.value
     end
 
     def format_address_without_name(contactable, for_efz: false)
