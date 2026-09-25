@@ -7,4 +7,8 @@
 
 class JsonApi::MembershipRegistrationsController < JsonApiController
   skip_authorization_check only: [:create] # Authorization is handled in the resource class
+
+  private
+
+  def authorize_create = nil
 end
