@@ -6,29 +6,4 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 class JsonApi::EfzEinsichtnahmenController < JsonApiController
-  def index
-    authorize!(:index, EfzEinsichtnahme)
-    super
-  end
-
-  def create
-    authorize!(:create, EfzEinsichtnahme)
-    super
-  end
-
-  def show
-    authorize!(:show, entry)
-    super
-  end
-
-  def destroy
-    authorize!(:destroy, entry)
-    super
-  end
-
-  private
-
-  def entry
-    @entry ||= EfzEinsichtnahme.find(params[:id])
-  end
 end
