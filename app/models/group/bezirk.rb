@@ -20,6 +20,8 @@ class Group::Bezirk < ::Group
     Group::BezirkArbeitsbereiche,
     Group::Foerderverein
 
+  before_save :update_stamm_landesverband_ids, if: -> { persisted? && parent_id_changed? }
+
   ### ROLES
 
   class Bezirkssprecher < ::Role
@@ -68,4 +70,11 @@ class Group::Bezirk < ::Group
     Bezirksbeauftragt,
     ErfassungFuehrungszeugnis,
     Kassenpruefung
+
+  private
+
+  def update_stamm_landesverband_ids
+    Group::Stamm.where(parent_id: id)
+      .update_all(landesverband_id: PfadiDe::LandesverbandFinder.call(parent)) # rubocop:disable Rails/SkipsModelValidations intentionally update only one attribute
+  end
 end

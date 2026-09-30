@@ -79,6 +79,7 @@ module HitobitoPfadiDe
       SelfRegistrationResource.prepend PfadiDe::SelfRegistrationResource
 
       Export::Tabular::People::PeopleAddress.prepend PfadiDe::Export::Tabular::People::PeopleAddress
+      Export::Tabular::Groups::Row.prepend PfadiDe::Export::Tabular::Groups::Row
       Export::Pdf::Invoice.runner = Export::Pdf::Invoice::RunnerWithProcessedSubjects
 
       Dropdown::PeopleExport.prepend PfadiDe::Dropdown::PeopleExport
