@@ -2472,6 +2472,12 @@
           "writable": false,
           "description": null
         },
+        "landesverband_id": {
+          "type": "integer",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
         "opt_out_aufnahmeantrag": {
           "type": "boolean",
           "readable": true,
@@ -2551,6 +2557,7 @@
         "rechtsform": {},
         "strukturnummer": {},
         "stamm_typ": {},
+        "landesverband_id": {},
         "opt_out_aufnahmeantrag": {},
         "opt_out_aufnahmeantrag_stammessuche": {},
         "efz_in_aufnahmeantrag": {},
@@ -3027,6 +3034,17 @@
             "not_suffix",
             "match",
             "not_match"
+          ]
+        },
+        "landesverband_id": {
+          "type": "integer",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
           ]
         },
         "opt_out_aufnahmeantrag": {
