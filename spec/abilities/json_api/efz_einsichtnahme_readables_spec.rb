@@ -7,11 +7,11 @@
 
 require "spec_helper"
 
-describe JsonApi::EfzEinsichtnahmeAbility do
+describe JsonApi::EfzEinsichtnahmeReadables do
   let(:member) { people(:member) }
   let(:efz) { EfzEinsichtnahme.new(person: member) }
 
-  subject { JsonApi::EfzEinsichtnahmeAbility.new(user) }
+  subject { JsonApi::EfzEinsichtnahmeReadables.new(user) }
 
   context "when having full read permission on person" do
     let(:user) { people(:admin) }

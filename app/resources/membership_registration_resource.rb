@@ -63,8 +63,8 @@ class MembershipRegistrationResource < ApplicationResource
   def authorize_create(_model)
     validate_role_type
     validate_group_id
-    current_ability.authorize!(:register_people, group)
-    current_ability.authorize!(:create_membership_roles, group)
+    authorize!(:register_people, group)
+    authorize!(:create_membership_roles, group)
   end
 
   def validate_role_type
