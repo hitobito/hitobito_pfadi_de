@@ -46,6 +46,12 @@ de_DE:
       fee_rate:
         one: Beitragssatz
         other: Beitragssätze
+      group/bundesebene/datenschutzbeauftragt:
+        one: Datenschutzbeauftragte*r
+        description: Datenschutzbeauftragte*r
+      group/landesverband/datenschutzbeauftragt:
+        one: Datenschutzbeauftragte*r
+        description: Datenschutzbeauftragte*r
       group/mitglieder/ordentliche_mitgliedschaft:
         one: Ordentliche Mitgliedschaft
         description: Ordentliche Mitgliedschaft
@@ -55,6 +61,15 @@ de_DE:
       group/mitglieder/zweitmitgliedschaft:
         one: Zweitmitgliedschaft
         description: Zweitmitgliedschaft
+      group/people_managers:
+        one: Eltern
+        other: Eltern
+      group/people_managers/adressverwaltung:
+        one: Adressverwaltung
+        description: Adressverwaltung
+      group/people_managers/kontakt:
+        one: Elternteil
+        description: Elternteil
       period_invoice_template/fee_calculation_item:
         one: Beitragsabrechnung
         other: Beitragsabrechnungen
