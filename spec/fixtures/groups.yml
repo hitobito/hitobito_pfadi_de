@@ -86,6 +86,7 @@ mitglieder_bw:
 adler:
   parent: baden_wuerttemberg
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:adler)%>"
+  landesverband_id: "<%=ActiveRecord::FixtureSet.identify(:baden_wuerttemberg)%>"
   lft: 13
   rgt: 24
   name: Adler
@@ -114,6 +115,7 @@ gruppen_26:
 burg_karlsruhe:
   parent: baden_wuerttemberg
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:burg_karlsruhe)%>"
+  landesverband_id: "<%=ActiveRecord::FixtureSet.identify(:baden_wuerttemberg)%>"
   lft: 25
   rgt: 42
   name: Burg Karlsruhe
@@ -142,6 +144,7 @@ gruppen_29:
 silberreiher:
   parent: baden_wuerttemberg
   layer_group_id: "<%=ActiveRecord::FixtureSet.identify(:silberreiher)%>"
+  landesverband_id: "<%=ActiveRecord::FixtureSet.identify(:baden_wuerttemberg)%>"
   lft: 43
   rgt: 58
   name: Silberreiher
