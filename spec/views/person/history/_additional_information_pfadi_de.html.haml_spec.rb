@@ -97,6 +97,23 @@ describe "person/history/_additional_information_pfadi_de.html.haml" do
     end
   end
 
+  context "with sepa mandates" do
+    let(:current_user) { people(:admin) }
+    let(:mandate) { Fabricate(:sepa_mandate, person:, group: groups(:adler)) }
+
+    before do
+      allow(view).to receive(:group).and_return(groups(:pfadfinder))
+      assign(:sepa_mandates, [mandate])
+    end
+
+    it "renders the mandate history" do
+      is_expected.to have_link "SEPA-Mandate",
+        href: group_person_sepa_mandates_path(groups(:pfadfinder), person)
+      is_expected.to have_content mandate.reference
+      is_expected.to have_content "Aktiv"
+    end
+  end
+
   context "as person without show_full permission" do
     let(:current_user) {
       Fabricate(Group::StammGruppePfadfinder::Leitung.sti_name, group: groups(:pfadfinder)).person

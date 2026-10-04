@@ -9,6 +9,7 @@
 = f.labeled_input_fields(*entry.used_attributes(:gruendungsdatum, :aufloesungsdatum,
   :einsichtnahme_efz_durch_gruppe, :debitorennummer, :sepa_glaeubiger_id))
 
+= render 'used_i18n_enum_field', attr: :sepa_mandate_mode, f:
 = render 'used_i18n_enum_field', attr: :zahlungsart, f:
 = render 'used_i18n_enum_field', attr: :rechtsform, f:
 = render 'used_i18n_enum_field', attr: :stamm_typ, f:

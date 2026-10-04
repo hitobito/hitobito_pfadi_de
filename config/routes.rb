@@ -16,6 +16,11 @@ Rails.application.routes.draw do
       resources :people do
         resource :efz_antrag, only: [:show], module: :people
         resources :efz_einsichtnahmen, only: [:new, :create, :destroy]
+        scope module: "person" do
+          resources :sepa_mandates, only: [:index, :new, :create, :destroy] do
+            member { patch :revoke }
+          end
+        end
       end
       resources :fee_kinds do
         resources :fee_rates
@@ -28,6 +33,7 @@ Rails.application.routes.draw do
     resources :fee_kinds, only: [:index, :show]
     resources :fee_rates, only: [:index, :show]
     resources :efz_einsichtnahmen, only: [:index, :show, :create, :destroy]
+    resources :sepa_mandates, only: [:index, :show, :create, :update]
     resources :membership_registrations, only: [:create]
   end
 end
