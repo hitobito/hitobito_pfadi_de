@@ -4,3 +4,8 @@
 -#  https://github.com/hitobito/hitobito_pfadi_de.
 
 = render_attrs(entry, :pronoun, :entry_date, :exit_date)
+
+- layer = @group&.layer_group
+- if layer.try(:sepa_mandates_enabled?) && can?(:index, SepaMandate.new(person: entry))
+  = render_attrs_group(labeled(t('.active_sepa_mandate'),
+    f(entry.active_sepa_mandates.any? { |mandate| mandate.group_id == layer.id }).capitalize))

@@ -43,7 +43,7 @@ module HitobitoPfadiDe
       MailingList.include PfadiDe::MailingList
       Qualification.prepend PfadiDe::Qualification
 
-      Ability.store.register EfzEinsichtnahmeAbility
+      Ability.store.register EfzEinsichtnahmeAbility, SepaMandateAbility
       ServiceTokenAbility.include PfadiDe::ServiceTokenAbility
       GroupAbility.prepend PfadiDe::GroupAbility
       PersonAbility.prepend PfadiDe::PersonAbility
@@ -58,7 +58,7 @@ module HitobitoPfadiDe
       PeopleController.prepend PfadiDe::PeopleController
       RolesController.prepend PfadiDe::RolesController
       PeriodInvoiceTemplatesController.prepend PfadiDe::PeriodInvoiceTemplatesController
-      ServiceTokensController.permitted_attrs += [:fee_kinds, :efz_einsichtnahmen]
+      ServiceTokensController.permitted_attrs += [:fee_kinds, :efz_einsichtnahmen, :sepa_mandates]
 
       Person::HistoryController.prepend PfadiDe::Person::HistoryController
 
@@ -79,6 +79,7 @@ module HitobitoPfadiDe
       SelfRegistrationResource.prepend PfadiDe::SelfRegistrationResource
 
       Export::Tabular::People::PeopleAddress.prepend PfadiDe::Export::Tabular::People::PeopleAddress
+      Export::Tabular::People::PersonRow.prepend PfadiDe::Export::Tabular::People::PersonRow
       Export::Pdf::Invoice.runner = Export::Pdf::Invoice::RunnerWithProcessedSubjects
 
       Dropdown::PeopleExport.prepend PfadiDe::Dropdown::PeopleExport
@@ -96,6 +97,18 @@ module HitobitoPfadiDe
       TableDisplay.register_column(Person,
         TableDisplays::People::LeadingLayerColumn,
         :leading_layer)
+
+      TableDisplay.register_column(Person,
+        TableDisplays::People::SepaMandateColumn,
+        [:payment_method, :sepa_mandate_references])
+
+      unless Sheet::Person.tabs.any? { |tab| tab.path_method == :group_person_sepa_mandates_path }
+        invoices_tab = Sheet::Person.tabs.index { |tab| tab.label_key == "people.tabs.invoices" }
+        Sheet::Person.tabs.insert(invoices_tab.to_i + 1,
+          Sheet::Tab.new("activerecord.models.sepa_mandate.other",
+            :group_person_sepa_mandates_path,
+            if: ->(view, _group, person) { view.can?(:index, SepaMandate.new(person:)) }))
+      end
 
       # contact account categories (#4359): the pfadi_de-specific categories
       # listed in the issue (github.com/hitobito/hitobito_pfadi_de/issues/102),

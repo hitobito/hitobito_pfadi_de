@@ -16,5 +16,7 @@ module PfadiDe::Person::HistoryController
   def index
     super
     @efz_einsichtnahmen = person.efz_einsichtnahmen.order(issued_on: :desc)
+    @sepa_mandates = person.sepa_mandates.includes(:group).list
+      .select { |mandate| can?(:show, mandate) }
   end
 end

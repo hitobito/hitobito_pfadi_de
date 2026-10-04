@@ -2,6 +2,7 @@
 
 ## Version 2.10
 
+* SEPA-Lastschriftmandate können für Personen erfasst, eingesehen, widerrufen und über das JSON:API erstellt und gelesen werden. Die Erfassung wird pro Gruppierung aktiviert, die SEPA-Gläubiger-ID wird validiert. Die Zahlungsart einer Person ergibt sich neu aus ihren aktiven Mandaten (hitobito_pfadi_de#135)
 * `pfadi_de` spezifische Kontaktkonto-Kategorien (Telefon, E-Mail, Adresse, Social Media) implementiert inkl. eFZ Anschrift auf Gruppen (hitobito_pfadi_de#102)
 * Bei Veranstaltungen und Kursen stehen neu die Rollen "Gast" (wie Teilnehmende) und "Verwaltung" (Teil der Leitung) zur Verfügung
 * Die satzungsgemässe Hauptgruppierung einer Person kann auf Personenlisten eingeblendet, exportiert und über die API gelesen werden. Die bisherige Hitobito-Hauptgruppe/-Hauptebene heisst neu "Standardgruppe"/"Standardebene" (hitobito_pfadi_de#47)

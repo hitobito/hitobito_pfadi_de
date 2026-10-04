@@ -3842,7 +3842,7 @@
         "payment_method": {
           "type": "string",
           "readable": "guarded",
-          "writable": true,
+          "writable": false,
           "description": null
         },
         "consent_data_retention": {
@@ -3882,7 +3882,6 @@
         "iban": {},
         "bic": {},
         "bank_name": {},
-        "payment_method": {},
         "consent_data_retention": {}
       },
       "filters": {
@@ -4268,21 +4267,6 @@
           ]
         },
         "bank_name": {
-          "type": "string",
-          "operators": [
-            "eq",
-            "not_eq",
-            "eql",
-            "not_eql",
-            "prefix",
-            "not_prefix",
-            "suffix",
-            "not_suffix",
-            "match",
-            "not_match"
-          ]
-        },
-        "payment_method": {
           "type": "string",
           "operators": [
             "eq",
@@ -5026,6 +5010,254 @@
       }
     },
     {
+      "name": "SepaMandateResource",
+      "type": "sepa_mandates",
+      "graphql_entrypoint": "sepaMandates",
+      "description": null,
+      "attributes": {
+        "id": {
+          "type": "integer_id",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "created_at": {
+          "type": "datetime",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "updated_at": {
+          "type": "datetime",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "status": {
+          "type": "string",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "creator_id": {
+          "type": "integer",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "revoker_id": {
+          "type": "integer",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "reference": {
+          "type": "string",
+          "readable": true,
+          "writable": "guarded",
+          "description": null
+        },
+        "evidence": {
+          "type": "string",
+          "readable": "guarded",
+          "writable": "guarded",
+          "description": null
+        },
+        "group_id": {
+          "type": "integer",
+          "readable": true,
+          "writable": "guarded",
+          "description": null
+        },
+        "person_id": {
+          "type": "integer",
+          "readable": true,
+          "writable": "guarded",
+          "description": null
+        },
+        "issued_at": {
+          "type": "datetime",
+          "readable": true,
+          "writable": "guarded",
+          "description": null
+        },
+        "valid_from": {
+          "type": "date",
+          "readable": true,
+          "writable": "guarded",
+          "description": null
+        },
+        "mandate_text_version": {
+          "type": "integer",
+          "readable": true,
+          "writable": "guarded",
+          "description": null
+        },
+        "revoked_at": {
+          "type": "datetime",
+          "readable": true,
+          "writable": "guarded",
+          "description": null
+        }
+      },
+      "extra_attributes": {},
+      "sorts": {
+        "id": {},
+        "created_at": {},
+        "updated_at": {},
+        "reference": {},
+        "evidence": {},
+        "group_id": {},
+        "person_id": {},
+        "issued_at": {},
+        "valid_from": {},
+        "revoked_at": {}
+      },
+      "filters": {
+        "id": {
+          "type": "integer_id",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "created_at": {
+          "type": "datetime",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "updated_at": {
+          "type": "datetime",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
+        },
+        "evidence": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
+        },
+        "group_id": {
+          "type": "integer",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "person_id": {
+          "type": "integer",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "issued_at": {
+          "type": "datetime",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "valid_from": {
+          "type": "date",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "operators": [
+            "eq"
+          ],
+          "single": true
+        }
+      },
+      "relationships": {
+        "group": {
+          "type": "belongs_to",
+          "description": null,
+          "resource": "GroupResource"
+        },
+        "person": {
+          "type": "belongs_to",
+          "description": null,
+          "resource": "PersonResource"
+        },
+        "creator": {
+          "type": "belongs_to",
+          "description": null,
+          "resource": "PersonResource"
+        },
+        "revoker": {
+          "type": "belongs_to",
+          "description": null,
+          "resource": "PersonResource"
+        }
+      },
+      "stats": {
+        "total": [
+          "count"
+        ]
+      }
+    },
+    {
       "name": "SocialAccountResource",
       "type": "social_accounts",
       "graphql_entrypoint": "socialAccounts",
@@ -5348,6 +5580,22 @@
       "actions": {
         "create": {
           "resource": "SelfRegistrationResource"
+        }
+      }
+    },
+    "/api/sepa_mandates": {
+      "actions": {
+        "index": {
+          "resource": "SepaMandateResource"
+        },
+        "show": {
+          "resource": "SepaMandateResource"
+        },
+        "create": {
+          "resource": "SepaMandateResource"
+        },
+        "update": {
+          "resource": "SepaMandateResource"
         }
       }
     }

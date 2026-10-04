@@ -9,6 +9,11 @@
     - t.attrs(:issued_on, :einsicht_on, :einsichtnehmer)
     - action_col_destroy(t) { |e| group_person_efz_einsichtnahme_path(group, e.person, e) }
 
+- if @sepa_mandates.present?
+  %h2= link_to(SepaMandate.model_name.human(count: 2), group_person_sepa_mandates_path(group, person))
+  = table(@sepa_mandates, class: 'table table-striped table-fixed') do |t|
+    - t.attrs(:reference, :group, :status_label, :valid_from, :issued_at, :revoked_at)
+
 - if can_read_membership_application_attrs?(person)
   #membership_application.pb-3
     %h2= t('.membership_application_title')

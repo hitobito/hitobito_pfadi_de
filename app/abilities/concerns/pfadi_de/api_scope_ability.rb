@@ -13,4 +13,10 @@ module PfadiDe::ApiScopeAbility
       FeeRate: :fee_kinds
     })
   end
+
+  private
+
+  def action_acceptable?(action)
+    (action.to_sym == :revoke) ? write_permission? : super
+  end
 end

@@ -22,7 +22,22 @@ de:
 
   activerecord:
     errors:
+      messages:
+        invalid_sepa_creditor_identifier: ist keine gültige SEPA-Gläubiger-ID
       models:
+        group:
+          attributes:
+            sepa_mandate_mode:
+              sepa_glaeubiger_id_missing: kann nur mit einer SEPA-Gläubiger-ID aktiviert werden
+        sepa_mandate:
+          attributes:
+            base:
+              immutable: Mandate können nicht verändert, sondern nur widerrufen werden
+            group:
+              not_a_layer: muss eine Ebene sein
+              sepa_mandates_disabled: hat die Erfassung von SEPA-Mandaten nicht aktiviert
+            person:
+              bank_account_missing: hat keine Bankverbindung (IBAN) hinterlegt
         contact_account_category:
           attributes:
             unique_per_contactable:
@@ -55,6 +70,9 @@ de:
       group/mitglieder/zweitmitgliedschaft:
         one: Zweitmitgliedschaft
         description: Zweitmitgliedschaft
+      sepa_mandate:
+        one: SEPA-Mandat
+        other: SEPA-Mandate
       period_invoice_template/fee_calculation_item:
         one: Beitragsabrechnung
         other: Beitragsabrechnungen
@@ -121,6 +139,11 @@ de:
           kein_ev: "kein e.V."
           unbekannt: Unbekannt
         sepa_glaeubiger_id: SEPA-Gläubiger-ID
+        sepa_mandate_mode: SEPA-Mandate
+        sepa_mandate_modes:
+          inactive: nicht aktiv
+          optional: optional
+          required: verpflichtend
         stamm_typ: Stammtyp
         stamm_typen:
           other: Andere
@@ -185,18 +208,37 @@ de:
         payment_method: Zahlungsart
         payment_methods:
           debit: Lastschrift
-          invoice: Rechnung
+          invoice: Überweisung
         primary_group_id: Standardgruppe
         pronoun: Pronomen
+        sepa_mandate_references: Mandatsreferenz
         latest_efz_issued_on: eFZ Ausstellungsdatum
         latest_efz_einsicht_on: eFZ Einsichtnahme
         tentative_membership: Probemitgliedschaft
       period_invoice_template:
         billing_period: Abrechnungsperiode
+      sepa_mandate:
+        confirmation: Bestätigung
+        creator: Erstellt von
+        evidence: Nachweis
+        group: Gruppierung
+        issued_at: Erteilt am
+        mandate_text_version: Version Mandatstext
+        person: Zahlungspflichtige Person
+        reference: Mandatsreferenz
+        revoked_at: Widerrufen am
+        revoker: Widerruf eingetragen von
+        status: Status
+        status_label: Status
+        statuses:
+          active: Aktiv
+          revoked: Widerrufen
+        valid_from: Gültig ab
 
       service_token:
         fee_kinds: Beitragsarten und -Sätze
         efz_einsichtnahmen: eFZ Einsichtnahmen
+        sepa_mandates: SEPA-Mandate
         create_membership_roles: Mitgliedsrollen erstellen
         mailing_lists: Abonnent*innen von Mailinglisten auf dieser Ebene
 
@@ -296,6 +338,7 @@ de:
       fee_kinds: Lesen aller Beitragsarten und -Sätze, auf die du Zugriff hast
       efz_einsichtnahmen: Lesen aller eFZ Einsichtnahmen, auf die du Zugriff hast
       create_membership_roles: Erstellen von Mitgliedsrollen
+      sepa_mandates: Lesen, Erstellen und Widerrufen von SEPA-Mandaten, auf die du Zugriff hast
 
   efz_einsichtnahmen:
     success: Eintrag erfolgreich gespeichert.
@@ -354,6 +397,17 @@ de:
     history:
       additional_information_pfadi_de:
         membership_application_title: Aufnahmeverfahren
+    sepa_mandates:
+      new:
+        title: SEPA-Mandat erfassen
+      form:
+        confirmation_caption: Hiermit bestätige ich, dass mir ein gültiges, unterschriebenes SEPA-Lastschriftmandat vorliegt.
+      list:
+        sepa_mandates_disabled: Für %{group} ist die Erfassung von SEPA-Mandaten nicht aktiviert. Sie kann in den Einstellungen der Gruppierung aktiviert werden, sobald eine SEPA-Gläubiger-ID hinterlegt ist.
+        revoke: Widerrufen
+        confirm_revoke: Willst du das SEPA-Mandat %{reference} wirklich widerrufen? Dies kann nicht rückgängig gemacht werden.
+      revoke:
+        success: SEPA-Mandat %{reference} wurde widerrufen.
 
   invoices:
     export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
@@ -362,6 +416,10 @@ de:
     export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
 
   people:
+    details_pfadi_de:
+      active_sepa_mandate: Aktives SEPA-Mandat
+    fields_pfadi_de:
+      help_sepa_mandates_revoked: Eine Änderung von Kontoinhaber*in, IBAN oder BIC widerruft alle aktiven SEPA-Mandate dieser Person.
     efz_einsichtnahme_add: Führungszeugnis erfassen
     efz_einsichtnahme_add_title: Erweitertes Führungszeugnis erfassen
     efz_antrags:
@@ -439,8 +497,17 @@ de:
             blank: muss ausgefüllt werden
           einsichtnehmer_id:
             blank: muss ausgefüllt werden
+        sepa_mandate_resource:
+          person_id:
+            blank: muss ausgefüllt werden
+          group_id:
+            blank: muss ausgefüllt werden
+          revoked_at:
+            blank: muss ausgefüllt werden
 
   table_displays:
     person:
       fee_kind: Beitragsart
       leading_layer: Hauptgruppierung
+      payment_method: Zahlungsart
+      sepa_mandate_references: Mandatsreferenz

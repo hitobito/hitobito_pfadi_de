@@ -16,7 +16,7 @@ describe Export::Tabular::People::PeopleAddress do
 
   it "includes pfadfinder columns" do
     expect(subject.attributes).to include(:pronoun, :entry_date, :exit_date, :bank_account_owner,
-      :iban, :bic, :bank_name, :payment_method)
+      :iban, :bic, :bank_name, :payment_method, :sepa_mandate_references)
   end
 
   context "standard attributes" do
@@ -31,6 +31,7 @@ describe Export::Tabular::People::PeopleAddress do
       its([:bic]) { should eq "BIC" }
       its([:bank_name]) { should eq "Kreditinstitut" }
       its([:payment_method]) { should eq "Zahlungsart" }
+      its([:sepa_mandate_references]) { should eq "Mandatsreferenz" }
     end
 
     context "attribute values" do
@@ -44,8 +45,7 @@ describe Export::Tabular::People::PeopleAddress do
           bank_account_owner: "John Doe",
           iban: "CH66 0076 2011 6238 5295 8",
           bic: "DEUTDEFFXXX",
-          bank_name: "Deutsche Bank",
-          payment_method: "debit"
+          bank_name: "Deutsche Bank"
         )
         Group::Mitglieder::OrdentlicheMitgliedschaft.create!(
           person: person,
@@ -65,7 +65,17 @@ describe Export::Tabular::People::PeopleAddress do
         expect(subject[cols.index(:iban)]).to eq "CH66 0076 2011 6238 5295 8"
         expect(subject[cols.index(:bic)]).to eq "DEUTDEFFXXX"
         expect(subject[cols.index(:bank_name)]).to eq "Deutsche Bank"
-        expect(subject[cols.index(:payment_method)]).to eq "debit"
+        expect(subject[cols.index(:payment_method)]).to eq "Überweisung"
+        expect(subject[cols.index(:sepa_mandate_references)]).to eq ""
+      end
+
+      it "contains payment method and references of active sepa mandates" do
+        mandate = Fabricate(:sepa_mandate, person:, group: groups(:adler))
+        Fabricate(:sepa_mandate, person:, group: groups(:silberreiher)).revoke!
+
+        cols = people_list.attribute_labels.keys
+        expect(subject[cols.index(:payment_method)]).to eq "Lastschrift"
+        expect(subject[cols.index(:sepa_mandate_references)]).to eq mandate.reference
       end
     end
   end
