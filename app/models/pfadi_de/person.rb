@@ -21,8 +21,7 @@ module PfadiDe::Person
 
   # rubocop:disable Metrics/BlockLength
   prepended do
-    Person::PUBLIC_ATTRS.push(:pronoun, :bank_account_owner, :iban, :bic,
-      :bank_name, :payment_method)
+    Person::PUBLIC_ATTRS.push(:pronoun, :bank_account_owner, :iban, :bic, :bank_name)
 
     Person::INTERNAL_ATTRS.push(:last_entry_date_with_fee_kind,
       :should_recalculate_last_entry_date_with_fee_kind,
@@ -38,19 +37,17 @@ module PfadiDe::Person
     ])
 
     has_many :efz_einsichtnahmen, dependent: :destroy
+    has_many :sepa_mandates, dependent: :destroy
+    has_many :active_sepa_mandates, -> { active }, class_name: "SepaMandate",
+      inverse_of: :person, dependent: nil
 
-    include I18nSettable
-    include I18nEnums
-
-    i18n_enum :payment_method, PAYMENT_METHODS
-    i18n_setter :payment_method, PAYMENT_METHODS
+    after_update :revoke_sepa_mandates, if: :bank_account_changed_for_sepa?
 
     Person::GENDERS.push("d")
 
     self.used_attributes -= [:company, :company_name]
 
     validates :iban, iban: true, on: :update, allow_blank: true
-    validates :payment_method, inclusion: {in: PAYMENT_METHODS.map(&:to_s)}
 
     scope :tentative_membership, -> do
       where(arel_table[:last_entry_date_with_fee_kind].gt(tentative_membership_cutoff))
@@ -67,6 +64,18 @@ module PfadiDe::Person
     def tentative_membership_cutoff
       Time.zone.today - Settings.membership_fees.tentative_membership_duration_months.months
     end
+  end
+
+  def payment_method
+    active_sepa_mandates.any? ? "debit" : "invoice"
+  end
+
+  def payment_method_label
+    I18n.t("activerecord.attributes.person.payment_methods.#{payment_method}")
+  end
+
+  def sepa_mandate_references
+    active_sepa_mandates.map(&:reference).sort.join(", ")
   end
 
   def entry_date
@@ -100,6 +109,28 @@ module PfadiDe::Person
   end
 
   private
+
+  def bank_account_changed_for_sepa?
+    [:bank_account_owner, :iban, :bic].any? do |attr|
+      change = saved_change_to_attribute(attr)
+      change && normalize_bank_account_value(attr, change.first) !=
+        normalize_bank_account_value(attr, change.last)
+    end
+  end
+
+  def normalize_bank_account_value(attr, value)
+    if attr == :bank_account_owner
+      value.to_s.squish.downcase
+    else
+      value.to_s.gsub(/\s/, "").upcase
+    end
+  end
+
+  def revoke_sepa_mandates
+    revoker = Auth.current_person if Auth.current_person&.persisted?
+    active_sepa_mandates.each { |mandate| mandate.revoke!(revoker) }
+    active_sepa_mandates.reset
+  end
 
   def earliest_role(role_list)
     role_list

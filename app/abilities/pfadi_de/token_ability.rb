@@ -21,4 +21,11 @@ module PfadiDe::TokenAbility
       .where(type: ::Group::Mitglieder.sti_name)
       .pluck(:id)
   end
+
+  private
+
+  def acceptable_special_case?(subject_class_name, action)
+    super || (subject_class_name == "SepaMandate" && action.to_sym == :revoke &&
+      write_permission? && acceptable?(:sepa_mandates))
+  end
 end

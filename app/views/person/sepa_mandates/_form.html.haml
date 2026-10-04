@@ -1,0 +1,13 @@
+-#  Copyright (c) 2026, BdP and DPSG. This file is part of
+-#  hitobito_pfadi_de and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_pfadi_de.
+
+= entry_form(buttons_top: false, cancel_url: group_person_sepa_mandates_path(@group, parent)) do |f|
+  = f.labeled(:group, creditor.to_s.dup)
+  = f.labeled(:sepa_glaeubiger_id, Group.human_attribute_name(:sepa_glaeubiger_id), creditor.sepa_glaeubiger_id.to_s.dup)
+  = f.labeled(:iban, Person.human_attribute_name(:iban), (parent.iban.presence || '-').dup)
+  = f.labeled(:issued_at) do
+    = f.date_field(:issued_at, value: entry.issued_at && l(entry.issued_at.to_date))
+  = f.labeled_input_field :valid_from
+  = f.labeled_boolean_field :confirmation, caption: t('.confirmation_caption')
