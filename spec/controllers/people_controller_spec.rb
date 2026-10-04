@@ -21,8 +21,7 @@ describe PeopleController do
         bank_account_owner: "John Doe",
         iban: "DE00 0000 0000 0000 0000 0",
         bic: "ASDF",
-        bank_name: "Finanzinstitut",
-        payment_method: "debit"
+        bank_name: "Finanzinstitut"
       }}
       expect(assigns(:person).pronoun).to eq("sie")
       expect(assigns(:person).consent_data_retention).to be true
@@ -30,7 +29,6 @@ describe PeopleController do
       expect(assigns(:person).iban).to eq("DE00 0000 0000 0000 0000 0")
       expect(assigns(:person).bic).to eq("ASDF")
       expect(assigns(:person).bank_name).to eq("Finanzinstitut")
-      expect(assigns(:person).payment_method).to eq("debit")
     end
   end
 
@@ -89,6 +87,43 @@ describe PeopleController do
         expect(latest_efz_einsicht_on).to have_text "29.05.2026"
         expect(latest_efz_einsicht_on).to have_link "Some Stammesverwalter", href: person_path(einsichtnehmer)
       end
+    end
+
+    describe "active SEPA mandate" do
+      let(:label) { "Aktives SEPA-Mandat" }
+      let(:value) { dom.find("dt", text: label).send(:parent) }
+
+      it "is not shown when mandates are not enabled for the layer" do
+        get :show, params: {group_id: group.id, id: leader.id}
+        expect(dom).not_to have_text label
+      end
+
+      context "with mandates enabled for the layer" do
+        before do
+          group.update!(sepa_mandate_mode: "optional", sepa_glaeubiger_id: "DE98ZZZ09999999999")
+        end
+
+        it "shows no when the person has no active mandate" do
+          get :show, params: {group_id: group.id, id: leader.id}
+          expect(value).to have_text "Nein"
+        end
+
+        it "shows yes when the person has an active mandate" do
+          Fabricate(:sepa_mandate, person: leader, group:)
+          get :show, params: {group_id: group.id, id: leader.id}
+          expect(value).to have_text "Ja"
+        end
+      end
+    end
+  end
+
+  describe "GET#show with SEPA mandates tab" do
+    render_views
+    let(:dom) { Capybara::Node::Simple.new(response.body) }
+
+    it "shows the tab to people who may read the mandates" do
+      get :show, params: {group_id: group.id, id: leader.id}
+      expect(dom).to have_link "SEPA-Mandate", href: group_person_sepa_mandates_path(group, leader)
     end
   end
 end

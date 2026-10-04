@@ -37,7 +37,6 @@ describe PersonResource, type: :resource do
             iban: "CH93 0076 2011 6238 5295 7",
             bic: "DEUTDEFFXXX",
             bank_name: "Deutsche Bank",
-            payment_method: "debit",
             consent_data_retention: true
           }
         }
@@ -57,7 +56,6 @@ describe PersonResource, type: :resource do
         .and change { person.iban }.to("CH93 0076 2011 6238 5295 7")
         .and change { person.bic }.to("DEUTDEFFXXX")
         .and change { person.bank_name }.to("Deutsche Bank")
-        .and change { person.payment_method }.to("debit")
         .and change { person.consent_data_retention }.to(true)
     end
 

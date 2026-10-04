@@ -1,0 +1,19 @@
+-#  Copyright (c) 2026, BdP and DPSG. This file is part of
+-#  hitobito_pfadi_de and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_pfadi_de.
+
+- title @person.to_s
+
+- if !creditor.try(:sepa_mandates_enabled?) && can?(:create, SepaMandate.new(person: parent, group: creditor))
+  .alert.alert-info= t('.sepa_mandates_disabled', group: creditor)
+
+= crud_table do |t|
+  - t.attrs(:reference, :group, :status_label, :valid_from, :issued_at, :creator, :revoked_at, :revoker)
+  - if can?(:show_evidence, SepaMandate.new(person: parent))
+    - t.attrs(:evidence)
+  - action_col(t) do |e|
+    - if can?(:revoke, e)
+      = link_to t('.revoke'), revoke_group_person_sepa_mandate_path(@group, parent, e),
+        data: { method: :patch, confirm: t('.confirm_revoke', reference: e.reference) }
+  - action_col_destroy(t)

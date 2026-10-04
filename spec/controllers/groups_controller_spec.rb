@@ -107,7 +107,7 @@ describe GroupsController do
         bic: "ASDF",
         bank_name: "Finanzinstitut",
         debitorennummer: 123,
-        sepa_glaeubiger_id: 123,
+        sepa_glaeubiger_id: "DE98ZZZ09999999999",
         zahlungsart: "rechnung"
       }
     end

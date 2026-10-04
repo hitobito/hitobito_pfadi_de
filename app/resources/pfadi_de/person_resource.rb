@@ -20,7 +20,10 @@ module PfadiDe::PersonResource
     attribute :iban, :string, readable: :show_details_on_person?
     attribute :bic, :string, readable: :show_details_on_person?
     attribute :bank_name, :string, readable: :show_details_on_person?
-    attribute :payment_method, :string, readable: :show_details_on_person?
+    attribute :payment_method, :string, writable: false, filterable: false, sortable: false,
+      readable: :show_details_on_person? do
+      @object.payment_method
+    end
     attribute :consent_data_retention, :boolean, readable: :show_details_on_person?
 
     # rubocop:disable Rails/RedundantForeignKey
@@ -31,6 +34,10 @@ module PfadiDe::PersonResource
       end
     end
     # rubocop:enable Rails/RedundantForeignKey
+  end
+
+  def base_scope
+    super.preload(:active_sepa_mandates)
   end
 
   # For attributes that are not viewable in the UI on an event participation of this person

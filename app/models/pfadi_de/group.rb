@@ -21,6 +21,7 @@ module PfadiDe::Group
 
     has_many :fee_kinds, inverse_of: :layer, dependent: :destroy
     has_many :fee_rates, through: :fee_kinds, dependent: :destroy
+    has_many :sepa_mandates, dependent: :destroy
 
     has_many :abbreviations, class_name: "GroupAbbreviation", inverse_of: :group,
       dependent: :destroy
