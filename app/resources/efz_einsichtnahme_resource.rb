@@ -9,7 +9,7 @@ class EfzEinsichtnahmeResource < ApplicationResource
   primary_endpoint "efz_einsichtnahmen", [:index, :show, :create, :destroy]
 
   self.acceptable_scopes += %w[efz_einsichtnahmen]
-  self.readable_class = JsonApi::EfzEinsichtnahmeAbility
+  self.readable_class = JsonApi::EfzEinsichtnahmeReadables
 
   with_options writable: false do
     attribute :created_at, :datetime

@@ -5,7 +5,7 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
-class JsonApi::FeeKindAbility
+class JsonApi::FeeKindReadables
   include CanCan::Ability
 
   def initialize(user)

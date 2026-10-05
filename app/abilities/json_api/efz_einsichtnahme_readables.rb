@@ -5,7 +5,7 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
-class JsonApi::EfzEinsichtnahmeAbility
+class JsonApi::EfzEinsichtnahmeReadables
   include CanCan::Ability
   include JsonApi::FullReadablePeople
 
