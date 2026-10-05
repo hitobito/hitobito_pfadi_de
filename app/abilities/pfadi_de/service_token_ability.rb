@@ -11,6 +11,7 @@ module PfadiDe::ServiceTokenAbility
   included do
     on(ServiceToken) do
       general.if_admin
+      permission(:admin).may(:manage).all
     end
   end
 end

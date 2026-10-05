@@ -8,7 +8,7 @@
 class FeeRateResource < ApplicationResource
   primary_endpoint "fee_rates", [:index, :show]
 
-  self.readable_class = JsonApi::FeeKindAbility
+  self.readable_class = JsonApi::FeeKindReadables
   self.acceptable_scopes += %w[fee_kinds]
 
   attribute :name, :string

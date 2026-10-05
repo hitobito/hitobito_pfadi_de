@@ -6,19 +6,4 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 class JsonApi::FeeRatesController < JsonApiController
-  def index
-    authorize!(:index, FeeRate)
-    super
-  end
-
-  def show
-    authorize!(:show, entry)
-    super
-  end
-
-  private
-
-  def entry
-    @entry ||= FeeRate.find(params[:id])
-  end
 end

@@ -44,5 +44,15 @@ describe ServiceTokenAbility do
         is_expected.to be_able_to(action, service_token)
       end
     end
+
+    context "on another layer" do
+      let(:service_token) { Fabricate(:service_token, layer: groups(:baden_wuerttemberg)) }
+
+      %i[index create show update destroy edit].each do |action|
+        it "may #{action} service token" do
+          is_expected.to be_able_to(action, service_token)
+        end
+      end
+    end
   end
 end

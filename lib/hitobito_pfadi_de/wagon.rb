@@ -28,6 +28,12 @@ module HitobitoPfadiDe
       # :layer_and_below_efz may manage the SGB VIII eFZ qualifications of people
       Role::Permissions << :layer_and_below_efz << :delete_efz << :assign_restricted_fee_kinds
 
+      # additional event/course roles
+      [Event, Event::Course].each do |event_type|
+        event_type.register_role_type(Event::Role::Guest)
+        event_type.register_role_type(Event::Role::Administration)
+      end
+
       # extend application classes here
       Role.include PfadiDe::Role
       Group.prepend PfadiDe::Group
@@ -35,11 +41,13 @@ module HitobitoPfadiDe
       Contactable.include PfadiDe::Contactable
       ServiceToken.prepend PfadiDe::ServiceToken
       MailingList.include PfadiDe::MailingList
+      Qualification.prepend PfadiDe::Qualification
 
       Ability.store.register EfzEinsichtnahmeAbility
       ServiceTokenAbility.include PfadiDe::ServiceTokenAbility
       GroupAbility.prepend PfadiDe::GroupAbility
       PersonAbility.prepend PfadiDe::PersonAbility
+      EventAbility.prepend PfadiDe::EventAbility
       VariousAbility.include PfadiDe::VariousAbility
       InvoiceAbility.include PfadiDe::InvoiceAbility
       TokenAbility.prepend PfadiDe::ApiScopeAbility
@@ -56,6 +64,7 @@ module HitobitoPfadiDe
 
       GroupDecorator.prepend PfadiDe::GroupDecorator
       PersonDecorator.prepend PfadiDe::PersonDecorator
+      RoleDecorator.prepend PfadiDe::RoleDecorator
 
       Contactable::Address.prepend PfadiDe::Contactable::Address
 

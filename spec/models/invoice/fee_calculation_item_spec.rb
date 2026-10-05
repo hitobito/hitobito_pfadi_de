@@ -399,6 +399,33 @@ describe Invoice::FeeCalculationItem do
         expect(item.count).to eq(1)
       end
 
+      context "when tentative memberships are configured" do
+        before do
+          allow(Settings.membership_fees)
+            .to receive(:tentative_membership_duration_months).and_return(3)
+        end
+
+        it "ignores person who entered within the tentative membership duration" do
+          role = Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:)
+          role.person.update!(last_entry_date_with_fee_kind: 1.month.ago.to_date)
+
+          expect(item.count).to eq(0)
+        end
+
+        it "counts person who entered before the tentative membership duration" do
+          role = Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:)
+          role.person.update!(last_entry_date_with_fee_kind: 4.months.ago.to_date)
+
+          expect(item.count).to eq(1)
+        end
+
+        it "counts person whose entry date is unknown" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, group:)
+
+          expect(item.count).to eq(1)
+        end
+      end
+
       context "when only_active_people toggle is set" do
         before do
           allow(FeatureGate).to receive(:enabled?).and_call_original
@@ -669,12 +696,25 @@ describe Invoice::FeeCalculationItem do
         expect(item.count).to eq(0)
       end
 
-      context "with nested recipient groups" do
-        let(:recipient_groups) { Group.where(id: [groups(:baden_wuerttemberg).id]) }
-
-        it "also counts person with membership role in sub-layer" do
+      context "with membership roles in a sub-layer" do
+        it "ignores person with membership role in sub-layer" do
           Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:,
             group: groups(:adler_mitglieder))
+          expect(item.count).to eq(0)
+        end
+
+        it "counts person with membership roles in the layer and in a sub-layer only once" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:, group:)
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:,
+            group: groups(:adler_mitglieder))
+          expect(item.count).to eq(1)
+        end
+
+        it "determines the fee rate from the layer role, ignoring an earlier sub-layer role" do
+          Fabricate(Group::Mitglieder::Foerdermitgliedschaft.name, person:,
+            group: groups(:adler_mitglieder), start_on: 4.weeks.ago)
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:, group:,
+            start_on: 2.weeks.ago)
           expect(item.count).to eq(1)
         end
       end
@@ -894,12 +934,25 @@ describe Invoice::FeeCalculationItem do
         expect(item.count).to eq(0)
       end
 
-      context "with nested recipient groups" do
-        let(:recipient_groups) { Group.where(id: [groups(:baden_wuerttemberg).id]) }
-
-        it "also counts person with membership role in sub-layer" do
+      context "with membership roles in a sub-layer" do
+        it "ignores person with membership role in sub-layer" do
           Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:,
             group: groups(:adler_mitglieder))
+          expect(item.count).to eq(0)
+        end
+
+        it "counts person with membership roles in the layer and in a sub-layer only once" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:, group:)
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:,
+            group: groups(:adler_mitglieder))
+          expect(item.count).to eq(1)
+        end
+
+        it "determines the fee rate from the layer role, ignoring an earlier sub-layer role" do
+          Fabricate(Group::Mitglieder::Foerdermitgliedschaft.name, person:,
+            group: groups(:adler_mitglieder), start_on: 4.weeks.ago)
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:, group:,
+            start_on: 2.weeks.ago)
           expect(item.count).to eq(1)
         end
       end
@@ -1395,11 +1448,16 @@ describe Invoice::FeeCalculationItem do
         expect(item.subjects).to eq([])
       end
 
-      context "with nested recipient groups" do
-        let(:recipient_groups) { Group.where(id: [groups(:baden_wuerttemberg).id]) }
+      context "with membership roles in a sub-layer" do
+        it "ignores person with membership role in sub-layer" do
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:,
+            group: groups(:adler_mitglieder))
+          expect(item.subjects).to eq([])
+        end
 
-        it "also counts person with membership role in sub-layer" do
-          role = Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:,
+        it "lists person with membership roles in the layer and in a sub-layer only once" do
+          role = Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:, group:)
+          Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:,
             group: groups(:adler_mitglieder))
           expect(item.subjects).to match_array([{subject_id: role.person_id, subject_type: "Person",
                                                  template_item_id: 1337, item_id: item.id}])

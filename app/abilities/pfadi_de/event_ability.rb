@@ -5,10 +5,12 @@
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de
 
-class JsonApi::MembershipRegistrationsController < JsonApiController
-  skip_authorization_check only: [:create] # Authorization is handled in the resource class
+module PfadiDe::EventAbility
+  extend ActiveSupport::Concern
 
-  private
-
-  def authorize_create = nil
+  prepended do
+    on(Event) do
+      general(:create_tags).none
+    end
+  end
 end

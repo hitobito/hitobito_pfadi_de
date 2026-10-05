@@ -51,8 +51,23 @@ module PfadiDe::Person
 
     validates :iban, iban: true, on: :update, allow_blank: true
     validates :payment_method, inclusion: {in: PAYMENT_METHODS.map(&:to_s)}
+
+    scope :tentative_membership, -> do
+      where(arel_table[:last_entry_date_with_fee_kind].gt(tentative_membership_cutoff))
+    end
+
+    scope :without_tentative_membership, -> do
+      where(arel_table[:last_entry_date_with_fee_kind].lteq(tentative_membership_cutoff)
+        .or(arel_table[:last_entry_date_with_fee_kind].eq(nil)))
+    end
   end
   # rubocop:enable Metrics/BlockLength
+
+  class_methods do
+    def tentative_membership_cutoff
+      Time.zone.today - Settings.membership_fees.tentative_membership_duration_months.months
+    end
+  end
 
   def entry_date
     PfadiDe::LatestMembershipCalculator.new(self).entry_date
@@ -77,6 +92,11 @@ module PfadiDe::Person
 
   def leading_layer_id
     leading_layer&.id
+  end
+
+  def tentative_membership?
+    return @tentative_membership if defined?(@tentative_membership)
+    @tentative_membership = Person.tentative_membership.where(id:).exists?
   end
 
   private
