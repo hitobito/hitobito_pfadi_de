@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#  Copyright (c) 2012-2025, BdP and DPSG. This file is part of
+#  Copyright (c) 2012-2026, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
@@ -56,6 +56,10 @@ module PfadiDe::Role
   # will return the same value as long as it is a valid option for the current role type.
   def ensure_fee_kind
     self.fee_kind = FeeKindChooser.new.default(self)
+  end
+
+  def destroy_removes_from_history?
+    !old_enough_to_soft_destroy? || future? || starting_today?
   end
 
   def fee_kind_type?

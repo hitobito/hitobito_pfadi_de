@@ -7,7 +7,7 @@
 
 require "spec_helper"
 
-describe "roles#create", type: :request do
+describe "roles#update", type: :request do
   def jsonapi_headers
     super.merge("X-TOKEN" => token)
   end
@@ -68,6 +68,32 @@ describe "roles#create", type: :request do
         expect(response.status).to eq(200), response.body
       }.to change { role.reload.label }.to("unrelated change")
       expect(person.roles.last.fee_kind_id).to eq(default_fee_kind.id)
+    end
+  end
+
+  context "on membership role created long ago" do
+    before { role.update_columns(created_at: 33.days.ago) }
+
+    {
+      group_id: -> { groups(:mitglieder_bw).id },
+      type: -> { Group::Mitglieder::Zweitmitgliedschaft.sti_name },
+      person_id: -> { people(:admin).id },
+      start_on: -> { "2026-01-01" },
+      end_on: -> { "2025-01-01" }
+    }.each do |attribute, value|
+      context "changing #{attribute}" do
+        let(:payload) {
+          {data: {id: role.id.to_s, type: "roles", attributes: {attribute => instance_exec(&value)}}}
+        }
+
+        it "is not allowed" do
+          expect {
+            make_request
+            expect(response.status).to eq(400), response.body
+            expect(errors[0].code).to eq("unwritable_attribute")
+          }.not_to change { role.reload.attributes }
+        end
+      end
     end
   end
 end
