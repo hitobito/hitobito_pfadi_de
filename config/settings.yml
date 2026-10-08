@@ -54,6 +54,8 @@ people:
     enabled: true
     self_service_managed_creation:
       enabled: false
+  blocklist:
+    enabled: true
 
 role:
   # Days after created_at to change group, type or start_on
