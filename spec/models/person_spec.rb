@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#  Copyright (c) 2025, BdP and DPSG. This file is part of
+#  Copyright (c) 2025-2026, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
@@ -171,6 +171,17 @@ describe Person do
       expect(person).to be_valid
       person.zip_code = "1000"
       expect(person).not_to be_valid
+    end
+  end
+
+  describe "blocklist" do
+    it "prevents creating a blocklisted person" do
+      BlocklistEntry.create!(person_id: person.id)
+      blocked = Person.new(first_name: person.first_name, last_name: person.last_name,
+        birthday: person.birthday)
+
+      expect(blocked).not_to be_valid
+      expect(blocked.errors[:base]).to include(/Ausschlussliste/)
     end
   end
 end
