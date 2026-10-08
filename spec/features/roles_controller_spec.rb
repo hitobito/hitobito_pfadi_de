@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#  Copyright (c) 2012-2014, Jungwacht Blauring Schweiz, Pfadibewegung Schweiz.
+#  Copyright (c) 2012-2026, Jungwacht Blauring Schweiz, Pfadibewegung Schweiz.
 #  This file is part of hitobito and licensed under the Affero General Public
 #  License version 3 or later. See the COPYING file at the top-level
 #  directory or at https://github.com/hitobito/hitobito.
@@ -122,7 +122,7 @@ describe RolesController, js: true do
     describe "changing role type" do
       let!(:existing_role) {
         Fabricate(Group::Mitglieder::Zweitmitgliedschaft.name, person:,
-          group: groups(:adler_mitglieder), created_at: 1.year.ago)
+          group: groups(:adler_mitglieder), created_at: 10.days.ago)
       }
 
       it "changes to role type with default fee kind" do

@@ -18,7 +18,7 @@ class Role::FeeKindChangesController < ApplicationController
 
   def create
     authorize!(:update, role)
-    if fee_kind_change.valid?
+    if fee_kind_change.valid? && membership_restrictions_respected?
       authorize!(:assign_restricted_fee_kinds, role) if fee_kind_change.to_restricted?
       save_and_redirect
     else
@@ -37,6 +37,14 @@ class Role::FeeKindChangesController < ApplicationController
   def success_message(start_on)
     key = start_on.future? ? ".success_future_change" : ".success"
     t(key, fee_kind: fee_kind_change.new_fee_kind.to_s, start_on: I18n.l(start_on))
+  end
+
+  def membership_restrictions_respected?
+    restrictions = PfadiDe::MembershipRoleRestrictions.new(role, current_ability)
+    return true if restrictions.end_on_permitted?(fee_kind_change.previous_role_end_on)
+
+    fee_kind_change.errors.add(:start_on, :too_far_in_past, days: restrictions.end_max_days - 1)
+    false
   end
 
   def redirect_unless_applicable

@@ -9,6 +9,7 @@
 * API Keys (ServiceTokens) können nur noch von Benutzern mit Admin-Rechten verwaltet werden. Andere user sehen die API Keys nicht (hitobito_pfadi_de#68)
 * eFZ Einsichtnahmen können über das JSON:API aufgelistet, erstellt und gelöscht werden (hitobito_bdp#26)
 * Der "Nachrichten"-Tab auf Personenprofilen ist nur noch für die Person selbst und für Admins sichtbar (hitobito_pfadi_de#70)
+* Mitgliedschaften können nur eingeschränkt rückwirkend geändert werden, ausser von Admins. (hitobito_pfadi_de#49)
 
 ## Version 2.9
 

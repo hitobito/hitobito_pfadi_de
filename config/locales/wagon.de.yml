@@ -1,4 +1,4 @@
-#  Copyright (c) 2012-2025, BdP and DPSG. This file is part of
+#  Copyright (c) 2012-2026, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
@@ -15,6 +15,8 @@ de:
           attributes:
             fee_kind_id:
               already_active: ist bereits auf der Rolle aktiv
+            start_on:
+              too_far_in_past: darf höchstens %{days} Tage in der Vergangenheit liegen
         event/participation_contact_datas/managed:
           attributes:
             base:
@@ -23,6 +25,15 @@ de:
   activerecord:
     errors:
       models:
+        role:
+          attributes:
+            start_on:
+              membership_change_period_expired: kann nur innerhalb von %{days} Tagen nach dem Erfassen der Mitgliedschaft geändert werden
+            end_on:
+              too_far_in_past: darf höchstens %{days} Tage in der Vergangenheit liegen
+            base:
+              membership_group_or_type_change_period_expired: Gruppe und Rolle einer Mitgliedschaft können nur innerhalb von %{days} Tagen nach dem Erfassen geändert werden
+              membership_destroy_period_expired: Eine Mitgliedschaft kann nur innerhalb von %{days} Tagen nach dem Erfassen gelöscht werden.
         contact_account_category:
           attributes:
             unique_per_contactable:
@@ -355,6 +366,9 @@ de:
       confirm_delete: Wollen Sie diese Beitragsart wirklich archivieren? Sie kann danach nicht mehr neu auf Rollen zugewiesen werden.
     form:
       caption_resricted: Beitragsart darf nur durch speziell berechtigte Personen vergeben werden
+  role_lists:
+    membership_destroy_period_expired: Die Mitgliedschaft von %{person} kann nur innerhalb von %{days} Tagen nach dem Erfassen gelöscht werden.
+    membership_move_period_expired: Die Mitgliedschaft von %{person} kann nur innerhalb von %{days} Tagen nach dem Erfassen verschoben werden.
   role:
     fee_kind_change_link: Beitragsart ändern
     fee_kind_changes:

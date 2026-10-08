@@ -39,12 +39,17 @@ class Role::FeeKindChange
     new_fee_kind.restricted?
   end
 
+  def previous_role_end_on
+    [start_on - 1.day, role.start_on].max
+  end
+
   def save!
     raise ActiveRecord::RecordInvalid unless valid?
 
     Role.transaction do
-      Role.create!(start_on:, fee_kind_id:, person:, type:, group:, end_on: role_end_on)
-      role.update!(end_on: [start_on - 1.day, role.start_on].max)
+      Role.create!(start_on:, fee_kind_id:, person:, type:, group:, end_on: role_end_on,
+        created_at: role.created_at)
+      role.update!(end_on: previous_role_end_on)
     end
   end
 end
