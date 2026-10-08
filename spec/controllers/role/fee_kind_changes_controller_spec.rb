@@ -89,6 +89,41 @@ describe Role::FeeKindChangesController do
       end.to raise_error(CanCan::AccessDenied)
     end
 
+    context "retroactively" do
+      let(:today) { Date.new(2026, 4, 30) }
+
+      before do
+        travel_to(today.noon)
+        sign_in(people(:stammesverwaltung))
+      end
+
+      def create(start_on)
+        post :create, params: {role_id: role.id,
+                               role_fee_kind_change: model_params.merge(start_on:)}
+      end
+
+      it "changes fee kind if old role ends end_membership_max_days ago" do
+        expect { create(today - 31.days) }
+          .to change { Role.with_inactive.find(role.id).end_on }.to(today - 32.days)
+      end
+
+      it "does not change fee kind if old role would end further in the past" do
+        expect { create(today - 32.days) }.not_to change { Role.with_inactive.count }
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(assigns(:fee_kind_change).errors.full_messages).to eq [
+          "Ab darf höchstens 31 Tage in der Vergangenheit liegen"
+        ]
+      end
+
+      it "changes fee kind further in the past as admin" do
+        sign_in(people(:admin))
+
+        expect { create(today - 32.days) }
+          .to change { Role.with_inactive.find(role.id).end_on }.to(today - 33.days)
+      end
+    end
+
     context "with view" do
       render_views
       it "re-renders form if model is invalid" do

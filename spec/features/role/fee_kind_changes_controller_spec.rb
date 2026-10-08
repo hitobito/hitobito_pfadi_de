@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#  Copyright (c) 2012-2014, Jungwacht Blauring Schweiz, Pfadibewegung Schweiz.
+#  Copyright (c) 2012-2026, Jungwacht Blauring Schweiz, Pfadibewegung Schweiz.
 #  This file is part of hitobito and licensed under the Affero General Public
 #  License version 3 or later. See the COPYING file at the top-level
 #  directory or at https://github.com/hitobito/hitobito.
@@ -29,9 +29,10 @@ describe Role::FeeKindChangesController, js: true do
 
   describe "create" do
     let(:person) { Fabricate(:person, first_name: "test", last_name: "person", nickname: "") }
+    let(:start_on) { 10.days.ago.to_date }
     let(:role) {
       Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.name, person:, group:,
-        fee_kind: stamm_fee_kind1, start_on: Date.new(2025, 1, 1))
+        fee_kind: stamm_fee_kind1, start_on:)
     }
 
     before do
@@ -70,7 +71,7 @@ describe Role::FeeKindChangesController, js: true do
         expect(page).to have_content "Die Beitragsart der Rolle wurde auf Adler 2 geändert."
       end.to change { person.roles.with_inactive.count }.by(1)
         .and change { person.roles.count }.by(0)
-      expect(role.reload.end_on).to eq(Date.new(2025, 1, 1))
+      expect(role.reload.end_on).to eq(start_on)
     end
 
     it "prevents change date strictly before the start date of the old role" do
@@ -78,7 +79,7 @@ describe Role::FeeKindChangesController, js: true do
       fill_in "Ab", with: (role.start_on - 1.day).strftime("%d.%m.%Y")
       expect do
         first(:button, "Speichern").click
-        expect(page).to have_content "Ab muss 01.01.2025 oder danach sein"
+        expect(page).to have_content "Ab muss #{start_on.strftime("%d.%m.%Y")} oder danach sein"
       end.not_to change { person.roles.with_inactive.count }
       expect(role.reload.end_on).to be_nil
     end

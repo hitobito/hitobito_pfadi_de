@@ -13,4 +13,14 @@ module PfadiDe::ApiScopeAbility
       FeeRate: :fee_kinds
     })
   end
+
+  private
+
+  def action_acceptable?(action)
+    if PfadiDe::RoleAbility::MEMBERSHIP_RESTRICTION_ACTIONS.include?(action.to_sym)
+      write_permission?
+    else
+      super
+    end
+  end
 end

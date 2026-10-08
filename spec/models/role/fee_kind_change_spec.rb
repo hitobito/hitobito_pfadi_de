@@ -99,6 +99,12 @@ describe Role::FeeKindChange do
       expect(person.roles.last.end_on.to_s).to eq "2026-12-31"
     end
 
+    it "copies created_at of existing to new role" do
+      role.update_columns(created_at: Time.zone.local(2025, 1, 1, 12))
+      subject.save!
+      expect(person.roles.last.created_at).to eq Time.zone.local(2025, 1, 1, 12)
+    end
+
     it "raises if invalid" do
       attributes[:start_on] = "2025-01-01"
       expect { subject.save! }.to raise_error(ActiveRecord::RecordInvalid)

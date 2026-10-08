@@ -47,6 +47,7 @@ module HitobitoPfadiDe
       ServiceTokenAbility.include PfadiDe::ServiceTokenAbility
       GroupAbility.prepend PfadiDe::GroupAbility
       PersonAbility.prepend PfadiDe::PersonAbility
+      RoleAbility.prepend PfadiDe::RoleAbility
       EventAbility.prepend PfadiDe::EventAbility
       VariousAbility.include PfadiDe::VariousAbility
       InvoiceAbility.include PfadiDe::InvoiceAbility
@@ -57,6 +58,7 @@ module HitobitoPfadiDe
       GroupsController.prepend PfadiDe::GroupsController
       PeopleController.prepend PfadiDe::PeopleController
       RolesController.prepend PfadiDe::RolesController
+      Role::List.prepend PfadiDe::Role::List
       PeriodInvoiceTemplatesController.prepend PfadiDe::PeriodInvoiceTemplatesController
       ServiceTokensController.permitted_attrs += [:fee_kinds, :efz_einsichtnahmen]
 
