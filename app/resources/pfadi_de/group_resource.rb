@@ -23,6 +23,7 @@ module PfadiDe::GroupResource
       attribute :rechtsform, :string
       attribute :strukturnummer, :string
       attribute :stamm_typ, :string
+      attribute :landesverband_id, :integer
       attribute :opt_out_aufnahmeantrag, :boolean
       attribute :opt_out_aufnahmeantrag_stammessuche, :boolean
       attribute :efz_in_aufnahmeantrag, :boolean

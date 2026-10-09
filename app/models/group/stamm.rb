@@ -34,6 +34,16 @@ class Group::Stamm < ::Group
   i18n_enum :stamm_typ, %w[other stamm],
     i18n_prefix: "activerecord.attributes.group.stamm_typen"
 
+  # landesverband_id/set_landesverband_id/the presence validation all live on
+  # PfadiDe::Group (the base Group class), not here: has_many/belongs_to write
+  # to the class_attribute :_reflections, and the first such write on an STI
+  # subclass forks it away from Group's, permanently hiding any association the
+  # wagon registers on Group afterwards (as fee_kinds/abbreviations are, further
+  # down in that same prepended block). Declaring belongs_to here would fork
+  # early: Group::Bundesebene's `children` (referenced by PfadiDe::Group's
+  # `root_types Group::Bundesebene`) transitively autoloads this very file
+  # before those has_many calls run.
+
   ### ROLES
 
   class Stammesfuehrung < ::Role

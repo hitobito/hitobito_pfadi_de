@@ -33,6 +33,7 @@ describe GroupResource, type: :resource do
         :opt_out_aufnahmeantrag_stammessuche,
         :efz_in_aufnahmeantrag,
         :eingeschraenkt,
+        :landesverband_id,
         :gruendungsdatum,
         :aufloesungsdatum,
         :einsichtnahme_efz_durch_gruppe,

@@ -127,6 +127,7 @@ de:
         exit_date: Austrittsdatum
         gruendungsdatum: Gründungsdatum
         iban: IBAN
+        landesverband_id: Landesverband
         opt_out_aufnahmeantrag: Opt-Out digitale Aufnahme
         opt_out_aufnahmeantrag_stammessuche: Opt-Out Stammessuche
         pronoun: Pronomen
