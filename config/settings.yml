@@ -1,4 +1,4 @@
-#  Copyright (c) 2012-2025, BdP and DPSG. This file is part of
+#  Copyright (c) 2012-2026, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
@@ -54,6 +54,12 @@ people:
     enabled: true
     self_service_managed_creation:
       enabled: false
+
+role:
+  # Days after created_at to change group, type or start_on, and after end_on to change end_on
+  change_membership_max_days: 32
+  # Days end_on may lie in the past when set
+  end_membership_max_days: 32
 
 membership_fees:
   relative_fee_rates:

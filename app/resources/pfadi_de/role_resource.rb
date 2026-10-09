@@ -17,4 +17,18 @@ module PfadiDe::RoleResource
   def on_create
     context.action_name.to_sym == :create
   end
+
+  private
+
+  def authorize_destroy(model)
+    super
+
+    unless PfadiDe::MembershipRoleRestrictions.new(model, current_ability).destroyable?
+      errors = Graphiti::Util::SimpleErrors.new({})
+      errors.add(:base, :membership_destroy_period_expired,
+        message: model.errors.generate_message(:base, :membership_destroy_period_expired,
+          days: PfadiDe::MembershipRoleRestrictions.change_max_days))
+      raise Graphiti::Errors::InvalidRequest, errors
+    end
+  end
 end
