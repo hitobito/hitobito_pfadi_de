@@ -101,7 +101,8 @@ module HitobitoPfadiDe
       # listed in the issue (github.com/hitobito/hitobito_pfadi_de/issues/102),
       # covering PhoneNumber/AdditionalEmail/AdditionalAddress for Person.
       require Rails.root.join("db", "seeds", "support", "contact_account_category_seeder.rb")
-      require_relative("../../db/seeds/support/pfadi_de/contact_account_category_seeder")
+      relative_target = "../../db/seeds/support/pfadi_de/contact_account_category_seeder.rb"
+      load File.expand_path(relative_target, __dir__)
       ContactAccountCategorySeeder.prepend(PfadiDe::ContactAccountCategorySeeder)
 
       ContactAccountCategoryMigrationJob::LABEL_KEY_MAPPING.deep_merge!({
