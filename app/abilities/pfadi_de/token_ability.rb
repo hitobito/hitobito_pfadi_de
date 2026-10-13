@@ -12,10 +12,14 @@ module PfadiDe::TokenAbility
     return if token.nil?
 
     super
-    can :create_membership_roles, Group, id: registerable_groups if token.create_membership_roles?
+
+    can :register_people, Group, id: registerable_membership_groups if can_register_people?
+    if token.create_membership_roles?
+      can :create_membership_roles, Group, id: registerable_membership_groups
+    end
   end
 
-  def registerable_groups
+  def registerable_membership_groups
     registerable_groups_scope
       .active
       .where(type: ::Group::Mitglieder.sti_name)
