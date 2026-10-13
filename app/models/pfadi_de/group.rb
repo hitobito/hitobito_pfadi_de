@@ -34,11 +34,6 @@ module PfadiDe::Group
     paper_trail_options[:skip] |= ["landesverband_id"]
   end
 
-  # For now, self registration is always disabled.
-  def self_registration_active?
-    false
-  end
-
   private
 
   def set_landesverband_id
