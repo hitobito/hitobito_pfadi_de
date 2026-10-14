@@ -29,9 +29,9 @@ describe PfadiDe::Role::ExclusiveRole do
 
   before do
     Group::Mitglieder::OrdentlicheMitgliedschaft
-      .mutually_exclusive_roles(:membership, scope: :layer, validate_past:)
+      .mutually_exclusive_in(:membership, scope: :layer, validate_past:)
     Group::Mitglieder::Zweitmitgliedschaft
-      .mutually_exclusive_roles(:membership, scope: :layer, validate_past:)
+      .mutually_exclusive_in(:membership, scope: :layer, validate_past:)
   end
 
   def build_role(type, person: self.person, group: adler_mitglieder, start_on: Date.current,
@@ -59,7 +59,7 @@ describe PfadiDe::Role::ExclusiveRole do
 
       expect(role).not_to be_valid
       expect(role.errors[:base].first)
-        .to include("Adler / Gruppe")
+        .to include("Adler / Mitglieder")
         .and include("01.01.2026")
         .and include("offen")
     end
@@ -81,9 +81,9 @@ describe PfadiDe::Role::ExclusiveRole do
     before do
       described_class.registry.clear
       Group::Mitglieder::OrdentlicheMitgliedschaft
-        .mutually_exclusive_roles(:membership, scope: :global)
+        .mutually_exclusive_in(:membership, scope: :global)
       Group::Mitglieder::Zweitmitgliedschaft
-        .mutually_exclusive_roles(:membership, scope: :global)
+        .mutually_exclusive_in(:membership, scope: :global)
     end
 
     it "rejects a same-category role in a different layer" do
@@ -103,9 +103,9 @@ describe PfadiDe::Role::ExclusiveRole do
     before do
       described_class.registry.clear
       Group::Mitglieder::OrdentlicheMitgliedschaft
-        .mutually_exclusive_roles(:membership, scope: :global)
+        .mutually_exclusive_in(:membership, scope: :global)
       Group::Mitglieder::Zweitmitgliedschaft
-        .mutually_exclusive_roles(:honorary, scope: :global)
+        .mutually_exclusive_in(:honorary, scope: :global)
     end
 
     it "accepts roles of a different category" do
@@ -178,6 +178,22 @@ describe PfadiDe::Role::ExclusiveRole do
 
         expect(role).to be_valid
       end
+
+      context "with a pre-existing overlapping role" do
+        let!(:overlapping_role) do
+          build_role(Group::Mitglieder::Zweitmitgliedschaft,
+            start_on: 6.months.ago.to_date).tap { |role| role.save!(validate: false) }
+        end
+
+        # soft destroy only applies to roles older than minimum_days_to_archive
+        before { existing_role.update_columns(created_at: 2.months.ago) }
+
+        it "soft-destroys the role despite the overlap (only [today..] is checked)" do
+          expect { existing_role.destroy }.not_to raise_error
+
+          expect(existing_role.end_on).to eq Date.yesterday
+        end
+      end
     end
 
     context "with validate_past: true" do
@@ -194,10 +210,31 @@ describe PfadiDe::Role::ExclusiveRole do
 
         expect(role).not_to be_valid
       end
+
+      context "with a pre-existing overlapping role" do
+        let!(:overlapping_role) do
+          build_role(Group::Mitglieder::Zweitmitgliedschaft,
+            start_on: 6.months.ago.to_date).tap { |role| role.save!(validate: false) }
+        end
+
+        # soft destroy only applies to roles older than minimum_days_to_archive
+        before { existing_role.update_columns(created_at: 2.months.ago) }
+
+        it "prevents ending the role via update" do
+          expect(existing_role.update(end_on: Date.yesterday)).to be false
+          expect(existing_role.errors[:base].first).to include("Zweitmitgliedschaft")
+        end
+
+        it "prevents soft-destroying the role (change_type raises RecordInvalid)" do
+          expect { existing_role.destroy }.to raise_error(ActiveRecord::RecordInvalid)
+
+          expect(existing_role.reload.end_on).to be_nil
+        end
+      end
     end
   end
 
-  describe ".mutually_exclusive_roles" do
+  describe ".mutually_exclusive_in" do
     it "registers the role type in the registry" do
       expect(described_class.registry).to include(
         a_hash_including(
@@ -212,21 +249,21 @@ describe PfadiDe::Role::ExclusiveRole do
     it "rejects an unknown scope" do
       expect do
         Group::Mitglieder::Foerdermitgliedschaft
-          .mutually_exclusive_roles(:membership, scope: :company)
+          .mutually_exclusive_in(:membership, scope: :company)
       end.to raise_error(ArgumentError)
     end
 
     it "is idempotent for identical declarations" do
       expect do
         Group::Mitglieder::OrdentlicheMitgliedschaft
-          .mutually_exclusive_roles(:membership, scope: :layer)
+          .mutually_exclusive_in(:membership, scope: :layer)
       end.not_to change { described_class.registry.size }
     end
 
     it "replaces scope and validate_past when the category is re-declared" do
       expect do
         Group::Mitglieder::OrdentlicheMitgliedschaft
-          .mutually_exclusive_roles(:membership, scope: :global, validate_past: true)
+          .mutually_exclusive_in(:membership, scope: :global, validate_past: true)
       end.not_to change { described_class.registry.size }
 
       expect(described_class.registry).to include(

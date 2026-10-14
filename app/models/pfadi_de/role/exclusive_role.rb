@@ -14,7 +14,7 @@ module PfadiDe
     # validity periods (start_on..end_on) overlap:
     #
     #   class Group::Mitglieder::OrdentlicheMitgliedschaft < ::Role
-    #     mutually_exclusive_roles :membership, scope: :global
+    #     mutually_exclusive_in :membership, scope: :global
     #   end
     module ExclusiveRole
       extend ActiveSupport::Concern
@@ -37,7 +37,7 @@ module PfadiDe
         #                inconsistent in the past stay possible. This can help to simplify
         #                correcting multiple roles in the past retroactively.
         #                `true` checks the whole validity period.
-        def mutually_exclusive_roles(category, scope: :layer, validate_past: false)
+        def mutually_exclusive_in(category, scope: :layer, validate_past: false)
           unless SCOPES.include?(scope)
             raise ArgumentError,
               "unknown scope #{scope.inspect}, expected one of #{SCOPES.inspect}"
