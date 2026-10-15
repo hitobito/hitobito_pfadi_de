@@ -45,7 +45,7 @@ describe Dropdown::PeopleExport do
     it "has dropdown with multiple items if person has mulitple roles" do
       expect(dom).to have_link "eFZ-Antrag", href: "#"
       expect(dom).to have_link "Adler / Pfadfinder*innen", href: group_person_efz_antrag_path(group.id, person.id)
-      expect(dom).to have_link "Adler / Gruppe",
+      expect(dom).to have_link "Adler / Mitglieder",
         href: group_person_efz_antrag_path(groups(:adler_mitglieder).id, person.id)
     end
   end

@@ -64,6 +64,9 @@ de:
       group/landesverband/datenschutzbeauftragt:
         one: Datenschutzbeauftragte*r
         description: Datenschutzbeauftragte*r
+      group/mitglieder:
+        one: Mitglieder
+        other: Mitglieder
       group/mitglieder/ordentliche_mitgliedschaft:
         one: Ordentliche Mitgliedschaft
         description: Ordentliche Mitgliedschaft
