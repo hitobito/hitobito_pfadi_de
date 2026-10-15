@@ -34,6 +34,7 @@ de:
             base:
               membership_group_or_type_change_period_expired: Gruppe und Rolle einer Mitgliedschaft können nur innerhalb von %{days} Tagen nach dem Erfassen geändert werden
               membership_destroy_period_expired: Eine Mitgliedschaft kann nur innerhalb von %{days} Tagen nach dem Erfassen gelöscht werden.
+              already_has_exclusive_role: "schliesst sich mit der bereits bestehenden Rolle '%{role}' in '%{group}' (%{period}) aus"
         contact_account_category:
           attributes:
             unique_per_contactable:
@@ -63,6 +64,9 @@ de:
       group/landesverband/datenschutzbeauftragt:
         one: Datenschutzbeauftragte*r
         description: Datenschutzbeauftragte*r
+      group/mitglieder:
+        one: Mitglieder
+        other: Mitglieder
       group/mitglieder/ordentliche_mitgliedschaft:
         one: Ordentliche Mitgliedschaft
         description: Ordentliche Mitgliedschaft
@@ -378,6 +382,7 @@ de:
       success: Die Beitragsart der Rolle wurde auf %{fee_kind} geändert.
       success_future_change: Die Beitragsart der Rolle wird am %{start_on} auf %{fee_kind} geändert.
       failure_role_does_not_allow_fee_kind: Rolle ist nicht beitragspflichtig
+    open_end: "offen"
 
   person:
     history:

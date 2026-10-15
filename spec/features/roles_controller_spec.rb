@@ -58,7 +58,7 @@ describe RolesController, js: true do
       expect do
         first(:button, "Speichern").click
         expect(page).to have_content "Rolle Zweitmitgliedschaft für test person " \
-          "in Gruppe wurde erfolgreich erstellt."
+          "in Mitglieder wurde erfolgreich erstellt."
       end.to change { person.roles.count }.by(1)
     end
 
@@ -131,7 +131,7 @@ describe RolesController, js: true do
         expect do
           first(:button, "Speichern").click
           expect(page).to have_content "Rolle Zweitmitgliedschaft"
-          expect(page).to have_content "in Gruppe zu Ordentliche Mitgliedschaft geändert"
+          expect(page).to have_content "in Mitglieder zu Ordentliche Mitgliedschaft geändert"
         end.to change { person.roles.with_inactive.count }.by(1)
         expect(person.roles.last.fee_kind_id).to eq(fee_kinds(:baden_wuerttemberg_kind).id)
       end
@@ -143,7 +143,7 @@ describe RolesController, js: true do
         expect do
           first(:button, "Speichern").click
           expect(page).to have_content "Rolle Zweitmitgliedschaft"
-          expect(page).to have_content "in Gruppe zu Ordentliche Mitgliedschaft geändert"
+          expect(page).to have_content "in Mitglieder zu Ordentliche Mitgliedschaft geändert"
         end.to change { person.roles.with_inactive.count }.by(1)
         expect(person.roles.last.fee_kind_id).to eq(other_fee_kind.id)
       end
