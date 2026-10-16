@@ -26,9 +26,4 @@ module PfadiDe::Group
       dependent: :destroy
     accepts_nested_attributes_for :abbreviations, allow_destroy: true, reject_if: :all_blank
   end
-
-  # For now, self registration is always disabled.
-  def self_registration_active?
-    false
-  end
 end
