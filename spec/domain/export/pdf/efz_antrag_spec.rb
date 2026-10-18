@@ -148,6 +148,43 @@ describe Export::Pdf::EfzAntrag do
         expect(data["efz_recipient_address"]).to include("Efz Strasse 2")
       end
     end
+
+    context "with a mailing_address additional address" do
+      let(:efz_verantwortliche_stelle) do
+        g = Group::Stamm.new(
+          id: 42,
+          einsichtnahme_efz_durch_gruppe: true,
+          name: "Baden-Württemberg",
+          street: "Gruppenstrasse 10",
+          zip_code: "10117",
+          town: "Berlin",
+          country: "DE",
+          email: "gruppe@example.com",
+          phone_numbers_attributes: [{number: "+49 30 123 45 67"}]
+        )
+        g.additional_addresses.build(
+          street: "Gruppenstrasse 10",
+          zip_code: "10117",
+          town: "Berlin",
+          country: "DE",
+          category: contact_account_categories(:additional_address_group_mailing_address),
+          uses_contactable_name: false,
+          organization: true,
+          organization_name: "BdP Landesverband Baden-Württemberg"
+        )
+        g
+      end
+
+      it "uses the mailing address name for the group" do
+        data = efz_antrag.form_data
+        expect(data["group_name"]).to eq("BdP Landesverband Baden-Württemberg")
+      end
+
+      it "does not affect the group address" do
+        data = efz_antrag.form_data
+        expect(data["group_address"]).to include("Gruppenstrasse 10")
+      end
+    end
   end
 
   describe "#template_path" do
