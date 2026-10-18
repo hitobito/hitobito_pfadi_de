@@ -12,6 +12,22 @@ describe Person do
     expect(Person::FILTER_ATTRS).to include :latest_efz_issued_on
   end
 
+  describe "address.company feature gate" do
+    # The attribute lists are built once at class-load time, so the disabled
+    # state can only be tested in a wagon that boots with the feature
+    # disabled like the `pfadi_de` wagon, not in the core
+    # (settings.yml: address.company.enabled: false)
+    it "excludes company attributes" do
+      expect(Person.used_attributes).not_to include(:company)
+      expect(Person.used_attributes).not_to include(:company_name)
+      expect(Person::FILTER_ATTRS).not_to include(:company_name)
+      expect(Person::SEARCHABLE_ATTRS).not_to include(:company_name)
+
+      # PUBLIC_ATTRS stays unchanged so only_public_data selects keep working
+      expect(Person::PUBLIC_ATTRS).to include(:company, :company_name)
+    end
+  end
+
   describe "PaperTrail", versioning: true do
     let(:person) { people(:member) }
 

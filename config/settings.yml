@@ -27,8 +27,9 @@ countries:
     - CH
     - LI
 
-additional_address:
-  enabled: true
+address:
+  company:
+    enabled: false
 
 groups:
   bdp:
