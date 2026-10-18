@@ -37,6 +37,7 @@ module Export::Pdf
         # Data of the person for who the eFZ is being requested
         "mitglied_name" => format_address_only_name(person),
         "mitglied_address" => format_address_without_name(person),
+        "mitglied_address_flat" => format_address_without_name_flat(person),
         "mitglied_number" => person.id.to_s,
         "mitglied_birthdate" => person.birthday&.strftime(DATE_FORMAT),
         "mitglied_city" => person.town,
@@ -45,6 +46,7 @@ module Export::Pdf
         "group_name" =>
           format_address_only_name(efz_verantwortliche_stelle, for_mailing_address: true),
         "group_address" => format_address_without_name(efz_verantwortliche_stelle),
+        "group_address_flat" => format_address_without_name_flat(efz_verantwortliche_stelle),
         "group_mail" => efz_verantwortliche_stelle.email,
         "group_phone" => phone_number(efz_verantwortliche_stelle),
         "group_url" => website_url(efz_verantwortliche_stelle),
@@ -54,6 +56,8 @@ module Export::Pdf
           format_address_only_name(efz_verantwortliche_stelle, for_efz: true),
         "efz_recipient_address" =>
           format_address_without_name(efz_verantwortliche_stelle, for_efz: true),
+        "efz_recipient_address_flat" =>
+          format_address_without_name_flat(efz_verantwortliche_stelle, for_efz: true),
 
         "date" => Date.current.strftime(DATE_FORMAT)
       }.transform_values(&:to_s)
@@ -94,6 +98,10 @@ module Export::Pdf
 
     def format_address_without_name(contactable, for_efz: false, for_mailing_address: false)
       contactable_address(contactable, for_efz:, for_mailing_address:).efz_full_address_without_name
+    end
+
+    def format_address_without_name_flat(contactable, for_efz: false)
+      contactable_address(contactable, for_efz:).efz_full_address_without_name_flat
     end
 
     def format_address_only_name(contactable, for_efz: false, for_mailing_address: false)

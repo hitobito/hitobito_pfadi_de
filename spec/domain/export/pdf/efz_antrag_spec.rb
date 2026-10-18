@@ -59,16 +59,19 @@ describe Export::Pdf::EfzAntrag do
       expect(efz_antrag.form_data.keys).to match_array [
         "mitglied_name",
         "mitglied_address",
+        "mitglied_address_flat",
         "mitglied_number",
         "mitglied_birthdate",
         "mitglied_city",
         "group_name",
         "group_address",
+        "group_address_flat",
         "group_mail",
         "group_phone",
         "group_url",
         "efz_recipient_name",
         "efz_recipient_address",
+        "efz_recipient_address_flat",
         "date"
       ]
     end
@@ -77,16 +80,19 @@ describe Export::Pdf::EfzAntrag do
       data = efz_antrag.form_data
       expect(data["mitglied_name"]).to eq("Hans Muster")
       expect(data["mitglied_address"]).to be_a(String)
+      expect(data["mitglied_address_flat"]).to eq("Musterstrasse 1, 10115 Berlin")
       expect(data["mitglied_number"]).to eq("12345")
       expect(data["mitglied_birthdate"]).to eq("01.01.1942")
       expect(data["mitglied_city"]).to eq("Berlin")
       expect(data["group_name"]).to eq("Adler Gruppe")
       expect(data["group_address"]).to be_a(String)
+      expect(data["group_address_flat"]).to eq("Gruppenstrasse 10, 10117 Berlin")
       expect(data["group_mail"]).to eq("gruppe@example.com")
       expect(data["group_phone"]).to eq("+49 30 123 45 67")
       expect(data["group_url"]).to eq("https://adler-gruppe.example.com")
       expect(data["efz_recipient_name"]).to eq("Adler Gruppe")
       expect(data["efz_recipient_address"]).to be_a(String)
+      expect(data["efz_recipient_address_flat"]).to eq("Gruppenstrasse 10, 10117 Berlin")
       expect(data["date"]).to eq(Date.current.strftime("%d.%m.%Y"))
     end
 
@@ -103,16 +109,19 @@ describe Export::Pdf::EfzAntrag do
       data = described_class.new(group, person).form_data
       expect(data["mitglied_name"]).to eq("")
       expect(data["mitglied_address"]).to be_a(String)
+      expect(data["mitglied_address_flat"]).to eq("")
       expect(data["mitglied_number"]).to eq("")
       expect(data["mitglied_birthdate"]).to eq("")
       expect(data["mitglied_city"]).to eq("")
       expect(data["group_name"]).to eq("")
       expect(data["group_address"]).to be_a(String)
+      expect(data["group_address_flat"]).to eq("")
       expect(data["group_mail"]).to eq("")
       expect(data["group_phone"]).to eq("")
       expect(data["group_url"]).to eq("")
       expect(data["efz_recipient_name"]).to eq("")
       expect(data["efz_recipient_address"]).to be_a(String)
+      expect(data["efz_recipient_address_flat"]).to eq("")
       expect(data["date"]).to eq(Date.current.strftime("%d.%m.%Y"))
     end
 
@@ -146,6 +155,7 @@ describe Export::Pdf::EfzAntrag do
         data = efz_antrag.form_data
         expect(data["efz_recipient_name"]).to eq("Efz Empfänger")
         expect(data["efz_recipient_address"]).to include("Efz Strasse 2")
+        expect(data["efz_recipient_address_flat"]).to eq("Efz Strasse 2, 10115 Efz Stadt")
       end
     end
 
