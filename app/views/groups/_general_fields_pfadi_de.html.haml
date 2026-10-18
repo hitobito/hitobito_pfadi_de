@@ -3,23 +3,37 @@
 -#  or later. See the COPYING file at the top-level directory or at
 -#  https://github.com/hitobito/hitobito_pfadi_de.
 
+= render 'used_i18n_enum_field', attr: :rechtsform, f:
+= render 'used_i18n_enum_field', attr: :stamm_typ, f:
+= f.labeled_input_fields(*entry.used_attributes(:strukturnummer, :gruendungsdatum,
+  :aufloesungsdatum, :eingeschraenkt))
+
 - if entry.attr_used?(:iban)
   = render 'contactable/bank_account_fields', f: f
 
-= f.labeled_input_fields(*entry.used_attributes(:gruendungsdatum, :aufloesungsdatum,
-  :einsichtnahme_efz_durch_gruppe, :debitorennummer, :sepa_glaeubiger_id))
+- billing_upwards_attrs = entry.used_attributes(:debitorennummer, :zahlungsart)
+- if billing_upwards_attrs.any?
+  .row
+    %h3.form-subtitle.col-12.text-md-start.mt-1= t('.billing_upwards')
+  = f.labeled_input_fields(*entry.used_attributes(:debitorennummer))
+  = render 'used_i18n_enum_field', attr: :zahlungsart, f:
 
-= render 'used_i18n_enum_field', attr: :sepa_mandate_mode, f:
-= render 'used_i18n_enum_field', attr: :zahlungsart, f:
-= render 'used_i18n_enum_field', attr: :rechtsform, f:
-= render 'used_i18n_enum_field', attr: :stamm_typ, f:
+- billing_members_attrs = entry.used_attributes(:sepa_glaeubiger_id, :sepa_mandate_mode)
+- if billing_members_attrs.any?
+  .row
+    %h3.form-subtitle.col-12.text-md-start.mt-3= t('.billing_members')
+  = f.labeled_input_fields(*entry.used_attributes(:sepa_glaeubiger_id))
+  = render 'used_i18n_enum_field', attr: :sepa_mandate_mode, f:
+
+- settings_attrs = entry.used_attributes(:einsichtnahme_efz_durch_gruppe, :opt_out_aufnahmeantrag,
+  :opt_out_aufnahmeantrag_stammessuche, :efz_in_aufnahmeantrag)
+- if settings_attrs.any?
+  .row
+    %h3.form-subtitle.col-12.text-md-start.mt-3= t('.settings')
+  = f.labeled_input_fields(*settings_attrs)
 
 - if entry.layer? && can?(:modify_superior, entry)
   = f.labeled_inline_fields_for :abbreviations do |nested_f|
     = nested_f.input_field(:value, placeholder: t('.abbreviation_placeholder'), class: 'd-inline')
   = f.indented do
     = f.help_block(t('.help_abbreviations'))
-
-= f.labeled_input_fields(*entry.used_attributes(:strukturnummer, :opt_out_aufnahmeantrag,
-  :opt_out_aufnahmeantrag_stammessuche, :efz_in_aufnahmeantrag, :eingeschraenkt))
-
