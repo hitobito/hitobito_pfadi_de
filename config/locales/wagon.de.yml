@@ -393,10 +393,15 @@ de:
 
   groups:
     general_fields_pfadi_de:
+      billing_upwards: Abrechnung mit übergeordneter Ebene
+      billing_members: SEPA-Lastschrift (Mitgliedsabrechnung)
+      settings: Einstellungen
       help_abbreviations: "Optional. Jede Abkürzung darf nur einmal über alle Gruppen hinweg vergeben werden."
       abbreviation_placeholder: "z.B. adl"
     contact_data_pfadi_de:
       bank_account: Bankverbindung
+      billing_upwards: Abrechnung mit übergeordneter Ebene
+      billing_members: SEPA-Lastschrift (Mitgliedsabrechnung)
     actions_show_pfadi_de:
       invoice_button_dropdown: Verbandsabrechnungen
       invoice_button_demo_lv_members: Mitglieder, Rechnung an Landesverband (Demo)

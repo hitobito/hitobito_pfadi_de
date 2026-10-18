@@ -15,11 +15,15 @@
         %div= entry.bic
       - if entry.bank_name.present?
         %div= entry.bank_name
+      - if entry.debitorennummer.present? or entry.zahlungsart.present?
+        %strong.d-block.mt-2= t('.billing_upwards')
       - if entry.debitorennummer.present?
         %div= "#{entry.class.human_attribute_name(:debitorennummer)}: #{entry.debitorennummer}"
+      - if entry.zahlungsart.present?
+        %div= "#{entry.class.human_attribute_name(:zahlungsart)}: #{entry.zahlungsart_label}"
+      - if entry.sepa_glaeubiger_id.present? or entry.attr_used?(:sepa_mandate_mode)
+        %strong.d-block.mt-2= t('.billing_members')
       - if entry.sepa_glaeubiger_id.present?
         %div= "#{entry.class.human_attribute_name(:sepa_glaeubiger_id)}: #{entry.sepa_glaeubiger_id}"
       - if entry.attr_used?(:sepa_mandate_mode)
         %div= "#{entry.class.human_attribute_name(:sepa_mandate_mode)}: #{entry.sepa_mandate_mode_label}"
-      - if entry.zahlungsart.present?
-        %div= entry.class.human_attribute_name("zahlungsart/#{entry.zahlungsart}")
