@@ -17,9 +17,7 @@ Rails.application.routes.draw do
         resource :efz_antrag, only: [:show], module: :people
         resources :efz_einsichtnahmen, only: [:new, :create, :destroy]
         scope module: "person" do
-          resources :sepa_mandates, only: [:index, :new, :create, :destroy] do
-            member { patch :revoke }
-          end
+          resources :sepa_mandates, only: [:index, :new, :create, :update, :destroy]
         end
       end
       resources :fee_kinds do

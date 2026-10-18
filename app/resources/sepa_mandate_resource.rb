@@ -80,7 +80,7 @@ class SepaMandateResource < ApplicationResource
   end
 
   def authorize_update(model)
-    authorize!(:revoke, model.class.find(model.id))
+    authorize!(:update, model.class.find(model.id))
     invalid_request!(:revoked_at, :blank) if model.revoked_at.blank?
     model.revoker = current_ability.user if current_ability.user&.persisted?
   end

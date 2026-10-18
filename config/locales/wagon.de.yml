@@ -440,7 +440,7 @@ de:
         sepa_mandates_disabled: Für %{group} ist die Erfassung von SEPA-Mandaten nicht aktiviert. Sie kann in den Einstellungen der Gruppierung aktiviert werden, sobald eine SEPA-Gläubiger-ID hinterlegt ist.
         revoke: Widerrufen
         confirm_revoke: Willst du das SEPA-Mandat %{reference} wirklich widerrufen? Dies kann nicht rückgängig gemacht werden.
-      revoke:
+      update:
         success: SEPA-Mandat %{reference} wurde widerrufen.
 
   invoices:

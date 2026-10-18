@@ -6,53 +6,23 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 class SepaMandateAbility < AbilityDsl::Base
-  include AbilityDsl::Constraints::Person
+  include AbilityDsl::Constraints::Group
 
   on(SepaMandate) do
     permission(:any).may(:read).herself
-    permission(:group_full).may(:read).in_creditor
-    permission(:group_and_below_full).may(:read).in_creditor_or_above
-    permission(:layer_full).may(:read).in_creditor
-    permission(:layer_and_below_full).may(:read).in_creditor_or_above
-    permission(:finance).may(:read).in_creditor
-    permission(:finance).may(:create).for_member_in_creditor_or_above
-    permission(:finance).may(:revoke).active_in_creditor_or_above
+    permission(:finance).may(:read).in_same_layer
 
-    permission(:layer_full).may(:revoke).active_in_creditor
-    permission(:layer_and_below_full).may(:revoke).active_in_creditor_or_above
+    permission(:finance).may(:create).for_member_in_same_layer
+    permission(:finance).may(:update).active_in_same_layer
 
     permission(:admin).may(:destroy, :show_evidence).all
   end
 
-  def person = subject.person
+  def herself = subject.person_id == user.id
 
-  # The permission being checked is either a group or a layer permission, and the
-  # lookup for the other kind is empty, so it is safe to check both. Layer permissions
-  # only match layer ids, so non-layer ancestors do no harm.
-  def in_creditor = permission_in_groups?(creditor_ids) || permission_in_layers?(creditor_ids)
-
-  def in_creditor_or_above
-    permission_in_groups?(creditor_hierarchy_ids) || permission_in_layers?(creditor_hierarchy_ids)
+  def for_member_in_same_layer
+    in_same_layer && subject.person.groups_hierarchy_ids.include?(group.id)
   end
 
-  def for_member_in_creditor_or_above
-    creditor.present? && in_creditor_or_above &&
-      person.groups_hierarchy_ids.include?(creditor.id)
-  end
-
-  def active_in_creditor
-    subject.active? && creditor.present? && in_creditor
-  end
-
-  def active_in_creditor_or_above
-    subject.active? && creditor.present? && in_creditor_or_above
-  end
-
-  private
-
-  def creditor = subject.group
-
-  def creditor_ids = creditor ? [creditor.id] : person.layer_group_ids
-
-  def creditor_hierarchy_ids = creditor ? creditor.hierarchy.map(&:id) : person.groups_hierarchy_ids
+  def active_in_same_layer = subject.active? && in_same_layer
 end

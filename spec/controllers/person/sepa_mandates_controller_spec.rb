@@ -118,8 +118,8 @@ describe Person::SepaMandatesController do
       expect(response).to have_http_status(:unprocessable_content)
     end
 
-    it "is denied for layer_and_below_full" do
-      sign_in(people(:stammesverwaltung))
+    it "is denied for the payer" do
+      sign_in(member)
 
       expect {
         post :create, params: params.merge(sepa_mandate: mandate_params)
@@ -127,12 +127,12 @@ describe Person::SepaMandatesController do
     end
   end
 
-  describe "PATCH #revoke" do
+  describe "PATCH #update" do
     let!(:mandate) { Fabricate(:sepa_mandate, person: member, group: creditor) }
 
     it "revokes the mandate" do
       sign_in(people(:stammesverwaltung))
-      patch :revoke, params: params.merge(id: mandate.id)
+      patch :update, params: params.merge(id: mandate.id)
 
       expect(mandate.reload).not_to be_active
       expect(mandate.revoker).to eq people(:stammesverwaltung)
@@ -142,7 +142,7 @@ describe Person::SepaMandatesController do
     it "is denied for the payer" do
       sign_in(member)
 
-      expect { patch :revoke, params: params.merge(id: mandate.id) }
+      expect { patch :update, params: params.merge(id: mandate.id) }
         .to raise_error(CanCan::AccessDenied)
     end
   end

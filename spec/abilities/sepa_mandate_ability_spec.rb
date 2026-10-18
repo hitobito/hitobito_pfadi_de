@@ -35,18 +35,12 @@ describe SepaMandateAbility do
       expect(ability_for("Stammesfuehrung", :adler)).not_to be_able_to(:show, mandate)
     end
 
-    it "may be read with layer_and_below_full on the creditor layer" do
-      expect(ability_for("Stammesmitgliederverwaltung", :adler)).to be_able_to(:show, mandate)
+    it "may be read with layer_and_below_finance above the creditor layer" do
+      expect(ability_for("Landesschatzmeister", :landesvorstand_bw)).to be_able_to(:show, mandate)
     end
 
-    it "may be read with layer_and_below_full above the creditor layer" do
-      expect(ability_for("Landesmitgliederverwaltung", :baden_wuerttemberg))
-        .to be_able_to(:show, mandate)
-    end
-
-    it "may not be read with layer_and_below_full in another layer" do
-      expect(ability_for("Stammesmitgliederverwaltung", :silberreiher))
-        .not_to be_able_to(:show, mandate)
+    it "may not be read with finance in another layer" do
+      expect(ability_for("Stammesschatzmeister", :silberreiher)).not_to be_able_to(:show, mandate)
     end
 
     it "may not be read with full permissions on the person but not on the creditor" do
@@ -58,13 +52,9 @@ describe SepaMandateAbility do
       expect(ability_for("Stammesschatzmeister", :adler)).to be_able_to(:show, mandate)
     end
 
-    it "may not be read with finance in a layer above the creditor" do
-      expect(ability_for("Landesschatzmeister", :landesvorstand_bw)).not_to be_able_to(:show, mandate)
-    end
-
     it "may be listed for the person with finance in the person's layer" do
       expect(ability_for("Stammesschatzmeister", :adler))
-        .to be_able_to(:index, SepaMandate.new(person: member))
+        .to be_able_to(:index, SepaMandate.new(person: member, group: creditor))
     end
   end
 
@@ -86,41 +76,31 @@ describe SepaMandateAbility do
       expect(ability_for("Landesschatzmeister", :landesvorstand_bw)).not_to be_able_to(:create, mandate)
     end
 
-    it "may not be created with layer_and_below_full" do
-      expect(ability_for("Stammesmitgliederverwaltung", :adler)).not_to be_able_to(:create, mandate)
-    end
-
     it "may not be created by the payer herself" do
       expect(Ability.new(member)).not_to be_able_to(:create, mandate)
     end
   end
 
-  describe "revoke" do
+  describe "update (revoke)" do
     it "may be revoked with finance on the creditor layer" do
-      expect(ability_for("Stammesschatzmeister", :adler)).to be_able_to(:revoke, mandate)
+      expect(ability_for("Stammesschatzmeister", :adler)).to be_able_to(:update, mandate)
     end
 
-    it "may be revoked with layer_and_below_full on the creditor layer" do
-      expect(ability_for("Stammesmitgliederverwaltung", :adler)).to be_able_to(:revoke, mandate)
+    it "may be revoked with layer_and_below_finance above the creditor layer" do
+      expect(ability_for("Landesschatzmeister", :landesvorstand_bw)).to be_able_to(:update, mandate)
     end
 
-    it "may be revoked with layer_and_below_full above the creditor layer" do
-      expect(ability_for("Landesmitgliederverwaltung", :baden_wuerttemberg))
-        .to be_able_to(:revoke, mandate)
-    end
-
-    it "may not be revoked with layer_and_below_full in another layer" do
-      expect(ability_for("Stammesmitgliederverwaltung", :silberreiher))
-        .not_to be_able_to(:revoke, mandate)
+    it "may not be revoked with finance in another layer" do
+      expect(ability_for("Stammesschatzmeister", :silberreiher)).not_to be_able_to(:update, mandate)
     end
 
     it "may not be revoked with read permissions only" do
-      expect(ability_for("Stammesfuehrung", :adler)).not_to be_able_to(:revoke, mandate)
+      expect(ability_for("Stammesfuehrung", :adler)).not_to be_able_to(:update, mandate)
     end
 
     it "may not be revoked when already revoked" do
       mandate.revoked_at = Time.zone.now
-      expect(ability_for("Stammesschatzmeister", :adler)).not_to be_able_to(:revoke, mandate)
+      expect(ability_for("Stammesschatzmeister", :adler)).not_to be_able_to(:update, mandate)
     end
   end
 
