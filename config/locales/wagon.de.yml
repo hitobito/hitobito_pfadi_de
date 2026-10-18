@@ -118,6 +118,1297 @@ de:
         one: Abonnent*in
         other: Abonnent*innen
 
+      group/bund_ausbildung/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_ausbildung/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_ausbildung/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_ausbildung/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_erwachsenenarbeit/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_erwachsenenarbeit/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_erwachsenenarbeit/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_erwachsenenarbeit/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_findungskommission/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_findungskommission/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_findungskommission/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_findungskommission/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_inklusion/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_inklusion/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_inklusion/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_inklusion/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_intakt/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_intakt/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_intakt/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_intakt/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_intakt_macht_und_miteinander/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_intakt_macht_und_miteinander/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_intakt_macht_und_miteinander/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_intakt_macht_und_miteinander/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_intakt_praevention_und_intervention/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_intakt_praevention_und_intervention/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_intakt_praevention_und_intervention/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_intakt_praevention_und_intervention/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_intakt_psychische_gesundheit/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_intakt_psychische_gesundheit/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_intakt_psychische_gesundheit/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_intakt_psychische_gesundheit/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_internationales/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_internationales/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_internationales/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_internationales/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_it/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_it/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_it/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_it/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_oeffentlichkeitsarbeit_medien/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_oeffentlichkeitsarbeit_medien/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_oeffentlichkeitsarbeit_medien/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_oeffentlichkeitsarbeit_medien/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_pfadfinderstufe/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_pfadfinderstufe/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_pfadfinderstufe/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_pfadfinderstufe/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_politische_bildung_politik_und_gesellschaft/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_politische_bildung_politik_und_gesellschaft/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_politische_bildung_politik_und_gesellschaft/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_politische_bildung_politik_und_gesellschaft/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_rainbow/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_rainbow/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_rainbow/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_rainbow/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_ranger_roverstufe/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_ranger_roverstufe/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_ranger_roverstufe/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_ranger_roverstufe/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_sonstiges/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_sonstiges/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_sonstiges/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_sonstiges/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_stufen/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_stufen/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_stufen/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_stufen/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_wachstum_und_staemme/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_wachstum_und_staemme/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_wachstum_und_staemme/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_wachstum_und_staemme/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bund_woelflingsstufe/beauftragt:
+        one: Bundesbeauftragte*r
+        description: Bundesbeauftragte*r
+
+      group/bund_woelflingsstufe/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bund_woelflingsstufe/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bund_woelflingsstufe/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_ausbildung/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_ausbildung/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_ausbildung/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_ausbildung/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_erwachsenenarbeit/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_erwachsenenarbeit/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_erwachsenenarbeit/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_erwachsenenarbeit/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_findungskommission/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_findungskommission/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_findungskommission/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_findungskommission/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_inklusion/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_inklusion/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_inklusion/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_inklusion/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_intakt/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_intakt/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_intakt/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_intakt/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_intakt_macht_und_miteinander/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_intakt_macht_und_miteinander/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_intakt_macht_und_miteinander/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_intakt_macht_und_miteinander/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_intakt_praevention_und_intervention/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_intakt_praevention_und_intervention/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_intakt_praevention_und_intervention/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_intakt_praevention_und_intervention/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_intakt_psychische_gesundheit/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_intakt_psychische_gesundheit/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_intakt_psychische_gesundheit/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_intakt_psychische_gesundheit/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_internationales/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_internationales/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_internationales/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_internationales/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_it/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_it/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_it/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_it/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_oeffentlichkeitsarbeit_medien/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_oeffentlichkeitsarbeit_medien/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_oeffentlichkeitsarbeit_medien/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_oeffentlichkeitsarbeit_medien/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_pfadfinderstufe/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_pfadfinderstufe/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_pfadfinderstufe/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_pfadfinderstufe/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_politische_bildung_politik_und_gesellschaft/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_politische_bildung_politik_und_gesellschaft/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_politische_bildung_politik_und_gesellschaft/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_politische_bildung_politik_und_gesellschaft/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_rainbow/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_rainbow/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_rainbow/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_rainbow/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_ranger_roverstufe/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_ranger_roverstufe/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_ranger_roverstufe/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_ranger_roverstufe/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_sonstiges/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_sonstiges/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_sonstiges/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_sonstiges/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_stufen/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_stufen/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_stufen/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_stufen/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_wachstum_und_staemme/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_wachstum_und_staemme/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_wachstum_und_staemme/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_wachstum_und_staemme/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/land_woelflingsstufe/beauftragt:
+        one: Landesbeauftragte*r
+        description: Landesbeauftragte*r
+
+      group/land_woelflingsstufe/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/land_woelflingsstufe/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/land_woelflingsstufe/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_ausbildung/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_ausbildung/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_ausbildung/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_ausbildung/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_erwachsenenarbeit/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_erwachsenenarbeit/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_erwachsenenarbeit/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_erwachsenenarbeit/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_findungskommission/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_findungskommission/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_findungskommission/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_findungskommission/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_inklusion/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_inklusion/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_inklusion/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_inklusion/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_intakt/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_intakt/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_intakt/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_intakt/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_intakt_macht_und_miteinander/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_intakt_macht_und_miteinander/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_intakt_macht_und_miteinander/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_intakt_macht_und_miteinander/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_intakt_praevention_und_intervention/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_intakt_praevention_und_intervention/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_intakt_praevention_und_intervention/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_intakt_praevention_und_intervention/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_intakt_psychische_gesundheit/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_intakt_psychische_gesundheit/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_intakt_psychische_gesundheit/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_intakt_psychische_gesundheit/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_internationales/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_internationales/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_internationales/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_internationales/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_it/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_it/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_it/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_it/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_oeffentlichkeitsarbeit_medien/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_oeffentlichkeitsarbeit_medien/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_oeffentlichkeitsarbeit_medien/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_oeffentlichkeitsarbeit_medien/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_pfadfinderstufe/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_pfadfinderstufe/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_pfadfinderstufe/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_pfadfinderstufe/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_politische_bildung_politik_und_gesellschaft/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_politische_bildung_politik_und_gesellschaft/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_politische_bildung_politik_und_gesellschaft/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_politische_bildung_politik_und_gesellschaft/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_rainbow/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_rainbow/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_rainbow/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_rainbow/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_ranger_roverstufe/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_ranger_roverstufe/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_ranger_roverstufe/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_ranger_roverstufe/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_sonstiges/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_sonstiges/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_sonstiges/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_sonstiges/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_stufen/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_stufen/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_stufen/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_stufen/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_wachstum_und_staemme/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_wachstum_und_staemme/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_wachstum_und_staemme/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_wachstum_und_staemme/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/bezirk_woelflingsstufe/beauftragt:
+        one: Bezirksbeauftragte*r
+        description: Bezirksbeauftragte*r
+
+      group/bezirk_woelflingsstufe/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/bezirk_woelflingsstufe/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/bezirk_woelflingsstufe/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_ausbildung/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_ausbildung/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_ausbildung/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_ausbildung/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_erwachsenenarbeit/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_erwachsenenarbeit/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_erwachsenenarbeit/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_erwachsenenarbeit/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_findungskommission/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_findungskommission/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_findungskommission/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_findungskommission/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_inklusion/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_inklusion/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_inklusion/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_inklusion/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_intakt/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_intakt/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_intakt/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_intakt/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_intakt_macht_und_miteinander/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_intakt_macht_und_miteinander/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_intakt_macht_und_miteinander/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_intakt_macht_und_miteinander/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_intakt_praevention_und_intervention/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_intakt_praevention_und_intervention/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_intakt_praevention_und_intervention/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_intakt_praevention_und_intervention/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_intakt_psychische_gesundheit/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_intakt_psychische_gesundheit/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_intakt_psychische_gesundheit/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_intakt_psychische_gesundheit/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_internationales/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_internationales/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_internationales/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_internationales/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_it/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_it/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_it/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_it/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_oeffentlichkeitsarbeit_medien/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_oeffentlichkeitsarbeit_medien/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_oeffentlichkeitsarbeit_medien/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_oeffentlichkeitsarbeit_medien/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_pfadfinderstufe/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_pfadfinderstufe/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_pfadfinderstufe/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_pfadfinderstufe/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_politische_bildung_politik_und_gesellschaft/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_politische_bildung_politik_und_gesellschaft/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_politische_bildung_politik_und_gesellschaft/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_politische_bildung_politik_und_gesellschaft/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_rainbow/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_rainbow/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_rainbow/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_rainbow/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_ranger_roverstufe/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_ranger_roverstufe/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_ranger_roverstufe/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_ranger_roverstufe/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_sonstiges/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_sonstiges/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_sonstiges/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_sonstiges/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_stufen/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_stufen/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_stufen/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_stufen/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_wachstum_und_staemme/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_wachstum_und_staemme/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_wachstum_und_staemme/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_wachstum_und_staemme/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
+
+      group/stamm_woelflingsstufe/beauftragt:
+        one: Stammesbeauftragte*r
+        description: Stammesbeauftragte*r
+
+      group/stamm_woelflingsstufe/ak_leitung:
+        one: AK Leiter*in
+        description: AK Leiter*in
+
+      group/stamm_woelflingsstufe/ak_mitarbeiter:
+        one: AK Mitarbeiter*in
+        description: AK Mitarbeiter*in
+
+      group/stamm_woelflingsstufe/ak_freier_mitarbeiter:
+        one: AK Freie*r Mitarbeiter*in
+        description: AK Freie*r Mitarbeiter*in
+
     attributes:
       contact_account_category:
         efz_address: eFZ Anschrift
