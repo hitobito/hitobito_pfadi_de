@@ -4,12 +4,18 @@
 -#  https://github.com/hitobito/hitobito_pfadi_de.
 
 = entry_form(buttons_top: false, cancel_url: group_person_sepa_mandates_path(@group, parent)) do |f|
-  = f.labeled(:group, creditor.to_s.dup)
-  = f.labeled(:sepa_glaeubiger_id, Group.human_attribute_name(:sepa_glaeubiger_id), creditor.sepa_glaeubiger_id.to_s.dup)
-  = f.labeled(:iban, Person.human_attribute_name(:iban), (parent.iban.presence || '-').dup)
-  = f.labeled(:bank_account_owner, Person.human_attribute_name(:bank_account_owner), (parent.bank_account_owner.presence || '-').dup)
-  = f.labeled(:bic, Person.human_attribute_name(:bic), (parent.bic.presence || '-').dup)
-  = f.labeled(:bank_name, Person.human_attribute_name(:bank_name), (parent.bank_name.presence || '-').dup)
+  = f.labeled(:group) do
+    .form-control-plaintext= creditor.to_s
+  = f.labeled(:sepa_glaeubiger_id, Group.human_attribute_name(:sepa_glaeubiger_id)) do
+    .form-control-plaintext= creditor.sepa_glaeubiger_id.to_s
+  = f.labeled(:bank_account_owner, Person.human_attribute_name(:bank_account_owner)) do
+    .form-control-plaintext= parent.bank_account_owner.presence || '-'
+  = f.labeled(:iban, Person.human_attribute_name(:iban)) do
+    .form-control-plaintext= parent.iban.presence || '-'
+  = f.labeled(:bic, Person.human_attribute_name(:bic)) do
+    .form-control-plaintext= parent.bic.presence || '-'
+  = f.labeled(:bank_name, Person.human_attribute_name(:bank_name)) do
+    .form-control-plaintext= parent.bank_name.presence || '-'
   = f.labeled(:issued_at) do
     = f.date_field(:issued_at, value: entry.issued_at && l(entry.issued_at.to_date))
   = f.labeled_input_field :valid_from
