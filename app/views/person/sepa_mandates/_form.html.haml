@@ -7,6 +7,9 @@
   = f.labeled(:group, creditor.to_s.dup)
   = f.labeled(:sepa_glaeubiger_id, Group.human_attribute_name(:sepa_glaeubiger_id), creditor.sepa_glaeubiger_id.to_s.dup)
   = f.labeled(:iban, Person.human_attribute_name(:iban), (parent.iban.presence || '-').dup)
+  = f.labeled(:bank_account_owner, Person.human_attribute_name(:bank_account_owner), (parent.bank_account_owner.presence || '-').dup)
+  = f.labeled(:bic, Person.human_attribute_name(:bic), (parent.bic.presence || '-').dup)
+  = f.labeled(:bank_name, Person.human_attribute_name(:bank_name), (parent.bank_name.presence || '-').dup)
   = f.labeled(:issued_at) do
     = f.date_field(:issued_at, value: entry.issued_at && l(entry.issued_at.to_date))
   = f.labeled_input_field :valid_from
