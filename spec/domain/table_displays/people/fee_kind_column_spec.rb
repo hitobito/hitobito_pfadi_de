@@ -25,7 +25,7 @@ describe TableDisplays::People::FeeKindColumn, type: :helper do
       column: :fee_kind,
       header: "Beitragsart",
       value: "BaWü Kind",
-      permission: :show
+      permission: :show_full
     }
   end
 
@@ -39,6 +39,38 @@ describe TableDisplays::People::FeeKindColumn, type: :helper do
 
     before do
       allow(table).to receive(:template).at_least(:once).and_return(view)
+    end
+
+    describe "visibility" do
+      it "renders fehlende Berechtigung without show_full" do
+        allow(ability).to receive(:can?).and_call_original
+        allow(ability).to receive(:can?).with(:show_full, person.object).and_return(false)
+
+        display.render(:fee_kind)
+        expect(node).to have_css "td", text: "fehlende Berechtigung"
+      end
+
+      it "renders the fee kind with show_full" do
+        allow(ability).to receive(:can?).and_call_original
+        allow(ability).to receive(:can?).with(:show_full, person.object).and_return(true)
+
+        display.render(:fee_kind)
+        expect(node).to have_css "td", text: "BaWü Kind"
+      end
+
+      it "is visible to the person herself without any special permission" do
+        display.render(:fee_kind)
+        expect(node).to have_css "td", text: "BaWü Kind"
+      end
+
+      it "is visible to a manager of the person without any special permission" do
+        manager = Fabricate(:person)
+        PeopleManager.create!(managed: person.object, manager:)
+
+        manager_display = described_class.new(Ability.new(manager), table: table, model_class: Person)
+        manager_display.render(:fee_kind)
+        expect(node).to have_css "td", text: "BaWü Kind"
+      end
     end
 
     it "renders multiple fee kinds comma sperated" do

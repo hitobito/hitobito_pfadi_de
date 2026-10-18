@@ -232,6 +232,7 @@ de:
         iban: IBAN
         id: Mitgliedsnummer
         latest_efz: Letzte eFZ Einsichtnahme
+        leading_layer: Hauptgruppierung
         membership_application_reasons: Begründung Aufnahmeersuchen
         membership_application_statement_stamm: Stellungnahme Stamm Aufnahmeersuchen
         membership_application_statement_lv: Stellungnahme LV Aufnahmeersuchen

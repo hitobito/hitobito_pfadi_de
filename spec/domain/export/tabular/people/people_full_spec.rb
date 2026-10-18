@@ -18,6 +18,14 @@ describe Export::Tabular::People::PeopleFull do
     expect(subject.attributes).to include(:bank_account_owner, :iban, :bic, :bank_name)
   end
 
+  it "includes latest_efz_issued_on" do
+    expect(subject.attributes).to include(:latest_efz_issued_on)
+  end
+
+  it "includes leading_layer" do
+    expect(subject.attributes).to include(:leading_layer)
+  end
+
   context "standard attributes" do
     context "#attribute_labels" do
       subject { people_list.attribute_labels }
@@ -26,6 +34,8 @@ describe Export::Tabular::People::PeopleFull do
       its([:iban]) { should eq "IBAN" }
       its([:bic]) { should eq "BIC" }
       its([:bank_name]) { should eq "Kreditinstitut" }
+      its([:latest_efz_issued_on]) { should eq "eFZ Ausstellungsdatum" }
+      its([:leading_layer]) { should eq "Hauptgruppierung" }
     end
 
     context "attribute values" do
@@ -38,7 +48,8 @@ describe Export::Tabular::People::PeopleFull do
           bank_account_owner: "John Doe",
           iban: "CH66 0076 2011 6238 5295 8",
           bic: "DEUTDEFFXXX",
-          bank_name: "Deutsche Bank"
+          bank_name: "Deutsche Bank",
+          latest_efz_issued_on: "2026-05-20"
         )
       end
 
@@ -48,6 +59,8 @@ describe Export::Tabular::People::PeopleFull do
         expect(subject[cols.index(:iban)]).to eq "CH66 0076 2011 6238 5295 8"
         expect(subject[cols.index(:bic)]).to eq "DEUTDEFFXXX"
         expect(subject[cols.index(:bank_name)]).to eq "Deutsche Bank"
+        expect(subject[cols.index(:latest_efz_issued_on)]).to eq "20.05.2026"
+        expect(subject[cols.index(:leading_layer)]).to eq "Adler"
       end
     end
   end

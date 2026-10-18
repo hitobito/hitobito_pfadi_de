@@ -79,6 +79,10 @@ describe PersonAbility do
     it "may see tags of another person" do
       is_expected.to be_able_to(:show_tags, other)
     end
+
+    it "may index notes of another person" do
+      is_expected.to be_able_to(:index_notes, other)
+    end
   end
 
   context :layer_and_below_full do
