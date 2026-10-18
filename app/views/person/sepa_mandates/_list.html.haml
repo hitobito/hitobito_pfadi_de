@@ -13,7 +13,7 @@
   - if can?(:show_evidence, SepaMandate.new(person: parent))
     - t.attrs(:evidence)
   - action_col(t) do |e|
-    - if can?(:revoke, e)
-      = link_to t('.revoke'), revoke_group_person_sepa_mandate_path(@group, parent, e),
+    - if can?(:update, e)
+      = link_to t('.revoke'), group_person_sepa_mandate_path(@group, parent, e),
         data: { method: :patch, confirm: t('.confirm_revoke', reference: e.reference) }
   - action_col_destroy(t)

@@ -109,7 +109,9 @@ module HitobitoPfadiDe
         Sheet::Person.tabs.insert(invoices_tab.to_i + 1,
           Sheet::Tab.new("activerecord.models.sepa_mandate.other",
             :group_person_sepa_mandates_path,
-            if: ->(view, _group, person) { view.can?(:index, SepaMandate.new(person:)) }))
+            if: ->(view, group, person) {
+              view.can?(:index, SepaMandate.new(person:, group: group.layer_group))
+            }))
       end
 
       # contact account categories (#4359): the pfadi_de-specific categories

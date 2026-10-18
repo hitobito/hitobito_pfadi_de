@@ -9,8 +9,6 @@ class Person::SepaMandatesController < CrudController
   self.nesting = Group, Person
   self.permitted_attrs = [:issued_at, :valid_from, :confirmation]
 
-  prepend_before_action :entry, only: :revoke
-
   helper_method :creditor
 
   def new
@@ -23,7 +21,7 @@ class Person::SepaMandatesController < CrudController
     super(location: group_person_sepa_mandates_path(*parents))
   end
 
-  def revoke
+  def update
     entry.revoke!(current_user)
     redirect_to group_person_sepa_mandates_path(*parents),
       notice: t(".success", reference: entry.reference)
@@ -55,6 +53,6 @@ class Person::SepaMandatesController < CrudController
   end
 
   def authorize_class
-    authorize!(:index, SepaMandate.new(person: parent))
+    authorize!(:index, SepaMandate.new(person: parent, group: creditor))
   end
 end

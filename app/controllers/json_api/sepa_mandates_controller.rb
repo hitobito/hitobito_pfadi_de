@@ -6,9 +6,4 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 class JsonApi::SepaMandatesController < JsonApiController
-  private
-
-  def authorize_entry
-    authorize!((action_name == "update") ? :revoke : action_name.to_sym, entry)
-  end
 end
