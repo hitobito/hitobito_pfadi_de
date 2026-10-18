@@ -43,6 +43,46 @@ describe Contactable::Address do
     end
   end
 
+  describe "#efz_full_address_without_name_flat" do
+    it "returns the group address on one line without the country" do
+      expect(Contactable::Address.new(contactable).efz_full_address_without_name_flat)
+        .to eq("Gruppenstrasse 10, 10117 Berlin")
+    end
+
+    it "includes address_care_of and postbox when present" do
+      contactable.address_care_of = "c/o Vorstand"
+      contactable.postbox = "Postfach 123"
+
+      expect(Contactable::Address.new(contactable).efz_full_address_without_name_flat)
+        .to eq("c/o Vorstand, Gruppenstrasse 10, Postfach 123, 10117 Berlin")
+    end
+
+    it "includes the country when it is not Germany" do
+      contactable.country = "AT"
+
+      expect(Contactable::Address.new(contactable).efz_full_address_without_name_flat)
+        .to eq("Gruppenstrasse 10, 10117 Berlin, AT")
+    end
+
+    it "returns the efz address when requested" do
+      contactable.additional_addresses.build(
+        street: "Efz Strasse 2",
+        zip_code: "10115",
+        town: "Efz Stadt",
+        country: "DE",
+        category: efz_category,
+        uses_contactable_name: false,
+        organization: true,
+        organization_name: "Efz Empfänger"
+      )
+
+      expect(
+        Contactable::Address.new(contactable, category_key: efz_category.key)
+          .efz_full_address_without_name_flat
+      ).to eq("Efz Strasse 2, 10115 Efz Stadt")
+    end
+  end
+
   describe "#efz_only_name" do
     it "returns the group name by default" do
       expect(Contactable::Address.new(contactable).efz_only_name).to eq("Adler Gruppe")
