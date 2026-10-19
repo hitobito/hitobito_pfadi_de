@@ -18,6 +18,7 @@ class Group::Landesverband < ::Group
     Group::Landesgeschaeftsstelle,
     Group::Landesversammlung,
     Group::Mitglieder,
+    Group::Projekte,
     Group::Kontakte,
     Group::LandArbeitsbereiche,
     Group::GruppierungsspezifischesGremium,
