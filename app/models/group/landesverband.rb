@@ -61,10 +61,6 @@ class Group::Landesverband < ::Group
     self.sgbviii_required = true
   end
 
-  class JuleicaInhaber < ::Role
-    self.permissions = []
-  end
-
   class Materialwartung < ::Role
     self.permissions = []
   end
@@ -107,7 +103,6 @@ class Group::Landesverband < ::Group
     Datenschutzbeauftragt,
     StammeskompassModeration,
     Landesmitarbeiter,
-    JuleicaInhaber,
     Materialwartung,
     Bundesdelegiert,
     BundesdelegiertErsatz,

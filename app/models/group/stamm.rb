@@ -99,10 +99,6 @@ class Group::Stamm < ::Group
     self.permissions = []
   end
 
-  class JuleicaInhaber < ::Role
-    self.permissions = []
-  end
-
   class Stammesbeauftragt < ::Role
     self.permissions = []
     self.sgbviii_required = true
@@ -139,7 +135,6 @@ class Group::Stamm < ::Group
     Materialwartung,
     AnsprechpersonHeimvermietung,
     Heimwartung,
-    JuleicaInhaber,
     Stammesbeauftragt,
     Landesdelegiert,
     LandesdelegiertErsatz,
