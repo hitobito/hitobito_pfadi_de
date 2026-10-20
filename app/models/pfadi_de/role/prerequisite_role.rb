@@ -21,7 +21,9 @@ module PfadiDe
     #   end
     #
     # A dependent role is only valid while its validity period is fully covered
-    # by prerequisite roles of the person in the configured scope.
+    # by prerequisite roles of the person in the configured scope. Restricting
+    # the validity period of a prerequisite role from today on shrinks or
+    # deletes the dependent roles accordingly.
     module PrerequisiteRole
       extend ActiveSupport::Concern
 
@@ -37,6 +39,8 @@ module PfadiDe
 
       included do
         validate :assert_prerequisite_coverage
+        after_save :cascade_restricted_prerequisite, if: :prerequisite_restricted?
+        after_destroy :cascade_restricted_prerequisite, if: :prerequisite_removed?
       end
 
       class_methods do
@@ -220,6 +224,44 @@ module PfadiDe
           roles: prerequisite_role_names(config.category),
           layer: group.layer_group.to_s,
           period: format_prerequisite_period(gap))
+      end
+
+      def cascade_restricted_prerequisite
+        PfadiDe::Role::PrerequisiteCascade.trigger(self)
+      end
+
+      def prerequisite_restricted?
+        return false if previously_new_record? || self.class.provided_prerequisite_categories.empty?
+
+        start_on_restricted? || end_on_restricted?
+      end
+
+      def prerequisite_removed?
+        destroyed? &&
+          self.class.provided_prerequisite_categories.any? &&
+          prerequisite_loss_affects_dependents?(end_on || FAR_FUTURE)
+      end
+
+      def start_on_restricted?
+        saved_change_to_start_on? &&
+          (start_on || FAR_PAST) > (start_on_before_last_save || FAR_PAST) &&
+          prerequisite_loss_affects_dependents?(start_on - 1)
+      end
+
+      def end_on_restricted?
+        saved_change_to_end_on? &&
+          (end_on || FAR_FUTURE) < (end_on_before_last_save || FAR_FUTURE) &&
+          prerequisite_loss_affects_dependents?(end_on_before_last_save || FAR_FUTURE)
+      end
+
+      def prerequisite_loss_affects_dependents?(last_lost_day)
+        last_lost_day >= Date.current || prerequisite_dependents_validate_past?
+      end
+
+      def prerequisite_dependents_validate_past?
+        self.class.provided_prerequisite_categories.any? do |category|
+          PrerequisiteRole.dependent_configurations(category).any?(&:validate_past)
+        end
       end
 
       def prerequisite_role_names(category)
