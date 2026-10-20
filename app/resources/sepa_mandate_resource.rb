@@ -9,7 +9,7 @@ class SepaMandateResource < ApplicationResource
   primary_endpoint "sepa_mandates", [:index, :show, :create, :update]
 
   self.acceptable_scopes += %w[sepa_mandates]
-  self.readable_class = JsonApi::SepaMandateAbility
+  self.readable_class = SepaMandateReadables
 
   with_options writable: false do
     attribute :created_at, :datetime
