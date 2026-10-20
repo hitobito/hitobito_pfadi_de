@@ -25,6 +25,7 @@ describe GroupResource, type: :resource do
         :einsichtnahme_efz_durch_gruppe,
         :debitorennummer,
         :sepa_glaeubiger_id,
+        :sepa_mandate_mode,
         :zahlungsart,
         :rechtsform,
         :strukturnummer,
