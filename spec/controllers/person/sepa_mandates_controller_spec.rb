@@ -99,7 +99,7 @@ describe Person::SepaMandatesController do
       expect(mandate.creator).to eq treasurer
       expect(mandate.evidence).to eq "Hitobito-Gruppierung"
       expect(mandate.issued_at.to_date).to eq Date.new(2026, 9, 1)
-      expect(response).to redirect_to(group_person_sepa_mandates_path(group, member))
+      expect(response).to redirect_to(group_person_sepa_mandates_path(group, member, returning: true))
     end
 
     it "ignores a manual reference" do
@@ -155,6 +155,7 @@ describe Person::SepaMandatesController do
 
       expect { delete :destroy, params: params.merge(id: mandate.id) }
         .to change { SepaMandate.count }.by(-1)
+      expect(response).to redirect_to(group_person_sepa_mandates_path(group, member, returning: true))
     end
 
     it "is denied for finance" do

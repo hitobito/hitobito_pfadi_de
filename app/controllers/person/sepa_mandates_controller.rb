@@ -17,38 +17,31 @@ class Person::SepaMandatesController < CrudController
     super
   end
 
-  def create
-    super(location: group_person_sepa_mandates_path(*parents))
-  end
-
   def update
-    entry.revoke!(current_user)
+    entry.revoke!(current_person)
     redirect_to group_person_sepa_mandates_path(*parents),
       notice: t(".success", reference: entry.reference)
   end
 
-  def destroy
-    super(location: group_person_sepa_mandates_path(*parents))
-  end
-
   private
+
+  def return_path
+    super || index_path
+  end
 
   def creditor
     @creditor ||= parents.first.layer_group
   end
 
   def list_entries
-    super.includes(:group, :creator, :revoker).select { |mandate| can?(:show, mandate) }
-  end
-
-  def ivar_name(klass)
-    super((klass == NilClass) ? model_class : klass)
+    super.includes(:group, :creator, :revoker)
+      .accessible_by(SepaMandateReadables.new(current_person))
   end
 
   def build_entry
     super.tap do |mandate|
       mandate.group = creditor
-      mandate.creator = current_user
+      mandate.creator = current_person
     end
   end
 
