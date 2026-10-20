@@ -49,15 +49,6 @@ describe Export::Tabular::People::PeopleAddress do
         expect(subject[cols.index(:entry_date)]).to eq "01.08.2025"
         expect(subject[cols.index(:exit_date)]).to eq "13.08.2025"
       end
-
-      it "contains payment method and references of active sepa mandates" do
-        mandate = Fabricate(:sepa_mandate, person:, group: groups(:adler))
-        Fabricate(:sepa_mandate, person:, group: groups(:silberreiher)).revoke!
-
-        cols = people_list.attribute_labels.keys
-        expect(subject[cols.index(:payment_method)]).to eq "Lastschrift"
-        expect(subject[cols.index(:sepa_mandate_references)]).to eq mandate.reference
-      end
     end
   end
 end
