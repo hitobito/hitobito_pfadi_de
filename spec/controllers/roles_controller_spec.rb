@@ -200,6 +200,8 @@ describe RolesController do
   end
 
   describe "with dependent roles" do
+    render_views
+
     let(:dependent) do
       Fabricate(Group::StammGruppePfadfinder::Mitglied.sti_name,
         person:, group: groups(:pfadfinder), start_on: Date.new(2025, 6, 1))
@@ -222,7 +224,55 @@ describe RolesController do
       dependent
     end
 
+    def confirmation_page? = dom.has_css?("h1", text: "Abhängige Rollen anpassen")
+
+    def role_label = "Rolle #{role} für #{person} in #{group}"
+
     context "PUT update" do
+      it "asks for confirmation when dependent roles are shortened" do
+        update(end_on: today + 1.month)
+
+        expect(confirmation_page?).to be true
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(dom).to have_css("td", text: "Adler / Pfadfinder*innen")
+        expect(dom).to have_css("td", text: "01.06.2025 – #{I18n.l(today + 1.month)}")
+        expect(dom).to have_field("role[end_on]", type: :hidden, with: (today + 1.month).to_s)
+        expect(dom).to have_field("prerequisite_cascade_confirmed", type: :hidden, with: "true")
+        expect(reloaded_role.end_on).to be_nil
+        expect(dependent.reload.end_on).to be_nil
+      end
+
+      it "describes the change instead of reporting success" do
+        update(end_on: today + 1.month)
+
+        expect(dom).to have_css("p", text: "#{role_label} wird geändert.")
+        expect(flash).to be_empty
+      end
+
+      it "shortens dependent roles when confirmed" do
+        put :update, params: {group_id: group.id, id: role.id, role: {end_on: today + 1.month},
+                              prerequisite_cascade_confirmed: true}
+
+        expect(response).to be_redirect
+        expect(flash[:notice]).to end_with "wurde erfolgreich aktualisiert."
+        expect(reloaded_role.end_on).to eq(today + 1.month)
+        expect(dependent.reload.end_on).to eq(today + 1.month)
+      end
+
+      it "does not ask for confirmation when no dependent role is affected" do
+        update(label: "Neu")
+
+        expect(response).to be_redirect
+        expect(reloaded_role.label).to eq "Neu"
+      end
+
+      it "does not ask for confirmation when the changes are invalid" do
+        update(end_on: today - 1.year)
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(confirmation_page?).to be false
+      end
+
       it "keeps dependent roles when the membership type changes" do
         role.update_columns(created_at: 32.days.ago)
 
@@ -231,6 +281,63 @@ describe RolesController do
         expect(response).to be_redirect
         expect(reloaded_role.end_on).to eq(today - 1.day)
         expect(dependent.reload.end_on).to be_nil
+      end
+
+      context "moving the membership to another layer" do
+        before { sign_in(people(:admin)) }
+
+        def move_membership(**params)
+          put :update, params: {
+            group_id: group.id, id: role.id,
+            role: {type: type.sti_name, group_id: groups(:mitglieder_28).id}, **params
+          }
+        end
+
+        it "asks for confirmation" do
+          expect { move_membership }.not_to change { Role.with_inactive.count }
+
+          expect(confirmation_page?).to be true
+          expect(dom).to have_css("td", text: "01.06.2025 – #{I18n.l(today - 1.day)}")
+        end
+
+        it "ends dependent roles when confirmed" do
+          move_membership(prerequisite_cascade_confirmed: true)
+
+          expect(response).to be_redirect
+          expect(dependent.reload.end_on).to eq(today - 1.day)
+        end
+      end
+    end
+
+    context "DELETE destroy" do
+      it "asks for confirmation" do
+        delete :destroy, params: {group_id: group.id, id: role.id}
+
+        expect(confirmation_page?).to be true
+        expect(dom).to have_css("form[action='#{group_role_path(group, role)}'] " \
+          "input[name=_method][value=delete]", visible: false)
+        expect(reloaded_role.end_on).to be_nil
+      end
+
+      it "describes the deletion instead of reporting success" do
+        delete :destroy, params: {group_id: group.id, id: role.id}
+
+        expect(dom).to have_css("p", text: "#{role_label} wird gelöscht.")
+        expect(flash).to be_empty
+      end
+
+      it "keeps flash messages present before the preview" do
+        delete :destroy, params: {group_id: group.id, id: role.id}, flash: {notice: "Vorher"}
+
+        expect(flash[:notice]).to eq "Vorher"
+      end
+
+      it "ends dependent roles when confirmed" do
+        delete :destroy, params: {group_id: group.id, id: role.id, prerequisite_cascade_confirmed: true}
+
+        expect(flash[:notice]).to end_with "wurde erfolgreich gelöscht."
+        expect(reloaded_role.end_on).to eq(today - 1.day)
+        expect(dependent.reload.end_on).to eq(today - 1.day)
       end
     end
   end

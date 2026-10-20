@@ -14,7 +14,12 @@ module PfadiDe
     # The cascade runs transitively: shortening a dependent role that is itself
     # a prerequisite role triggers the cascade for its own dependents again.
     class PrerequisiteCascade
-      thread_mattr_accessor :deferred_roles
+      # A dependent role and its new validity period, `new_period` is nil if
+      # the role is deleted.
+      Change = Data.define(:role, :previous_period, :new_period)
+
+      # Read by role callbacks, kept per thread to isolate concurrent requests.
+      thread_mattr_accessor :deferred_roles, :recorded_changes
 
       class << self
         def trigger(role)
@@ -36,6 +41,23 @@ module PfadiDe
           return yield if deferred_roles
 
           ::Role.transaction { run_deferred(&block) }
+        end
+
+        # Runs the block in a rolled back transaction and returns the changes
+        # the cascade would apply to dependent roles.
+        def preview
+          self.recorded_changes = []
+          ::Role.transaction(requires_new: true) do
+            yield
+            raise ActiveRecord::Rollback
+          end
+          recorded_changes
+        ensure
+          self.recorded_changes = nil
+        end
+
+        def record(change)
+          recorded_changes&.push(change)
         end
 
         private
@@ -110,12 +132,14 @@ module PfadiDe
       end
 
       def update_period(dependent, start_on:, end_on:)
+        self.class.record(Change.new(dependent, dependent.active_period, start_on..end_on))
         dependent.start_on = start_on
         dependent.end_on = end_on
         dependent.save!(validate: false)
       end
 
       def remove(dependent)
+        self.class.record(Change.new(dependent, dependent.active_period, nil))
         dependent.really_destroy! ||
           raise(ActiveRecord::RecordNotDestroyed.new("Failed to destroy the record", dependent))
       end
