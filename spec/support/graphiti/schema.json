@@ -2287,6 +2287,12 @@
           "writable": false,
           "description": null
         },
+        "sepa_mandate_mode": {
+          "type": "string",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
         "zahlungsart": {
           "type": "string",
           "readable": true,
@@ -2385,6 +2391,7 @@
         "einsichtnahme_efz_durch_gruppe": {},
         "debitorennummer": {},
         "sepa_glaeubiger_id": {},
+        "sepa_mandate_mode": {},
         "zahlungsart": {},
         "rechtsform": {},
         "strukturnummer": {},
@@ -2774,6 +2781,21 @@
           ]
         },
         "sepa_glaeubiger_id": {
+          "type": "string",
+          "operators": [
+            "eq",
+            "not_eq",
+            "eql",
+            "not_eql",
+            "prefix",
+            "not_prefix",
+            "suffix",
+            "not_suffix",
+            "match",
+            "not_match"
+          ]
+        },
+        "sepa_mandate_mode": {
           "type": "string",
           "operators": [
             "eq",
@@ -5087,12 +5109,6 @@
           "writable": "guarded",
           "description": null
         },
-        "valid_from": {
-          "type": "date",
-          "readable": true,
-          "writable": "guarded",
-          "description": null
-        },
         "mandate_text_version": {
           "type": "integer",
           "readable": true,
@@ -5116,7 +5132,6 @@
         "group_id": {},
         "person_id": {},
         "issued_at": {},
-        "valid_from": {},
         "revoked_at": {}
       },
       "filters": {
@@ -5207,17 +5222,6 @@
         },
         "issued_at": {
           "type": "datetime",
-          "operators": [
-            "eq",
-            "not_eq",
-            "gt",
-            "gte",
-            "lt",
-            "lte"
-          ]
-        },
-        "valid_from": {
-          "type": "date",
           "operators": [
             "eq",
             "not_eq",
