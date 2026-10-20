@@ -8,11 +8,6 @@
 module TableDisplays
   module People
     class SepaMandateColumn < TableDisplays::Column
-      VALUE_METHODS = {
-        payment_method: :payment_method_label,
-        sepa_mandate_references: :sepa_mandate_references
-      }.freeze
-
       def required_model_attrs(_attr) = []
 
       def required_model_includes(_attr) = [:active_sepa_mandates]
@@ -23,14 +18,24 @@ module TableDisplays
 
       def render(attr)
         super do |person|
-          person.public_send(VALUE_METHODS.fetch(attr.to_sym))
+          value_for_layer(person, attr)
         end
       end
 
       private
 
       def allowed_value_for(target, target_attr, &block)
-        target.public_send(VALUE_METHODS.fetch(target_attr.to_sym))
+        value_for_layer(target, target_attr)
+      end
+
+      def value_for_layer(person, attr)
+        layer = template&.parent&.layer_group
+        return unless layer
+
+        case attr.to_sym
+        when :payment_method then person.payment_method_label(layer)
+        when :sepa_mandate_references then person.sepa_mandate_references(layer)
+        end
       end
     end
   end

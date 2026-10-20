@@ -7,5 +7,5 @@
 
 - layer = @group&.layer_group
 - if layer.try(:sepa_mandates_enabled?) && can?(:index, SepaMandate.new(person: entry, group: layer))
-  = render_attrs_group(labeled(t('.active_sepa_mandate'),
-    f(entry.active_sepa_mandates.any? { |mandate| mandate.group_id == layer.id }).capitalize))
+  = render_attrs_group(labeled(Person.human_attribute_name(:payment_method),
+    entry.payment_method_label(layer)))

@@ -66,16 +66,16 @@ module PfadiDe::Person
     end
   end
 
-  def payment_method
-    active_sepa_mandates.any? ? "debit" : "invoice"
+  def payment_method(group)
+    active_sepa_mandate_for(group) ? "debit" : "invoice"
   end
 
-  def payment_method_label
-    I18n.t("activerecord.attributes.person.payment_methods.#{payment_method}")
+  def payment_method_label(group)
+    I18n.t("activerecord.attributes.person.payment_methods.#{payment_method(group)}")
   end
 
-  def sepa_mandate_references
-    active_sepa_mandates.map(&:reference).sort.join(", ")
+  def sepa_mandate_references(group)
+    active_sepa_mandate_for(group)&.reference.to_s
   end
 
   def entry_date
@@ -109,6 +109,11 @@ module PfadiDe::Person
   end
 
   private
+
+  def active_sepa_mandate_for(group)
+    layer_id = group.layer_group_id
+    active_sepa_mandates.find { |mandate| mandate.group_id == layer_id }
+  end
 
   def bank_account_changed_for_sepa?
     [:bank_account_owner, :iban, :bic].any? do |attr|

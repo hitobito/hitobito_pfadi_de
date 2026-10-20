@@ -193,22 +193,31 @@ describe SepaMandate do
 
   describe "Person#payment_method" do
     it "is invoice without active mandate" do
-      expect(person.payment_method).to eq "invoice"
-      expect(person.payment_method_label).to eq "Überweisung"
+      expect(person.payment_method(group)).to eq "invoice"
+      expect(person.payment_method_label(group)).to eq "Überweisung"
     end
 
     it "is debit with an active mandate" do
       mandate = build_mandate.tap(&:save!)
 
-      expect(person.reload.payment_method).to eq "debit"
-      expect(person.payment_method_label).to eq "Lastschrift"
-      expect(person.sepa_mandate_references).to eq mandate.reference
+      expect(person.reload.payment_method(group)).to eq "debit"
+      expect(person.payment_method_label(group)).to eq "Lastschrift"
+      expect(person.sepa_mandate_references(group)).to eq mandate.reference
     end
 
     it "is invoice again once the mandate is revoked" do
       build_mandate.tap(&:save!).revoke!
 
-      expect(person.reload.payment_method).to eq "invoice"
+      expect(person.reload.payment_method(group)).to eq "invoice"
+    end
+
+    it "is invoice for a different group's layer even with an active mandate elsewhere" do
+      build_mandate.tap(&:save!)
+
+      other_layer = groups(:silberreiher)
+      other_layer.update!(sepa_mandate_mode: "optional", sepa_glaeubiger_id: "DE98ZZZ09999999999")
+
+      expect(person.reload.payment_method(other_layer)).to eq "invoice"
     end
   end
 end
