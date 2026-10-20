@@ -427,6 +427,38 @@ describe PfadiDe::Role::PrerequisiteRole do
     end
   end
 
+  describe "preview" do
+    it "returns the changes of the cascade without persisting them" do
+      changes = PfadiDe::Role::PrerequisiteCascade.preview do
+        membership.update!(end_on: 1.month.from_now.to_date)
+      end
+
+      expect(changes.map(&:role)).to eq [dependent_role]
+      expect(changes.first.previous_period).to eq(dependent_role.start_on..nil)
+      expect(changes.first.new_period).to eq(dependent_role.start_on..1.month.from_now.to_date)
+      expect(membership.reload.end_on).to be_nil
+      expect(dependent_role.reload.end_on).to be_nil
+    end
+
+    it "returns deleted dependent roles without new period" do
+      future_role = build_dependent(start_on: 1.month.from_now.to_date)
+        .tap { |role| role.save!(validate: false) }
+
+      changes = PfadiDe::Role::PrerequisiteCascade.preview { membership.destroy }
+
+      expect(changes.find { |change| change.role == future_role }.new_period).to be_nil
+      expect(Role.with_inactive.exists?(future_role.id)).to be true
+    end
+
+    it "returns no changes when no dependent role is affected" do
+      changes = PfadiDe::Role::PrerequisiteCascade.preview do
+        membership.update!(label: "Neu")
+      end
+
+      expect(changes).to be_empty
+    end
+  end
+
   describe ".provides_role / .depends_on_role" do
     it "registers the entries in the registry" do
       expect(described_class.registry).to include(
