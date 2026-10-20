@@ -454,8 +454,6 @@ de:
     export_enqueued: "Export wird im Hintergrund gestartet und kann nach Fertigstellung auf der Seite Hintergrundprozesse heruntergeladen werden: %{overview_link}"
 
   people:
-    details_pfadi_de:
-      active_sepa_mandate: Aktives SEPA-Mandat
     fields_pfadi_de:
       help_sepa_mandates_revoked: Eine Änderung von Kontoinhaber*in, IBAN oder BIC widerruft alle aktiven SEPA-Mandate dieser Person.
     efz_einsichtnahme_add: Führungszeugnis erfassen

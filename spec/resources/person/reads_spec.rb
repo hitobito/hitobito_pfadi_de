@@ -20,7 +20,6 @@ describe PersonResource, type: :resource do
         :iban,
         :bic,
         :bank_name,
-        :payment_method,
         :consent_data_retention,
         :entry_date,
         :exit_date

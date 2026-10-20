@@ -90,7 +90,7 @@ describe PeopleController do
     end
 
     describe "active SEPA mandate" do
-      let(:label) { "Aktives SEPA-Mandat" }
+      let(:label) { "Zahlungsart" }
       let(:value) { dom.find("dt", text: label).send(:parent) }
 
       it "is not shown when mandates are not enabled for the layer" do
@@ -103,15 +103,15 @@ describe PeopleController do
           group.update!(sepa_mandate_mode: "optional", sepa_glaeubiger_id: "DE98ZZZ09999999999")
         end
 
-        it "shows no when the person has no active mandate" do
+        it "shows Überweisung when the person has no active mandate" do
           get :show, params: {group_id: group.id, id: leader.id}
-          expect(value).to have_text "Nein"
+          expect(value).to have_text "Überweisung"
         end
 
-        it "shows yes when the person has an active mandate" do
+        it "shows Lastschrift when the person has an active mandate" do
           Fabricate(:sepa_mandate, person: leader, group:)
           get :show, params: {group_id: group.id, id: leader.id}
-          expect(value).to have_text "Ja"
+          expect(value).to have_text "Lastschrift"
         end
       end
     end

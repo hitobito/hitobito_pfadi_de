@@ -18,6 +18,7 @@ describe TableDisplays::People::SepaMandateColumn, type: :helper do
 
   before do
     allow_any_instance_of(ActionView::Base).to receive(:parent).and_return(group)
+    allow(self).to receive(:parent).and_return(group)
   end
 
   context "without active mandate" do

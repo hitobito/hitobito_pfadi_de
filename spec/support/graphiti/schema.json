@@ -4010,12 +4010,6 @@
           "writable": true,
           "description": null
         },
-        "payment_method": {
-          "type": "string",
-          "readable": "guarded",
-          "writable": false,
-          "description": null
-        },
         "consent_data_retention": {
           "type": "boolean",
           "readable": "guarded",
