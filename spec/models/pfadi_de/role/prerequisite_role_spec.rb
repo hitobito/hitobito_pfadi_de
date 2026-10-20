@@ -291,6 +291,19 @@ describe PfadiDe::Role::PrerequisiteRole do
       expect(past_role.reload.end_on).to eq(1.year.ago.to_date)
     end
 
+    it "keeps the dependent role when the membership type changes" do
+      Group::Mitglieder::Foerdermitgliedschaft.provides_role :stamm_mitgliedschaft
+      membership.update_columns(created_at: 2.months.ago, start_on: 2.months.ago)
+
+      PfadiDe::Role::PrerequisiteCascade.deferred do
+        membership.destroy
+        build_role(Group::Mitglieder::Foerdermitgliedschaft, group: adler_mitglieder)
+          .save!(validate: false)
+      end
+
+      expect(dependent_role.reload.end_on).to be_nil
+    end
+
     it "does not cascade when only the past of the prerequisite role changes" do
       membership.update_columns(start_on: 1.year.ago.to_date, end_on: 1.month.ago.to_date)
 
@@ -469,6 +482,71 @@ describe PfadiDe::Role::PrerequisiteRole do
         dependent_role.reload
         expect(dependent_role.start_on).to eq(6.months.ago.to_date)
         expect(dependent_role.end_on).to be_nil
+      end
+    end
+  end
+
+  describe "deferred cascade" do
+    it "counts roles created later in the block as coverage" do
+      Group::Mitglieder::Zweitmitgliedschaft.provides_role :stamm_mitgliedschaft
+      PfadiDe::Role::PrerequisiteCascade.deferred do
+        membership.update!(end_on: Date.yesterday)
+        build_role(Group::Mitglieder::Zweitmitgliedschaft, group: adler_mitglieder)
+          .tap { |role| role.save!(validate: false) }
+      end
+
+      expect(dependent_role.reload.end_on).to be_nil
+    end
+
+    it "cascades when the created role does not cover the dependent role" do
+      PfadiDe::Role::PrerequisiteCascade.deferred do
+        membership.update!(end_on: Date.yesterday)
+        build_role(Group::Mitglieder::OrdentlicheMitgliedschaft, group: karlsruhe_mitglieder)
+          .tap { |role| role.save!(validate: false) }
+      end
+
+      expect(dependent_role.reload.end_on).to eq(Date.yesterday)
+    end
+
+    it "rolls back everything when the block returns a falsy result" do
+      PfadiDe::Role::PrerequisiteCascade.deferred do
+        membership.update!(end_on: Date.yesterday)
+        nil
+      end
+
+      expect(membership.reload.end_on).to be_nil
+      expect(dependent_role.reload.end_on).to be_nil
+    end
+
+    context "with a chain of prerequisite roles" do
+      before do
+        Group::Mitglieder::OrdentlicheMitgliedschaft.provides_role :dpsg_mitgliedschaft
+        Group::Mitglieder::Zweitmitgliedschaft.provides_role :stamm_mitgliedschaft
+        Group::Mitglieder::Zweitmitgliedschaft
+          .depends_on_role :dpsg_mitgliedschaft, scope: :global, on_uncovered: :cascade
+      end
+
+      let!(:zweitmitgliedschaft) do
+        build_role(Group::Mitglieder::Zweitmitgliedschaft,
+          group: karlsruhe_mitglieder, start_on: 1.month.ago.to_date)
+          .tap { |role| role.save!(validate: false) }
+      end
+
+      let!(:pfadi_in_karlsruhe) do
+        build_dependent(group: mondphoenixe, start_on: 1.month.ago.to_date)
+          .tap { |role| role.save!(validate: false) }
+      end
+
+      it "keeps transitively dependent roles covered by a role created later in the block" do
+        PfadiDe::Role::PrerequisiteCascade.deferred do
+          membership.update!(end_on: Date.yesterday)
+          zweitmitgliedschaft.update!(end_on: Date.yesterday)
+          build_role(Group::Mitglieder::OrdentlicheMitgliedschaft, group: karlsruhe_mitglieder)
+            .tap { |role| role.save!(validate: false) }
+        end
+
+        expect(pfadi_in_karlsruhe.reload.end_on).to be_nil
+        expect(dependent_role.reload.end_on).to eq(Date.yesterday)
       end
     end
   end

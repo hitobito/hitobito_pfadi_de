@@ -198,4 +198,40 @@ describe RolesController do
       end
     end
   end
+
+  describe "with dependent roles" do
+    let(:dependent) do
+      Fabricate(Group::StammGruppePfadfinder::Mitglied.sti_name,
+        person:, group: groups(:pfadfinder), start_on: Date.new(2025, 6, 1))
+    end
+
+    around do |example|
+      registry = PfadiDe::Role::PrerequisiteRole.registry.dup
+      example.run
+      PfadiDe::Role::PrerequisiteRole.registry.replace(registry)
+    end
+
+    before do
+      [Group::Mitglieder::OrdentlicheMitgliedschaft,
+        Group::Mitglieder::Foerdermitgliedschaft,
+        Group::Mitglieder::Zweitmitgliedschaft].each do |type|
+        type.provides_role :stamm_mitgliedschaft
+      end
+      Group::StammGruppePfadfinder::Mitglied
+        .depends_on_role :stamm_mitgliedschaft, scope: :layer, on_uncovered: :cascade
+      dependent
+    end
+
+    context "PUT update" do
+      it "keeps dependent roles when the membership type changes" do
+        role.update_columns(created_at: 32.days.ago)
+
+        update(type: Group::Mitglieder::Zweitmitgliedschaft.sti_name, group_id: group.id)
+
+        expect(response).to be_redirect
+        expect(reloaded_role.end_on).to eq(today - 1.day)
+        expect(dependent.reload.end_on).to be_nil
+      end
+    end
+  end
 end

@@ -109,5 +109,33 @@ describe Role::FeeKindChange do
       attributes[:start_on] = "2025-01-01"
       expect { subject.save! }.to raise_error(ActiveRecord::RecordInvalid)
     end
+
+    context "with dependent roles" do
+      around do |example|
+        registry = PfadiDe::Role::PrerequisiteRole.registry.dup
+        example.run
+        PfadiDe::Role::PrerequisiteRole.registry.replace(registry)
+      end
+
+      before do
+        Group::Mitglieder::OrdentlicheMitgliedschaft.provides_role :stamm_mitgliedschaft
+        Group::StammGruppePfadfinder::Mitglied
+          .depends_on_role :stamm_mitgliedschaft, scope: :layer, on_uncovered: :cascade
+      end
+
+      it "keeps dependent roles covered by the new role" do
+        subject.save!
+
+        expect(roles(:member).reload.end_on).to be_nil
+      end
+
+      it "keeps dependent roles covered when the new role starts later" do
+        attributes[:start_on] = 1.month.from_now.to_date
+
+        subject.save!
+
+        expect(roles(:member).reload.end_on).to be_nil
+      end
+    end
   end
 end

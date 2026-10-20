@@ -14,8 +14,44 @@ module PfadiDe
     # The cascade runs transitively: shortening a dependent role that is itself
     # a prerequisite role triggers the cascade for its own dependents again.
     class PrerequisiteCascade
-      def self.trigger(role)
-        new(role).run
+      thread_mattr_accessor :deferred_roles
+
+      class << self
+        def trigger(role)
+          # Within a deferred block the role is only collected, its cascade runs
+          # after the block, once roles created later in the block exist.
+          if deferred_roles
+            deferred_roles << role
+          else
+            new(role).run
+          end
+        end
+
+        # Postpones the cascade of roles restricted within the block until the
+        # block has finished, so roles created later in the block count as
+        # coverage. A falsy block result rolls back the whole transaction.
+        def deferred(&block)
+          # A nested call joins the outer one. Starting over would discard the roles
+          # collected so far and run cascades before the outer block has finished.
+          return yield if deferred_roles
+
+          ::Role.transaction { run_deferred(&block) }
+        end
+
+        private
+
+        def run_deferred
+          self.deferred_roles = []
+          result = yield
+          raise ActiveRecord::Rollback unless result
+
+          roles = deferred_roles
+          self.deferred_roles = nil
+          roles.each { |role| new(role).run }
+          result
+        ensure
+          self.deferred_roles = nil
+        end
       end
 
       def initialize(role)
