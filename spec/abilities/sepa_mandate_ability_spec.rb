@@ -76,6 +76,16 @@ describe SepaMandateAbility do
       expect(ability_for("Landesschatzmeister", :landesvorstand_bw)).not_to be_able_to(:create, mandate)
     end
 
+    it "may be created with a non-layer group in the same layer as the payer" do
+      mandate.group = groups(:adler_mitglieder)
+      expect(ability_for("Stammesschatzmeister", :adler)).to be_able_to(:create, mandate)
+    end
+
+    it "may not be created for the layer above, when the payer's role is only below it" do
+      mandate.group = groups(:baden_wuerttemberg)
+      expect(ability_for("Landesschatzmeister", :landesvorstand_bw)).not_to be_able_to(:create, mandate)
+    end
+
     it "may not be created by the payer herself" do
       expect(Ability.new(member)).not_to be_able_to(:create, mandate)
     end
