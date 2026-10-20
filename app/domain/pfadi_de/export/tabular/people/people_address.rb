@@ -6,17 +6,9 @@
 module PfadiDe::Export::Tabular::People::PeopleAddress
   extend ActiveSupport::Concern
 
-  def initialize(list, *, **)
-    if list.is_a?(ActiveRecord::Relation) && list.klass <= Person
-      list = list.preload(:active_sepa_mandates)
-    end
-    super
-  end
-
   private
 
   def person_attributes
-    super + [:pronoun, :entry_date, :exit_date, :bank_account_owner, :iban, :bic, :bank_name,
-      :payment_method, :sepa_mandate_references]
+    super + [:pronoun, :entry_date, :exit_date]
   end
 end

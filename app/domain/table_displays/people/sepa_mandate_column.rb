@@ -17,7 +17,7 @@ module TableDisplays
 
       def required_model_includes(_attr) = [:active_sepa_mandates]
 
-      def required_permission(_attr) = :show_details
+      def required_permission(_attr) = :show_full
 
       def sort_by(_attr) = nil
 

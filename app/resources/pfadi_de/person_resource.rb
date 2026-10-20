@@ -44,4 +44,8 @@ module PfadiDe::PersonResource
   def show_details_on_person?(model_instance)
     can?(:show_details, model_instance)
   end
+
+  def show_full_on_person?(model_instance)
+    can?(:show_full, model_instance)
+  end
 end

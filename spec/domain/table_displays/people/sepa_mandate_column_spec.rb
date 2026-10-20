@@ -25,7 +25,7 @@ describe TableDisplays::People::SepaMandateColumn, type: :helper do
       column: :payment_method,
       header: "Zahlungsart",
       value: "Überweisung",
-      permission: :show_details
+      permission: :show_full
     }
   end
 
@@ -36,7 +36,7 @@ describe TableDisplays::People::SepaMandateColumn, type: :helper do
       column: :payment_method,
       header: "Zahlungsart",
       value: "Lastschrift",
-      permission: :show_details
+      permission: :show_full
     }
 
     it "renders the references of the active mandates" do
