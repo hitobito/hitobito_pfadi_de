@@ -12,7 +12,7 @@ class SepaMandateAbility < AbilityDsl::Base
     permission(:any).may(:read).herself
     permission(:finance).may(:read).in_same_layer
 
-    permission(:finance).may(:create).for_member_in_same_layer
+    permission(:finance).may(:create).for_person_in_same_layer
     permission(:finance).may(:update).active_in_same_layer
 
     permission(:admin).may(:destroy, :show_evidence).all
@@ -20,8 +20,8 @@ class SepaMandateAbility < AbilityDsl::Base
 
   def herself = subject.person_id == user.id
 
-  def for_member_in_same_layer
-    in_same_layer && subject.person.groups_hierarchy_ids.include?(group.id)
+  def for_person_in_same_layer
+    in_same_layer && subject.person.local_groups_hierachy_ids.include?(group.id)
   end
 
   def active_in_same_layer = subject.active? && in_same_layer
