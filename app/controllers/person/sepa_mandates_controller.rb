@@ -7,13 +7,12 @@
 
 class Person::SepaMandatesController < CrudController
   self.nesting = Group, Person
-  self.permitted_attrs = [:issued_at, :valid_from, :confirmation]
+  self.permitted_attrs = [:issued_at, :user_confirmed_evidence_exists]
 
   helper_method :creditor
 
   def new
     entry.issued_at = Time.zone.today
-    entry.valid_from = Time.zone.today
     super
   end
 

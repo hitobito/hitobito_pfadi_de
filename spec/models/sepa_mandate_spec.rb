@@ -18,8 +18,8 @@ describe SepaMandate do
   end
 
   def build_mandate(**attrs)
-    SepaMandate.new(person:, group:, issued_at: Time.zone.now, valid_from: Time.zone.today,
-      confirmation: true, **attrs)
+    SepaMandate.new(person:, group:, issued_at: Time.zone.now,
+      user_confirmed_evidence_exists: true, **attrs)
   end
 
   describe "creation" do
@@ -59,7 +59,12 @@ describe SepaMandate do
     end
 
     it "requires the confirmation" do
-      expect(build_mandate(confirmation: nil)).to have(1).error_on(:confirmation)
+      expect(build_mandate(user_confirmed_evidence_exists: nil))
+        .to have(1).error_on(:user_confirmed_evidence_exists)
+    end
+
+    it "cannot be issued in the future" do
+      expect(build_mandate(issued_at: 1.day.from_now)).to have(1).error_on(:issued_at)
     end
 
     it "requires a layer group" do
@@ -105,14 +110,20 @@ describe SepaMandate do
     let(:mandate) { build_mandate.tap(&:save!) }
 
     it "cannot be changed" do
-      mandate.valid_from = Time.zone.tomorrow
+      mandate.issued_at = 1.day.ago
 
       expect(mandate).not_to be_valid
       expect(mandate.errors[:base]).to be_present
     end
 
-    it "cannot be revoked in the future" do
+    it "can be revoked for the future" do
       mandate.revoked_at = 1.day.from_now
+
+      expect(mandate).to be_valid
+    end
+
+    it "cannot be revoked before it was issued" do
+      mandate.revoked_at = mandate.issued_at - 1.day
 
       expect(mandate).to have(1).error_on(:revoked_at)
     end
@@ -124,6 +135,13 @@ describe SepaMandate do
       expect(mandate.revoked_at).to be_present
       expect(mandate.revoker).to eq admin
       expect { mandate.revoke!(admin) }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+
+    it "cannot set a revoker without actually revoking" do
+      expect { mandate.update!(revoker: admin) }.to raise_error(ActiveRecord::RecordInvalid)
+
+      expect(mandate.reload).to be_active
+      expect(mandate.revoker).to be_nil
     end
   end
 

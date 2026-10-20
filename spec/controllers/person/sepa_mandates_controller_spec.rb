@@ -78,13 +78,13 @@ describe Person::SepaMandatesController do
 
       expect(dom).to have_content(creditor.to_s)
       expect(dom).to have_content("DE98ZZZ09999999999")
-      expect(dom).to have_field("sepa_mandate_confirmation")
+      expect(dom).to have_field("sepa_mandate_user_confirmed_evidence_exists")
     end
   end
 
   describe "POST #create" do
     let(:mandate_params) do
-      {issued_at: "01.09.2026", valid_from: "01.10.2026", confirmation: "1"}
+      {issued_at: "01.09.2026", user_confirmed_evidence_exists: "1"}
     end
 
     it "creates the mandate for the layer of the group" do
@@ -113,7 +113,8 @@ describe Person::SepaMandatesController do
       sign_in(treasurer)
 
       expect {
-        post :create, params: params.merge(sepa_mandate: mandate_params.merge(confirmation: "0"))
+        post :create,
+          params: params.merge(sepa_mandate: mandate_params.merge(user_confirmed_evidence_exists: "0"))
       }.not_to change { SepaMandate.count }
       expect(response).to have_http_status(:unprocessable_content)
     end

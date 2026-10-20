@@ -248,7 +248,6 @@ de:
       period_invoice_template:
         billing_period: Abrechnungsperiode
       sepa_mandate:
-        confirmation: Bestätigung
         creator: Erstellt von
         evidence: Nachweis
         group: Gruppierung
@@ -263,7 +262,7 @@ de:
         statuses:
           active: Aktiv
           revoked: Widerrufen
-        valid_from: Gültig ab
+        user_confirmed_evidence_exists: Bestätigung
 
       service_token:
         fee_kinds: Beitragsarten und -Sätze
@@ -440,7 +439,7 @@ de:
       new:
         title: SEPA-Mandat erfassen
       form:
-        confirmation_caption: Hiermit bestätige ich, dass mir ein gültiges, unterschriebenes SEPA-Lastschriftmandat vorliegt.
+        user_confirmed_evidence_exists_caption: Hiermit bestätige ich, dass mir ein gültiges, unterschriebenes SEPA-Lastschriftmandat vorliegt.
       list:
         sepa_mandates_disabled: Für %{group} ist die Erfassung von SEPA-Mandaten nicht aktiviert. Sie kann in den Einstellungen der Gruppierung aktiviert werden, sobald eine SEPA-Gläubiger-ID hinterlegt ist.
         revoke: Widerrufen

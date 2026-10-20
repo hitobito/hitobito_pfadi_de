@@ -13,7 +13,6 @@ class CreateSepaMandates < ActiveRecord::Migration[8.0]
       t.references :group, null: false, index: true
       t.references :person, null: false, index: true
       t.datetime :issued_at, null: false
-      t.date :valid_from, null: false
       t.datetime :revoked_at
       t.references :creator, index: false
       t.references :revoker, index: false

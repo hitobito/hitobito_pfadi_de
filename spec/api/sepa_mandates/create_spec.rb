@@ -25,8 +25,7 @@ describe "sepa_mandates#create", type: :request do
           attributes: {
             person_id: member.id,
             group_id: group.id,
-            issued_at: "2026-09-01T10:00:00+02:00",
-            valid_from: "2026-10-01"
+            issued_at: "2026-09-01T10:00:00+02:00"
           }
         }
       }

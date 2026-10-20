@@ -21,8 +21,7 @@ describe SepaMandateResource, type: :resource do
       {
         person_id: member.id,
         group_id: group.id,
-        issued_at: "2026-09-01T10:00:00+02:00",
-        valid_from: "2026-10-01"
+        issued_at: "2026-09-01T10:00:00+02:00"
       }
     end
     let(:payload) { {data: {type: "sepa_mandates", attributes:}} }
@@ -41,7 +40,6 @@ describe SepaMandateResource, type: :resource do
         expect(mandate.person).to eq member
         expect(mandate.group).to eq group
         expect(mandate.creator).to eq role.person
-        expect(mandate.valid_from).to eq Date.new(2026, 10, 1)
         expect(mandate.reference).to start_with("#{group.id}-#{member.id}-")
       end
 
@@ -114,7 +112,9 @@ describe SepaMandateResource, type: :resource do
   end
 
   describe "revoking" do
-    let!(:mandate) { Fabricate(:sepa_mandate, person: member, group:) }
+    let!(:mandate) do
+      Fabricate(:sepa_mandate, person: member, group:, issued_at: "2026-08-01T10:00:00+02:00")
+    end
     let(:attributes) { {revoked_at: "2026-09-01T10:00:00+02:00"} }
     let(:payload) { {id: mandate.id.to_s, data: {id: mandate.id.to_s, type: "sepa_mandates", attributes:}} }
     let(:instance) { SepaMandateResource.find(payload) }
@@ -132,7 +132,7 @@ describe SepaMandateResource, type: :resource do
       end
 
       it "may not change other attributes" do
-        attributes[:valid_from] = "2026-12-01"
+        attributes[:issued_at] = "2026-07-01T10:00:00+02:00"
 
         expect { instance.update_attributes }.to raise_error(Graphiti::Errors::InvalidRequest)
       end

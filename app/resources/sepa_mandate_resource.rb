@@ -28,7 +28,6 @@ class SepaMandateResource < ApplicationResource
     attribute :group_id, :integer
     attribute :person_id, :integer
     attribute :issued_at, :datetime
-    attribute :valid_from, :date
     attribute :mandate_text_version, :integer, filterable: false, sortable: false
   end
 
@@ -40,11 +39,15 @@ class SepaMandateResource < ApplicationResource
   belongs_to :creator, resource: PersonResource, writable: false
   belongs_to :revoker, resource: PersonResource, writable: false
 
+  before_save :assign_creator, only: :create
+  before_save :confirm_evidence, only: :create
+  before_save :assign_revoker, only: :update
+
   filter :status, :string, single: true, only: [:eq] do
     eq do |scope, value|
       case value
-      when "active" then scope.where(revoked_at: nil)
-      when "revoked" then scope.where.not(revoked_at: nil)
+      when "active" then scope.active
+      when "revoked" then scope.revoked
       else scope.none
       end
     end
@@ -72,16 +75,25 @@ class SepaMandateResource < ApplicationResource
   def authorize_create(model)
     invalid_request!(:person_id, :blank) if model.person_id.blank?
     invalid_request!(:group_id, :blank) if model.group_id.blank?
-    model.creator = current_ability.user if current_ability.user&.persisted?
-    # The web form requires an explicit confirmation checkbox; API clients accept this
-    # contractually by calling the endpoint, so we set it implicitly here.
-    model.confirmation = true
     super
   end
 
   def authorize_update(model)
     authorize!(:update, model.class.find(model.id))
     invalid_request!(:revoked_at, :blank) if model.revoked_at.blank?
+  end
+
+  def assign_creator(model)
+    model.creator = current_ability.user if current_ability.user&.persisted?
+  end
+
+  def assign_revoker(model)
     model.revoker = current_ability.user if current_ability.user&.persisted?
+  end
+
+  # The web form requires an explicit confirmation checkbox; API clients accept this
+  # contractually by calling the endpoint, so we set it implicitly here.
+  def confirm_evidence(model)
+    model.user_confirmed_evidence_exists = true
   end
 end
