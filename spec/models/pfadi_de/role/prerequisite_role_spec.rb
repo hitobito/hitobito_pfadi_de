@@ -213,6 +213,266 @@ describe PfadiDe::Role::PrerequisiteRole do
     end
   end
 
+  describe "cascade" do
+    it "ends the dependent role at the end of the coverage" do
+      membership.update!(end_on: 1.month.from_now.to_date)
+
+      expect(dependent_role.reload.end_on).to eq(1.month.from_now.to_date)
+    end
+
+    it "does not touch the dependent role when coverage is extended" do
+      membership.update!(start_on: 1.year.ago.to_date)
+
+      expect(dependent_role.reload.end_on).to be_nil
+    end
+
+    it "ends the dependent role yesterday when coverage only resumes in the future" do
+      membership.update!(start_on: 2.weeks.from_now.to_date)
+
+      expect(dependent_role.reload.end_on).to eq(Date.yesterday)
+    end
+
+    it "cascades when a prerequisite role without start gets a start in the future" do
+      membership.update_columns(start_on: nil)
+
+      membership.update!(start_on: 2.weeks.from_now.to_date)
+
+      expect(dependent_role.reload.end_on).to eq(Date.yesterday)
+    end
+
+    it "ends the dependent role yesterday when the prerequisite role is destroyed" do
+      membership.destroy
+
+      expect(dependent_role.reload.end_on).to eq(Date.yesterday)
+    end
+
+    it "ends the dependent role when an old membership is soft-destroyed" do
+      membership.update_columns(created_at: 2.months.ago, start_on: 2.months.ago)
+
+      expect { membership.destroy }.not_to raise_error
+      expect(membership.end_on).to eq(Date.yesterday)
+      expect(dependent_role.reload.end_on).to eq(Date.yesterday)
+    end
+
+    it "deletes a future dependent role without any remaining coverage" do
+      future_role = build_dependent(start_on: 1.month.from_now.to_date)
+        .tap { |role| role.save!(validate: false) }
+
+      membership.destroy
+
+      expect(Role.with_inactive.exists?(future_role.id)).to be false
+      expect(dependent_role.reload.end_on).to eq(Date.yesterday)
+    end
+
+    it "moves a future dependent role to the next covered section" do
+      Group::Mitglieder::Zweitmitgliedschaft.provides_role :stamm_mitgliedschaft
+      build_role(Group::Mitglieder::Zweitmitgliedschaft,
+        group: adler_mitglieder,
+        start_on: 2.months.from_now.to_date)
+        .save!(validate: false)
+      future_role = build_dependent(start_on: 1.month.from_now.to_date)
+        .tap { |role| role.save!(validate: false) }
+
+      membership.destroy
+
+      future_role.reload
+      expect(future_role.start_on).to eq(2.months.from_now.to_date)
+      expect(future_role.end_on).to be_nil
+    end
+
+    it "leaves a dependent role entirely in the past unchanged" do
+      past_role = build_dependent(
+        start_on: 2.years.ago.to_date,
+        end_on: 1.year.ago.to_date
+      ).tap { |role| role.save!(validate: false) }
+
+      membership.destroy
+
+      expect(past_role.reload.end_on).to eq(1.year.ago.to_date)
+    end
+
+    it "does not cascade when only the past of the prerequisite role changes" do
+      membership.update_columns(start_on: 1.year.ago.to_date, end_on: 1.month.ago.to_date)
+
+      membership.update!(end_on: 2.months.ago.to_date)
+
+      expect(dependent_role.reload.end_on).to be_nil
+    end
+
+    it "does not cascade when an ended prerequisite role is destroyed" do
+      membership.update_columns(start_on: 1.year.ago.to_date, end_on: 1.month.ago.to_date)
+
+      membership.destroy
+
+      expect(dependent_role.reload.end_on).to be_nil
+    end
+
+    it "does not shorten an uncovered dependent role when a prerequisite role with end is created" do
+      membership.update_columns(start_on: 1.year.ago.to_date, end_on: 1.month.ago.to_date)
+
+      build_role(Group::Mitglieder::OrdentlicheMitgliedschaft,
+        group: adler_mitglieder,
+        start_on: 1.month.from_now.to_date,
+        end_on: 1.year.from_now.to_date)
+        .save!(validate: false)
+
+      expect(dependent_role.reload.end_on).to be_nil
+    end
+
+    it "does not touch dependent roles in other layers" do
+      other_layer_role = build_dependent(group: mondphoenixe)
+        .tap { |role| role.save!(validate: false) }
+
+      membership.update!(end_on: 1.month.from_now.to_date)
+
+      expect(other_layer_role.reload.end_on).to be_nil
+    end
+
+    it "shortens dependent roles that are invalid for other reasons" do
+      Group::Mitglieder::Foerdermitgliedschaft.provides_role :dpsg_mitgliedschaft
+      Group::StammGruppePfadfinder::Mitglied
+        .depends_on_role :dpsg_mitgliedschaft,
+          scope: :global,
+          on_uncovered: :cascade
+
+      membership.update!(end_on: 1.month.from_now.to_date)
+
+      expect(dependent_role.reload.end_on).to eq(1.month.from_now.to_date)
+    end
+
+    it "records a paper trail version for shortened dependents" do
+      with_versioning do
+        expect { membership.update!(end_on: 1.month.from_now.to_date) }
+          .to change {
+            PaperTrail::Version.where(item: dependent_role, event: "update").count
+          }.by(1)
+      end
+    end
+
+    describe "transitive" do
+      before do
+        Group::Mitglieder::OrdentlicheMitgliedschaft
+          .provides_role :dpsg_mitgliedschaft
+        Group::Mitglieder::Zweitmitgliedschaft
+          .provides_role :stamm_mitgliedschaft
+        Group::Mitglieder::Zweitmitgliedschaft
+          .depends_on_role :dpsg_mitgliedschaft,
+            scope: :global,
+            on_uncovered: :cascade
+      end
+
+      let!(:zweitmitgliedschaft) do
+        build_role(Group::Mitglieder::Zweitmitgliedschaft,
+          group: karlsruhe_mitglieder)
+          .tap { |role| role.save!(validate: false) }
+      end
+
+      let!(:pfadi_in_karlsruhe) do
+        build_dependent(group: mondphoenixe)
+          .tap { |role| role.save!(validate: false) }
+      end
+
+      it "deletes transitively dependent roles of a deleted dependent role" do
+        zweitmitgliedschaft.update_columns(start_on: 1.month.from_now.to_date)
+        pfadi_in_karlsruhe.update_columns(start_on: 2.months.from_now.to_date)
+
+        membership.destroy
+
+        expect(Role.with_inactive.exists?(zweitmitgliedschaft.id)).to be false
+        expect(Role.with_inactive.exists?(pfadi_in_karlsruhe.id)).to be false
+      end
+
+      it "cascades through a dependent role that is itself a prerequisite" do
+        membership.update!(end_on: 1.month.from_now.to_date)
+
+        expect(zweitmitgliedschaft.reload.end_on)
+          .to eq(1.month.from_now.to_date)
+        expect(pfadi_in_karlsruhe.reload.end_on)
+          .to eq(1.month.from_now.to_date)
+        expect(dependent_role.reload.end_on)
+          .to eq(1.month.from_now.to_date)
+      end
+    end
+
+    context "with validate_past: true" do
+      before do
+        Group::StammGruppePfadfinder::Mitglied
+          .depends_on_role :stamm_mitgliedschaft,
+            scope: :layer,
+            validate_past: true,
+            on_uncovered: :cascade
+        membership.update_columns(start_on: 2.years.ago.to_date)
+        dependent_role.update_columns(start_on: 1.year.ago.to_date)
+      end
+
+      def create_past_dependent(start_on: 1.year.ago.to_date, end_on: 2.months.ago.to_date)
+        build_dependent(start_on:, end_on:).tap do |role|
+          role.save!(validate: false)
+          role.update_columns(created_at: 1.year.ago)
+        end
+      end
+
+      it "moves the dependent role behind the start of the coverage" do
+        membership.update!(start_on: 6.months.ago.to_date)
+
+        dependent_role.reload
+        expect(dependent_role.start_on).to eq(6.months.ago.to_date)
+        expect(dependent_role.end_on).to be_nil
+      end
+
+      it "cascades when only the past of the prerequisite role changes" do
+        membership.update_columns(end_on: 1.month.ago.to_date)
+
+        membership.update!(end_on: 6.months.ago.to_date)
+
+        expect(dependent_role.reload.end_on).to eq(6.months.ago.to_date)
+      end
+
+      it "shortens dependent roles that ended in the past" do
+        past_role = create_past_dependent
+
+        membership.update!(end_on: 6.months.ago.to_date)
+
+        expect(past_role.reload.end_on).to eq(6.months.ago.to_date)
+      end
+
+      it "deletes old dependent roles without any remaining coverage" do
+        past_role = create_past_dependent
+
+        membership.update!(start_on: 1.month.ago.to_date)
+
+        expect(Role.with_inactive.exists?(past_role.id)).to be false
+      end
+
+      it "cascades when an ended prerequisite role is destroyed" do
+        membership.update_columns(end_on: 1.month.ago.to_date)
+        past_role = create_past_dependent
+
+        membership.destroy
+
+        expect(Role.with_inactive.exists?(past_role.id)).to be false
+      end
+
+      it "cascades when a prerequisite role without start gets a start" do
+        membership.update_columns(start_on: nil)
+
+        membership.update!(start_on: 6.months.ago.to_date)
+
+        expect(dependent_role.reload.start_on).to eq(6.months.ago.to_date)
+      end
+
+      it "moves a dependent role without start behind the start of the coverage" do
+        dependent_role.update_columns(start_on: nil)
+
+        membership.update!(start_on: 6.months.ago.to_date)
+
+        dependent_role.reload
+        expect(dependent_role.start_on).to eq(6.months.ago.to_date)
+        expect(dependent_role.end_on).to be_nil
+      end
+    end
+  end
+
   describe ".provides_role / .depends_on_role" do
     it "registers the entries in the registry" do
       expect(described_class.registry).to include(
