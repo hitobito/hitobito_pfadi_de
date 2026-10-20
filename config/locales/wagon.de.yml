@@ -37,6 +37,8 @@ de:
               membership_group_or_type_change_period_expired: Gruppe und Rolle einer Mitgliedschaft können nur innerhalb von %{days} Tagen nach dem Erfassen geändert werden
               membership_destroy_period_expired: Eine Mitgliedschaft kann nur innerhalb von %{days} Tagen nach dem Erfassen gelöscht werden.
               already_has_exclusive_role: "schliesst sich mit der bereits bestehenden Rolle '%{role}' in '%{group}' (%{period}) aus"
+              uncovered_prerequisite: "Für diese Rolle wird eine %{roles} vorausgesetzt. Diese fehlt %{period}."
+              uncovered_prerequisite_in_layer: "Für diese Rolle wird eine %{roles} in %{layer} vorausgesetzt. Diese fehlt %{period}."
         group:
           attributes:
             sepa_mandate_mode:
@@ -429,6 +431,10 @@ de:
       success_future_change: Die Beitragsart der Rolle wird am %{start_on} auf %{fee_kind} geändert.
       failure_role_does_not_allow_fee_kind: Rolle ist nicht beitragspflichtig
     open_end: "offen"
+    prerequisite:
+      roles_connector: " oder "
+      period: vom %{from} bis %{to}
+      period_open: ab %{from}
 
   person:
     history:
