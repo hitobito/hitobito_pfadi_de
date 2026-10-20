@@ -21,7 +21,9 @@ module PfadiDe
     #   end
     #
     # A dependent role is only valid while its validity period is fully covered
-    # by prerequisite roles of the person in the configured scope.
+    # by prerequisite roles of the person in the configured scope. Restricting
+    # the validity period of a prerequisite role from today on shrinks or
+    # deletes the dependent roles accordingly.
     module PrerequisiteRole
       extend ActiveSupport::Concern
 
@@ -36,6 +38,8 @@ module PfadiDe
 
       included do
         validate :assert_prerequisite_coverage
+        after_save :cascade_restricted_prerequisite, if: :prerequisite_restricted_from_today?
+        after_destroy :cascade_restricted_prerequisite, if: :prerequisite_removed_from_today?
       end
 
       class_methods do
@@ -231,6 +235,36 @@ module PfadiDe
           roles: prerequisite_role_names(config.category),
           layer: group.layer_group.to_s,
           period: format_prerequisite_period(gap))
+      end
+
+      def cascade_restricted_prerequisite
+        PfadiDe::Role::PrerequisiteCascade.trigger(self)
+      end
+
+      def prerequisite_restricted_from_today?
+        return false if previously_new_record? || self.class.provided_prerequisite_categories.empty?
+
+        start_on_restricted_from_today? || end_on_restricted_from_today?
+      end
+
+      def prerequisite_removed_from_today?
+        destroyed? &&
+          self.class.provided_prerequisite_categories.any? &&
+          (end_on.nil? || end_on >= Date.current)
+      end
+
+      def start_on_restricted_from_today?
+        saved_change_to_start_on? &&
+          start_on_before_last_save.present? &&
+          start_on.present? &&
+          start_on > start_on_before_last_save &&
+          start_on > Date.current
+      end
+
+      def end_on_restricted_from_today?
+        saved_change_to_end_on? &&
+          (end_on || FAR_FUTURE) < (end_on_before_last_save || FAR_FUTURE) &&
+          (end_on_before_last_save || FAR_FUTURE) >= Date.current
       end
 
       def prerequisite_role_names(category)
