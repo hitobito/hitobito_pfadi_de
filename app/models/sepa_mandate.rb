@@ -17,26 +17,27 @@ class SepaMandate < ActiveRecord::Base
   DEFAULT_EVIDENCE = "Hitobito-Gruppierung"
   REVOCABLE_ATTRS = %w[revoked_at revoker_id updated_at].freeze
 
-  # transient attribute used for validation (user must check confirmation checkbox)
-  attr_accessor :confirmation
+  attr_accessor :user_confirmed_evidence_exists
 
   belongs_to :group
   belongs_to :person
-  belongs_to :creator, class_name: "Person", optional: true
-  belongs_to :revoker, class_name: "Person", optional: true
+  belongs_to :creator, class_name: "Person"
+  belongs_to :revoker, class_name: "Person"
 
   scope :active, -> { where(revoked_at: nil) }
+  scope :revoked, -> { where.not(revoked_at: nil) }
   scope :list, -> { order(revoked_at: :desc, issued_at: :desc) }
 
   before_validation :generate_reference, on: :create, if: -> { reference.blank? }
-  before_validation :set_default_evidence, on: :create
+  before_validation :set_default_evidence, on: :create, if: -> { evidence.blank? }
 
   validates_by_schema
   validates :reference, format: {with: REFERENCE_FORMAT}, uniqueness: true
-  validates :confirmation, acceptance: {allow_nil: false}, on: :create
+  validates :user_confirmed_evidence_exists, acceptance: {allow_nil: false}, on: :create
   validate :assert_group_accepts_mandates, :assert_person_has_bank_account, on: :create
   validate :assert_only_revocation_changed, on: :update
-  validates_datetime :revoked_at, on_or_before: -> { Time.current }, allow_nil: true
+  validates_datetime :issued_at, on_or_before: -> { Time.current }, allow_nil: true
+  validates_datetime :revoked_at, on_or_after: :issued_at, allow_nil: true
 
   before_create :revoke_active_mandates
 
@@ -66,7 +67,7 @@ class SepaMandate < ActiveRecord::Base
   end
 
   def set_default_evidence
-    self.evidence = DEFAULT_EVIDENCE if evidence.blank?
+    self.evidence = DEFAULT_EVIDENCE
   end
 
   def assert_group_accepts_mandates
@@ -84,7 +85,7 @@ class SepaMandate < ActiveRecord::Base
   end
 
   def assert_only_revocation_changed
-    if (changed - REVOCABLE_ATTRS).any? || revoked_at_was.present?
+    if (changed - REVOCABLE_ATTRS).any? || revoked_at_was.present? || revoked_at.blank?
       errors.add(:base, :immutable)
     end
   end

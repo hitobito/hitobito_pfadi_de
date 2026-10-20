@@ -8,7 +8,10 @@
 require "spec_helper"
 
 describe "sepa_mandates#update", type: :request do
-  let!(:mandate) { Fabricate(:sepa_mandate, person: people(:member), group: groups(:adler)) }
+  let!(:mandate) do
+    Fabricate(:sepa_mandate, person: people(:member), group: groups(:adler),
+      issued_at: "2026-08-01T10:00:00+02:00")
+  end
 
   it_behaves_like "jsonapi authorized requests", required_scopes: ["sepa_mandates"], person: nil do
     let(:service_token) { service_tokens(:sepa_mandates_token) }

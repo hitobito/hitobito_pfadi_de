@@ -8,8 +8,7 @@
 Fabricator(:sepa_mandate) do
   person
   issued_at { Time.zone.now }
-  valid_from { Time.zone.today }
-  confirmation { true }
+  user_confirmed_evidence_exists { true }
 
   # mandates require an enabled creditor and a bank account on the person
   after_build do |mandate|

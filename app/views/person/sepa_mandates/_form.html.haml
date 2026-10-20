@@ -18,5 +18,5 @@
     .form-control-plaintext= parent.bank_name.presence || '-'
   = f.labeled(:issued_at) do
     = f.date_field(:issued_at, value: entry.issued_at && l(entry.issued_at.to_date))
-  = f.labeled_input_field :valid_from
-  = f.labeled_boolean_field :confirmation, caption: t('.confirmation_caption')
+  = f.labeled_boolean_field :user_confirmed_evidence_exists,
+    caption: t('.user_confirmed_evidence_exists_caption')

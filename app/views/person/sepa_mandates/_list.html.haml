@@ -9,7 +9,7 @@
   .alert.alert-info= t('.sepa_mandates_disabled', group: creditor)
 
 = crud_table do |t|
-  - t.attrs(:reference, :group, :status_label, :valid_from, :issued_at, :creator, :revoked_at, :revoker)
+  - t.attrs(:reference, :group, :status_label, :issued_at, :creator, :revoked_at, :revoker)
   - if can?(:show_evidence, SepaMandate.new(person: parent))
     - t.attrs(:evidence)
   - action_col(t) do |e|
