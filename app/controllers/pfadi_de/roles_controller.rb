@@ -42,6 +42,10 @@ module PfadiDe::RolesController
 
   private
 
+  def create_new_role_and_destroy_old_role
+    PfadiDe::Role::PrerequisiteCascade.deferred { super }
+  end
+
   def change_type
     return super if membership_restrictions.group_or_type_changeable?
 
