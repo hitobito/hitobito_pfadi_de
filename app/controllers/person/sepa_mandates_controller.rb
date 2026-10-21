@@ -18,8 +18,7 @@ class Person::SepaMandatesController < CrudController
 
   def update
     entry.revoke!(current_person)
-    redirect_to group_person_sepa_mandates_path(*parents),
-      notice: t(".success", reference: entry.reference)
+    redirect_to return_path, notice: t(".success", reference: entry.reference)
   end
 
   private

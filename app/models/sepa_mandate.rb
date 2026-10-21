@@ -6,7 +6,7 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 # A SEPA direct debit mandate of a person (payer) for a layer group (creditor).
-# Mandates are immutable except for their revocation. Per person and group,
+# Mandates are immutable except for their revocation. Per person and layer group,
 # only one mandate may be active at a time.
 #
 # For mandates issued online, mandate_text_version (smallint) records which

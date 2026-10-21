@@ -24,7 +24,7 @@ class SepaMandateResource < ApplicationResource
   # Only settable on creation, a reference is generated if none is given.
   with_options writable: :creating? do
     attribute :reference, :string
-    attribute :evidence, :string, readable: :show_evidence?
+    attribute :evidence, :string, readable: :show_evidence?, filterable: false, sortable: false
     attribute :group_id, :integer
     attribute :person_id, :integer
     attribute :issued_at, :datetime

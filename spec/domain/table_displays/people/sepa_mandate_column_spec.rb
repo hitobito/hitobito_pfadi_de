@@ -40,11 +40,11 @@ describe TableDisplays::People::SepaMandateColumn, type: :helper do
       permission: :show_full
     }
 
-    it "renders the references of the active mandates" do
+    it "renders the reference of the active mandate" do
       column = described_class.new(ability, table:, model_class: Person)
 
-      expect(column.label(:sepa_mandate_references)).to eq "Mandatsreferenz"
-      expect(column.value_for(people(:member), :sepa_mandate_references)).to eq mandate.reference
+      expect(column.label(:sepa_mandate_reference)).to eq "Mandatsreferenz"
+      expect(column.value_for(people(:member), :sepa_mandate_reference)).to eq mandate.reference
     end
   end
 end

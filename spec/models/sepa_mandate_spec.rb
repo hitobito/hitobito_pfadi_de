@@ -202,7 +202,7 @@ describe SepaMandate do
 
       expect(person.reload.payment_method(group)).to eq "debit"
       expect(person.payment_method_label(group)).to eq "Lastschrift"
-      expect(person.sepa_mandate_references(group)).to eq mandate.reference
+      expect(person.sepa_mandate_reference(group)).to eq mandate.reference
     end
 
     it "is invoice again once the mandate is revoked" do
