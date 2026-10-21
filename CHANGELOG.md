@@ -2,6 +2,7 @@
 
 ## Version 2.10
 
+* Im eFZ-Antrag-Export-Menü wird nur noch ein einzelner Eintrag angezeigt, der das Dokument automatisch anhand der satzungsgemässen Hauptgruppierung (leading_layer) der Person generiert (hitobito_pfadi_de#143)
 * `pfadi_de` spezifische Kontaktkonto-Kategorien (Telefon, E-Mail, Adresse, Social Media) implementiert inkl. eFZ Anschrift auf Gruppen (hitobito_pfadi_de#102)
 * Bei Veranstaltungen und Kursen stehen neu die Rollen "Gast" (wie Teilnehmende) und "Verwaltung" (Teil der Leitung) zur Verfügung
 * Die satzungsgemässe Hauptgruppierung einer Person kann auf Personenlisten eingeblendet, exportiert und über die API gelesen werden. Die bisherige Hitobito-Hauptgruppe/-Hauptebene heisst neu "Standardgruppe"/"Standardebene" (hitobito_pfadi_de#47)
