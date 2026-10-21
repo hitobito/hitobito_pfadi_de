@@ -11,18 +11,18 @@
 - if entry.attr_used?(:iban)
   = render 'contactable/bank_account_fields', f: f
 
-- billing_upwards_attrs = entry.used_attributes(:debitorennummer, :zahlungsart)
+- billing_upwards_attrs = entry.used_attributes(:debitorennummer, :payment_method)
 - if billing_upwards_attrs.any?
   .row
     %h3.form-subtitle.col-12.text-md-start.mt-1= t('.billing_upwards')
   = f.labeled_input_fields(*entry.used_attributes(:debitorennummer))
-  = render 'used_i18n_enum_field', attr: :zahlungsart, f:
+  = render 'used_i18n_enum_field', attr: :payment_method, f:
 
-- billing_members_attrs = entry.used_attributes(:sepa_glaeubiger_id, :sepa_mandate_mode)
+- billing_members_attrs = entry.used_attributes(:sepa_creditor_id, :sepa_mandate_mode)
 - if billing_members_attrs.any?
   .row
     %h3.form-subtitle.col-12.text-md-start.mt-3= t('.billing_members')
-  = f.labeled_input_fields(*entry.used_attributes(:sepa_glaeubiger_id))
+  = f.labeled_input_fields(*entry.used_attributes(:sepa_creditor_id))
   = render 'used_i18n_enum_field', attr: :sepa_mandate_mode, f:
 
 - settings_attrs = entry.used_attributes(:einsichtnahme_efz_durch_gruppe, :opt_out_aufnahmeantrag,

@@ -18,7 +18,7 @@ describe Person::SepaMandatesController do
   let(:params) { {group_id: group.id, person_id: member.id} }
 
   before do
-    creditor.update!(sepa_mandate_mode: "optional", sepa_glaeubiger_id: "DE98ZZZ09999999999")
+    creditor.update!(sepa_mandate_mode: "optional", sepa_creditor_id: "DE98ZZZ09999999999")
     member.update!(iban: "DE02120300000000202051")
   end
 

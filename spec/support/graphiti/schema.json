@@ -2424,7 +2424,7 @@
           "writable": false,
           "description": null
         },
-        "sepa_glaeubiger_id": {
+        "sepa_creditor_id": {
           "type": "string",
           "readable": true,
           "writable": false,
@@ -2436,7 +2436,7 @@
           "writable": false,
           "description": null
         },
-        "zahlungsart": {
+        "payment_method": {
           "type": "string",
           "readable": true,
           "writable": false,
@@ -2533,9 +2533,9 @@
         "aufloesungsdatum": {},
         "einsichtnahme_efz_durch_gruppe": {},
         "debitorennummer": {},
-        "sepa_glaeubiger_id": {},
+        "sepa_creditor_id": {},
         "sepa_mandate_mode": {},
-        "zahlungsart": {},
+        "payment_method": {},
         "rechtsform": {},
         "strukturnummer": {},
         "stamm_typ": {},
@@ -2923,7 +2923,7 @@
             "not_match"
           ]
         },
-        "sepa_glaeubiger_id": {
+        "sepa_creditor_id": {
           "type": "string",
           "operators": [
             "eq",
@@ -2953,7 +2953,7 @@
             "not_match"
           ]
         },
-        "zahlungsart": {
+        "payment_method": {
           "type": "string",
           "operators": [
             "eq",

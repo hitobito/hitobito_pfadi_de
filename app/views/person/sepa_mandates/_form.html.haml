@@ -6,8 +6,8 @@
 = entry_form(buttons_top: false, cancel_url: group_person_sepa_mandates_path(@group, parent)) do |f|
   = f.labeled(:group) do
     .form-control-plaintext= creditor.to_s
-  = f.labeled(:sepa_glaeubiger_id, Group.human_attribute_name(:sepa_glaeubiger_id)) do
-    .form-control-plaintext= creditor.sepa_glaeubiger_id.to_s
+  = f.labeled(:sepa_creditor_id, Group.human_attribute_name(:sepa_creditor_id)) do
+    .form-control-plaintext= creditor.sepa_creditor_id.to_s
   = f.labeled(:bank_account_owner, Person.human_attribute_name(:bank_account_owner)) do
     .form-control-plaintext= parent.bank_account_owner.presence || '-'
   = f.labeled(:iban, Person.human_attribute_name(:iban)) do

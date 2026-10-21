@@ -13,7 +13,7 @@ describe SepaMandate do
   let(:admin) { people(:admin) }
 
   before do
-    group.update!(sepa_mandate_mode: "optional", sepa_glaeubiger_id: "DE98ZZZ09999999999")
+    group.update!(sepa_mandate_mode: "optional", sepa_creditor_id: "DE98ZZZ09999999999")
     person.update!(iban: "DE02 1203 0000 0000 2020 51")
   end
 
@@ -88,7 +88,7 @@ describe SepaMandate do
       old.save!
       other_group = build_mandate(group: groups(:silberreiher))
       groups(:silberreiher).update!(sepa_mandate_mode: "required",
-        sepa_glaeubiger_id: "DE98ZZZ09999999999")
+        sepa_creditor_id: "DE98ZZZ09999999999")
       other_group.save!
 
       build_mandate(creator: admin).save!
@@ -215,7 +215,7 @@ describe SepaMandate do
       build_mandate.tap(&:save!)
 
       other_layer = groups(:silberreiher)
-      other_layer.update!(sepa_mandate_mode: "optional", sepa_glaeubiger_id: "DE98ZZZ09999999999")
+      other_layer.update!(sepa_mandate_mode: "optional", sepa_creditor_id: "DE98ZZZ09999999999")
 
       expect(person.reload.payment_method(other_layer)).to eq "invoice"
     end

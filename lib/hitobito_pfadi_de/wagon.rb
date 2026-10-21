@@ -143,7 +143,6 @@ module HitobitoPfadiDe
       ActiveSupport::Inflector.inflections do |inflect|
         inflect.irregular "rechtsform", "rechtsformen"
         inflect.irregular "stamm_typ", "stamm_typen"
-        inflect.irregular "zahlungsart", "zahlungsarten"
         inflect.irregular "efz_einsichtnahme", "efz_einsichtnahmen"
       end
     end

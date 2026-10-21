@@ -3,7 +3,7 @@
 -#  or later. See the COPYING file at the top-level directory or at
 -#  https://github.com/hitobito/hitobito_pfadi_de.
 
-- billing_info_present = entry.iban.present? || entry.debitorennummer.present? || entry.zahlungsart.present? || entry.sepa_glaeubiger_id.present?
+- billing_info_present = entry.iban.present? || entry.debitorennummer.present? || entry.payment_method.present? || entry.sepa_creditor_id.present?
 - if entry.attr_used?(:iban) && billing_info_present
   .contactable.well
     %address
@@ -16,15 +16,15 @@
         %div= entry.bic
       - if entry.bank_name.present?
         %div= entry.bank_name
-      - if entry.debitorennummer.present? or entry.zahlungsart.present?
+      - if entry.debitorennummer.present? or entry.payment_method.present?
         %strong.d-block.mt-2= t('.billing_upwards')
       - if entry.debitorennummer.present?
         %div= "#{entry.class.human_attribute_name(:debitorennummer)}: #{entry.debitorennummer}"
-      - if entry.zahlungsart.present?
-        %div= "#{entry.class.human_attribute_name(:zahlungsart)}: #{entry.zahlungsart_label}"
-      - if entry.sepa_glaeubiger_id.present? or entry.attr_used?(:sepa_mandate_mode)
+      - if entry.payment_method.present?
+        %div= "#{entry.class.human_attribute_name(:payment_method)}: #{entry.payment_method_label}"
+      - if entry.sepa_creditor_id.present? or entry.attr_used?(:sepa_mandate_mode)
         %strong.d-block.mt-2= t('.billing_members')
-      - if entry.sepa_glaeubiger_id.present?
-        %div= "#{entry.class.human_attribute_name(:sepa_glaeubiger_id)}: #{entry.sepa_glaeubiger_id}"
+      - if entry.sepa_creditor_id.present?
+        %div= "#{entry.class.human_attribute_name(:sepa_creditor_id)}: #{entry.sepa_creditor_id}"
       - if entry.attr_used?(:sepa_mandate_mode)
         %div= "#{entry.class.human_attribute_name(:sepa_mandate_mode)}: #{entry.sepa_mandate_mode_label}"

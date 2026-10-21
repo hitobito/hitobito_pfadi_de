@@ -100,7 +100,7 @@ describe PeopleController do
 
       context "with mandates enabled for the layer" do
         before do
-          group.update!(sepa_mandate_mode: "optional", sepa_glaeubiger_id: "DE98ZZZ09999999999")
+          group.update!(sepa_mandate_mode: "optional", sepa_creditor_id: "DE98ZZZ09999999999")
         end
 
         it "shows Überweisung when the person has no active mandate" do

@@ -18,9 +18,9 @@ module PfadiDe::GroupResource
       attribute :aufloesungsdatum, :date
       attribute :einsichtnahme_efz_durch_gruppe, :boolean
       attribute :debitorennummer, :string
-      attribute :sepa_glaeubiger_id, :string
+      attribute :sepa_creditor_id, :string
       attribute :sepa_mandate_mode, :string
-      attribute :zahlungsart, :string
+      attribute :payment_method, :string
       attribute :rechtsform, :string
       attribute :strukturnummer, :string
       attribute :stamm_typ, :string
