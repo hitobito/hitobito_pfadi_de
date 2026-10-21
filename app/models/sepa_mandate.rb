@@ -60,8 +60,9 @@ class SepaMandate < ActiveRecord::Base
   def generate_reference
     return if group_id.blank? || person_id.blank?
 
+    year = (issued_at || Time.zone.now).strftime("%y")
     self.reference = loop do
-      candidate = [group_id, person_id, SecureRandom.hex(2).upcase].join("-")
+      candidate = [group_id, person_id, "#{year}#{SecureRandom.hex(1).upcase}"].join("-")
       break candidate unless SepaMandate.exists?(reference: candidate)
     end
   end
