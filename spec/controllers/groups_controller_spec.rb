@@ -107,8 +107,8 @@ describe GroupsController do
         bic: "ASDF",
         bank_name: "Finanzinstitut",
         debitorennummer: 123,
-        sepa_glaeubiger_id: "DE98ZZZ09999999999",
-        zahlungsart: "rechnung"
+        sepa_creditor_id: "DE98ZZZ09999999999",
+        payment_method: "rechnung"
       }
     end
     let(:attrs_without_label) { [:bank_account_owner, :iban, :bic, :bank_name] }

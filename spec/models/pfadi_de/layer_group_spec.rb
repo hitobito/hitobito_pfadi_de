@@ -18,8 +18,8 @@ describe PfadiDe::LayerGroup do
       :bic,
       :bank_name,
       :debitorennummer,
-      :sepa_glaeubiger_id,
-      :zahlungsart
+      :sepa_creditor_id,
+      :payment_method
     ]
   end
 
@@ -28,8 +28,8 @@ describe PfadiDe::LayerGroup do
       expect(described_class.used_attributes).to include(*used_attrs)
     end
 
-    it "defines zahlungsart as i18n_enum" do
-      expect(described_class.zahlungsart_labels).to eq(
+    it "defines payment_method as i18n_enum" do
+      expect(described_class.payment_method_labels).to eq(
         lastschrift: "Lastschrift",
         rechnung: "Rechnung"
       )

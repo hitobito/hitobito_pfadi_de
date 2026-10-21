@@ -14,7 +14,7 @@ Fabricator(:sepa_mandate) do
   after_build do |mandate|
     unless mandate.group.sepa_mandates_enabled?
       mandate.group.update_columns(sepa_mandate_mode: "optional",
-        sepa_glaeubiger_id: "DE98ZZZ09999999999")
+        sepa_creditor_id: "DE98ZZZ09999999999")
     end
     mandate.person.update_columns(iban: "DE02120300000000202051") if mandate.person.iban.blank?
   end

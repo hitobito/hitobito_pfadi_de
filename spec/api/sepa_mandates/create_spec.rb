@@ -12,7 +12,7 @@ describe "sepa_mandates#create", type: :request do
   let(:group) { groups(:adler) }
 
   before do
-    group.update!(sepa_mandate_mode: "optional", sepa_glaeubiger_id: "DE98ZZZ09999999999")
+    group.update!(sepa_mandate_mode: "optional", sepa_creditor_id: "DE98ZZZ09999999999")
     member.update!(iban: "DE02120300000000202051")
   end
 
