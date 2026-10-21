@@ -4008,7 +4008,6 @@
         "last_name": {},
         "nickname": {},
         "email": {},
-        "address": {},
         "address_care_of": {},
         "street": {},
         "housenumber": {},
@@ -4021,7 +4020,6 @@
         "gender": {},
         "birthday": {},
         "language": {},
-        "picture": {},
         "updated_at": {},
         "additional_information": {},
         "pronoun": {},
@@ -4092,21 +4090,6 @@
           ]
         },
         "email": {
-          "type": "string",
-          "operators": [
-            "eq",
-            "not_eq",
-            "eql",
-            "not_eql",
-            "prefix",
-            "not_prefix",
-            "suffix",
-            "not_suffix",
-            "match",
-            "not_match"
-          ]
-        },
-        "address": {
           "type": "string",
           "operators": [
             "eq",
@@ -4279,21 +4262,6 @@
           ]
         },
         "language": {
-          "type": "string",
-          "operators": [
-            "eq",
-            "not_eq",
-            "eql",
-            "not_eql",
-            "prefix",
-            "not_prefix",
-            "suffix",
-            "not_suffix",
-            "match",
-            "not_match"
-          ]
-        },
-        "picture": {
           "type": "string",
           "operators": [
             "eq",
@@ -4918,7 +4886,6 @@
         "updated_at": {},
         "start_on": {},
         "end_on": {},
-        "name": {},
         "person_id": {},
         "group_id": {},
         "type": {},
@@ -4979,21 +4946,6 @@
             "gte",
             "lt",
             "lte"
-          ]
-        },
-        "name": {
-          "type": "string",
-          "operators": [
-            "eq",
-            "not_eq",
-            "eql",
-            "not_eql",
-            "prefix",
-            "not_prefix",
-            "suffix",
-            "not_suffix",
-            "match",
-            "not_match"
           ]
         },
         "person_id": {
