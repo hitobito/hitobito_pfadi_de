@@ -23,11 +23,11 @@ describe SepaMandate do
   end
 
   describe "creation" do
-    it "generates the reference from group, person and a random stamp" do
-      mandate = build_mandate
+    it "generates the reference from group, person and a stamp encoding the issuance year" do
+      mandate = build_mandate(issued_at: Time.zone.local(2024, 6, 1))
       mandate.save!
 
-      expect(mandate.reference).to match(/\A#{group.id}-#{person.id}-[0-9A-F]{4}\z/)
+      expect(mandate.reference).to match(/\A#{group.id}-#{person.id}-24[0-9A-F]{2}\z/)
       expect(mandate.reference.length).to be <= 35
     end
 
