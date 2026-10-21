@@ -137,7 +137,7 @@ describe Person::SepaMandatesController do
 
       expect(mandate.reload).not_to be_active
       expect(mandate.revoker).to eq people(:stammesverwaltung)
-      expect(response).to redirect_to(group_person_sepa_mandates_path(group, member))
+      expect(response).to redirect_to(group_person_sepa_mandates_path(group, member, returning: true))
     end
 
     it "is denied for the payer" do

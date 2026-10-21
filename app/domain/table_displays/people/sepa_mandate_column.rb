@@ -34,7 +34,7 @@ module TableDisplays
 
         case attr.to_sym
         when :payment_method then person.payment_method_label(layer)
-        when :sepa_mandate_references then person.sepa_mandate_references(layer)
+        when :sepa_mandate_reference then person.sepa_mandate_reference(layer)
         end
       end
     end

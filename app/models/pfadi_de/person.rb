@@ -47,6 +47,10 @@ module PfadiDe::Person
 
     self.used_attributes -= [:company, :company_name]
 
+    normalizes :iban, with: ->(value) { value.gsub(/\s/, "").upcase.scan(/.{1,4}/).join(" ") }
+    normalizes :bic, with: ->(value) { value.gsub(/\s/, "").upcase }
+    normalizes :bank_account_owner, with: ->(value) { value.squish }
+
     validates :iban, iban: true, on: :update, allow_blank: true
 
     scope :tentative_membership, -> do
@@ -74,7 +78,7 @@ module PfadiDe::Person
     I18n.t("activerecord.attributes.person.payment_methods.#{payment_method(group)}")
   end
 
-  def sepa_mandate_references(group)
+  def sepa_mandate_reference(group)
     active_sepa_mandate_for(group)&.reference.to_s
   end
 
@@ -116,19 +120,8 @@ module PfadiDe::Person
   end
 
   def bank_account_changed_for_sepa?
-    [:bank_account_owner, :iban, :bic].any? do |attr|
-      change = saved_change_to_attribute(attr)
-      change && normalize_bank_account_value(attr, change.first) !=
-        normalize_bank_account_value(attr, change.last)
-    end
-  end
-
-  def normalize_bank_account_value(attr, value)
-    if attr == :bank_account_owner
-      value.to_s.squish.downcase
-    else
-      value.to_s.gsub(/\s/, "").upcase
-    end
+    saved_change_to_iban? || saved_change_to_bic? ||
+      !bank_account_owner_before_last_save.to_s.casecmp?(bank_account_owner.to_s)
   end
 
   def revoke_sepa_mandates

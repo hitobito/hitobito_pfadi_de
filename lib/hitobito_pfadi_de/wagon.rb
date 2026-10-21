@@ -60,7 +60,6 @@ module HitobitoPfadiDe
       RolesController.prepend PfadiDe::RolesController
       Role::List.prepend PfadiDe::Role::List
       PeriodInvoiceTemplatesController.prepend PfadiDe::PeriodInvoiceTemplatesController
-      ServiceTokensController.permitted_attrs += [:fee_kinds, :efz_einsichtnahmen, :sepa_mandates]
 
       Person::HistoryController.prepend PfadiDe::Person::HistoryController
 
@@ -101,7 +100,7 @@ module HitobitoPfadiDe
 
       TableDisplay.register_column(Person,
         TableDisplays::People::SepaMandateColumn,
-        [:payment_method, :sepa_mandate_references])
+        [:payment_method, :sepa_mandate_reference])
 
       unless Sheet::Person.tabs.any? { |tab| tab.path_method == :group_person_sepa_mandates_path }
         invoices_tab = Sheet::Person.tabs.index { |tab| tab.label_key == "people.tabs.invoices" }

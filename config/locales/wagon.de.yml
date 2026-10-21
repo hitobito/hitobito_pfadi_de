@@ -241,7 +241,6 @@ de:
           invoice: Überweisung
         primary_group_id: Standardgruppe
         pronoun: Pronomen
-        sepa_mandate_references: Mandatsreferenz
         latest_efz_issued_on: eFZ Ausstellungsdatum
         latest_efz_einsicht_on: eFZ Einsichtnahme
         tentative_membership: Probemitgliedschaft
@@ -441,7 +440,7 @@ de:
       form:
         user_confirmed_evidence_exists_caption: Hiermit bestätige ich, dass mir ein gültiges, unterschriebenes SEPA-Lastschriftmandat vorliegt.
       list:
-        sepa_mandates_disabled: Für %{group} ist die Erfassung von SEPA-Mandaten nicht aktiviert. Sie kann in den Einstellungen der Gruppierung aktiviert werden, sobald eine SEPA-Gläubiger-ID hinterlegt ist.
+        sepa_mandates_disabled: Für %{group} ist die Erfassung von SEPA-Mandaten nicht aktiviert. Sie kann in den Einstellungen der Ebene aktiviert werden, sobald eine SEPA-Gläubiger-ID hinterlegt ist.
         revoke: Widerrufen
         confirm_revoke: Willst du das SEPA-Mandat %{reference} wirklich widerrufen? Dies kann nicht rückgängig gemacht werden.
       update:
@@ -546,4 +545,4 @@ de:
       fee_kind: Beitragsart
       leading_layer: Hauptgruppierung
       payment_method: Zahlungsart
-      sepa_mandate_references: Mandatsreferenz
+      sepa_mandate_reference: Mandatsreferenz

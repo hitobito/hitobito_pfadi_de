@@ -3,7 +3,8 @@
 -#  or later. See the COPYING file at the top-level directory or at
 -#  https://github.com/hitobito/hitobito_pfadi_de.
 
-- if entry.attr_used?(:iban) && (entry.iban.present? || entry.bank_account_owner.present?)
+- billing_info_present = entry.iban.present? || entry.debitorennummer.present? || entry.zahlungsart.present? || entry.sepa_glaeubiger_id.present?
+- if entry.attr_used?(:iban) && billing_info_present
   .contactable.well
     %address
       %strong= t('.bank_account')

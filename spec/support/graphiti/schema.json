@@ -5217,7 +5217,6 @@
         "created_at": {},
         "updated_at": {},
         "reference": {},
-        "evidence": {},
         "group_id": {},
         "person_id": {},
         "issued_at": {},
@@ -5258,21 +5257,6 @@
           ]
         },
         "reference": {
-          "type": "string",
-          "operators": [
-            "eq",
-            "not_eq",
-            "eql",
-            "not_eql",
-            "prefix",
-            "not_prefix",
-            "suffix",
-            "not_suffix",
-            "match",
-            "not_match"
-          ]
-        },
-        "evidence": {
           "type": "string",
           "operators": [
             "eq",
