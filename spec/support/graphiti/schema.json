@@ -864,6 +864,12 @@
           "writable": false,
           "description": null
         },
+        "html_description": {
+          "type": "string",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
         "application_conditions": {
           "type": "string",
           "readable": true,
@@ -1742,6 +1748,12 @@
           "description": null
         },
         "description": {
+          "type": "string",
+          "readable": true,
+          "writable": false,
+          "description": null
+        },
+        "html_description": {
           "type": "string",
           "readable": true,
           "writable": false,
