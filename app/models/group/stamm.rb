@@ -74,7 +74,7 @@ class Group::Stamm < ::Group
   end
 
   class ErfassungFuehrungszeugnis < ::Role
-    self.permissions = [:layer_and_below_read, :layer_and_below_efz]
+    self.permissions = [:layer_and_below_read_details, :layer_and_below_efz]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
