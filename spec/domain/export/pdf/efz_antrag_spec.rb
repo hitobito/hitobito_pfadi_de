@@ -30,7 +30,7 @@ describe Export::Pdf::EfzAntrag do
   end
 
   let(:efz_verantwortliche_stelle) do
-    Group::Stamm.new(
+    g = Group::Stamm.new(
       id: 42,
       einsichtnahme_efz_durch_gruppe: true,
       name: "Adler Gruppe",
@@ -41,11 +41,15 @@ describe Export::Pdf::EfzAntrag do
       email: "gruppe@example.com",
       phone_numbers_attributes: [{number: "+49 30 123 45 67"}]
     )
+    g.social_accounts.build(
+      name: "https://adler-gruppe.example.com",
+      category: contact_account_categories(:social_account_group_website)
+    )
+    g
   end
 
   before do
     allow(group).to receive(:hierarchy).and_return([efz_verantwortliche_stelle, group])
-    allow(Settings.application).to receive_messages(hostname: "example.com", schema: "https")
   end
 
   subject(:efz_antrag) { described_class.new(group, person) }
@@ -55,16 +59,19 @@ describe Export::Pdf::EfzAntrag do
       expect(efz_antrag.form_data.keys).to match_array [
         "mitglied_name",
         "mitglied_address",
+        "mitglied_address_flat",
         "mitglied_number",
         "mitglied_birthdate",
         "mitglied_city",
         "group_name",
         "group_address",
+        "group_address_flat",
         "group_mail",
         "group_phone",
         "group_url",
         "efz_recipient_name",
         "efz_recipient_address",
+        "efz_recipient_address_flat",
         "date"
       ]
     end
@@ -73,16 +80,19 @@ describe Export::Pdf::EfzAntrag do
       data = efz_antrag.form_data
       expect(data["mitglied_name"]).to eq("Hans Muster")
       expect(data["mitglied_address"]).to be_a(String)
+      expect(data["mitglied_address_flat"]).to eq("Musterstrasse 1, 10115 Berlin")
       expect(data["mitglied_number"]).to eq("12345")
       expect(data["mitglied_birthdate"]).to eq("01.01.1942")
       expect(data["mitglied_city"]).to eq("Berlin")
       expect(data["group_name"]).to eq("Adler Gruppe")
       expect(data["group_address"]).to be_a(String)
+      expect(data["group_address_flat"]).to eq("Gruppenstrasse 10, 10117 Berlin")
       expect(data["group_mail"]).to eq("gruppe@example.com")
       expect(data["group_phone"]).to eq("+49 30 123 45 67")
-      expect(data["group_url"]).to include("https://example.com")
+      expect(data["group_url"]).to eq("https://adler-gruppe.example.com")
       expect(data["efz_recipient_name"]).to eq("Adler Gruppe")
       expect(data["efz_recipient_address"]).to be_a(String)
+      expect(data["efz_recipient_address_flat"]).to eq("Gruppenstrasse 10, 10117 Berlin")
       expect(data["date"]).to eq(Date.current.strftime("%d.%m.%Y"))
     end
 
@@ -99,16 +109,19 @@ describe Export::Pdf::EfzAntrag do
       data = described_class.new(group, person).form_data
       expect(data["mitglied_name"]).to eq("")
       expect(data["mitglied_address"]).to be_a(String)
+      expect(data["mitglied_address_flat"]).to eq("")
       expect(data["mitglied_number"]).to eq("")
       expect(data["mitglied_birthdate"]).to eq("")
       expect(data["mitglied_city"]).to eq("")
       expect(data["group_name"]).to eq("")
       expect(data["group_address"]).to be_a(String)
+      expect(data["group_address_flat"]).to eq("")
       expect(data["group_mail"]).to eq("")
       expect(data["group_phone"]).to eq("")
-      expect(data["group_url"]).to include("https://example.com")
+      expect(data["group_url"]).to eq("")
       expect(data["efz_recipient_name"]).to eq("")
       expect(data["efz_recipient_address"]).to be_a(String)
+      expect(data["efz_recipient_address_flat"]).to eq("")
       expect(data["date"]).to eq(Date.current.strftime("%d.%m.%Y"))
     end
 
@@ -142,6 +155,44 @@ describe Export::Pdf::EfzAntrag do
         data = efz_antrag.form_data
         expect(data["efz_recipient_name"]).to eq("Efz Empfänger")
         expect(data["efz_recipient_address"]).to include("Efz Strasse 2")
+        expect(data["efz_recipient_address_flat"]).to eq("Efz Strasse 2, 10115 Efz Stadt")
+      end
+    end
+
+    context "with a mailing_address additional address" do
+      let(:efz_verantwortliche_stelle) do
+        g = Group::Stamm.new(
+          id: 42,
+          einsichtnahme_efz_durch_gruppe: true,
+          name: "Baden-Württemberg",
+          street: "Gruppenstrasse 10",
+          zip_code: "10117",
+          town: "Berlin",
+          country: "DE",
+          email: "gruppe@example.com",
+          phone_numbers_attributes: [{number: "+49 30 123 45 67"}]
+        )
+        g.additional_addresses.build(
+          street: "Gruppenstrasse 10",
+          zip_code: "10117",
+          town: "Berlin",
+          country: "DE",
+          category: contact_account_categories(:additional_address_group_mailing_address),
+          uses_contactable_name: false,
+          organization: true,
+          organization_name: "BdP Landesverband Baden-Württemberg"
+        )
+        g
+      end
+
+      it "uses the mailing address name for the group" do
+        data = efz_antrag.form_data
+        expect(data["group_name"]).to eq("BdP Landesverband Baden-Württemberg")
+      end
+
+      it "does not affect the group address" do
+        data = efz_antrag.form_data
+        expect(data["group_address"]).to include("Gruppenstrasse 10")
       end
     end
   end
@@ -181,7 +232,6 @@ describe Export::Pdf::EfzAntrag do
       raise "Fixture not found. Run: ruby spec/fixtures/files/efz_antrag_template_generate.rb" unless
         File.exist?(fixture_path)
       allow(efz_antrag).to receive(:template_path).and_return(fixture_path.to_s)
-      allow(Settings.application).to receive_messages(hostname: "example.com", schema: "https")
     end
 
     it "generates a valid PDF" do
@@ -212,7 +262,7 @@ describe Export::Pdf::EfzAntrag do
         group_zip: "10117",
         efz_recipient_name: "Adler Gruppe",
         current_date: Date.current.strftime("%d.%m.%Y"),
-        group_url: "https://example.com"
+        group_url: "https://adler-gruppe.example.com"
       }
 
       expected_values.each do |key, value|
