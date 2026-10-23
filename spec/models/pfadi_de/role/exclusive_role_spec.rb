@@ -237,7 +237,7 @@ describe PfadiDe::Role::ExclusiveRole do
   describe ".mutually_exclusive_in" do
     it "registers the role type in the registry" do
       expect(described_class.registry).to include(
-        a_hash_including(
+        described_class::Exclusion.new(
           type: Group::Mitglieder::OrdentlicheMitgliedschaft,
           category: :membership,
           scope: :layer,
@@ -267,7 +267,7 @@ describe PfadiDe::Role::ExclusiveRole do
       end.not_to change { described_class.registry.size }
 
       expect(described_class.registry).to include(
-        a_hash_including(
+        described_class::Exclusion.new(
           type: Group::Mitglieder::OrdentlicheMitgliedschaft,
           category: :membership,
           scope: :global,
