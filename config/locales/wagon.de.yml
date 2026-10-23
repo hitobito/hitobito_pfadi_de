@@ -37,6 +37,8 @@ de:
               membership_group_or_type_change_period_expired: Gruppe und Rolle einer Mitgliedschaft können nur innerhalb von %{days} Tagen nach dem Erfassen geändert werden
               membership_destroy_period_expired: Eine Mitgliedschaft kann nur innerhalb von %{days} Tagen nach dem Erfassen gelöscht werden.
               already_has_exclusive_role: "schliesst sich mit der bereits bestehenden Rolle '%{role}' in '%{group}' (%{period}) aus"
+              uncovered_prerequisite: "Für diese Rolle wird eine %{roles} vorausgesetzt. Diese fehlt %{period}."
+              uncovered_prerequisite_in_layer: "Für diese Rolle wird eine %{roles} in %{layer} vorausgesetzt. Diese fehlt %{period}."
         group:
           attributes:
             sepa_mandate_mode:
@@ -416,6 +418,14 @@ de:
       confirm_delete: Wollen Sie diese Beitragsart wirklich archivieren? Sie kann danach nicht mehr neu auf Rollen zugewiesen werden.
     form:
       caption_resricted: Beitragsart darf nur durch speziell berechtigte Personen vergeben werden
+  prerequisite_cascades:
+    confirm:
+      title: Abhängige Rollen anpassen
+      intro: Durch diese Änderung sind die folgenden abhängigen Rollen nicht mehr durch eine vorausgesetzte Rolle abgedeckt. Sie werden gekürzt oder gelöscht.
+      previous_period: Bisher
+      new_period: Neu
+      deleted: wird gelöscht
+      confirm: Änderung bestätigen
   role_lists:
     membership_destroy_period_expired: Die Mitgliedschaft von %{person} kann nur innerhalb von %{days} Tagen nach dem Erfassen gelöscht werden.
     membership_move_period_expired: Die Mitgliedschaft von %{person} kann nur innerhalb von %{days} Tagen nach dem Erfassen verschoben werden.
@@ -429,6 +439,10 @@ de:
       success_future_change: Die Beitragsart der Rolle wird am %{start_on} auf %{fee_kind} geändert.
       failure_role_does_not_allow_fee_kind: Rolle ist nicht beitragspflichtig
     open_end: "offen"
+    prerequisite:
+      roles_connector: " oder "
+      period: vom %{from} bis %{to}
+      period_open: ab %{from}
 
   person:
     history:

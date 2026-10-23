@@ -11,6 +11,7 @@
 * eFZ Einsichtnahmen können über das JSON:API aufgelistet, erstellt und gelöscht werden (hitobito_bdp#26)
 * Der "Nachrichten"-Tab auf Personenprofilen ist nur noch für die Person selbst und für Admins sichtbar (hitobito_pfadi_de#70)
 * Mitgliedschaften können nur eingeschränkt rückwirkend geändert werden, ausser von Admins. (hitobito_pfadi_de#49)
+* Rollen können eine Mitgliedschaft voraussetzen. Wird die Mitgliedschaft beendet oder gekürzt, werden die abhängigen Rollen nach einer Bestätigung entsprechend gekürzt oder gelöscht (hitobito_dpsg#27)
 
 ## Version 2.9
 
