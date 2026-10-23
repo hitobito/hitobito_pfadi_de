@@ -23,25 +23,25 @@ class Group::Bezirk < ::Group
   ### ROLES
 
   class Bezirkssprecher < ::Role
-    self.permissions = [:layer_and_below_read, :contact_data]
+    self.permissions = [:layer_and_below_read_details, :contact_data]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
 
   class BezirkssprecherStv < ::Role
-    self.permissions = [:layer_and_below_read, :contact_data]
+    self.permissions = [:layer_and_below_read_details, :contact_data]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
 
   class Bezirksschatzmeister < ::Role
-    self.permissions = [:layer_and_below_read, :contact_data]
+    self.permissions = [:layer_and_below_read_details, :contact_data]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end
 
   class BezirksschatzmeisterStv < ::Role
-    self.permissions = [:layer_and_below_read, :contact_data]
+    self.permissions = [:layer_and_below_read_details, :contact_data]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end

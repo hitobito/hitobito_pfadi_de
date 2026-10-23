@@ -7,6 +7,7 @@
 
 class Group::Stamm < ::Group
   include PfadiDe::LayerGroup
+  include PfadiDe::RequiredSitzanschrift
 
   self.layer = true
   self.event_types = [Event, Event::Course]
@@ -31,8 +32,15 @@ class Group::Stamm < ::Group
     :stamm_typ
   ]
 
+  self.superior_attributes += [
+    :opt_out_aufnahmeantrag,
+    :stamm_typ
+  ]
+
   i18n_enum :stamm_typ, %w[other stamm],
     i18n_prefix: "activerecord.attributes.group.stamm_typen"
+
+  validates :stamm_typ, presence: true
 
   ### ROLES
 
@@ -66,7 +74,7 @@ class Group::Stamm < ::Group
   end
 
   class ErfassungFuehrungszeugnis < ::Role
-    self.permissions = [:layer_and_below_read, :layer_and_below_efz]
+    self.permissions = [:layer_and_below_read_details, :layer_and_below_efz]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end

@@ -7,6 +7,7 @@
 
 class EfzEinsichtnahmeAbility < AbilityDsl::Base
   include AbilityDsl::Constraints::Group
+  include AbilityDsl::Constraints::Person
 
   on(EfzEinsichtnahme) do
     permission(:group_read).may(:read).in_same_group
@@ -17,7 +18,13 @@ class EfzEinsichtnahmeAbility < AbilityDsl::Base
 
     permission(:layer_and_below_efz).may(:create).in_same_layer_or_below
     permission(:delete_efz).may(:destroy).all
+
+    for_self_or_manageds do
+      permission(:any).may(:read).herself
+    end
   end
 
   def group = subject.group
+
+  def person = subject.person
 end

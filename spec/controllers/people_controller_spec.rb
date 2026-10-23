@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#  Copyright (c) 2025, BdP and DPSG. This file is part of
+#  Copyright (c) 2025-2026, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
@@ -15,7 +15,9 @@ describe PeopleController do
 
   context "PUT update" do
     it "updates pfadi_de fields" do
-      put :update, params: {group_id: group.id, id: leader.id, person: {
+      person = people(:member)
+
+      put :update, params: {group_id: groups(:pfadfinder).id, id: person.id, person: {
         pronoun: "sie",
         consent_data_retention: true,
         bank_account_owner: "John Doe",
@@ -86,6 +88,42 @@ describe PeopleController do
         expect(latest_efz_issued_on).to have_text "20.05.2026"
         expect(latest_efz_einsicht_on).to have_text "29.05.2026"
         expect(latest_efz_einsicht_on).to have_link "Some Stammesverwalter", href: person_path(einsichtnehmer)
+      end
+
+      context "as the person herself, without any special permission" do
+        let(:leader) {
+          Fabricate(Group::StammGruppePfadfinder::Mitglied.sti_name, group: groups(:pfadfinder),
+            person: Fabricate(:person, gender: "m")).person
+        }
+        let(:group) { groups(:pfadfinder) }
+
+        it "shows her own latest_efz_issued_on" do
+          Fabricate(:efz_einsichtnahme, einsichtnehmer:, person: leader, issued_on: "20.05.2026",
+            einsicht_on: "29.05.2026")
+          get :show, params: {group_id: group.id, id: leader.id}
+          expect(latest_efz_issued_on).to have_text "20.05.2026"
+        end
+      end
+
+      context "as a manager of the person, without any special permission" do
+        let(:leader) {
+          Fabricate(Group::StammGruppePfadfinder::Mitglied.sti_name, group: groups(:pfadfinder),
+            person: Fabricate(:person, gender: "m")).person
+        }
+        let(:group) { groups(:pfadfinder) }
+        let(:manager) { Fabricate(:person) }
+
+        before do
+          PeopleManager.create!(managed: leader, manager:)
+          sign_in(manager)
+        end
+
+        it "shows the managed person's latest_efz_issued_on" do
+          Fabricate(:efz_einsichtnahme, einsichtnehmer:, person: leader, issued_on: "20.05.2026",
+            einsicht_on: "29.05.2026")
+          get :show, params: {group_id: group.id, id: leader.id}
+          expect(latest_efz_issued_on).to have_text "20.05.2026"
+        end
       end
     end
 

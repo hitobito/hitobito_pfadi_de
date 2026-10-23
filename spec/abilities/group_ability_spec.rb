@@ -19,6 +19,14 @@ describe GroupAbility do
     it "may not index service tokens in group" do
       is_expected.not_to be_able_to(:index_service_tokens, group)
     end
+
+    it "may modify superior in below layers" do
+      is_expected.to be_able_to(:modify_superior, groups(:adler))
+    end
+
+    it "may not modify superior in own layer" do
+      is_expected.not_to be_able_to(:modify_superior, groups(:root))
+    end
   end
 
   context :layer_full do
@@ -30,7 +38,7 @@ describe GroupAbility do
   end
 
   context :admin do
-    let(:admin_group) { Fabricate(Group::Bundesebene.name) }
+    let(:admin_group) { Fabricate(Group::Bundesebene.name, **GroupPflichtfelder::SITZANSCHRIFT) }
     let(:role) { Fabricate(Group::Bundesebene::MVAdmin.name.to_sym, group: admin_group) }
 
     it "may index service tokens in group" do
@@ -39,6 +47,14 @@ describe GroupAbility do
 
     it "may index service tokens in group on another layer" do
       is_expected.to be_able_to(:index_service_tokens, groups(:baden_wuerttemberg))
+    end
+
+    it "may modify superior in own layer" do
+      is_expected.to be_able_to(:modify_superior, admin_group)
+    end
+
+    it "may modify superior in below layers" do
+      is_expected.to be_able_to(:modify_superior, groups(:adler))
     end
   end
 end

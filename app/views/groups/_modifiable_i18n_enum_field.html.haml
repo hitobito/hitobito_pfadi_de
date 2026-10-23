@@ -3,5 +3,5 @@
 -#  or later. See the COPYING file at the top-level directory or at
 -#  https://github.com/hitobito/hitobito_pfadi_de.
 
-- if entry.attr_used?(attr)
+- if entry.modifiable_attributes(attr).any?
   = f.labeled_i18n_enum_field(attr, entry.object.class.send("#{attr}_labels"))

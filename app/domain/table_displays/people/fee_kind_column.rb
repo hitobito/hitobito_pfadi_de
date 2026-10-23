@@ -15,7 +15,7 @@ module TableDisplays
         {roles: :fee_kind}
       end
 
-      def required_permission(_attr) = :show
+      def required_permission(_attr) = :show_full
 
       # not sortable
       def sort_by(_attr) = nil

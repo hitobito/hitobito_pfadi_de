@@ -18,6 +18,14 @@ describe Export::Tabular::People::PeopleAddress do
     expect(subject.attributes).to include(:pronoun, :entry_date, :exit_date)
   end
 
+  it "does not include bank account columns" do
+    expect(subject.attributes).not_to include(:bank_account_owner, :iban, :bic, :bank_name)
+  end
+
+  it "includes leading_layer" do
+    expect(subject.attributes).to include(:leading_layer)
+  end
+
   context "standard attributes" do
     context "#attribute_labels" do
       subject { people_list.attribute_labels }
@@ -25,6 +33,7 @@ describe Export::Tabular::People::PeopleAddress do
       its([:pronoun]) { should eq "Pronomen" }
       its([:entry_date]) { should eq "Eintrittsdatum" }
       its([:exit_date]) { should eq "Austrittsdatum" }
+      its([:leading_layer]) { should eq "Hauptgruppierung" }
     end
 
     context "attribute values" do

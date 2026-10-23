@@ -1,6 +1,6 @@
 #  frozen_string_literal: true
 
-#  Copyright (c) 2025, BdP and DPSG. This file is part of
+#  Copyright (c) 2025-2026, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
@@ -22,7 +22,8 @@ describe PersonResource, type: :resource do
         :bank_name,
         :consent_data_retention,
         :entry_date,
-        :exit_date
+        :exit_date,
+        :latest_efz_issued_on
       ]
     end
 

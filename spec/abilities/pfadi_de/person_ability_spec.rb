@@ -64,8 +64,11 @@ describe PersonAbility do
     end
   end
 
-  context :layer_and_below_read do
-    let(:role) { Fabricate(Group::Stamm::Stammesfuehrung.name.to_sym, group: groups(:adler)) }
+  context :layer_and_below_read_details do
+    let(:role) do
+      Fabricate(Group::Landesverband::ErfassungFuehrungszeugnis.name.to_sym,
+        group: groups(:baden_wuerttemberg))
+    end
     let(:other) { people(:member) }
 
     it "may not index messages on another person" do
@@ -78,6 +81,35 @@ describe PersonAbility do
 
     it "may see tags of another person" do
       is_expected.to be_able_to(:show_tags, other)
+    end
+
+    it "may not show_full another person" do
+      is_expected.not_to be_able_to(:show_full, other)
+    end
+  end
+
+  context :layer_and_below_read do
+    let(:role) { Fabricate(Group::Stamm::Stammesfuehrung.name.to_sym, group: groups(:adler)) }
+    let(:other) { people(:member) }
+
+    it "may show_full another person" do
+      is_expected.to be_able_to(:show_full, other)
+    end
+
+    it "may still view details of another person" do
+      is_expected.to be_able_to(:show_details, other)
+    end
+
+    it "may see tags of another person" do
+      is_expected.to be_able_to(:show_tags, other)
+    end
+
+    it "may not index messages on another person" do
+      is_expected.not_to be_able_to(:index_messages, other)
+    end
+
+    it "may index notes of another person" do
+      is_expected.to be_able_to(:index_notes, other)
     end
   end
 
