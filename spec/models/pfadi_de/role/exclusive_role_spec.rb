@@ -211,6 +211,18 @@ describe PfadiDe::Role::ExclusiveRole do
         expect(role).not_to be_valid
       end
 
+      it "rejects a role without start overlapping in the past" do
+        existing_role.update_columns(
+          start_on: 1.year.ago.to_date,
+          end_on: 3.months.ago.to_date
+        )
+
+        role = build_role(Group::Mitglieder::Zweitmitgliedschaft,
+          start_on: nil, end_on: 4.months.ago.to_date)
+
+        expect(role).not_to be_valid
+      end
+
       context "with a pre-existing overlapping role" do
         let!(:overlapping_role) do
           build_role(Group::Mitglieder::Zweitmitgliedschaft,

@@ -22,6 +22,7 @@ module PfadiDe
       Exclusion = Data.define(:type, :category, :scope, :validate_past)
 
       SCOPES = %i[layer global].freeze
+      FAR_PAST = Date.new(1, 1, 1).freeze
       FAR_FUTURE = Date.new(9999, 12, 31).freeze
 
       included do
@@ -112,7 +113,7 @@ module PfadiDe
       # The validity period of the role, shortened to start at today when the
       # past is not validated. Returns nil if nothing is left to check.
       def exclusive_check_period(validate_past)
-        start_on = self.start_on || Date.current
+        start_on = self.start_on || FAR_PAST
         start_on = [start_on, Date.current].max unless validate_past
         end_on = self.end_on || FAR_FUTURE
 
