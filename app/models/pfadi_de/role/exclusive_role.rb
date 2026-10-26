@@ -56,7 +56,7 @@ module PfadiDe
         end
 
         def exclusive_role_configurations
-          ExclusiveRole.registry.select { |entry| entry.type >= self }
+          ExclusiveRole.registry.select { |entry| entry.type == self }
         end
       end
 
@@ -74,13 +74,10 @@ module PfadiDe
           registry << exclusion
         end
 
-        # STI names of all role types registered in the category, including
-        # descendants so a registration on a base class covers its subclasses.
         def type_names_in_category(category)
-          registry.select { |entry| entry.category == category }
-            .flat_map { |entry| [entry.type, *entry.type.descendants] }
-            .map(&:sti_name)
-            .uniq
+          registry
+            .select { |entry| entry.category == category }
+            .map { |entry| entry.type.sti_name }
         end
       end
 
