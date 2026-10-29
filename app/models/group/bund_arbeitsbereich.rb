@@ -9,7 +9,7 @@ class Group::BundArbeitsbereich < ::Group
   ### ROLES
 
   class Beauftragt < ::Role
-    self.permissions = [:layer_and_below_read, :contact_data]
+    self.permissions = [:layer_and_below_read_details, :contact_data]
     self.sgbviii_required = true
   end
 

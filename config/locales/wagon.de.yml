@@ -37,6 +37,10 @@ de:
               membership_group_or_type_change_period_expired: Gruppe und Rolle einer Mitgliedschaft können nur innerhalb von %{days} Tagen nach dem Erfassen geändert werden
               membership_destroy_period_expired: Eine Mitgliedschaft kann nur innerhalb von %{days} Tagen nach dem Erfassen gelöscht werden.
               already_has_exclusive_role: "schliesst sich mit der bereits bestehenden Rolle '%{role}' in '%{group}' (%{period}) aus"
+            person:
+              incomplete_for_membership: >-
+                kann keine Mitgliedschaft erhalten, solange folgende Pflichtfelder
+                fehlen: %{attrs}
         group:
           attributes:
             sepa_mandate_mode:
@@ -165,9 +169,9 @@ de:
         pronoun: Pronomen
         rechtsform: Rechtsform
         rechtsformen:
+          _nil: Unbekannt
           ev: "e.V."
           kein_ev: "kein e.V."
-          unbekannt: Unbekannt
         sepa_creditor_id: SEPA-Gläubiger-ID
         sepa_mandate_mode: SEPA-Mandate
         sepa_mandate_modes:
@@ -210,8 +214,9 @@ de:
         updated_at: Geändert
       event/guest:
         genders:
-          _nil: nicht angegeben
+          _nil: Unbekannt
           d: divers
+          n: ohne Angabe
       person:
         address: Anschrift
         bank_account_owner: Kontoinhaber*in
@@ -223,9 +228,11 @@ de:
         genders:
           _nil: nicht angegeben
           d: divers
+          n: keine Angabe
         iban: IBAN
         id: Mitgliedsnummer
         latest_efz: Letzte eFZ Einsichtnahme
+        leading_layer: Hauptgruppierung
         membership_application_reasons: Begründung Aufnahmeersuchen
         membership_application_statement_stamm: Stellungnahme Stamm Aufnahmeersuchen
         membership_application_statement_lv: Stellungnahme LV Aufnahmeersuchen

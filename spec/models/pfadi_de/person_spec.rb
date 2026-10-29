@@ -12,6 +12,12 @@ describe Person do
     expect(Person::FILTER_ATTRS).to include :latest_efz_issued_on
   end
 
+  describe "#gender" do
+    it "extends the core genders with divers and the formal ohne Angabe option" do
+      expect(Person::GENDERS).to include("d", "n")
+    end
+  end
+
   describe "PaperTrail", versioning: true do
     let(:person) { people(:member) }
 

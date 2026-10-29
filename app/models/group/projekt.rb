@@ -36,7 +36,7 @@ class Group::Projekt < ::Group
   end
 
   class ZugriffsberechtigterMitgliederverwaltungGrossprojekt < ::Role
-    self.permissions = [:layer_and_below_read]
+    self.permissions = [:layer_and_below_read_details]
     self.two_factor_authentication_enforced = true
   end
 

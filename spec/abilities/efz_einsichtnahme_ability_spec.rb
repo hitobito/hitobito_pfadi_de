@@ -19,8 +19,18 @@ describe EfzEinsichtnahmeAbility do
   end
 
   describe "#show" do
-    it "may not show her own" do
-      expect(Ability.new(member)).not_to be_able_to(:show, efz)
+    it "may show her own" do
+      expect(Ability.new(member)).to be_able_to(:show, efz)
+    end
+
+    it "may be shown by a manager" do
+      manager = Fabricate(:person)
+      PeopleManager.create!(managed: member, manager: manager)
+      expect(Ability.new(manager)).to be_able_to(:show, efz)
+    end
+
+    it "cannot be shown by an unrelated person" do
+      expect(Ability.new(Fabricate(:person))).not_to be_able_to(:show, efz)
     end
 
     it "cannot read without group read" do

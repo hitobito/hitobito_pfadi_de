@@ -23,9 +23,29 @@ describe PfadiDe::LayerGroup do
     ]
   end
 
+  let(:superior_attrs) do
+    [
+      :name,
+      :short_name,
+      :description,
+      :gruendungsdatum,
+      :aufloesungsdatum,
+      :debitorennummer,
+      :payment_method
+    ]
+  end
+
   shared_examples "layer group attrs" do
     it "has expected used attributes" do
       expect(described_class.used_attributes).to include(*used_attrs)
+    end
+
+    it "has expected superior attributes" do
+      expect(described_class.superior_attributes).to include(*superior_attrs)
+    end
+
+    it "only marks used attributes as superior" do
+      expect(described_class.used_attributes).to include(*described_class.superior_attributes)
     end
 
     it "defines payment_method as i18n_enum" do
@@ -39,11 +59,25 @@ describe PfadiDe::LayerGroup do
       it "#{non_layer_class} does not have attrs used on layer" do
         expect(non_layer_class.used_attributes).not_to include(*used_attrs)
       end
+
+      it "#{non_layer_class} does not restrict attrs to superior layers" do
+        expect(non_layer_class.superior_attributes).to be_empty
+      end
     end
   end
 
   describe Group::Stamm do
     it_behaves_like "layer group attrs"
+
+    it "restricts stamm specific attrs to superior layers" do
+      expect(described_class.superior_attributes)
+        .to include(:stamm_typ, :opt_out_aufnahmeantrag)
+    end
+
+    it "keeps opt_out_aufnahmeantrag_stammessuche editable on the own layer" do
+      expect(described_class.superior_attributes)
+        .not_to include(:opt_out_aufnahmeantrag_stammessuche)
+    end
   end
 
   describe Group::Bezirk do
