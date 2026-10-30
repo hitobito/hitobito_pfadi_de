@@ -7,6 +7,7 @@
 
 module PfadiDe::RolesController
   extend ActiveSupport::Concern
+  include PfadiDe::PrerequisiteCascadeConfirmation
 
   prepended do
     helper_method :may_change_fee_kind?, :membership_restrictions
@@ -17,39 +18,87 @@ module PfadiDe::RolesController
   end
 
   def create
-    if params[:autosubmit].present?
-      assign_attributes
-      entry&.ensure_fee_kind
-      render "new"
-    else
-      super
-    end
+    return render_autosubmitted_new if params[:autosubmit].present?
+
+    super
   end
 
   def update
-    if params[:autosubmit].present?
-      if change_type?
-        entry.attributes = build_new_type.attributes.except("id", "terminated")
-      else
-        assign_attributes
-      end
-      entry&.ensure_fee_kind
-      render "edit"
-    else
-      super
-    end
+    return render_autosubmitted_edit if params[:autosubmit].present?
+    return if provides_prerequisites? &&
+      confirm_prerequisite_cascade(model: full_entry_label) { simulate_update }
+
+    super
+  end
+
+  def destroy
+    return if provides_prerequisites? &&
+      confirm_prerequisite_cascade(model: full_entry_label) { simulate_destroy }
+
+    super
   end
 
   private
 
-  def change_type
-    return super if membership_restrictions.group_or_type_changeable?
+  def render_autosubmitted_new
+    assign_attributes
+    entry&.ensure_fee_kind
+    render "new"
+  end
 
+  def render_autosubmitted_edit
+    if change_type?
+      entry.attributes = build_new_type.attributes.except("id", "terminated")
+    else
+      assign_attributes
+    end
+    entry&.ensure_fee_kind
+    render "edit"
+  end
+
+  def simulate_update
+    @group = find_group
+    if change_type?
+      create_new_role_and_destroy_old_role
+    else
+      assign_attributes
+      with_callbacks(:update, :save) { save_entry }
+    end
+  ensure
+    reset_simulated_entry
+  end
+
+  def simulate_destroy
+    run_callbacks(:destroy) { entry.destroy }
+  ensure
+    reset_simulated_entry
+  end
+
+  def provides_prerequisites?
+    entry.class.provided_prerequisite_categories.any?
+  end
+
+  def reset_simulated_entry
+    @role = nil
+    @new_role = nil
+    @membership_restrictions = nil
+  end
+
+  def last_primary_group_role_deleted
+    super unless prerequisite_cascade_confirmation_rendered?
+  end
+
+  def create_new_role_and_destroy_old_role
+    return reject_group_or_type_change unless membership_restrictions.group_or_type_changeable?
+
+    PfadiDe::Role::PrerequisiteCascade.deferred { super }
+  end
+
+  def reject_group_or_type_change
     @new_role = build_new_type
     @new_role.errors.add(:base, :membership_group_or_type_change_period_expired,
       days: membership_restrictions.change_max_days)
-    prepare_for_rerender_edit
-    render :edit, status: :unprocessable_content
+    false
   end
 
   def membership_restrictions

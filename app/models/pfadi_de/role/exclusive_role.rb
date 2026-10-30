@@ -19,7 +19,10 @@ module PfadiDe
     module ExclusiveRole
       extend ActiveSupport::Concern
 
+      Exclusion = Data.define(:type, :category, :scope, :validate_past)
+
       SCOPES = %i[layer global].freeze
+      FAR_PAST = Date.new(1, 1, 1).freeze
       FAR_FUTURE = Date.new(9999, 12, 31).freeze
 
       included do
@@ -44,41 +47,38 @@ module PfadiDe
           end
 
           ExclusiveRole.register(
-            type: self,
-            category: category.to_sym,
-            scope: scope,
-            validate_past: validate_past
+            Exclusion.new(
+              type: self,
+              category: category.to_sym,
+              scope: scope,
+              validate_past: validate_past
+            )
           )
         end
 
         def exclusive_role_configurations
-          ExclusiveRole.registry.select { |entry| entry[:type] >= self }
+          ExclusiveRole.registry.select { |entry| entry.type == self }
         end
       end
 
       class << self
-        # Entries look like
-        #   {type: SomeRoleClass, category: :membership, scope: :layer, validate_past: false}
         def registry
           @registry ||= []
         end
 
-        def register(type:, category:, scope:, validate_past:)
+        def register(exclusion)
           # a type occupies a single slot per category: re-registering the
           # same category replaces scope and validate_past
           registry.reject! do |entry|
-            entry[:type] == type && entry[:category] == category
+            entry.type == exclusion.type && entry.category == exclusion.category
           end
-          registry << {type: type, category: category, scope: scope, validate_past: validate_past}
+          registry << exclusion
         end
 
-        # STI names of all role types registered in the category, including
-        # descendants so a registration on a base class covers its subclasses.
         def type_names_in_category(category)
-          registry.select { |entry| entry[:category] == category }
-            .flat_map { |entry| [entry[:type], *entry[:type].descendants] }
-            .map(&:sti_name)
-            .uniq
+          registry
+            .select { |entry| entry.category == category }
+            .map { |entry| entry.type.sti_name }
         end
       end
 
@@ -88,7 +88,7 @@ module PfadiDe
         return if person.nil? || group.nil?
 
         self.class.exclusive_role_configurations.each do |config|
-          period = exclusive_check_period(config[:validate_past])
+          period = exclusive_check_period(config.validate_past)
           next if period.nil?
 
           conflicting_exclusive_roles(config, period).each do |conflict|
@@ -113,7 +113,7 @@ module PfadiDe
       # The validity period of the role, shortened to start at today when the
       # past is not validated. Returns nil if nothing is left to check.
       def exclusive_check_period(validate_past)
-        start_on = self.start_on || Date.current
+        start_on = self.start_on || FAR_PAST
         start_on = [start_on, Date.current].max unless validate_past
         end_on = self.end_on || FAR_FUTURE
 
@@ -123,10 +123,10 @@ module PfadiDe
       def conflicting_exclusive_roles(config, period)
         conflicts = person.roles.with_inactive
           .active_scope(period)
-          .where(type: ExclusiveRole.type_names_in_category(config[:category]))
+          .where(type: ExclusiveRole.type_names_in_category(config.category))
           .where.not(id: id)
 
-        if config[:scope] == :layer
+        if config.scope == :layer
           conflicts = conflicts
             .joins(:group)
             .where(groups: {layer_group_id: group.layer_group_id})
