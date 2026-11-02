@@ -80,6 +80,8 @@ module HitobitoPfadiDe
       SelfRegistrationResource.prepend PfadiDe::SelfRegistrationResource
 
       Export::Tabular::People::PeopleAddress.prepend PfadiDe::Export::Tabular::People::PeopleAddress
+      Export::Tabular::People::PeopleFull.prepend PfadiDe::Export::Tabular::People::PeopleFull
+      Export::Tabular::People::PersonRow.prepend PfadiDe::Export::Tabular::People::PersonRow
       Export::Pdf::Invoice.runner = Export::Pdf::Invoice::RunnerWithProcessedSubjects
 
       Dropdown::PeopleExport.prepend PfadiDe::Dropdown::PeopleExport
@@ -111,6 +113,18 @@ module HitobitoPfadiDe
               view.can?(:index, SepaMandate.new(person:, group: group.layer_group))
             }))
       end
+
+      TableDisplay.register_column(Person,
+        TableDisplays::People::MembershipDateColumn,
+        [:entry_date, :exit_date])
+
+      TableDisplay.register_column(Person,
+        TableDisplays::ShowDetailsColumn,
+        :latest_efz_issued_on)
+
+      TableDisplay.register_column(Person,
+        TableDisplays::ShowFullColumn,
+        PfadiDe::Contactable::BANK_ACCOUNT_ATTRS + [:consent_data_retention])
 
       # contact account categories (#4359): the pfadi_de-specific categories
       # listed in the issue (github.com/hitobito/hitobito_pfadi_de/issues/102),

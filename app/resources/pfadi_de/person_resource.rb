@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#  Copyright (c) 2025, BdP and DPSG. This file is part of
+#  Copyright (c) 2025-2026, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
@@ -16,11 +16,12 @@ module PfadiDe::PersonResource
     attribute :exit_date, :date, writable: false, readable: :show_details_on_person? do
       @object.exit_date
     end
-    attribute :bank_account_owner, :string, readable: :show_details_on_person?
-    attribute :iban, :string, readable: :show_details_on_person?
-    attribute :bic, :string, readable: :show_details_on_person?
-    attribute :bank_name, :string, readable: :show_details_on_person?
-    attribute :consent_data_retention, :boolean, readable: :show_details_on_person?
+    attribute :latest_efz_issued_on, :date, writable: false, readable: :show_details_on_person?
+    attribute :bank_account_owner, :string, readable: :show_full_on_person?
+    attribute :iban, :string, readable: :show_full_on_person?
+    attribute :bic, :string, readable: :show_full_on_person?
+    attribute :bank_name, :string, readable: :show_full_on_person?
+    attribute :consent_data_retention, :boolean, readable: :show_full_on_person?
 
     # rubocop:disable Rails/RedundantForeignKey
     belongs_to :leading_layer, resource: GroupResource, writable: false,
@@ -39,5 +40,15 @@ module PfadiDe::PersonResource
 
   def show_full_on_person?(model_instance)
     can?(:show_full, model_instance)
+  end
+
+  def authorize_update(model)
+    super
+
+    return unless model.self_or_managed_by_current_person?
+
+    restricted_changed = model.changed_attribute_names_to_save &
+      PfadiDe::Person::SELF_OR_MANAGED_RESTRICTED_ATTRS
+    raise CanCan::AccessDenied if restricted_changed.present?
   end
 end

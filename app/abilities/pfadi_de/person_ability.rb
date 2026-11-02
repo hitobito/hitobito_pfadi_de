@@ -21,8 +21,10 @@ module PfadiDe::PersonAbility
       permission(:group_read).may(:show_tags).in_same_group
       permission(:group_and_below_read).may(:show_tags).in_same_group_or_below
       permission(:layer_read).may(:show_tags).in_same_layer
+      permission(:layer_and_below_read_details).may(:show_tags).in_same_layer_or_visible_below
       permission(:layer_and_below_read).may(:show_tags).in_same_layer_or_visible_below
       permission(:see_invisible_from_above).may(:show_tags).in_same_layer_or_below
+      permission(:layer_and_below_read).may(:index_notes).in_same_layer_or_visible_below
     end
   end
 

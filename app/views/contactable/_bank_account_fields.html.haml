@@ -5,9 +5,8 @@
 
 
 = field_set_tag do
-  = f.labeled_input_field(:bank_account_owner)
-  = f.labeled_input_field(:iban)
-  = f.labeled_input_field(:bic)
-  = f.labeled_input_field(:bank_name)
+  - [:bank_account_owner, :iban, :bic, :bank_name].each do |attr|
+    - next if restricted_attr?(f.object, attr)
+    = f.labeled_input_field(attr)
 
   = yield

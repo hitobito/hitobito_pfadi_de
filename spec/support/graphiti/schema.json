@@ -3774,6 +3774,60 @@
           "writable": true,
           "description": null
         },
+        "birthday": {
+          "type": "date",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "gender": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "address_care_of": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "street": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "housenumber": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "postbox": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "zip_code": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "town": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "country": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
         "group_id": {
           "type": "integer",
           "readable": false,
@@ -4058,6 +4112,12 @@
           "writable": false,
           "description": null
         },
+        "latest_efz_issued_on": {
+          "type": "date",
+          "readable": "guarded",
+          "writable": false,
+          "description": null
+        },
         "bank_account_owner": {
           "type": "string",
           "readable": "guarded",
@@ -4113,6 +4173,7 @@
         "pronoun": {},
         "entry_date": {},
         "exit_date": {},
+        "latest_efz_issued_on": {},
         "bank_account_owner": {},
         "iban": {},
         "bic": {},
@@ -4416,6 +4477,17 @@
           ]
         },
         "exit_date": {
+          "type": "date",
+          "operators": [
+            "eq",
+            "not_eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte"
+          ]
+        },
+        "latest_efz_issued_on": {
           "type": "date",
           "operators": [
             "eq",
@@ -5227,6 +5299,60 @@
         "fee_kind_id": {
           "type": "integer",
           "readable": false,
+          "writable": true,
+          "description": null
+        },
+        "birthday": {
+          "type": "date",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "gender": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "address_care_of": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "street": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "housenumber": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "postbox": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "zip_code": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "town": {
+          "type": "string",
+          "readable": true,
+          "writable": true,
+          "description": null
+        },
+        "country": {
+          "type": "string",
+          "readable": true,
           "writable": true,
           "description": null
         }

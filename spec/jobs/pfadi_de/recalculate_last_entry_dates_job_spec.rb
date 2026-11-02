@@ -33,6 +33,14 @@ describe PfadiDe::RecalculateLastEntryDatesJob do
       expect(person1.reload.last_entry_date_with_fee_kind).to eq(Date.new(42, 1, 1))
     end
 
+    it "also updates last_exit_date_with_fee_kind with the calculated value" do
+      allow_any_instance_of(PfadiDe::LatestMembershipCalculator).to receive(:exit_date)
+        .and_return(Date.new(43, 1, 1))
+      described_class.new.perform
+
+      expect(person1.reload.last_exit_date_with_fee_kind).to eq(Date.new(43, 1, 1))
+    end
+
     it "resets the flag after calculation" do
       described_class.new.perform
 

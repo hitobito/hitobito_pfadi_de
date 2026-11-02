@@ -29,7 +29,7 @@ class Group::Bundesgeschaeftsstelle < ::Group
   end
 
   class HauptamtlichReferent < ::Role
-    self.permissions = [:layer_and_below_read, :contact_data, :assign_restricted_fee_kinds]
+    self.permissions = [:layer_and_below_read_details, :contact_data, :assign_restricted_fee_kinds]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end

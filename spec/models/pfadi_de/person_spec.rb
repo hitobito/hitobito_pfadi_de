@@ -12,6 +12,12 @@ describe Person do
     expect(Person::FILTER_ATTRS).to include :latest_efz_issued_on
   end
 
+  describe "#gender" do
+    it "extends the core genders with divers and the formal ohne Angabe option" do
+      expect(Person::GENDERS).to include("d", "n")
+    end
+  end
+
   describe "PaperTrail", versioning: true do
     let(:person) { people(:member) }
 
@@ -90,6 +96,68 @@ describe Person do
         expect(Person.without_tentative_membership).to include(person)
         expect(person).not_to be_tentative_membership
       end
+    end
+  end
+
+  describe "#is_or_will_be_member?" do
+    let(:person) { people(:member) }
+
+    it "is true for a currently active fee_kind role" do
+      expect(person).to be_is_or_will_be_member
+    end
+
+    it "is true for a fee_kind role starting in the future" do
+      roles(:paying_member).destroy
+      Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.sti_name,
+        group: groups(:adler_mitglieder), person:,
+        fee_kind: fee_kinds(:baden_wuerttemberg_kind), start_on: 1.month.from_now.to_date)
+
+      expect(person).to be_is_or_will_be_member
+    end
+
+    it "is false when only a role without fee_kind exists" do
+      roles(:paying_member).destroy
+
+      expect(person).not_to be_is_or_will_be_member
+    end
+
+    it "is false when the only fee_kind role has already ended" do
+      roles(:paying_member).update!(end_on: 1.day.ago.to_date)
+
+      expect(person).not_to be_is_or_will_be_member
+    end
+  end
+
+  describe "member-required attributes" do
+    let(:person) { people(:member) }
+
+    it "is valid when all required attributes are present" do
+      expect(person).to be_valid
+    end
+
+    it "is invalid when a required attribute is missing and the person is a member" do
+      person.update_column(:birthday, nil)
+
+      expect(person).not_to be_valid
+      expect(person.errors[:birthday]).to be_present
+    end
+
+    it "is invalid when a required attribute is missing and membership starts in the future" do
+      roles(:paying_member).destroy
+      Fabricate(Group::Mitglieder::OrdentlicheMitgliedschaft.sti_name,
+        group: groups(:adler_mitglieder), person:,
+        fee_kind: fee_kinds(:baden_wuerttemberg_kind), start_on: 1.month.from_now.to_date)
+      person.update_column(:birthday, nil)
+
+      expect(person).not_to be_valid
+    end
+  end
+
+  describe "#mark_as_required?" do
+    let(:person) { people(:member) }
+
+    it "marks a required attribute of a member" do
+      expect(person.mark_as_required?(:birthday)).to eq true
     end
   end
 
