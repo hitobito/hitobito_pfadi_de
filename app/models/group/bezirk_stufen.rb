@@ -13,7 +13,7 @@ class Group::BezirkStufen < Group::BezirkArbeitsbereich
   ### ROLES
 
   class Beauftragt < ::Role
-    self.permissions = [:layer_and_below_read]
+    self.permissions = [:layer_and_below_read_details]
     self.sgbviii_required = true
   end
 

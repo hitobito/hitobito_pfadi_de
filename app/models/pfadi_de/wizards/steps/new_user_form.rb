@@ -12,5 +12,15 @@ module PfadiDe::Wizards::Steps::NewUserForm
     self.support_company = false
 
     attribute :fee_kind_id, :integer
+
+    attribute :birthday, :date
+    attribute :gender, :string
+    attribute :address_care_of, :string
+    attribute :street, :string
+    attribute :housenumber, :string
+    attribute :postbox, :string
+    attribute :zip_code, :string
+    attribute :town, :string
+    attribute :country, :string
   end
 end

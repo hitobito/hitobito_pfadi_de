@@ -47,6 +47,8 @@ module PfadiDe::Role
 
     before_validation :ensure_fee_kind
 
+    validate :assert_person_data_complete, on: :create, if: :fee_kind_type?
+
     after_commit :mark_person_for_entry_date_recalculation
   end
 
@@ -70,6 +72,16 @@ module PfadiDe::Role
   end
 
   private
+
+  def assert_person_data_complete
+    return if person.blank?
+
+    missing = PfadiDe::Person::MEMBER_REQUIRED_ATTRS.select { |attr| person.send(attr).blank? }
+    return if missing.blank?
+
+    errors.add(:person, :incomplete_for_membership,
+      attrs: missing.map { |attr| Person.human_attribute_name(attr) }.join(", "))
+  end
 
   def mark_person_for_entry_date_recalculation
     return unless fee_kind_type?

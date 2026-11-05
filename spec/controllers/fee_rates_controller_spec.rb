@@ -12,7 +12,8 @@ describe FeeRatesController do
   let(:person) { Fabricate(Group::Stamm::Stammesschatzmeister.sti_name, group:).person }
 
   let(:group) do
-    Fabricate(Group::Stamm.sti_name, name: "Falken", parent: groups(:baden_wuerttemberg))
+    Fabricate(Group::Stamm.sti_name, name: "Falken", parent: groups(:baden_wuerttemberg),
+      **GroupPflichtfelder::STAMM)
   end
 
   let(:fee_kind) do
