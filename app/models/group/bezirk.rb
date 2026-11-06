@@ -20,7 +20,7 @@ class Group::Bezirk < ::Group
     Group::BezirkArbeitsbereiche,
     Group::Foerderverein
 
-  before_save :update_stamm_landesverband_ids, if: -> { persisted? && parent_id_changed? }
+  before_update :update_stamm_landesverband_ids, if: :parent_id_changed?
 
   ### ROLES
 

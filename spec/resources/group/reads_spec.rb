@@ -34,7 +34,6 @@ describe GroupResource, type: :resource do
         :opt_out_aufnahmeantrag_stammessuche,
         :efz_in_aufnahmeantrag,
         :eingeschraenkt,
-        :landesverband_id,
         :gruendungsdatum,
         :aufloesungsdatum,
         :einsichtnahme_efz_durch_gruppe,
@@ -81,6 +80,18 @@ describe GroupResource, type: :resource do
       render
 
       expect(jsonapi_data[0].abbreviations).to eq([])
+    end
+
+    describe "landesverband" do
+      before { params[:include] = "landesverband" }
+
+      it "works" do
+        render
+
+        landesverband_data = jsonapi_data[0].sideload(:landesverband)
+        expect(landesverband_data.id).to eq group.landesverband_id
+        expect(landesverband_data.jsonapi_type).to eq "groups"
+      end
     end
   end
 end
