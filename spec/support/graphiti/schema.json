@@ -3119,6 +3119,11 @@
           "type": "has_many",
           "description": null,
           "resource": "MailingListResource"
+        },
+        "landesverband": {
+          "type": "belongs_to",
+          "description": null,
+          "resource": "GroupResource"
         }
       },
       "stats": {

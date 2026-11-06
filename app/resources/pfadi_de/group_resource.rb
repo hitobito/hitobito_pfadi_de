@@ -34,5 +34,7 @@ module PfadiDe::GroupResource
         @object.abbreviations.pluck(:value)
       end
     end
+
+    belongs_to :landesverband, resource: GroupResource, writable: false
   end
 end

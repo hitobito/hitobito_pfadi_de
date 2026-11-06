@@ -84,6 +84,7 @@ module HitobitoPfadiDe
       Export::Tabular::People::PeopleAddress.prepend PfadiDe::Export::Tabular::People::PeopleAddress
       Export::Tabular::People::PeopleFull.prepend PfadiDe::Export::Tabular::People::PeopleFull
       Export::Tabular::People::PersonRow.prepend PfadiDe::Export::Tabular::People::PersonRow
+      Export::Tabular::Groups::Row.prepend PfadiDe::Export::Tabular::Groups::Row
       Export::Pdf::Invoice.runner = Export::Pdf::Invoice::RunnerWithProcessedSubjects
 
       Dropdown::PeopleExport.prepend PfadiDe::Dropdown::PeopleExport
