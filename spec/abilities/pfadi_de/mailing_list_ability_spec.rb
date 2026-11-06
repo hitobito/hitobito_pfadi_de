@@ -44,8 +44,8 @@ describe MailingListAbility do
 
   context :layer_and_below_read do
     let(:role) do
-      Fabricate(Group::Landesverband::ErfassungFuehrungszeugnis.name.to_sym,
-        group: groups(:baden_wuerttemberg))
+      Fabricate(Group::Landesvorstand::Landesvorsitz.name.to_sym,
+        group: groups(:landesvorstand_bw))
     end
     let(:list) { Fabricate(:mailing_list, group: groups(:adler)) }
 
