@@ -8,6 +8,10 @@
 module PfadiDe::PeopleController
   extend ActiveSupport::Concern
 
+  prepended do
+    before_update :clear_incomplete_legacy_data
+  end
+
   def permitted_attrs
     attrs = super + PfadiDe::Contactable::BANK_ACCOUNT_ATTRS +
       [:pronoun, :consent_data_retention]
@@ -15,5 +19,11 @@ module PfadiDe::PeopleController
     return attrs unless entry.self_or_managed_by_current_person?
 
     attrs - PfadiDe::Person::SELF_OR_MANAGED_RESTRICTED_ATTRS.map(&:to_sym)
+  end
+
+  private
+
+  def clear_incomplete_legacy_data
+    entry.incomplete_legacy_data = false
   end
 end
