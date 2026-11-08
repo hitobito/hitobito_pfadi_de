@@ -30,6 +30,7 @@ describe PfadiDe::LayerGroup do
       :description,
       :gruendungsdatum,
       :aufloesungsdatum,
+      :einsichtnahme_efz_durch_gruppe,
       :debitorennummer,
       :payment_method
     ]

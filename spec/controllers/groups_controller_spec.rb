@@ -187,7 +187,8 @@ describe GroupsController do
     end
     let(:attrs_without_label) { [:bank_account_owner, :iban, :bic, :bank_name] }
     let(:superior_attrs) do
-      [:gruendungsdatum, :aufloesungsdatum, :debitorennummer, :payment_method]
+      [:gruendungsdatum, :aufloesungsdatum, :einsichtnahme_efz_durch_gruppe, :debitorennummer,
+        :payment_method]
     end
 
     let(:dom) { Capybara::Node::Simple.new(response.body) }
