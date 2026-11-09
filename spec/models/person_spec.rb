@@ -19,7 +19,7 @@ describe Person do
     # the :member fixture otherwise already has an active Ordentliche
     # Mitgliedschaft (roles(:paying_member)), which would count as a
     # membership role and conflict with the ones created below
-    before { roles(:paying_member).destroy }
+    before { roles(:paying_member).really_destroy! }
 
     it "is nil without membership roles" do
       expect(person.entry_date).to be_nil
@@ -80,7 +80,7 @@ describe Person do
     # the :member fixture otherwise already has an active Ordentliche
     # Mitgliedschaft (roles(:paying_member)), which would count as a
     # membership role and conflict with the ones created below
-    before { roles(:paying_member).destroy }
+    before { roles(:paying_member).really_destroy! }
 
     it "is nil without membership roles" do
       expect(person.exit_date).to be_nil

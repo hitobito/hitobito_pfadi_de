@@ -30,7 +30,7 @@ class PfadiDe::MembershipRoleRestrictions
   end
 
   def destroyable?
-    !role.destroy_removes_from_history? || can?(:hard_destroy)
+    role.ends_on_destroy? || can?(:hard_destroy)
   end
 
   def validate_changes
