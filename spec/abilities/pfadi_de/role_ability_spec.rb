@@ -92,4 +92,79 @@ describe RoleAbility do
       is_expected.not_to be_able_to(:update_start_on, role)
     end
   end
+
+  context "creating Erfassung Führungszeugnis role" do
+    let(:adler) { groups(:adler) }
+    let(:baden_wuerttemberg) { groups(:baden_wuerttemberg) }
+    let(:new_role) { Group::Stamm::ErfassungFuehrungszeugnis.new(group: adler, person: people(:member)) }
+
+    context "as Stamm's own layer_and_below_full holder" do
+      let(:user) { people(:stammesverwaltung) }
+
+      it "may not create it" do
+        is_expected.not_to be_able_to(:create, new_role)
+      end
+
+      it "may still create an unrestricted role" do
+        other_role = Group::Stamm::Stammesbeauftragt.new(group: adler, person: people(:member))
+        is_expected.to be_able_to(:create, other_role)
+      end
+    end
+
+    context "as layer_and_below_full holder on the layer above" do
+      let(:user) do
+        Fabricate(Group::Landesverband::Landesmitgliederverwaltung.sti_name, group: baden_wuerttemberg).person
+      end
+
+      it "may create it" do
+        is_expected.to be_able_to(:create, new_role)
+      end
+    end
+
+    context "as admin" do
+      let(:user) { people(:admin) }
+
+      it "may create it" do
+        is_expected.to be_able_to(:create, new_role)
+      end
+    end
+
+    context "on Landesverband" do
+      let(:new_role) {
+        Group::Landesverband::ErfassungFuehrungszeugnis.new(group: baden_wuerttemberg, person: people(:member))
+      }
+
+      context "as Landesverband's own layer_and_below_full holder" do
+        let(:user) do
+          Fabricate(Group::Landesverband::Landesmitgliederverwaltung.sti_name, group: baden_wuerttemberg).person
+        end
+
+        it "may not create it" do
+          is_expected.not_to be_able_to(:create, new_role)
+        end
+      end
+
+      context "as admin" do
+        let(:user) { people(:admin) }
+
+        it "may create it" do
+          is_expected.to be_able_to(:create, new_role)
+        end
+      end
+    end
+
+    context "on Bundesebene" do
+      let(:new_role) {
+        Group::Bundesebene::ErfassungFuehrungszeugnis.new(group: groups(:root), person: people(:member))
+      }
+
+      context "as Bundesebene's own layer_and_below_full holder" do
+        let(:user) { people(:admin) }
+
+        it "is unaffected by the restriction" do
+          is_expected.to be_able_to(:create, new_role)
+        end
+      end
+    end
+  end
 end
