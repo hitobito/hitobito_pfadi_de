@@ -72,6 +72,7 @@ module HitobitoPfadiDe
       Contactable::Address.prepend PfadiDe::Contactable::Address
 
       ContactAccountCategory.include PfadiDe::ContactAccountCategory
+      PhoneNumber.home_category_keys = %w[private].freeze
 
       Wizards::RegisterNewUserWizard.prepend PfadiDe::Wizards::RegisterNewUserWizard
       Wizards::Steps::NewUserForm.prepend PfadiDe::Wizards::Steps::NewUserForm
