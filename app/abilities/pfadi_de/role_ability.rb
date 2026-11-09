@@ -15,6 +15,12 @@ module PfadiDe::RoleAbility
     :end_retroactively
   ].freeze
 
+  RESTRICTED_ERFASSUNG_FUEHRUNGSZEUGNIS_TYPES = [
+    Group::Stamm::ErfassungFuehrungszeugnis,
+    Group::Bezirk::ErfassungFuehrungszeugnis,
+    Group::Landesverband::ErfassungFuehrungszeugnis
+  ].freeze
+
   prepended do
     on(Role) do
       permission(:any)
@@ -22,6 +28,8 @@ module PfadiDe::RoleAbility
         .not_membership_role_or_created_recently
       permission(:any).may(:end_retroactively).not_membership_role
       permission(:admin).may(*MEMBERSHIP_RESTRICTION_ACTIONS).all
+
+      general(:create).require_relevant_create_permissions
     end
   end
 
@@ -32,6 +40,17 @@ module PfadiDe::RoleAbility
   def not_membership_role_or_created_recently
     not_membership_role ||
       subject.created_at >= Settings.role.change_membership_max_days.days.ago.beginning_of_day
+  end
+
+  def require_relevant_create_permissions
+    erfassung_fuehrungszeugnis_grantable?
+  end
+
+  def erfassung_fuehrungszeugnis_grantable?
+    !RESTRICTED_ERFASSUNG_FUEHRUNGSZEUGNIS_TYPES.include?(subject.class) ||
+      user_context.admin ||
+      contains_any?(subject.group.upper_layer_hierarchy.collect(&:id),
+        user_context.permission_layer_ids(:layer_and_below_full))
   end
 
   private
