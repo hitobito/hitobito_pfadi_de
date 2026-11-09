@@ -10,12 +10,16 @@ require "spec_helper"
 describe PhoneNumber do
   let(:person) { Fabricate(:person) }
 
-  it ".home finds numbers of the private category" do
-    private_number = Fabricate(:phone_number, contactable: person,
+  let!(:private_number) do
+    Fabricate(:phone_number, contactable: person,
       category: contact_account_categories(:phone_number_person_private))
+  end
+  let!(:work_number) do
     Fabricate(:phone_number, contactable: person,
       category: contact_account_categories(:phone_number_person_work))
+  end
 
+  it ".home finds numbers of the private category" do
     expect(person.phone_numbers.home).to eq [private_number]
   end
 end
