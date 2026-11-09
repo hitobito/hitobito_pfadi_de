@@ -62,10 +62,6 @@ module PfadiDe::Role
     self.fee_kind = FeeKindChooser.new.default(self)
   end
 
-  def destroy_removes_from_history?
-    !old_enough_to_soft_destroy? || future? || starting_today?
-  end
-
   def fee_kind_type?
     return false if new_record? && type.nil? && instance_of?(Role) # undetermined so far
     (type.safe_constantize || self.class).has_fee_kind

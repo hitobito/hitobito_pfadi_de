@@ -1104,7 +1104,7 @@ describe Invoice::FeeCalculationItem do
     let(:role_types) { [Group::Mitglieder::OrdentlicheMitgliedschaft.name] }
 
     before do
-      Group::Mitglieder::OrdentlicheMitgliedschaft.destroy_all
+      Group::Mitglieder::OrdentlicheMitgliedschaft.delete_all
     end
 
     context "with single group recipient" do

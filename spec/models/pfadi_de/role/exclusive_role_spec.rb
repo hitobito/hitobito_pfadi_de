@@ -185,9 +185,6 @@ describe PfadiDe::Role::ExclusiveRole do
             start_on: 6.months.ago.to_date).tap { |role| role.save!(validate: false) }
         end
 
-        # soft destroy only applies to roles older than minimum_days_to_archive
-        before { existing_role.update_columns(created_at: 2.months.ago) }
-
         it "soft-destroys the role despite the overlap (only [today..] is checked)" do
           expect { existing_role.destroy }.not_to raise_error
 
@@ -216,9 +213,6 @@ describe PfadiDe::Role::ExclusiveRole do
           build_role(Group::Mitglieder::Zweitmitgliedschaft,
             start_on: 6.months.ago.to_date).tap { |role| role.save!(validate: false) }
         end
-
-        # soft destroy only applies to roles older than minimum_days_to_archive
-        before { existing_role.update_columns(created_at: 2.months.ago) }
 
         it "prevents ending the role via update" do
           expect(existing_role.update(end_on: Date.yesterday)).to be false
