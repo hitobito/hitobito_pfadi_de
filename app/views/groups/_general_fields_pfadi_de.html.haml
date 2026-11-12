@@ -11,6 +11,13 @@
 = f.labeled_input_fields(*entry.modifiable_attributes(:strukturnummer, :gruendungsdatum,
   :aufloesungsdatum, :eingeschraenkt))
 
+= render 'modifiable_i18n_enum_field', attr: :property_type, f:
+= render 'modifiable_i18n_enum_field', attr: :property_owner, f:
+= f.labeled_input_fields(*entry.modifiable_attributes(:property_facilities_sanitary,
+  :property_facilities_water, :property_guests_interior, :property_campingarea))
+= render 'modifiable_i18n_enum_field', attr: :rental_audience, f:
+= f.labeled_input_fields(*entry.modifiable_attributes(:rental_public_listing))
+
 - billing_upwards_attrs = entry.modifiable_attributes(:debitorennummer, :payment_method)
 - if billing_upwards_attrs.any?
   .row

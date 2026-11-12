@@ -35,6 +35,15 @@ module PfadiDe::GroupResource
       end
     end
 
+    attribute :property_type, :string
+    attribute :property_owner, :string
+    attribute :property_facilities_sanitary, :boolean
+    attribute :property_facilities_water, :boolean
+    attribute :property_guests_interior, :integer
+    attribute :property_campingarea, :integer
+    attribute :rental_audience, :string
+    attribute :rental_public_listing, :boolean
+
     belongs_to :landesverband, resource: GroupResource, writable: false
   end
 end

@@ -1475,6 +1475,32 @@ de:
           other: Andere
           stamm: Stamm
         strukturnummer: Strukturnummer
+        property_type: Art
+        property_types:
+          _nil: ""
+          campsite: Zeltplatz
+          building: Gebäude
+          building_with_campsite: Gebäude mit Zeltplatz
+          education_center: Bildungsstätte
+          other: Sonstiges
+        property_owner: Eigentümer*in
+        property_owners:
+          _nil: ""
+          local_group: Stamm
+          support_association: Förderverein
+          municipality: Kommune
+          other: Anderer Eigentümer*in
+        property_facilities_sanitary: Sanitäre Anlagen
+        property_facilities_water: Trinkwasseranschluss
+        property_guests_interior: Anzahl an Personen mit Schlafplatz innen
+        property_campingarea: Fläche Zeltplatz (m²)
+        rental_audience: Vermietung an
+        rental_audiences:
+          _nil: "keine anderen Gruppen"
+          bdp_groups: BdP Gruppen
+          rdp: RDP
+          public: Öffentlich
+        rental_public_listing: Öffentliche Listung im Internet
         payment_method: Zahlungsart
         payment_methods:
           lastschrift: Lastschrift
