@@ -468,11 +468,11 @@ describe PfadiDe::Role::PrerequisiteRole do
         expect(Role.with_inactive.exists?(past_role.id)).to be false
       end
 
-      it "cascades when an ended prerequisite role is destroyed" do
+      it "cascades when an ended prerequisite role is hard destroyed" do
         membership.update_columns(end_on: 1.month.ago.to_date)
         past_role = create_past_dependent
 
-        membership.destroy
+        membership.really_destroy!
 
         expect(Role.with_inactive.exists?(past_role.id)).to be false
       end
