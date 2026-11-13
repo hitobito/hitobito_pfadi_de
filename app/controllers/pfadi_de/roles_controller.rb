@@ -25,15 +25,13 @@ module PfadiDe::RolesController
 
   def update
     return render_autosubmitted_edit if params[:autosubmit].present?
-    return if provides_prerequisites? &&
-      confirm_prerequisite_cascade(model: full_entry_label) { simulate_update }
+    return if render_prerequisite_cascade_confirmation(model: full_entry_label) { simulate_update }
 
     super
   end
 
   def destroy
-    return if provides_prerequisites? &&
-      confirm_prerequisite_cascade(model: full_entry_label) { simulate_destroy }
+    return if render_prerequisite_cascade_confirmation(model: full_entry_label) { simulate_destroy }
 
     super
   end
