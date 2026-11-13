@@ -1,0 +1,21 @@
+-#  Copyright (c) 2026, BdP and DPSG. This file is part of
+-#  hitobito_pfadi_de and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_pfadi_de
+
+#prerequisite-cascade-confirmation.modal.fade{ tabindex: -1,
+  data: { controller: 'modal' } }
+  .modal-dialog.modal-xl
+    .modal-content
+      .modal-header
+        %h5.modal-title= t('prerequisite_cascades.confirm.title')
+      .modal-body
+        = render 'prerequisite_cascades/changes'
+      = form_with(url: request.fullpath, method: request.request_method.downcase,
+                  data: { turbo: false }) do |f|
+        = prerequisite_cascade_resubmit_fields
+        = hidden_field_tag(:prerequisite_cascade_confirmed, true)
+        .modal-footer
+          = submit_button(f, t('prerequisite_cascades.confirm.confirm'))
+          = link_to(ti('button.cancel'), '#', class: 'link cancel',
+                    data: { action: 'modal#close' })

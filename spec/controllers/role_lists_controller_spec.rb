@@ -69,6 +69,16 @@ describe RoleListsController do
       expect(dom).to have_css(".sheet.current h1", text: "Abhängige Rollen anpassen")
     end
 
+    it "opens the confirmation as modal for turbo stream requests" do
+      delete :destroy, params: {group_id: group.id, ids: person.id.to_s, role: {types:}},
+        format: :turbo_stream
+
+      expect(response.media_type).to eq "text/vnd.turbo-stream.html"
+      expect(response.body).to include('action="append" target="modal-placeholder"')
+      expect(response.body).to include("Die ausgewählten Rollen werden entfernt.")
+      expect(reloaded_role.end_on).to be_nil
+    end
+
     it "shortens dependent roles when confirmed" do
       destroy(prerequisite_cascade_confirmed: true)
 

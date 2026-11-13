@@ -322,6 +322,15 @@ describe RolesController do
         expect(flash).to be_empty
       end
 
+      it "opens the confirmation as modal for turbo stream requests" do
+        delete :destroy, params: {group_id: group.id, id: role.id}, format: :turbo_stream
+
+        expect(response.media_type).to eq "text/vnd.turbo-stream.html"
+        expect(response.body).to include('action="append" target="modal-placeholder"')
+        expect(response.body).to include("in <i>Mitglieder</i> wird gelöscht.")
+        expect(reloaded_role.end_on).to be_nil
+      end
+
       it "keeps flash messages present before the preview" do
         delete :destroy, params: {group_id: group.id, id: role.id}, flash: {notice: "Vorher"}
 
