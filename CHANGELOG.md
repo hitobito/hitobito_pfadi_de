@@ -2,6 +2,8 @@
 
 ## Version 2.10
 
+* `membership_registrations` akzeptiert ein `start_on` für die erstellte Mitgliedschaft (hitobito_bdp#65)
+* Beim Ändern von `start_on` und `end_on` einer Mitgliedschaft über das JSON:API gelten dieselben Einschränkungen für rückwirkende Änderungen wie im UI (hitobito_bdp#65)
 * SEPA-Lastschriftmandate können für Personen erfasst, eingesehen, widerrufen und über das JSON:API erstellt und gelesen werden. Die Erfassung wird pro Gruppierung aktiviert, die SEPA-Gläubiger-ID wird validiert. Die Zahlungsart einer Person ergibt sich neu aus ihren aktiven Mandaten (hitobito_pfadi_de#135)
 * Im eFZ-Antrag-Export-Menü wird nur noch ein einzelner Eintrag angezeigt, der das Dokument automatisch anhand der satzungsgemässen Hauptgruppierung (leading_layer) der Person generiert (hitobito_pfadi_de#143)
 * `pfadi_de` spezifische Kontaktkonto-Kategorien (Telefon, E-Mail, Adresse, Social Media) implementiert inkl. eFZ Anschrift auf Gruppen (hitobito_pfadi_de#102)

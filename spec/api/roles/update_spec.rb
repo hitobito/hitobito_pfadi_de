@@ -77,9 +77,7 @@ describe "roles#update", type: :request do
     {
       group_id: -> { groups(:mitglieder_bw).id },
       type: -> { Group::Mitglieder::Zweitmitgliedschaft.sti_name },
-      person_id: -> { people(:admin).id },
-      start_on: -> { "2026-01-01" },
-      end_on: -> { "2025-01-01" }
+      person_id: -> { people(:admin).id }
     }.each do |attribute, value|
       context "changing #{attribute}" do
         let(:payload) {
@@ -94,6 +92,66 @@ describe "roles#update", type: :request do
           }.not_to change { role.reload.attributes }
         end
       end
+    end
+
+    context "changing start_on" do
+      let(:payload) {
+        {data: {id: role.id.to_s, type: "roles", attributes: {start_on: 1.day.ago.to_date.to_s}}}
+      }
+
+      it "is rejected by the membership restrictions" do
+        expect {
+          make_request
+          expect(response.status).to eq(422), response.body
+          expect(errors[0].attribute).to eq("start_on")
+          expect(errors[0].code).to eq("membership_change_period_expired")
+          expect(errors[0].message).to eq("kann nur innerhalb von 32 Tagen nach dem " \
+            "Erfassen der Mitgliedschaft geändert werden")
+        }.not_to change { role.reload.attributes }
+      end
+    end
+
+    context "ending the role before the retroactive limit" do
+      let(:payload) {
+        {data: {id: role.id.to_s, type: "roles", attributes: {end_on: 33.days.ago.to_date.to_s}}}
+      }
+
+      it "is rejected by the membership restrictions" do
+        expect {
+          make_request
+          expect(response.status).to eq(422), response.body
+          expect(errors[0].attribute).to eq("end_on")
+          expect(errors[0].code).to eq("too_far_in_past")
+          expect(errors[0].message).to eq("darf höchstens 32 Tage in der Vergangenheit liegen")
+        }.not_to change { role.reload.attributes }
+      end
+    end
+
+    context "ending the role at a future date" do
+      let(:payload) {
+        {data: {id: role.id.to_s, type: "roles",
+                attributes: {end_on: Date.current.end_of_year.to_s}}}
+      }
+
+      it "works" do
+        expect {
+          make_request
+          expect(response.status).to eq(200), response.body
+        }.to change { role.reload.end_on }.to(Date.current.end_of_year)
+      end
+    end
+  end
+
+  context "on recently created membership role" do
+    let(:payload) {
+      {data: {id: role.id.to_s, type: "roles", attributes: {start_on: 1.day.ago.to_date.to_s}}}
+    }
+
+    it "allows changing start_on" do
+      expect {
+        make_request
+        expect(response.status).to eq(200), response.body
+      }.to change { role.reload.start_on }.to(1.day.ago.to_date)
     end
   end
 
