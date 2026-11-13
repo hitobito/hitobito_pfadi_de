@@ -61,6 +61,7 @@ module HitobitoPfadiDe
       PeopleController.prepend PfadiDe::PeopleController
       RolesController.prepend PfadiDe::RolesController
       Role::List.prepend PfadiDe::Role::List
+      Roles::TypeChange.prepend PfadiDe::Roles::TypeChange
       RoleListsController.prepend PfadiDe::RoleListsController
       PeriodInvoiceTemplatesController.prepend PfadiDe::PeriodInvoiceTemplatesController
 

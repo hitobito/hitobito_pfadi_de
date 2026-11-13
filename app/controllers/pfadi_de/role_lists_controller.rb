@@ -9,13 +9,13 @@ module PfadiDe::RoleListsController
   include PfadiDe::PrerequisiteCascadeConfirmation
 
   def destroy
-    return if render_prerequisite_cascade_confirmation { simulate(:destroy) }
+    return if render_prerequisite_cascade_confirmation { build_role_list.destroy }
 
     super
   end
 
   def update
-    return if render_prerequisite_cascade_confirmation { simulate(:move) }
+    return if render_prerequisite_cascade_confirmation { build_role_list.move }
 
     super
   end
@@ -26,11 +26,5 @@ module PfadiDe::RoleListsController
     params.dig(:role, :types)&.keys.to_a.any? do |type|
       type.safe_constantize&.try(:provided_prerequisite_categories).present?
     end
-  end
-
-  def simulate(action)
-    role_list.public_send(action)
-  ensure
-    @role_list = nil
   end
 end
