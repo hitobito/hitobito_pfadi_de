@@ -8,20 +8,13 @@
 module PfadiDe
   module Role
     # Merged union of validity periods, used to check whether a dependent role
-    # is fully covered by prerequisite roles.
+    # is fully covered by prerequisite roles. Periods without begin or end are open.
     class Coverage
-      FAR_PAST = Date.new(1, 1, 1).freeze
-      FAR_FUTURE = Date.new(9999, 12, 31).freeze
-
-      def self.period(start_on, end_on)
-        (start_on || FAR_PAST)..(end_on || FAR_FUTURE)
-      end
-
       # Period of the role that must be covered, nil if nothing is left to check.
       def self.check_period(role, validate_past)
-        full = period(role.start_on, role.end_on)
-        start_on = validate_past ? full.begin : [full.begin, Date.current].max
-        start_on..full.end if full.end >= start_on
+        start_on = validate_past ? role.start_on : [role.start_on, Date.current].compact.max
+        end_on = role.end_on
+        start_on..end_on unless start_on && end_on && end_on < start_on
       end
 
       def initialize(periods)
@@ -32,15 +25,17 @@ module PfadiDe
       def uncovered_interval(period)
         cursor = period.begin
         @sections.each do |section|
-          next if section.end < cursor
-          if section.begin > cursor
-            return cursor..[section.begin - 1, period.end].min
+          next if ends_before?(section, cursor)
+          if starts_after?(section, cursor)
+            return cursor..earlier_end(section.begin - 1, period.end)
           end
-          cursor = [cursor, section.end + 1].max
-          return nil if cursor > period.end
+          return nil if section.end.nil?
+
+          cursor = section.end + 1
+          return nil if ends_before?(period, cursor)
         end
 
-        (cursor <= period.end) ? cursor..period.end : nil
+        cursor..period.end
       end
 
       private
@@ -48,14 +43,35 @@ module PfadiDe
       # Sorted list of non-overlapping periods. Directly consecutive periods
       # (one ends the day before the next begins) merge into one section.
       def merge(periods)
-        periods.sort_by(&:begin).each_with_object([]) do |period, sections|
+        open_start, bounded = periods.partition { |period| period.begin.nil? }
+        (open_start + bounded.sort_by(&:begin)).each_with_object([]) do |period, sections|
           last = sections.last
-          if last && period.begin <= last.end + 1
-            sections[-1] = last.begin..[last.end, period.end].max
+          if last && connected?(last, period)
+            sections[-1] = last.begin..later_end(last.end, period.end)
           else
             sections << period
           end
         end
+      end
+
+      def connected?(last, period)
+        last.end.nil? || period.begin.nil? || period.begin <= last.end + 1
+      end
+
+      def ends_before?(range, date)
+        range.end && date && range.end < date
+      end
+
+      def starts_after?(range, date)
+        range.begin && (date.nil? || range.begin > date)
+      end
+
+      def earlier_end(end_on, other_end_on)
+        [end_on, other_end_on].compact.min
+      end
+
+      def later_end(end_on, other_end_on)
+        end_on && other_end_on && [end_on, other_end_on].max
       end
     end
   end

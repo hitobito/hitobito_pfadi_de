@@ -34,6 +34,12 @@ module PfadiDe
 
       SCOPES = %i[layer global].freeze
       ON_UNCOVERED = %i[prevent cascade].freeze
+      PERIOD_KEYS = {
+        [true, true] => :period,
+        [true, false] => :period_open_end,
+        [false, true] => :period_open_start,
+        [false, false] => :period_unbounded
+      }.freeze
 
       included do
         validate :assert_prerequisite_coverage
@@ -181,7 +187,7 @@ module PfadiDe
             .where(groups: {layer_group_id: group.layer_group_id})
         end
 
-        periods = roles.pluck(:start_on, :end_on).map { |dates| Coverage.period(*dates) }
+        periods = roles.pluck(:start_on, :end_on).map { |dates| Range.new(*dates) }
         Coverage.new(periods)
       end
 
@@ -223,23 +229,26 @@ module PfadiDe
       def prerequisite_removed?
         destroyed? &&
           self.class.provided_prerequisite_categories.any? &&
-          prerequisite_loss_affects_dependents?(end_on || Coverage::FAR_FUTURE)
+          prerequisite_loss_affects_dependents?(end_on)
       end
 
       def start_on_restricted?
         saved_change_to_start_on? &&
-          (start_on || Coverage::FAR_PAST) > (start_on_before_last_save || Coverage::FAR_PAST) &&
+          start_on.present? &&
+          (start_on_before_last_save.nil? || start_on > start_on_before_last_save) &&
           prerequisite_loss_affects_dependents?(start_on - 1)
       end
 
       def end_on_restricted?
         saved_change_to_end_on? &&
-          (end_on || Coverage::FAR_FUTURE) < (end_on_before_last_save || Coverage::FAR_FUTURE) &&
-          prerequisite_loss_affects_dependents?(end_on_before_last_save || Coverage::FAR_FUTURE)
+          end_on.present? &&
+          (end_on_before_last_save.nil? || end_on < end_on_before_last_save) &&
+          prerequisite_loss_affects_dependents?(end_on_before_last_save)
       end
 
       def prerequisite_loss_affects_dependents?(last_lost_day)
-        last_lost_day >= Date.current || prerequisite_dependents_validate_past?
+        last_lost_day.nil? || last_lost_day >= Date.current ||
+          prerequisite_dependents_validate_past?
       end
 
       def prerequisite_dependents_validate_past?
@@ -256,12 +265,8 @@ module PfadiDe
       end
 
       def format_prerequisite_period(range)
-        from = I18n.l(range.begin)
-        if range.end == Coverage::FAR_FUTURE
-          I18n.t("role.prerequisite.period_open", from: from)
-        else
-          I18n.t("role.prerequisite.period", from: from, to: I18n.l(range.end))
-        end
+        from, to = [range.begin, range.end].map { |date| date && I18n.l(date) }
+        I18n.t("role.prerequisite.#{PERIOD_KEYS.fetch([from.present?, to.present?])}", from:, to:)
       end
     end
   end
