@@ -210,6 +210,21 @@ describe PfadiDe::Role::PrerequisiteRole do
 
         expect(build_dependent(start_on: 3.years.ago.to_date)).to be_valid
       end
+
+      it "states an uncovered period of a role without start" do
+        role = build_dependent(start_on: nil)
+
+        expect(role).not_to be_valid
+        expect(role.errors[:base].first)
+          .to end_with("Diese fehlt bis #{I18n.l(2.years.ago.to_date - 1)}.")
+      end
+
+      it "states an uncovered role without start and end" do
+        role = build_dependent(person: other_person, start_on: nil)
+
+        expect(role).not_to be_valid
+        expect(role.errors[:base].first).to end_with("Diese fehlt durchgehend.")
+      end
     end
   end
 

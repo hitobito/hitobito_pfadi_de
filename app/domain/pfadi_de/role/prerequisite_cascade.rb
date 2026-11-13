@@ -113,7 +113,7 @@ module PfadiDe
         gap = period && coverage.uncovered_interval(period)
         return if gap.nil?
 
-        if gap.begin == (dependent.start_on || Coverage::FAR_PAST)
+        if gap.begin == dependent.start_on
           move_behind(dependent, coverage, gap, period)
         else
           update_period(dependent, start_on: dependent.start_on, end_on: gap.begin - 1)
