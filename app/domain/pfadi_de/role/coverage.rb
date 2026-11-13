@@ -10,6 +10,20 @@ module PfadiDe
     # Merged union of validity periods, used to check whether a dependent role
     # is fully covered by prerequisite roles.
     class Coverage
+      FAR_PAST = Date.new(1, 1, 1).freeze
+      FAR_FUTURE = Date.new(9999, 12, 31).freeze
+
+      def self.period(start_on, end_on)
+        (start_on || FAR_PAST)..(end_on || FAR_FUTURE)
+      end
+
+      # Period of the role that must be covered, nil if nothing is left to check.
+      def self.check_period(role, validate_past)
+        full = period(role.start_on, role.end_on)
+        start_on = validate_past ? full.begin : [full.begin, Date.current].max
+        start_on..full.end if full.end >= start_on
+      end
+
       def initialize(periods)
         @sections = merge(periods)
       end

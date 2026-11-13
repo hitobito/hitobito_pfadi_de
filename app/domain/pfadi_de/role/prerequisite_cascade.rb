@@ -108,12 +108,12 @@ module PfadiDe
       # Shortens the dependent role to the coverage of its check period. A
       # dependent role uncovered right at its start moves behind the gap.
       def adjust(dependent, config)
-        period = dependent.prerequisite_check_period(config.validate_past)
+        period = Coverage.check_period(dependent, config.validate_past)
         coverage = dependent.prerequisite_coverage(config)
         gap = period && coverage.uncovered_interval(period)
         return if gap.nil?
 
-        if gap.begin == (dependent.start_on || PrerequisiteRole::FAR_PAST)
+        if gap.begin == (dependent.start_on || Coverage::FAR_PAST)
           move_behind(dependent, coverage, gap, period)
         else
           update_period(dependent, start_on: dependent.start_on, end_on: gap.begin - 1)
