@@ -30,6 +30,10 @@ countries:
 additional_address:
   enabled: true
 
+# EBICS payment interfaces are only offered for Swiss banks and don't apply here.
+payment_providers:
+  - -- # clear the list from the core
+
 groups:
   bdp:
     enabled: true
