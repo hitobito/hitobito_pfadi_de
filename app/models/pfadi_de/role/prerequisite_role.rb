@@ -34,8 +34,6 @@ module PfadiDe
 
       SCOPES = %i[layer global].freeze
       ON_UNCOVERED = %i[prevent cascade].freeze
-      FAR_PAST = Date.new(1, 1, 1).freeze
-      FAR_FUTURE = Date.new(9999, 12, 31).freeze
 
       included do
         validate :assert_prerequisite_coverage
@@ -172,15 +170,6 @@ module PfadiDe
         end
       end
 
-      # Validity period that must be covered, nil if nothing is left to check.
-      def prerequisite_check_period(validate_past)
-        start_on = self.start_on || FAR_PAST
-        start_on = [start_on, Date.current].max unless validate_past
-        end_on = self.end_on || FAR_FUTURE
-
-        start_on..end_on if end_on >= start_on
-      end
-
       def prerequisite_coverage(config)
         roles = ::Role.with_inactive
           .where(person_id: person_id, type: PrerequisiteRole.provider_type_names(config.category))
@@ -192,10 +181,8 @@ module PfadiDe
             .where(groups: {layer_group_id: group.layer_group_id})
         end
 
-        periods = roles.pluck(:start_on, :end_on).map do |start, finish|
-          (start || FAR_PAST)..(finish || FAR_FUTURE)
-        end
-        PfadiDe::Role::Coverage.new(periods)
+        periods = roles.pluck(:start_on, :end_on).map { |dates| Coverage.period(*dates) }
+        Coverage.new(periods)
       end
 
       private
@@ -204,7 +191,7 @@ module PfadiDe
         return if person.nil? || group.nil?
 
         self.class.dependent_role_configurations.each do |config|
-          period = prerequisite_check_period(config.validate_past)
+          period = Coverage.check_period(self, config.validate_past)
           next if period.nil?
 
           gap = prerequisite_coverage(config).uncovered_interval(period)
@@ -236,19 +223,19 @@ module PfadiDe
       def prerequisite_removed?
         destroyed? &&
           self.class.provided_prerequisite_categories.any? &&
-          prerequisite_loss_affects_dependents?(end_on || FAR_FUTURE)
+          prerequisite_loss_affects_dependents?(end_on || Coverage::FAR_FUTURE)
       end
 
       def start_on_restricted?
         saved_change_to_start_on? &&
-          (start_on || FAR_PAST) > (start_on_before_last_save || FAR_PAST) &&
+          (start_on || Coverage::FAR_PAST) > (start_on_before_last_save || Coverage::FAR_PAST) &&
           prerequisite_loss_affects_dependents?(start_on - 1)
       end
 
       def end_on_restricted?
         saved_change_to_end_on? &&
-          (end_on || FAR_FUTURE) < (end_on_before_last_save || FAR_FUTURE) &&
-          prerequisite_loss_affects_dependents?(end_on_before_last_save || FAR_FUTURE)
+          (end_on || Coverage::FAR_FUTURE) < (end_on_before_last_save || Coverage::FAR_FUTURE) &&
+          prerequisite_loss_affects_dependents?(end_on_before_last_save || Coverage::FAR_FUTURE)
       end
 
       def prerequisite_loss_affects_dependents?(last_lost_day)
@@ -270,7 +257,7 @@ module PfadiDe
 
       def format_prerequisite_period(range)
         from = I18n.l(range.begin)
-        if range.end == FAR_FUTURE
+        if range.end == Coverage::FAR_FUTURE
           I18n.t("role.prerequisite.period_open", from: from)
         else
           I18n.t("role.prerequisite.period", from: from, to: I18n.l(range.end))
