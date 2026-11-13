@@ -220,29 +220,57 @@ describe RolesController do
       dependent
     end
 
-    def confirmation_page? = dom.has_css?("h1", text: "Abhängige Rollen anpassen")
+    def confirmation_modal
+      template = Nokogiri::HTML(response.body).at_css("turbo-stream[target=modal-placeholder] template")
+      template && Capybara::Node::Simple.new(template.inner_html)
+    end
+
+    def confirmation_modal? = confirmation_modal&.has_css?("#prerequisite-cascade-confirmation")
 
     def role_label = "Rolle #{role} für #{person} in #{group}"
 
-    context "PUT update" do
-      it "asks for confirmation when dependent roles are shortened" do
-        update(end_on: today + 1.month)
+    def update_with_turbo(attrs)
+      put :update, params: {group_id: group.id, id: role.id, role: attrs}, format: :turbo_stream
+    end
 
-        expect(confirmation_page?).to be true
+    context "PUT update" do
+      it "asks for confirmation in a modal when dependent roles are shortened" do
+        update_with_turbo(end_on: today + 1.month)
+
         expect(response).to have_http_status(:unprocessable_content)
-        expect(dom).to have_css("td", text: "Adler / Pfadfinder*innen")
-        expect(dom).to have_css("td", text: "01.06.2025 – #{I18n.l(today + 1.month)}")
-        expect(dom).to have_field("role[end_on]", type: :hidden, with: (today + 1.month).to_s)
-        expect(dom).to have_field("prerequisite_cascade_confirmed", type: :hidden, with: "true")
+        expect(response.media_type).to eq "text/vnd.turbo-stream.html"
+        expect(confirmation_modal?).to be true
+        expect(confirmation_modal).to have_css("td", text: "Adler / Pfadfinder*innen")
+        expect(confirmation_modal).to have_css("td", text: "01.06.2025 – #{I18n.l(today + 1.month)}")
+        expect(confirmation_modal).to have_field("role[end_on]", type: :hidden, with: (today + 1.month).to_s)
+        expect(confirmation_modal).to have_field("prerequisite_cascade_confirmed", type: :hidden, with: "true")
         expect(reloaded_role.end_on).to be_nil
         expect(dependent.reload.end_on).to be_nil
       end
 
       it "describes the change instead of reporting success" do
+        update_with_turbo(end_on: today + 1.month)
+
+        expect(confirmation_modal).to have_css("p", text: "#{role_label} wird geändert.")
+        expect(flash).to be_empty
+      end
+
+      it "rejects the change without turbo when dependent roles are affected" do
         update(end_on: today + 1.month)
 
-        expect(dom).to have_css("p", text: "#{role_label} wird geändert.")
-        expect(flash).to be_empty
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.body).to be_empty
+        expect(reloaded_role.end_on).to be_nil
+        expect(dependent.reload.end_on).to be_nil
+      end
+
+      it "rejects the change of js requests when dependent roles are affected" do
+        put :update, params: {group_id: group.id, id: role.id, role: {end_on: today + 1.month}},
+          format: :js
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(reloaded_role.end_on).to be_nil
+        expect(dependent.reload.end_on).to be_nil
       end
 
       it "shortens dependent roles when confirmed" do
@@ -266,7 +294,8 @@ describe RolesController do
         update(end_on: today - 1.year)
 
         expect(response).to have_http_status(:unprocessable_content)
-        expect(confirmation_page?).to be false
+        expect(response.body).to include("role[end_on]")
+        expect(response.body).not_to include("Abhängige Rollen anpassen")
       end
 
       it "keeps dependent roles when the membership type changes" do
@@ -282,18 +311,18 @@ describe RolesController do
       context "moving the membership to another layer" do
         before { sign_in(people(:admin)) }
 
-        def move_membership(**params)
+        def move_membership(format: :html, **params)
           put :update, params: {
             group_id: group.id, id: role.id,
             role: {type: type.sti_name, group_id: groups(:mitglieder_28).id}, **params
-          }
+          }, format:
         end
 
         it "asks for confirmation" do
-          expect { move_membership }.not_to change { Role.with_inactive.count }
+          expect { move_membership(format: :turbo_stream) }.not_to change { Role.with_inactive.count }
 
-          expect(confirmation_page?).to be true
-          expect(dom).to have_css("td", text: "01.06.2025 – #{I18n.l(today - 1.day)}")
+          expect(confirmation_modal?).to be true
+          expect(confirmation_modal).to have_css("td", text: "01.06.2025 – #{I18n.l(today - 1.day)}")
         end
 
         it "ends dependent roles when confirmed" do
@@ -306,35 +335,39 @@ describe RolesController do
     end
 
     context "DELETE destroy" do
-      it "asks for confirmation" do
-        delete :destroy, params: {group_id: group.id, id: role.id}
+      def destroy_with_turbo(**options)
+        delete :destroy, params: {group_id: group.id, id: role.id}, format: :turbo_stream, **options
+      end
 
-        expect(confirmation_page?).to be true
-        expect(dom).to have_css("form[action='#{group_role_path(group, role)}'] " \
+      it "asks for confirmation in a modal" do
+        destroy_with_turbo
+
+        expect(response.media_type).to eq "text/vnd.turbo-stream.html"
+        expect(response.body).to include('action="append" target="modal-placeholder"')
+        expect(confirmation_modal).to have_css("form[action^='#{group_role_path(group, role)}'] " \
           "input[name=_method][value=delete]", visible: false)
         expect(reloaded_role.end_on).to be_nil
       end
 
       it "describes the deletion instead of reporting success" do
-        delete :destroy, params: {group_id: group.id, id: role.id}
+        destroy_with_turbo
 
-        expect(dom).to have_css("p", text: "#{role_label} wird gelöscht.")
+        expect(confirmation_modal).to have_css("p", text: "#{role_label} wird gelöscht.")
         expect(flash).to be_empty
       end
 
-      it "opens the confirmation as modal for turbo stream requests" do
-        delete :destroy, params: {group_id: group.id, id: role.id}, format: :turbo_stream
-
-        expect(response.media_type).to eq "text/vnd.turbo-stream.html"
-        expect(response.body).to include('action="append" target="modal-placeholder"')
-        expect(response.body).to include("in <i>Mitglieder</i> wird gelöscht.")
-        expect(reloaded_role.end_on).to be_nil
-      end
-
       it "keeps flash messages present before the preview" do
-        delete :destroy, params: {group_id: group.id, id: role.id}, flash: {notice: "Vorher"}
+        destroy_with_turbo(flash: {notice: "Vorher"})
 
         expect(flash[:notice]).to eq "Vorher"
+      end
+
+      it "rejects the deletion without turbo when dependent roles are affected" do
+        delete :destroy, params: {group_id: group.id, id: role.id}
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(reloaded_role.end_on).to be_nil
+        expect(dependent.reload.end_on).to be_nil
       end
 
       it "ends dependent roles when confirmed" do

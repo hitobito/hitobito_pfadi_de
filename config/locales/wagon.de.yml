@@ -1718,7 +1718,7 @@ de:
     form:
       caption_resricted: Beitragsart darf nur durch speziell berechtigte Personen vergeben werden
   prerequisite_cascades:
-    confirm:
+    modal:
       title: Abhängige Rollen anpassen
       intro: Durch diese Änderung sind die folgenden abhängigen Rollen nicht mehr durch eine vorausgesetzte Rolle abgedeckt. Sie werden gekürzt oder gelöscht.
       previous_period: Bisher
