@@ -22,11 +22,7 @@ describe PfadiDe::Role::PrerequisiteRole do
   # StammGruppePfadfinder::Mitglied of `member` in pfadfinder (layer adler), starting 2025-06-03
   let!(:dependent_role) { roles(:member) }
 
-  around do |example|
-    registry = described_class.registry.dup
-    example.run
-    described_class.registry.replace(registry)
-  end
+  include_context "with isolated prerequisite registry"
 
   before do
     Group::Mitglieder::OrdentlicheMitgliedschaft.provides_role :stamm_mitgliedschaft
@@ -600,11 +596,13 @@ describe PfadiDe::Role::PrerequisiteRole do
 
   describe ".provides_role / .depends_on_role" do
     it "registers the entries in the registry" do
-      expect(described_class.registry).to include(
+      expect(described_class.providers).to include(
         described_class::Provider.new(
           type: Group::Mitglieder::OrdentlicheMitgliedschaft,
           category: :stamm_mitgliedschaft
-        ),
+        )
+      )
+      expect(described_class.dependencies).to include(
         described_class::Dependency.new(
           type: Group::StammGruppePfadfinder::Mitglied,
           category: :stamm_mitgliedschaft,
@@ -619,7 +617,7 @@ describe PfadiDe::Role::PrerequisiteRole do
       expect do
         Group::Mitglieder::OrdentlicheMitgliedschaft
           .provides_role :stamm_mitgliedschaft
-      end.not_to change { described_class.registry.size }
+      end.not_to change { described_class.providers.size }
     end
 
     it "replaces the options when the dependency is re-declared" do
@@ -628,9 +626,9 @@ describe PfadiDe::Role::PrerequisiteRole do
           .depends_on_role :stamm_mitgliedschaft,
             scope: :global,
             on_uncovered: :cascade
-      end.not_to change { described_class.registry.size }
+      end.not_to change { described_class.dependencies.size }
 
-      expect(described_class.registry).to include(
+      expect(described_class.dependencies).to include(
         have_attributes(
           type: Group::StammGruppePfadfinder::Mitglied,
           category: :stamm_mitgliedschaft,
@@ -705,7 +703,7 @@ describe PfadiDe::Role::PrerequisiteRole do
         rescue described_class::CircularDependencyError
           nil
         end.not_to change {
-          described_class.registry.grep(described_class::Dependency).count { |entry| entry.category == :self_cycle }
+          described_class.dependencies.count { |entry| entry.category == :self_cycle }
         }
       end
     end

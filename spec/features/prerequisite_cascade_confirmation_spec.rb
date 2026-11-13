@@ -19,11 +19,7 @@ describe "Prerequisite cascade confirmation", js: true do
       person:, group: groups(:pfadfinder), start_on: 6.months.ago.to_date)
   end
 
-  around do |example|
-    registry = PfadiDe::Role::PrerequisiteRole.registry.dup
-    example.run
-    PfadiDe::Role::PrerequisiteRole.registry.replace(registry)
-  end
+  include_context "with isolated prerequisite registry"
 
   before do
     Group::Mitglieder::OrdentlicheMitgliedschaft.provides_role :stamm_mitgliedschaft
