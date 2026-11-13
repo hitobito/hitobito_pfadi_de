@@ -23,7 +23,14 @@ describe Contactable::Address do
   describe "#efz_full_address_without_name" do
     it "returns the group address by default" do
       expect(Contactable::Address.new(contactable).efz_full_address_without_name)
-        .to eq("Gruppenstrasse 10\n10117 Berlin\nDE")
+        .to eq("Gruppenstrasse 10\n10117 Berlin")
+    end
+
+    it "prints foreign country as upper case name" do
+      contactable.assign_attributes(zip_code: "3011", town: "Bern", country: "CH")
+
+      expect(Contactable::Address.new(contactable).efz_full_address_without_name)
+        .to eq("Gruppenstrasse 10\n3011 Bern\nSCHWEIZ")
     end
 
     it "returns the efz address when requested" do
@@ -39,7 +46,7 @@ describe Contactable::Address do
       )
 
       expect(Contactable::Address.new(contactable, category_key: efz_category.key).efz_full_address_without_name)
-        .to eq("Efz Strasse 2\n10115 Efz Stadt\nDE")
+        .to eq("Efz Strasse 2\n10115 Efz Stadt")
     end
   end
 
