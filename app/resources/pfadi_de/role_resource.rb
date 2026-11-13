@@ -12,6 +12,8 @@ module PfadiDe::RoleResource
     attribute :fee_kind_id, :integer, writable: :on_create
 
     belongs_to :fee_kind, writable: false
+
+    before_save :validate_membership_role_changes, only: [:update]
   end
 
   def on_create
@@ -19,6 +21,12 @@ module PfadiDe::RoleResource
   end
 
   private
+
+  def validate_membership_role_changes(model)
+    restrictions = PfadiDe::MembershipRoleRestrictions.new(model, current_ability)
+
+    raise_validation_error!(model) unless restrictions.validate_changes
+  end
 
   def authorize_destroy(model)
     super
