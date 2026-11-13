@@ -68,6 +68,18 @@ describe MembershipRegistrationResource, type: :resource do
           .and change { Role.count }.by(1)
       end
 
+      it "creates the role with today as start_on by default" do
+        expect(instance.save).to eq(true), instance.errors.full_messages.to_sentence
+        expect(person.roles.sole.start_on).to eq Date.current
+      end
+
+      it "creates the role with the given start_on" do
+        payload[:data][:attributes][:start_on] = 2.months.ago.to_date.to_s
+
+        expect(instance.save).to eq(true), instance.errors.full_messages.to_sentence
+        expect(person.roles.sole.start_on).to eq 2.months.ago.to_date
+      end
+
       it "accepts membership attrs" do
         payload[:data][:attributes].merge!(membership_attrs)
         expect(instance.save).to eq(true), instance.errors.full_messages.to_sentence

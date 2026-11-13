@@ -45,6 +45,7 @@ class MembershipRegistrationResource < ApplicationResource
     attribute :group_id, :integer, writable: true, readable: false
     attribute :role_type, :string, writable: true, readable: false
     attribute :fee_kind_id, :integer, writable: true, readable: false
+    attribute :start_on, :date, writable: true, readable: false
 
     PfadiDe::Person::MEMBERSHIP_APPLICATION_ATTRS.each do |attr|
       attribute attr, :string, writable: true
@@ -67,6 +68,7 @@ class MembershipRegistrationResource < ApplicationResource
     @role_type = attributes.delete(:role_type)
     @group_id = attributes.delete(:group_id)
     @fee_kind_id = attributes.delete(:fee_kind_id)
+    @start_on = attributes.delete(:start_on)
   end
 
   def authorize_create(_model)
@@ -89,6 +91,7 @@ class MembershipRegistrationResource < ApplicationResource
   def build_role(model)
     model.roles.build(group_id: group.id, type: role_type).tap do |role|
       role.fee_kind_id = @fee_kind_id if @fee_kind_id
+      role.start_on = @start_on if @start_on
     end
   end
 

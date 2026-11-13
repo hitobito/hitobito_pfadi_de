@@ -61,6 +61,21 @@ describe "membership_registrations#create", type: :request do
     end
   end
 
+  context "with backdated start_on" do
+    let(:attributes) do
+      super().merge(start_on: 2.months.ago.to_date.to_s)
+    end
+
+    it "creates the membership role starting at the given date" do
+      expect {
+        make_request
+        expect(response.status).to eq(201), response.body
+      }.to change { Person.count }.by(1).and change { Role.count }.by(1)
+
+      expect(Role.last.start_on).to eq 2.months.ago.to_date
+    end
+  end
+
   context "with Foerdermitgliedschaft" do
     let(:attributes) do
       super().merge(role_type: Group::Mitglieder::Foerdermitgliedschaft.name)
