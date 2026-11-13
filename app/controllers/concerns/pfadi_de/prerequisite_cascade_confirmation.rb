@@ -16,8 +16,17 @@ module PfadiDe::PrerequisiteCascadeConfirmation
     return false if @prerequisite_changes.empty?
 
     @prerequisite_cascade_info = t(".prerequisite_cascade_info_html", **info_options)
-    render "prerequisite_cascades/confirm", status: :unprocessable_content
+    render_prerequisite_cascade_changes
     true
+  end
+
+  def render_prerequisite_cascade_changes
+    if request.format.turbo_stream?
+      render turbo_stream: turbo_stream.append("modal-placeholder",
+        partial: "prerequisite_cascades/modal"), status: :unprocessable_content
+    else
+      render "prerequisite_cascades/confirm", status: :unprocessable_content
+    end
   end
 
   def prerequisite_cascade_confirmation_rendered?
