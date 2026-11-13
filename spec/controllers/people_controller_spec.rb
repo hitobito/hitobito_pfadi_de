@@ -32,6 +32,18 @@ describe PeopleController do
       expect(assigns(:person).bic).to eq("ASDF")
       expect(assigns(:person).bank_name).to eq("Finanzinstitut")
     end
+
+    it "clears incomplete_legacy_data on a manual edit" do
+      person = people(:member)
+      person.update_column(:incomplete_legacy_data, true)
+
+      put :update, params: {
+        group_id: groups(:pfadfinder).id, id: person.id,
+        person: {pronoun: "sie"}
+      }
+
+      expect(assigns(:person).incomplete_legacy_data).to be false
+    end
   end
 
   describe "GET#show" do
