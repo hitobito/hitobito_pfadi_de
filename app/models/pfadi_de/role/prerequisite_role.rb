@@ -134,9 +134,6 @@ module PfadiDe
             "unknown #{name} #{value.inspect}, expected one of #{allowed.inspect}"
         end
 
-        # Every dependency edge (dependent type -> provider type) is created by
-        # a registration, so any cycle is completed by the registration of its
-        # closing edge and can be detected there.
         def assert_acyclic!(type)
           adjacency = dependency_graph
           seen = Set.new
@@ -267,7 +264,7 @@ module PfadiDe
       def prerequisite_role_names(category)
         connector = I18n.t("role.prerequisite.roles_connector")
         PrerequisiteRole.provider_type_names(category)
-          .map { |name| name.safe_constantize&.model_name&.human || name }
+          .map { |name| name.constantize.label }
           .to_sentence(two_words_connector: connector, last_word_connector: connector)
       end
 

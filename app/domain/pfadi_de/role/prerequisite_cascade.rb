@@ -93,9 +93,7 @@ module PfadiDe
       private
 
       def affected_dependents(config)
-        dependents = @role.person.roles.with_inactive
-          .where(type: config.type.sti_name)
-          .where.not(id: @role.id)
+        dependents = @role.person.roles.with_inactive.where(type: config.type.sti_name)
         dependents = dependents.where(end_on: [nil, Date.current..]) unless config.validate_past
 
         if config.scope == :layer
