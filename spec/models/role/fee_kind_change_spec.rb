@@ -111,11 +111,7 @@ describe Role::FeeKindChange do
     end
 
     context "with dependent roles" do
-      around do |example|
-        registry = PfadiDe::Role::PrerequisiteRole.registry.dup
-        example.run
-        PfadiDe::Role::PrerequisiteRole.registry.replace(registry)
-      end
+      include_context "with isolated prerequisite registry"
 
       before do
         Group::Mitglieder::OrdentlicheMitgliedschaft.provides_role :stamm_mitgliedschaft

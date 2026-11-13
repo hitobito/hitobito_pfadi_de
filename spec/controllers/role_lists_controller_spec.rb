@@ -24,11 +24,7 @@ describe RoleListsController do
   let(:dom) { Capybara::Node::Simple.new(response.body) }
   let(:types) { {type.sti_name => "1"} }
 
-  around do |example|
-    registry = PfadiDe::Role::PrerequisiteRole.registry.dup
-    example.run
-    PfadiDe::Role::PrerequisiteRole.registry.replace(registry)
-  end
+  include_context "with isolated prerequisite registry"
 
   before do
     Group::Mitglieder::OrdentlicheMitgliedschaft.provides_role :stamm_mitgliedschaft
