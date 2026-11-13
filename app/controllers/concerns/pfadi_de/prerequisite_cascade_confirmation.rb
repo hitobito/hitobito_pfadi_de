@@ -12,7 +12,7 @@ module PfadiDe::PrerequisiteCascadeConfirmation
     return false unless provides_prerequisites? && request.format.html?
     return false if params[:prerequisite_cascade_confirmed].present?
 
-    @prerequisite_changes = discarding_flash { PfadiDe::Role::PrerequisiteCascade.preview(&) }
+    @prerequisite_changes = PfadiDe::Role::PrerequisiteCascade.preview(&)
     return false if @prerequisite_changes.empty?
 
     @prerequisite_cascade_info = t(".prerequisite_cascade_info_html", **info_options)
@@ -22,13 +22,5 @@ module PfadiDe::PrerequisiteCascadeConfirmation
 
   def prerequisite_cascade_confirmation_rendered?
     @prerequisite_changes.present?
-  end
-
-  def discarding_flash
-    original_flash = request.flash
-    request.flash = ActionDispatch::Flash::FlashHash.new
-    yield
-  ensure
-    request.flash = original_flash
   end
 end

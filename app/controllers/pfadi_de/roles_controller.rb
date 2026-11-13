@@ -56,30 +56,30 @@ module PfadiDe::RolesController
 
   def preview_update
     @group = find_group
-    if change_type?
-      create_new_role_and_destroy_old_role
-    else
-      assign_attributes
-      with_callbacks(:update, :save) { save_entry }
-    end
-  ensure
-    reset_simulated_entry
+    role = Role.with_inactive.find(entry.id)
+    change_type? ? preview_type_change(role) : preview_attribute_update(role)
+  end
+
+  def preview_type_change(role)
+    return false unless membership_restrictions.group_or_type_changeable?
+
+    new_role = build_new_type
+    authorize!(:create, new_role)
+    Roles::TypeChange.new(role, new_role).call
+  end
+
+  def preview_attribute_update(role)
+    role.attributes = permitted_params
+    PfadiDe::MembershipRoleRestrictions.new(role, current_ability).validate_changes && role.save
   end
 
   def preview_destroy
-    run_callbacks(:destroy) { entry.destroy }
-  ensure
-    reset_simulated_entry
+    role = Role.with_inactive.find(entry.id)
+    PfadiDe::MembershipRoleRestrictions.new(role, current_ability).destroyable? && role.destroy
   end
 
   def provides_prerequisites?
     entry.class.provided_prerequisite_categories.any?
-  end
-
-  def reset_simulated_entry
-    @role = nil
-    @new_role = nil
-    @membership_restrictions = nil
   end
 
   def last_primary_group_role_deleted
@@ -89,7 +89,7 @@ module PfadiDe::RolesController
   def create_new_role_and_destroy_old_role
     return reject_group_or_type_change unless membership_restrictions.group_or_type_changeable?
 
-    PfadiDe::Role::PrerequisiteCascade.deferred { super }
+    super
   end
 
   def reject_group_or_type_change
