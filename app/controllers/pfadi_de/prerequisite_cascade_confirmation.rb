@@ -8,10 +8,9 @@
 module PfadiDe::PrerequisiteCascadeConfirmation
   private
 
-  # Renders a confirmation of the dependent roles the block would shorten or
-  # delete, unless the request is already confirmed. Returns whether it did.
-  def confirm_prerequisite_cascade(**info_options, &)
-    return false if params[:prerequisite_cascade_confirmed].present? || !request.format.html?
+  def render_prerequisite_cascade_confirmation(**info_options, &)
+    return false unless provides_prerequisites? && request.format.html?
+    return false if params[:prerequisite_cascade_confirmed].present?
 
     @prerequisite_changes = discarding_flash { PfadiDe::Role::PrerequisiteCascade.preview(&) }
     return false if @prerequisite_changes.empty?

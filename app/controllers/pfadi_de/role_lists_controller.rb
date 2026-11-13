@@ -9,13 +9,13 @@ module PfadiDe::RoleListsController
   include PfadiDe::PrerequisiteCascadeConfirmation
 
   def destroy
-    return if provides_prerequisites? && confirm_prerequisite_cascade { simulate(:destroy) }
+    return if render_prerequisite_cascade_confirmation { simulate(:destroy) }
 
     super
   end
 
   def update
-    return if provides_prerequisites? && confirm_prerequisite_cascade { simulate(:move) }
+    return if render_prerequisite_cascade_confirmation { simulate(:move) }
 
     super
   end
