@@ -7,7 +7,11 @@
                       *entry.used_attributes(:gruendungsdatum, :aufloesungsdatum,
                       :rechtsform, :strukturnummer, :stamm_typ, :opt_out_aufnahmeantrag,
                       :opt_out_aufnahmeantrag_stammessuche, :einsichtnahme_efz_durch_gruppe,
-                      :efz_in_aufnahmeantrag, :eingeschraenkt))
+                      :efz_in_aufnahmeantrag, :eingeschraenkt, :property_type,
+                      :property_owner, :property_facilities_sanitary,
+                      :property_facilities_water, :property_guests_interior,
+                      :property_campingarea, :rental_audience,
+                      :rental_public_listing))
 
 - if entry.layer?
   = render_present_attrs(entry, :abbreviations)
