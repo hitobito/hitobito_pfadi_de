@@ -51,7 +51,7 @@ module PfadiDe
         # Declares that instances of this role type satisfy prerequisites of the
         # `category`.
         def provides_role(category)
-          PrerequisiteRole.register(Provider.new(type: self, category: category.to_sym))
+          PrerequisiteRole.register_provider(Provider.new(type: self, category: category.to_sym))
         end
 
         # Declares that instances of this role type require coverage by
@@ -68,7 +68,7 @@ module PfadiDe
         def depends_on_role(category, scope: :layer, validate_past: false, on_uncovered: :prevent)
           PrerequisiteRole.validate_dependency_options!(scope: scope, on_uncovered: on_uncovered)
 
-          PrerequisiteRole.register(
+          PrerequisiteRole.register_dependency(
             Dependency.new(
               type: self,
               category: category.to_sym,
@@ -80,44 +80,33 @@ module PfadiDe
         end
 
         def dependent_role_configurations
-          PrerequisiteRole.configurations(Dependency, self)
+          PrerequisiteRole.dependencies.select { |dependency| dependency.type == self }
         end
 
         def provided_prerequisite_categories
-          PrerequisiteRole.configurations(Provider, self).map(&:category)
+          PrerequisiteRole.providers.select { |provider| provider.type == self }.map(&:category)
         end
       end
 
       class << self
-        def registry
-          @registry ||= []
+        def providers
+          @providers ||= []
         end
 
-        def register(entry)
-          registry.reject! do |existing|
-            existing.instance_of?(entry.class) &&
-              existing.type == entry.type &&
-              existing.category == entry.category
-          end
-          registry << entry
-          assert_acyclic!(entry.type)
-        rescue CircularDependencyError
-          registry.delete(entry)
-          raise
+        def dependencies
+          @dependencies ||= []
         end
+
+        def register_provider(provider) = register(providers, provider)
+
+        def register_dependency(dependency) = register(dependencies, dependency)
 
         def provider_type_names(category)
-          registry.grep(Provider)
-            .select { |e| e.category == category }
-            .map { |e| e.type.sti_name }
-        end
-
-        def configurations(entry_class, type)
-          registry.grep(entry_class).select { |entry| entry.type == type }
+          providers.select { |e| e.category == category }.map { |e| e.type.sti_name }
         end
 
         def dependent_configurations(category)
-          registry.grep(Dependency).select { |e| e.category == category }
+          dependencies.select { |e| e.category == category }
         end
 
         def validate_dependency_options!(scope:, on_uncovered:)
@@ -130,6 +119,17 @@ module PfadiDe
         end
 
         private
+
+        def register(entries, entry)
+          entries.reject! do |existing|
+            existing.type == entry.type && existing.category == entry.category
+          end
+          entries << entry
+          assert_acyclic!(entry.type)
+        rescue CircularDependencyError
+          entries.delete(entry)
+          raise
+        end
 
         def assert_known_option!(name, value, allowed)
           return if allowed.include?(value)
@@ -158,19 +158,19 @@ module PfadiDe
         # Edges point from a dependent role type to the role types providing the
         # categories it depends on.
         def dependency_graph
-          providers = provider_types_by_category
+          provider_types = provider_types_by_category
 
           Hash.new { |hash, key| hash[key] = [] }.tap do |graph|
-            registry.grep(Dependency).each do |entry|
-              graph[entry.type].concat(providers[entry.category])
+            dependencies.each do |entry|
+              graph[entry.type].concat(provider_types[entry.category])
             end
           end
         end
 
         def provider_types_by_category
-          Hash.new { |hash, key| hash[key] = [] }.tap do |providers|
-            registry.grep(Provider).each do |entry|
-              providers[entry.category] << entry.type
+          Hash.new { |hash, key| hash[key] = [] }.tap do |types_by_category|
+            providers.each do |entry|
+              types_by_category[entry.category] << entry.type
             end
           end
         end

@@ -207,11 +207,7 @@ describe RolesController do
         person:, group: groups(:pfadfinder), start_on: Date.new(2025, 6, 1))
     end
 
-    around do |example|
-      registry = PfadiDe::Role::PrerequisiteRole.registry.dup
-      example.run
-      PfadiDe::Role::PrerequisiteRole.registry.replace(registry)
-    end
+    include_context "with isolated prerequisite registry"
 
     before do
       [Group::Mitglieder::OrdentlicheMitgliedschaft,
