@@ -1,0 +1,34 @@
+-#  Copyright (c) 2026, BdP and DPSG. This file is part of
+-#  hitobito_pfadi_de and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_pfadi_de
+
+#prerequisite-cascade-confirmation.modal.fade{ tabindex: -1, data: { controller: 'modal' } }
+  .modal-dialog.modal-xl
+    .modal-content
+      .modal-header
+        %h5.bold.modal-title
+          %b= t('.title')
+      .modal-body
+        %p= @prerequisite_cascade_info
+        %p= t('.intro')
+
+        = table(@prerequisite_changes, class: 'table table-striped') do |t|
+          - t.col(Person.model_name.human) { |change| change.role.person.to_s }
+          - t.col(Role.model_name.human) { |change| change.role.class.model_name.human }
+          - t.col(Group.model_name.human) { |change| change.role.group.decorate.name_with_layer }
+          - t.col(t('.previous_period')) do |change|
+            = format_prerequisite_period(change.previous_period)
+          - t.col(t('.new_period')) do |change|
+            - if change.new_period
+              = format_prerequisite_period(change.new_period)
+            - else
+              = t('.deleted')
+      = form_with(url: request.fullpath, method: request.request_method.downcase,
+                  data: { turbo: false }) do |f|
+        = prerequisite_cascade_resubmit_fields
+        = hidden_field_tag(:prerequisite_cascade_confirmed, true)
+        .modal-footer
+          = submit_button(f, t('.confirm'))
+          = link_to(ti('button.cancel'), '#', class: 'link cancel',
+                    data: { action: 'modal#close' })

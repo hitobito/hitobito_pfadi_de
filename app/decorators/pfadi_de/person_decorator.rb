@@ -26,4 +26,17 @@ module PfadiDe::PersonDecorator
 
     modification_info(einsichtnahme.einsicht_on, einsichtnahme.einsichtnehmer, format: :default)
   end
+
+  private
+
+  # Roles providing prerequisites are edited on their page, which confirms the
+  # changes of dependent roles.
+  def popover_edit_link(function)
+    return super if function.class.provided_prerequisite_categories.empty?
+
+    content_tag(:span, class: "ps-1") do
+      h.link_to(h.icon(:edit), h.edit_group_role_path(function.group, function),
+        title: h.t("global.link.edit"))
+    end
+  end
 end

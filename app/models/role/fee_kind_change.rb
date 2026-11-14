@@ -46,10 +46,11 @@ class Role::FeeKindChange
   def save!
     raise ActiveRecord::RecordInvalid unless valid?
 
-    Role.transaction do
-      Role.create!(start_on:, fee_kind_id:, person:, type:, group:, end_on: role_end_on,
-        created_at: role.created_at)
+    end_on = role_end_on
+    PfadiDe::Role::PrerequisiteCascade.deferred do
       role.update!(end_on: previous_role_end_on)
+      Role.create!(start_on:, fee_kind_id:, person:, type:, group:, end_on:,
+        created_at: role.created_at)
     end
   end
 end

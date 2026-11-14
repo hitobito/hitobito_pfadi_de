@@ -61,4 +61,25 @@ describe PersonDecorator, :draper_with_helpers do
       expect(person.latest_efz_einsicht_on).to include(I18n.l(2.weeks.ago.to_date))
     end
   end
+
+  describe "#roles_short" do
+    include_context "with isolated prerequisite registry"
+
+    let(:person) { people(:member).decorate }
+
+    before { Group::Mitglieder::OrdentlicheMitgliedschaft.provides_role :stamm_mitgliedschaft }
+
+    def edit_link(role)
+      Capybara::Node::Simple.new(person.roles_short(role.group))
+        .find("a[href='/groups/#{role.group_id}/roles/#{role.id}/edit']")
+    end
+
+    it "links roles providing prerequisites to their edit page" do
+      expect(edit_link(roles(:paying_member))["data-remote"]).to be_nil
+    end
+
+    it "edits other roles in a popover" do
+      expect(edit_link(roles(:member))["data-remote"]).to eq "true"
+    end
+  end
 end
