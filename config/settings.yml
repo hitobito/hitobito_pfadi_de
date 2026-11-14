@@ -54,6 +54,8 @@ people:
     enabled: true
     self_service_managed_creation:
       enabled: false
+    api:
+      enabled: true
   blocklist:
     enabled: true
 
