@@ -55,6 +55,33 @@ describe PersonResource, type: :resource do
       end
     end
 
+    describe "people_managers" do
+      let!(:person) { people(:member) }
+      let(:ability) { Ability.new(people(:stammesverwaltung)) }
+      let!(:people_manager1) { PeopleManager.create!(manager: people(:bottom_leader), managed: person) }
+      let!(:people_manager2) { PeopleManager.create!(manager: Fabricate(:person), managed: person) }
+
+      before { params[:include] = "people_managers" }
+
+      it "works" do
+        render
+        people_managers = jsonapi_data[0].sideload(:people_managers)
+        expect(people_managers.map(&:id)).to match_array [people_manager1.id, people_manager2.id]
+      end
+    end
+
+    describe "people_manageds" do
+      let(:ability) { Ability.new(people(:stammesverwaltung)) }
+      let!(:people_manager) { PeopleManager.create!(manager: person, managed: people(:member)) }
+
+      before { params[:include] = "people_manageds" }
+
+      it "works" do
+        render
+        expect(jsonapi_data[0].sideload(:people_manageds).map(&:id)).to eq [people_manager.id]
+      end
+    end
+
     context "when the details are only readable through an event participation" do
       before do
         allow(ability).to receive(:can?).and_call_original

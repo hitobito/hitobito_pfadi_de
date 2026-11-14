@@ -1,6 +1,6 @@
 #  frozen_string_literal: true
 
-#  Copyright (c) 2025, BdP and DPSG. This file is part of
+#  Copyright (c) 2025-2026, BdP and DPSG. This file is part of
 #  hitobito_pfadi_de and licensed under the Affero General Public License version 3
 #  or later. See the COPYING file at the top-level directory or at
 #  https://github.com/hitobito/hitobito_pfadi_de.
@@ -78,6 +78,112 @@ describe PersonResource, type: :resource do
         expect(instance.update_attributes).to eq(false)
       }.to not_change { person.reload.updated_at }
         .and not_change { person.iban }
+    end
+  end
+
+  describe "sideposting" do
+    let(:manager) { people(:bottom_leader) }
+    let(:managed) { people(:member) }
+    let(:person) { managed }
+    let(:instance) { PersonResource.find(payload) }
+
+    def payload_for(person, relationship, data, included = [])
+      {
+        id: person.id.to_s,
+        data: {
+          type: "people",
+          id: person.id.to_s,
+          attributes: {},
+          relationships: {relationship => {data: data}}
+        },
+        included: included
+      }
+    end
+
+    describe "people_managers" do
+      describe "create" do
+        let(:payload) do
+          payload_for(managed, :people_managers,
+            {type: "people_managers", "temp-id": "asdf", method: "create"},
+            [{type: "people_managers", "temp-id": "asdf", attributes: {manager_id: manager.id}}])
+        end
+
+        it "works" do
+          expect {
+            expect(instance.update_attributes).to eq(true), instance.errors.full_messages.to_sentence
+          }.to change { PeopleManager.count }.by(1)
+
+          people_manager = PeopleManager.last
+          expect(people_manager.manager).to eq manager
+          expect(people_manager.managed).to eq managed
+        end
+      end
+
+      describe "update" do
+        let!(:people_manager) { PeopleManager.create!(manager: manager, managed: managed) }
+        let(:other_manager) { Fabricate(:person) }
+        let(:payload) do
+          payload_for(managed, :people_managers,
+            {type: "people_managers", id: people_manager.id.to_s, method: "update"},
+            [{type: "people_managers", id: people_manager.id.to_s,
+              attributes: {manager_id: other_manager.id}}])
+        end
+
+        it "raises AccessDenied" do
+          expect { instance.update_attributes }.to raise_error(CanCan::AccessDenied)
+          expect(people_manager.reload.manager).to eq manager
+        end
+      end
+
+      describe "destroy" do
+        let!(:people_manager) { PeopleManager.create!(manager: manager, managed: managed) }
+        let(:payload) do
+          payload_for(managed, :people_managers,
+            {type: "people_managers", id: people_manager.id.to_s, method: "destroy"})
+        end
+
+        it "works" do
+          expect {
+            expect(instance.update_attributes).to eq(true), instance.errors.full_messages.to_sentence
+          }.to change { PeopleManager.count }.by(-1)
+        end
+      end
+    end
+
+    describe "people_manageds" do
+      describe "create" do
+        let(:payload) do
+          payload_for(manager, :people_manageds,
+            {type: "people_managers", "temp-id": "asdf", method: "create"},
+            [{type: "people_managers", "temp-id": "asdf", attributes: {managed_id: managed.id}}])
+        end
+
+        it "works" do
+          expect {
+            expect(instance.update_attributes).to eq(true), instance.errors.full_messages.to_sentence
+          }.to change { PeopleManager.count }.by(1)
+
+          people_manager = PeopleManager.last
+          expect(people_manager.manager).to eq manager
+          expect(people_manager.managed).to eq managed
+        end
+      end
+
+      describe "update" do
+        let!(:people_manager) { PeopleManager.create!(manager: manager, managed: managed) }
+        let(:other_managed) { Fabricate(:person) }
+        let(:payload) do
+          payload_for(manager, :people_manageds,
+            {type: "people_managers", id: people_manager.id.to_s, method: "update"},
+            [{type: "people_managers", id: people_manager.id.to_s,
+              attributes: {managed_id: other_managed.id}}])
+        end
+
+        it "raises AccessDenied" do
+          expect { instance.update_attributes }.to raise_error(CanCan::AccessDenied)
+          expect(people_manager.reload.managed).to eq managed
+        end
+      end
     end
   end
 end
