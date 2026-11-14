@@ -9,7 +9,7 @@ class Group::Bezirksgeschaeftsstelle < ::Group
   ### ROLES
 
   class Hauptamtlich < ::Role
-    self.permissions = [:group_read]
+    self.permissions = [:group_read_contact_data]
     self.two_factor_authentication_enforced = true
     self.sgbviii_required = true
   end

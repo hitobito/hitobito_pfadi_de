@@ -19,7 +19,7 @@ class Group::LandInternationales < Group::LandArbeitsbereich
   end
 
   class AKMitarbeiter < ::Role
-    self.permissions = [:group_and_below_read]
+    self.permissions = [:group_read_contact_data]
     self.sgbviii_required = true
   end
 

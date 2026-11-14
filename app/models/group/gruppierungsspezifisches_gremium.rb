@@ -6,14 +6,16 @@
 #  https://github.com/hitobito/hitobito_bdp.
 
 class Group::GruppierungsspezifischesGremium < ::Group
+  children Group::GruppierungsspezifischesGremium
+
   ### ROLES
 
   class Leitung < ::Role
-    self.permissions = [:group_and_below_full]
+    self.permissions = [:group_and_below_read]
   end
 
   class Mitglied < ::Role
-    self.permissions = [:group_read]
+    self.permissions = [:group_read_contact_data]
   end
 
   roles Leitung,

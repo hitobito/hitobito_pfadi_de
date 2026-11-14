@@ -11,7 +11,7 @@ class Group::Ombudsrat < ::Group
   ### ROLES
 
   class Mitglied < ::Role
-    self.permissions = []
+    self.permissions = [:group_read_contact_data]
   end
 
   roles Mitglied
