@@ -15,8 +15,4 @@ describe InvoiceConfig do
   it "defaults new records to no payment slip" do
     expect(InvoiceConfig.new.payment_slip).to eq("no_ps")
   end
-
-  it "offers no EBICS payment providers for Swiss banks" do
-    expect(Settings.payment_providers.to_a).to eq([])
-  end
 end

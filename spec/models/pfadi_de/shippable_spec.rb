@@ -14,8 +14,8 @@ describe "PfadiDe::Shippable" do
     end
 
     it "reports #{klass} instances as not shippable for any attribute" do
-      expect(klass.new.shippable?(:shipping_method)).to eq(false)
-      expect(klass.new.shippable?(:pp_post)).to eq(false)
+      expect(klass.new.shippable_attribute?(:shipping_method)).to eq(false)
+      expect(klass.new.shippable_attribute?(:pp_post)).to eq(false)
     end
   end
 end
