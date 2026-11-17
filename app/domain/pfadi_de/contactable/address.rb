@@ -11,11 +11,12 @@ module PfadiDe::Contactable::Address
   def efz_full_address_without_name = full_address.join("\n").strip
 
   def efz_full_address_without_name_flat
+    printed = printed_address([], salutation: nil)
     [
       address_care_of.to_s.strip.presence,
-      address.to_s.strip.presence,
+      printed.street_line.presence,
       postbox.to_s.strip.presence,
-      zip_code_with_town.presence,
+      printed.zip_town.presence,
       (country.presence unless germany?)
     ].compact.join(FLAT_SEPARATOR)
   end
