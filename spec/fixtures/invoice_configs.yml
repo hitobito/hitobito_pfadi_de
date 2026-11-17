@@ -16,7 +16,7 @@ root:
   address: "bund layer address"
   iban: "DE93 0076 2011 6238 5295 7"
   account_number: "10-5318-5"
-  payment_slip: "qr"
+  payment_slip: "no_ps"
   participant_number: "10-5318-6"
   vat_number: "DE 1234"
 
@@ -33,6 +33,7 @@ baden_wuerttemberg:
   address: "baden württemberg address"
   iban: "CH66 0076 2011 6238 5295 8"
   account_number: "01-162-5"
+  payment_slip: "no_ps"
 
 adler:
   group: adler
@@ -47,3 +48,4 @@ adler:
   address: "adler address"
   iban: "CH10 0221 1981 6169 5329 8"
   account_number: "03-162-4"
+  payment_slip: "no_ps"
