@@ -60,6 +60,7 @@ module HitobitoPfadiDe
       GroupsController.prepend PfadiDe::GroupsController
       PeopleController.prepend PfadiDe::PeopleController
       RolesController.prepend PfadiDe::RolesController
+      RolesHelper.prepend PfadiDe::RolesHelper
       Role::List.prepend PfadiDe::Role::List
       Roles::TypeChange.prepend PfadiDe::Roles::TypeChange
       RoleListsController.prepend PfadiDe::RoleListsController

@@ -28,5 +28,26 @@ module PfadiDe
         icon(:"money-bill-1-wave", style: "opacity: 0.5")
       end
     end
+
+    # Submits via Turbo, so the confirmation of dependent role changes opens as modal.
+    def link_action_end_or_destroy(role)
+      return super if role.class.provided_prerequisite_categories.empty?
+
+      if role.ends_on_destroy?
+        turbo_delete_role_link(role, icon(:"circle-stop", filled: true),
+          t("roles.end.title"), t("roles.end.confirm"))
+      else
+        turbo_delete_role_link(role, icon(:"trash-alt", filled: false),
+          ti(:"link.delete"), ti(:confirm_delete))
+      end
+    end
+
+    private
+
+    def turbo_delete_role_link(role, label, title, confirm)
+      link_to(label, group_role_path(role.group, role),
+        class: "action", title:, alt: title,
+        data: {turbo_method: :delete, turbo_confirm: confirm})
+    end
   end
 end
