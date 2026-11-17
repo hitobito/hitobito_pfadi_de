@@ -1750,7 +1750,9 @@ de:
     prerequisite:
       roles_connector: " oder "
       period: vom %{from} bis %{to}
-      period_open: ab %{from}
+      period_open_end: ab %{from}
+      period_open_start: bis %{to}
+      period_unbounded: durchgehend
 
   person:
     history:
