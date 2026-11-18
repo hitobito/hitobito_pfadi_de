@@ -18,6 +18,7 @@ module PfadiDe::Role
 
   included do
     include PfadiDe::Role::ExclusiveRole
+    include PfadiDe::Role::PrerequisiteRole
 
     # A valid and up-to-date Führungszeugnis is required for this role
     class_attribute :sgbviii_required

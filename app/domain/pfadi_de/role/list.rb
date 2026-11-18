@@ -16,6 +16,10 @@ module PfadiDe::Role::List
     super
   end
 
+  def move_role(old_role, new_role)
+    PfadiDe::Role::PrerequisiteCascade.deferred { super }
+  end
+
   private
 
   def deleteable_roles
