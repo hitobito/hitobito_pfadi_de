@@ -1517,7 +1517,7 @@ de_DE:
         entry_date: Eintrittsdatum
         exit_date: Austrittsdatum
         genders:
-          _nil: nicht angegeben
+          _nil: nicht angegeben (nur bei Nicht-Mitgliedern)
           d: divers
           n: keine Angabe
         iban: IBAN
