@@ -6,5 +6,5 @@
 #  https://github.com/hitobito/hitobito_pfadi_de.
 
 module HitobitoPfadiDe
-  VERSION = "2.11.6"
+  VERSION = "2.11.8"
 end
