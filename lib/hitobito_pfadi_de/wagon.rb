@@ -99,6 +99,8 @@ module HitobitoPfadiDe
 
       AbilityDsl::UserContext::GROUP_PERMISSIONS << :layer_and_below_efz
       AbilityDsl::UserContext::LAYER_PERMISSIONS << :layer_and_below_efz
+      AbilityDsl::UserContext::GROUP_PERMISSIONS << :assign_restricted_fee_kinds
+      AbilityDsl::UserContext::LAYER_PERMISSIONS << :assign_restricted_fee_kinds
 
       TableDisplay.register_column(Person,
         TableDisplays::People::FeeKindColumn,

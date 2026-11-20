@@ -104,10 +104,10 @@ describe TableDisplays::People::FeeKindColumn, type: :helper do
         expect(node).to have_css "td", text: "BaWü Kind, fehlende Berechtigung"
       end
 
-      it "renders fehlende Berechtigung in place of name" do
+      it "renders name with assign_restricted_fee_kinds" do
         Fabricate(Group::Bundesvorstand::Bundesvorsitz.sti_name, group: groups(:bundesvorstand), person:)
         display.render(:fee_kind)
-        expect(node).to have_css "td", text: "BaWü Kind, fehlende Berechtigung"
+        expect(node).to have_css "td", text: "BaWü Kind, Other"
       end
     end
   end

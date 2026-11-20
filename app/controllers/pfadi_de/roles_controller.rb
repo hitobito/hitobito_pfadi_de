@@ -52,6 +52,12 @@ module PfadiDe::RolesController
     render :edit, status: :unprocessable_content
   end
 
+  def build_role
+    super.tap do |role|
+      role.fee_kind_id = extract_model_attr(:fee_kind_id) if role.fee_kind_type?
+    end
+  end
+
   def membership_restrictions
     @membership_restrictions ||= PfadiDe::MembershipRoleRestrictions.new(entry, current_ability)
   end

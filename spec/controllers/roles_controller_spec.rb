@@ -163,6 +163,68 @@ describe RolesController do
         expect(response).to be_redirect
         expect(person.roles.map(&:type)).to eq [Group::Mitglieder::Zweitmitgliedschaft.sti_name]
       end
+
+      context "with restricted fee kind" do
+        let(:restricted_fee_kind) do
+          Fabricate(:fee_kind, layer: groups(:root), restricted: true,
+            role_type: Group::Mitglieder::Foerdermitgliedschaft.sti_name)
+        end
+
+        before { role.update_columns(created_at: 32.days.ago) }
+
+        def change_type
+          update(type: Group::Mitglieder::Foerdermitgliedschaft.sti_name, group_id: group.id,
+            fee_kind_id: restricted_fee_kind.id)
+        end
+
+        it "may not be changed without assign_restricted_fee_kinds" do
+          expect { change_type }.to raise_error(CanCan::AccessDenied)
+
+          expect(reloaded_role.end_on).to be_nil
+        end
+
+        it "may be changed by admin" do
+          sign_in(people(:admin))
+
+          change_type
+
+          expect(person.roles.map(&:fee_kind)).to eq [restricted_fee_kind]
+        end
+      end
+    end
+  end
+
+  describe "POST create" do
+    let(:new_person) { Fabricate(:person) }
+    let(:restricted_fee_kind) { fee_kinds(:baden_wuerttemberg_kind) }
+
+    before { fee_kinds(:top_fee_kind).update!(restricted: true) }
+
+    def create(fee_kind)
+      post :create, params: {
+        group_id: group.id,
+        role: {group_id: group.id, person_id: new_person.id, type: type.sti_name,
+               fee_kind_id: fee_kind.id}
+      }
+    end
+
+    it "may not assign restricted fee kind without assign_restricted_fee_kinds" do
+      expect { create(restricted_fee_kind) }.to raise_error(CanCan::AccessDenied)
+
+      expect(new_person.roles).to be_empty
+    end
+
+    it "may assign restricted fee kind with assign_restricted_fee_kinds" do
+      sign_in(people(:admin))
+
+      expect { create(restricted_fee_kind) }.to change { new_person.roles.count }.by(1)
+      expect(new_person.roles.first.fee_kind).to eq restricted_fee_kind
+    end
+
+    it "may assign unrestricted fee kind without assign_restricted_fee_kinds" do
+      fee_kinds(:top_fee_kind).update!(restricted: false)
+
+      expect { create(restricted_fee_kind) }.to change { new_person.roles.count }.by(1)
     end
   end
 

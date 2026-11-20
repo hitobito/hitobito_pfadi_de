@@ -83,6 +83,7 @@ describe Role::FeeKindChangesController do
     end
 
     it "raises if changing to restricted fee_kind without permission" do
+      sign_in(people(:stammesverwaltung))
       youth_kind.root.update_columns(restricted: true)
       expect do
         post :create, params: {role_id: role.id, role_fee_kind_change: model_params}
