@@ -83,11 +83,11 @@ class FeeKind < ActiveRecord::Base
     def restricted_self_or_ancestor
       ancestors = arel_table.alias("restricted_ancestors")
 
-      Arel::SelectManager.new(ancestors).project(1).where(
+      unscoped.from(ancestors).where(
         ancestors[:lft].lteq(arel_table[:lft])
           .and(ancestors[:rgt].gteq(arel_table[:rgt]))
           .and(ancestors[:restricted].eq(true))
-      ).exists
+      ).arel.exists
     end
 
     # Joins the most appropriate FeeRate for each person and fee_kind during a billing period.
