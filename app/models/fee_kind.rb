@@ -33,6 +33,10 @@ class FeeKind < ActiveRecord::Base
   scope :not_archived, -> {
     where(archived_at: nil).or(where(archived_at: Time.zone.now..))
   }
+  scope :not_restricted, -> { where(restricted_self_or_ancestor.not) }
+  scope :with_effectively_restricted, -> {
+    select(arel_table[Arel.star], restricted_self_or_ancestor.as("effectively_restricted"))
+  }
 
   def not_archived?
     archived_at.nil? || archived_at > Time.zone.now
@@ -67,11 +71,25 @@ class FeeKind < ActiveRecord::Base
     FeeKindChooser.new(allow_restricted: true).possible_parents(layer)
   end
 
+  def restrictable?
+    layer.present? && layer.class.fee_kind_restrictable
+  end
+
   def restricted?
-    root.restricted
+    restricted || parent&.self_and_ancestors&.exists?(restricted: true) || false
   end
 
   class << self
+    def restricted_self_or_ancestor
+      ancestors = arel_table.alias("restricted_ancestors")
+
+      Arel::SelectManager.new(ancestors).project(1).where(
+        ancestors[:lft].lteq(arel_table[:lft])
+          .and(ancestors[:rgt].gteq(arel_table[:rgt]))
+          .and(ancestors[:restricted].eq(true))
+      ).exists
+    end
+
     # Joins the most appropriate FeeRate for each person and fee_kind during a billing period.
     # The people and fee_kinds tables must be joined when using this method.
     # A custom name for the people table can be provided (e.g. when using an alias).
@@ -167,10 +185,6 @@ class FeeKind < ActiveRecord::Base
   end
 
   def validate_restricted
-    if top_layer?
-      errors.add(:restricted, :blank) if restricted.nil?
-    else
-      errors.add(:restricted, :present) unless restricted.nil?
-    end
+    errors.add(:restricted, :present) if restricted && !restrictable?
   end
 end

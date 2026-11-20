@@ -2043,8 +2043,7 @@
         "name": {},
         "layer_id": {},
         "parent_id": {},
-        "role_type": {},
-        "restricted": {}
+        "role_type": {}
       },
       "filters": {
         "id": {
@@ -2109,13 +2108,6 @@
             "match",
             "not_match"
           ]
-        },
-        "restricted": {
-          "type": "boolean",
-          "operators": [
-            "eq"
-          ],
-          "single": true
         }
       },
       "relationships": {

@@ -15,6 +15,8 @@ module PfadiDe::Group
     # self.used_attributes += [:website, :bank_account, :description]
     # self.superior_attributes = [:bank_account]
 
+    class_attribute :fee_kind_restrictable, default: false
+
     has_many :fee_kinds, inverse_of: :layer, dependent: :destroy
     has_many :fee_rates, through: :fee_kinds, dependent: :destroy
     has_many :sepa_mandates, dependent: :destroy

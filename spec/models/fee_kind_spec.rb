@@ -62,9 +62,10 @@ describe FeeKind do
       expect(fee_kind).not_to be_valid
     end
 
-    it "validates presence of restricted" do
+    it "accepts restricted nil" do
       fee_kind.restricted = nil
-      expect(fee_kind).not_to be_valid
+      expect(fee_kind).to be_valid
+      expect(fee_kind.restricted?).to be false
     end
 
     it "cannot change role_type after create" do
@@ -93,8 +94,8 @@ describe FeeKind do
       expect(fee_kind).not_to be_valid
     end
 
-    it "validates absence of restricted" do
-      fee_kind.restricted = false
+    it "validates absence of restricted true" do
+      fee_kind.restricted = true
       expect(fee_kind).not_to be_valid
     end
 
@@ -113,6 +114,96 @@ describe FeeKind do
       expect(fee_kind.restricted?).to be_falsy
       fee_kind.parent.update!(restricted: true)
       expect(fee_kind.restricted?).to be_truthy
+    end
+  end
+
+  context "restrictable layer below top layer" do
+    let(:fee_kind) { fee_kinds(:baden_wuerttemberg_kind) }
+
+    around do |example|
+      Group::Landesverband.fee_kind_restrictable = true
+      example.run
+    ensure
+      Group::Landesverband.fee_kind_restrictable = false
+    end
+
+    it "is restrictable" do
+      expect(fee_kind).to be_restrictable
+    end
+
+    it "accepts restricted true, false and nil" do
+      [true, false, nil].each do |value|
+        fee_kind.restricted = value
+        expect(fee_kind).to be_valid
+      end
+    end
+
+    it "still validates absence of role_type" do
+      fee_kind.role_type = roles(:member).type
+      expect(fee_kind).not_to be_valid
+    end
+
+    it "#restricted? returns own restricted value" do
+      expect(fee_kind.restricted?).to be false
+      fee_kind.update!(restricted: true)
+      expect(fee_kind.restricted?).to be true
+    end
+
+    it "#restricted? is inherited by fee kinds below" do
+      stamm_fee_kind = Fabricate(:fee_kind, parent: fee_kind, layer: groups(:adler))
+      expect(stamm_fee_kind.restricted?).to be false
+
+      fee_kind.update!(restricted: true)
+      expect(stamm_fee_kind.reload.restricted?).to be true
+    end
+
+    it "does not allow restricted on layers of other types" do
+      stamm_fee_kind = Fabricate(:fee_kind, parent: fee_kind, layer: groups(:adler))
+      expect(stamm_fee_kind).not_to be_restrictable
+
+      stamm_fee_kind.restricted = true
+      expect(stamm_fee_kind).not_to be_valid
+    end
+  end
+
+  context "not restrictable layer below top layer" do
+    let(:fee_kind) { fee_kinds(:baden_wuerttemberg_kind) }
+
+    it "is not restrictable by default" do
+      expect(fee_kind).not_to be_restrictable
+    end
+
+    it "is restrictable on the top layer" do
+      expect(fee_kinds(:top_fee_kind)).to be_restrictable
+    end
+
+    it "validates absence of restricted true" do
+      fee_kind.restricted = true
+      expect(fee_kind).not_to be_valid
+    end
+
+    it "accepts restricted false" do
+      fee_kind.restricted = false
+      expect(fee_kind).to be_valid
+    end
+  end
+
+  context "restricted scopes" do
+    let(:top_fee_kind) { fee_kinds(:top_fee_kind) }
+    let(:bawue_fee_kind) { fee_kinds(:baden_wuerttemberg_kind) }
+
+    it "include fee kinds without restricted ancestors" do
+      expect(FeeKind.not_restricted).to include(top_fee_kind, bawue_fee_kind)
+      expect(FeeKind.with_effectively_restricted.map(&:effectively_restricted).uniq)
+        .to eq [false]
+    end
+
+    it "consider restricted ancestors" do
+      top_fee_kind.update!(restricted: true)
+
+      expect(FeeKind.not_restricted).not_to include(top_fee_kind, bawue_fee_kind)
+      expect(FeeKind.with_effectively_restricted.find(bawue_fee_kind.id).effectively_restricted)
+        .to be true
     end
   end
 
