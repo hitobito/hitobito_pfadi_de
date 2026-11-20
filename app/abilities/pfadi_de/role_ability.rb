@@ -29,6 +29,10 @@ module PfadiDe::RoleAbility
       permission(:any).may(:end_retroactively).not_membership_role
       permission(:admin).may(*MEMBERSHIP_RESTRICTION_ACTIONS).all
 
+      permission(:assign_restricted_fee_kinds)
+        .may(:assign_restricted_fee_kinds)
+        .in_same_layer_or_below
+
       general(:create).require_relevant_create_permissions
     end
   end
@@ -43,7 +47,7 @@ module PfadiDe::RoleAbility
   end
 
   def require_relevant_create_permissions
-    erfassung_fuehrungszeugnis_grantable?
+    erfassung_fuehrungszeugnis_grantable? && fee_kind_assignable?
   end
 
   def erfassung_fuehrungszeugnis_grantable?
@@ -51,6 +55,12 @@ module PfadiDe::RoleAbility
       user_context.admin ||
       contains_any?(subject.group.upper_layer_hierarchy.collect(&:id),
         user_context.permission_layer_ids(:layer_and_below_full))
+  end
+
+  def fee_kind_assignable?
+    !subject.fee_kind&.restricted? ||
+      contains_any?(subject.group.layer_hierarchy.collect(&:id),
+        user_context.permission_layer_ids(:assign_restricted_fee_kinds))
   end
 
   private
