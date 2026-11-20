@@ -15,12 +15,18 @@ class FeeKindResource < ApplicationResource
   attribute :layer_id, :integer
   attribute :parent_id, :integer
   attribute :role_type, :string
-  attribute :restricted, :boolean
+  attribute :restricted, :boolean, filterable: false, sortable: false do
+    @object.effectively_restricted
+  end
 
   belongs_to :layer, resource: GroupResource
   belongs_to :parent, resource: FeeKindResource
 
   has_many :fee_rates
+
+  def base_scope
+    super.with_effectively_restricted
+  end
 
   def index_ability
     JsonApi::FeeKindReadables.new(current_ability)

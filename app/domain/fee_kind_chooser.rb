@@ -69,7 +69,7 @@ class FeeKindChooser
     result = candidates.joins(:layer).where(groups: {lft: lft_of_lowest_non_empty_layer})
 
     # Apply restricted filter
-    @allow_restricted ? result : filter_restricted(result)
+    @allow_restricted ? result : result.not_restricted
   end
 
   # Builds a JOIN condition to connect fee_kinds to their root fee_kinds using nested set
@@ -93,15 +93,5 @@ class FeeKindChooser
     # Build the JOIN and convert to format ActiveRecord understands
     # .join() creates the JOIN, .on() adds the condition, .join_sources extracts for AR
     fee_kinds.join(root_alias).on(join_condition).join_sources
-  end
-
-  # Filters out restricted fee_kinds by joining to root and checking restricted flag
-  def filter_restricted(relation)
-    root_for_restricted = FeeKind.arel_table.alias("root_for_restricted")
-
-    # Join to root fee_kinds and filter where root.restricted is false or NULL
-    relation.joins(join_to_root_fee_kinds(root_for_restricted))
-      .where(root_for_restricted[:restricted].eq(false)          # WHERE root.restricted = false
-      .or(root_for_restricted[:restricted].eq(nil)))             # OR root.restricted IS NULL
   end
 end

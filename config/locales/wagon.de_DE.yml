@@ -1712,7 +1712,7 @@ de_DE:
         delete: Archivieren
       confirm_delete: "Wollen Sie diese Beitragsart wirklich archivieren? Sie kann danach nicht mehr neu auf Rollen zugewiesen werden."
     form:
-      caption_resricted: Beitragsart darf nur durch speziell berechtigte Personen vergeben werden
+      caption_resricted: Beitragsart und alle davon abgeleiteten Beitragsarten dürfen nur durch speziell berechtigte Personen vergeben werden
   role_lists:
     membership_destroy_period_expired: "Die Mitgliedschaft von %{person} kann nur innerhalb von %{days} Tagen nach dem Erfassen gelöscht werden."
     membership_move_period_expired: "Die Mitgliedschaft von %{person} kann nur innerhalb von %{days} Tagen nach dem Erfassen verschoben werden."

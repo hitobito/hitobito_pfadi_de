@@ -205,6 +205,49 @@ describe FeeKindChooser, type: :domain do
       expect(subject.possible_for_role(förder_role)).to_not include(current_layer_restricted)
     end
 
+    context "with a restricted fee kind below the top layer" do
+      around do |example|
+        Group::Landesverband.fee_kind_restrictable = true
+        example.run
+      ensure
+        Group::Landesverband.fee_kind_restrictable = false
+      end
+
+      let(:top_kind) { Fabricate(:fee_kind, restricted: false, role_type: role_type) }
+      let!(:middle_restricted) do
+        Fabricate(:fee_kind, parent: top_kind, layer: groups(:baden_wuerttemberg),
+          restricted: true)
+      end
+      let!(:middle_open) do
+        Fabricate(:fee_kind, parent: top_kind, layer: groups(:baden_wuerttemberg))
+      end
+      let!(:current_layer_restricted) do
+        Fabricate(:fee_kind, parent: middle_restricted, layer: groups(:adler))
+      end
+      let!(:current_layer_open) do
+        Fabricate(:fee_kind, parent: middle_open, layer: groups(:adler))
+      end
+
+      it "does not list it or fee kinds derived from it" do
+        possibles = subject.possible_for_role(role)
+
+        expect(possibles).to include(current_layer_open)
+        expect(possibles).not_to include(current_layer_restricted)
+      end
+
+      it "lists them if restricted fee kinds are allowed" do
+        possibles = described_class.new(allow_restricted: true).possible_for_role(role)
+
+        expect(possibles).to include(current_layer_open, current_layer_restricted)
+      end
+
+      it "offers the restricted fee kind as parent" do
+        parents = described_class.new(allow_restricted: true).possible_parents(groups(:adler))
+
+        expect(parents).to include(middle_restricted, middle_open)
+      end
+    end
+
     it "still treats pre-selected restricted fee kind as valid" do
       _förder_fee_kind = Fabricate(:fee_kind, role_type: role_type, created_at: 1.year.ago)
       förder_fee_kind_2 = Fabricate(:fee_kind, role_type: role_type, restricted: true,

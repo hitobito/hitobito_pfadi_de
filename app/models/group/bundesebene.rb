@@ -10,6 +10,7 @@ class Group::Bundesebene < ::Group
   include PfadiDe::RequiredAddress
 
   self.layer = true
+  self.fee_kind_restrictable = true
   self.event_types = [Event, Event::Course]
 
   children Group::Landesverband,
