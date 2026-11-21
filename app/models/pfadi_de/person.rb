@@ -29,7 +29,8 @@ module PfadiDe::Person
 
     Person::INTERNAL_ATTRS.push(:last_entry_date_with_fee_kind,
       :should_recalculate_last_entry_date_with_fee_kind,
-      :latest_efz_issued_on)
+      :latest_efz_issued_on,
+      :incomplete_legacy_data)
     Person::INTERNAL_ATTRS.concat(MEMBERSHIP_APPLICATION_ATTRS)
 
     Person::FILTER_ATTRS.push(:latest_efz_issued_on)
