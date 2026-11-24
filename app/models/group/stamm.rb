@@ -69,7 +69,7 @@ class Group::Stamm < ::Group
   end
 
   class Stammesmitgliederverwaltung < ::Role
-    self.permissions = [:layer_and_below_full, :finance]
+    self.permissions = [:layer_full, :finance]
     self.two_factor_authentication_enforced = true
   end
 
