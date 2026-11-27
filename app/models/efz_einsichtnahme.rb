@@ -31,6 +31,8 @@ class EfzEinsichtnahme < ActiveRecord::Base
   private
 
   def update_person_latest_efz_issued_on
+    return if person.destroyed?
+
     person.update_column(:latest_efz_issued_on, person.efz_einsichtnahmen.maximum(:issued_on))
   end
 end
