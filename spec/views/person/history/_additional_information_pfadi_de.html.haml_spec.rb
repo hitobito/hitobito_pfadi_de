@@ -17,6 +17,7 @@ describe "person/history/_additional_information_pfadi_de.html.haml" do
 
   before do
     allow(view).to receive(:person).and_return(person.decorate)
+    allow(view).to receive(:history_sections_collapsed?).and_return(false)
     allow(view).to receive(:current_user).and_return(current_user)
     allow(controller).to receive(:current_user).and_return(current_user)
   end

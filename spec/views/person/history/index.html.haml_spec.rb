@@ -9,7 +9,8 @@ require "spec_helper"
 
 describe "person/history/_roles_table.html.haml" do
   let(:dom) {
-    render
+    render partial: "person/history/roles_table",
+      locals: {id: "roles", title: "Rollen", roles: [role]}
     Capybara::Node::Simple.new(@rendered)
   }
 
@@ -19,7 +20,7 @@ describe "person/history/_roles_table.html.haml" do
   before do
     assign(:group, role.group)
     allow(view).to receive(:entry).and_return(person.decorate)
-    allow(view).to receive(:roles).and_return([role])
+    allow(view).to receive(:history_sections_collapsed?).and_return(false)
     allow(controller).to receive(:current_user).and_return(current_user)
   end
 
