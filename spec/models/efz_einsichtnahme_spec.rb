@@ -94,5 +94,10 @@ describe EfzEinsichtnahme do
       Fabricate(:efz_einsichtnahme, person:, issued_on: one_day_ago).destroy!
       expect(person.reload.latest_efz_issued_on).to eq(one_week_ago)
     end
+
+    it "destroying person destroys efz_einsichtnahmen" do
+      Fabricate(:efz_einsichtnahme, person:, issued_on: one_week_ago)
+      expect { person.reload.destroy! }.to change { EfzEinsichtnahme.count }.by(-1)
+    end
   end
 end
